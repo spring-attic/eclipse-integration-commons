@@ -10,7 +10,7 @@
 	</descriptor>
 	
 
-	<!-- Templates -->
+	<!-- Templates (uncategorized) -->
 	<descriptor id="org.springframework.templates.mvc" kind="template"
 		local="false" name="Spring MVC Project" size="17198"
 		url="http://dist.springsource.com/release/STS/help/org.springframework.templates.mvc-3.0.18.zip"
@@ -45,6 +45,8 @@
 	</descriptor>
 
 	<!-- Integration templates -->
+	<!-- Integration templates now live on github -->
+	<!--  
 	<descriptor
 		id="org.springframework.integration.sts.template.standalone.simple"
 		name="Spring Integration Project (Standalone) - Simple" kind="template"
@@ -70,6 +72,7 @@
 			Uses the Spring Integration Twitter adapter.
 		</description>
 	</descriptor>
+	-->
 
 	<!-- Batch templates -->
 	<descriptor id="org.springframework.samples.batch.admin.web"
