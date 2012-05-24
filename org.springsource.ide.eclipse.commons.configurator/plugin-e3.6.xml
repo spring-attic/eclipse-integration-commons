@@ -3,7 +3,7 @@
 <plugin>
 	<extension point="org.eclipse.equinox.p2.engine.actions">
 		<action
-			class="com.springsource.sts.ide.internal.configurator.touchpoint.ConfiguratorAction_e_3_6"
+			class="org.springsource.ide.eclipse.commons.internal.configurator.touchpoint.ConfiguratorAction_e_3_6"
 			description="configure(target)"
 			name="com.springsource.sts.ide.configure" 
 			touchpointType="org.eclipse.equinox.p2.native"

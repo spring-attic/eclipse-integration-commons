@@ -21,12 +21,12 @@ import org.osgi.framework.Version;
 import org.springsource.ide.eclipse.commons.core.CommandHistoryTest;
 import org.springsource.ide.eclipse.commons.core.ResourceProviderTest;
 import org.springsource.ide.eclipse.commons.internal.configurator.ConfiguratorImporterTest;
+import org.springsource.ide.eclipse.commons.internal.configurator.touchpoint.ConfiguratorActionTest_e_3_6;
 import org.springsource.ide.eclipse.commons.internal.content.core.DescriptorMatcherTest;
 import org.springsource.ide.eclipse.commons.internal.help.HelpPluginTest;
 import org.springsource.ide.eclipse.commons.internal.ui.editors.UpdateNotificationTest;
 
 import com.springsource.sts.internal.ide.configurator.touchpoint.ConfiguratorActionTest_e_3_5;
-import com.springsource.sts.internal.ide.configurator.touchpoint.ConfiguratorActionTest_e_3_6;
 
 /**
  * @author Steffen Pingel

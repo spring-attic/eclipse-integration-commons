@@ -24,8 +24,8 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.springsource.ide.eclipse.commons.internal.configurator.touchpoint.ConfiguratorAction_e_3_6;
 
-import com.springsource.sts.ide.internal.configurator.touchpoint.ConfiguratorAction_e_3_6;
 
 /**
  * The activator class controls the plug-in life cycle

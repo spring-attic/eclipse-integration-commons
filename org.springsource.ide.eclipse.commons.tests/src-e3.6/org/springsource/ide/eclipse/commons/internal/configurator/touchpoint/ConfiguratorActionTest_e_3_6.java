@@ -8,14 +8,13 @@
  *  Contributors:
  *      VMware, Inc. - initial API and implementation
  *******************************************************************************/
-package com.springsource.sts.internal.ide.configurator.touchpoint;
+package org.springsource.ide.eclipse.commons.internal.configurator.touchpoint;
 
 import junit.framework.TestCase;
 
 import org.eclipse.equinox.internal.p2.engine.ActionManager;
 import org.eclipse.equinox.p2.engine.spi.ProvisioningAction;
-
-import com.springsource.sts.ide.internal.configurator.Activator;
+import org.springsource.ide.eclipse.commons.internal.configurator.Activator;
 
 /**
  * @author Steffen Pingel

@@ -8,14 +8,13 @@
  *  Contributors:
  *      VMware, Inc. - initial API and implementation
  *******************************************************************************/
-package com.springsource.sts.ide.internal.configurator.touchpoint;
+package org.springsource.ide.eclipse.commons.internal.configurator.touchpoint;
 
 import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.equinox.p2.engine.spi.ProvisioningAction;
-
-import com.springsource.sts.ide.internal.configurator.Configurator;
+import org.springsource.ide.eclipse.commons.internal.configurator.Configurator;
 
 /**
  * @author Steffen Pingel
