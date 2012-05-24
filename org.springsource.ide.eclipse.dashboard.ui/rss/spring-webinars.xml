@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+	<channel>
+		<title>Webinars</title>
+		<item>
+			<title>Building Twitter with Grails in 40 Minutes</title>
+			<link>http://www.springsource.com/node/1408</link>
+			<guid>http://www.springsource.com/node/1408</guid>
+			<pubDate>Wed, 08 Apr 2009 02:42:22 +0000</pubDate>
+		</item>
+		<item>
+			<title>Introducing SpringSource's Consulting and System Integrator Program</title>
+			<link>http://www.springsource.com/node/1134</link>
+			<guid>http://www.springsource.com/node/1134</guid>
+			<pubDate>Wed, 08 Apr 2009 02:42:21 +0000</pubDate>
+		</item>
+		<item>
+			<title>SpringSource tc Server: The Tomcat you Know, Enterprise Capabilities you need</title>
+			<link>http://springsource.com/node/1116</link>
+			<guid>http://springsource.com/node/1116</guid>
+			<pubDate>Wed, 08 Apr 2009 02:42:20 +0000</pubDate>
+		</item>
+		<item>
+			<title>Apache Tomcat Tips and Tricks from the Pros</title>
+			<link>http://springsource.com/node/881</link>
+			<guid>http://springsource.com/node/881</guid>
+			<pubDate>Wed, 08 Apr 2009 02:42:19 +0000</pubDate>
+		</item>
+		<item>
+			<title>Redefining the Java Server Market</title>
+			<link>http://springsource.com/node/787</link>
+			<guid>http://springsource.com/node/787</guid>
+			<pubDate>Wed, 08 Apr 2009 02:42:18 +0000</pubDate>
+			<description>An Overview of SpringSource dm Server</description>
+		</item>
+		<item>
+			<title>Building, Running, and Managing Spring-Powered Enterprise Applications</title>
+			<link>http://springsource.com/node/741</link>
+			<guid>http://springsource.com/node/741</guid>
+			<pubDate>Wed, 08 Apr 2009 02:42:17 +0000</pubDate>
+		</item>
+	</channel>
+</rss>

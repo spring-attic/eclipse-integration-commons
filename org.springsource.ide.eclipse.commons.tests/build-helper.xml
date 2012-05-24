@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build" default="copy" basedir=".">
+	<target name="copy">
+		<copy todir="lib/com/springsource/sts/internal/ide/configurator/touchpoint/">
+			<fileset dir="bin/com/springsource/sts/internal/ide/configurator/touchpoint" includes="ConfiguratorActionTest*.class"/> 
+		</copy>
+	</target>
+</project>

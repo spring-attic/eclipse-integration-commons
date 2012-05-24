@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+	<channel>
+		<title>News</title>
+		<item>
+			<title>SAS Becomes SpringSource Certified Solutions Partner</title>
+			<link>http://www.springsource.com/node/1518</link>
+			<guid>http://www.springsource.com/node/1518</guid>
+			<pubDate>Tue, 21 Apr 2009 02:42:17 +0000</pubDate>
+			<description>April 21, 2009</description>
+		</item>
+		<item>
+			<title>Object Partners Improves Customer Focus with Spring</title>
+			<link>http://www.springsource.com/node/1507</link>
+			<guid>http://www.springsource.com/node/1507</guid>
+			<pubDate>Wed, 08 Apr 2009 02:42:17 +0000</pubDate>
+			<description>April 8, 2009</description>
+		</item>
+		<item>
+			<title>Cornell University Lab of Ornithology Decreases Complex Web Development with Spring</title>
+			<link>http://www.springsource.com/node/1467</link>
+			<guid>http://www.springsource.com/node/1467</guid>
+			<pubDate>Wed, 01 Apr 2009 03:42:17 +0000</pubDate>
+			<description>April 1, 2009</description>
+		</item>
+		<item>
+			<title>SpringSource University Unveiled: World's Leading Provider of Education Services for Spring and Apache Open Source Technologies</title>
+			<link>http://www.springsource.com/node/1418</link>
+			<guid>http://www.springsource.com/node/1418</guid>
+			<pubDate>Wed, 25 Mar 2009 04:42:17 +0000</pubDate>
+			<description>March 25, 2009</description>
+		</item>
+		<item>
+			<title>SpringSource Proud Supporter of Apache Software Foundation and ApacheCon Europe 2009</title>
+			<link>http://www.springsource.com/node/1415</link>
+			<guid>http://www.springsource.com/node/1415</guid>
+			<pubDate>Tue, 24 Mar 2009 05:42:17 +0000</pubDate>
+			<description>March 24, 2009</description>
+		</item>
+	</channel>
+</rss>

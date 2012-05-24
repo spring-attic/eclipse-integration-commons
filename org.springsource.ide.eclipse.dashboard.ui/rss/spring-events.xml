@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+	<channel>
+		<title>Events</title>
+		<item>
+			<title>JavaOne 2009</title>
+			<link>http://www.springsource.com/node/1405</link>
+			<guid>http://www.springsource.com/node/1405</guid>
+			<pubDate>Wed, 08 Apr 2009 02:42:22 +0000</pubDate>
+			<description>June 2, 2009 at San Francisco, CA</description>
+		</item>
+		<item>
+			<title>Tomcat Expert Seminar Series - Los Angeles, CA</title>
+			<link>http://www.springsource.com/node/1445</link>
+			<guid>http://www.springsource.com/node/1445</guid>
+			<pubDate>Wed, 08 Apr 2009 02:42:21 +0000</pubDate>
+			<description>May 14, 2009 at Los Angeles, CA</description>
+		</item>
+		<item>
+			<title>Tomcat Expert Seminar Series - Minneapolis, MN</title>
+			<link>http://www.springsource.com/node/1444</link>
+			<guid>http://www.springsource.com/node/1444</guid>
+			<pubDate>Wed, 08 Apr 2009 02:42:20 +0000</pubDate>
+			<description>May 13, 2009 at Minneapolis, MN</description>
+		</item>
+		<item>
+			<title>Tomcat Expert Seminar Series - Toronto, Ontario</title>
+			<link>http://www.springsource.com/node/1426</link>
+			<guid>http://www.springsource.com/node/1426</guid>
+			<pubDate>Wed, 08 Apr 2009 02:42:19 +0000</pubDate>
+			<description>May 12, 2009 at Toronto, ON</description>
+		</item>
+	</channel>
+</rss>

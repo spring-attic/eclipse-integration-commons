@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+	<extension point="org.eclipse.equinox.p2.engine.actions">
+		<action
+			class="com.springsource.sts.ide.internal.configurator.touchpoint.ConfiguratorAction_e_3_6"
+			description="configure(target)"
+			name="com.springsource.sts.ide.configure" 
+			touchpointType="org.eclipse.equinox.p2.native"
+			touchpointVersion="1.0.0"
+			version="1.0.0">
+		</action>
+	</extension>
+</plugin>

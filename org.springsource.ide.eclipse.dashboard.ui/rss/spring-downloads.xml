@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+	<channel>
+		<title>Downloads</title>
+		<item>
+			<title>Spring Framework 2.5.6</title>
+			<link>http://www.springsource.com/download?project=Spring%20Framework</link>
+			<guid>http://www.springsource.com/download?project=Spring%20Framework</guid>
+			<pubDate>Fri, 31 Oct 2008 02:42:22 +0000</pubDate>
+		</item>
+		<item>
+			<title>Spring Web Flow 2.0.7</title>
+			<link>http://www.springsource.com/download?project=Spring%20Web%20Flow</link>
+			<guid>http://www.springsource.com/download?project=Spring%20Web%20Flow</guid>
+			<pubDate>Fri, 17 Apr 2009 02:42:21 +0000</pubDate>
+		</item>
+		<item>
+			<title>Spring Security 2.0.4</title>
+			<link>http://sourceforge.net/project/showfiles.php?group_id=73357?package_id=270072?release_id=630203</link>
+			<guid>http://sourceforge.net/project/showfiles.php?group_id=73357?package_id=270072?release_id=630203</guid>
+			<pubDate>Thu, 02 Oct 2008 02:42:20 +0000</pubDate>
+		</item>
+		<item>
+			<title>Spring Web Services 1.5.6</title>
+			<link>http://www.springsource.com/download?project=Spring%20Web%20Services</link>
+			<guid>http://www.springsource.com/download?project=Spring%20Web%20Services</guid>
+			<pubDate>Tue, 01 Jul 2008 02:42:19 +0000</pubDate>
+		</item>
+	</channel>
+</rss>

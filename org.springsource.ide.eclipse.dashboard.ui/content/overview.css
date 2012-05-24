@@ -1,0 +1,8 @@
+a#sts-overview img {
+	background-image: url(ov_springsource_48.png);
+}
+
+a#sts-overview:hover img {
+	background-image: url(ov_springsource_48.png);
+}
+

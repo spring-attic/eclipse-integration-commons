@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="com.springsource.sts.ide.help" default="all">
+	<description>
+	</description>
+
+	<property name="toolsDir" value="../../releng/com.springsource.sts.releng/tools/ant" />
+	<property name="dest" value="../../releng/help" />
+	<property name="baseUrl" value="http://dist.springsource.com/release/STS/help/" />
+
+	<path id="eclipse.core.runtime.id">
+		<fileset dir="${eclipse.home}/plugins">
+			<include name="org.eclipse.core.runtime_*jar" />
+		</fileset>
+	</path>
+	<property name="eclipse.core.runtime" refid="eclipse.core.runtime.id" />
+	<path id="eclipse.equinox.common.id">
+		<fileset dir="${eclipse.home}/plugins">
+			<include name="org.eclipse.equinox.common_*jar" />
+		</fileset>
+	</path>
+	<property name="eclipse.equinox.common" refid="eclipse.equinox.common.id" />
+
+	<path id="classpath">
+		<pathelement location="@dot" />
+		<pathelement location="bin" />
+		<pathelement location="../com.springsource.sts.ide.help/@dot" />
+		<pathelement location="../com.springsource.sts.ide.help/bin" />
+		<pathelement location="${eclipse.core.runtime}" />
+		<pathelement location="${eclipse.equinox.common}" />
+	</path>
+	<taskdef classpathref="classpath" resource="com/springsource/sts/ide/help/anttask/tasks.properties" />
+
+	<target name="all" depends="anttask">
+	</target>
+
+	<target name="anttask">
+		<mkdir dir="${toolsDir}" />
+		<delete file="${toolsDir}/anttask-help.jar" failonerror="false" />
+		<jar file="${toolsDir}/anttask-help.jar">
+			<zipfileset src="${eclipse.core.runtime}" includes="org/**" />
+			<zipfileset src="${eclipse.equinox.common}" includes="org/**" />
+			<fileset dir="bin" />
+		</jar>
+	</target>
+
+	<target name="package">
+
+		<prepare-template directory="../com.springsource.sts.templates/batch-simple" />
+		<prepare-template directory="../com.springsource.sts.templates/batch-admin-web" />
+		<prepare-template directory="../com.springsource.sts.templates/mvc" />
+		<prepare-template directory="../com.springsource.sts.templates/spring-utility" />
+		<prepare-template directory="../com.springsource.sts.templates/spring-jpa" />
+		<prepare-template directory="../com.springsource.sts.templates/spring-hibernate" />
+		<prepare-template directory="../com.springsource.sts.templates/sharedlibrary" />
+		<prepare-template directory="../com.springsource.sts.templates/sharedservice" />
+		<prepare-template directory="../com.springsource.sts.templates/sharedserviceswar" />
+
+		<mkdir dir="${dest}" />
+		<package dest="${dest}" baseUrl="${baseUrl}">
+			<fileset dir="..">
+				<include name="com.springsource.sts.server.tomcat/**/server.xml" />
+				<include name="org.springframework.*samples*/**/sample.xml" />
+				<include name="org.springframework.*tutorials*/**/tutorial.xml" />
+				<include name="com.springsource.sts.templates/**/template.xml" />
+			</fileset>
+		</package>
+		<copy file="${dest}/descriptors.xml" todir="." />
+	</target>
+
+	<macrodef name="prepare-template">
+		<attribute name="directory" />
+		<sequential>
+			<zip destfile="@{directory}/template.zip">
+				<zipfileset dir="@{directory}">
+					<include name="template/**" />
+				</zipfileset>
+			</zip>
+		</sequential>
+	</macrodef>
+
+</project>

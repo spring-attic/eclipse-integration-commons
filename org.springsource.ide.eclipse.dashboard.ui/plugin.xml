@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+	<extension-point id="com.springsource.sts.ide.ui.dashboard" name="STS Dashboard"
+		schema="schema/dashboard.exsd" />
+	<extension-point id="com.springsource.sts.ide.ui.startup" name="STS Startup"
+		schema="schema/startup.exsd" />
+	<extension-point id="com.springsource.sts.ide.ui.configurator" name="STS Configurator"
+		schema="schema/configurator.exsd" />
+
+	<extension point="org.eclipse.ui.actionSets">
+		<actionSet id="com.springsource.sts.ide.ui.actionSet.workbench"
+			label="SpringSource Tool Suite" visible="true">
+			<action
+				class="org.springsource.ide.eclipse.dashboard.ui.actions.ShowDashboardAction"
+				icon="icons/view16/springsource.png" id="com.springsource.sts.ide.ui.action.dashboard"
+				label="Dashboard" menubarPath="help/group.intro" style="push"
+				toolbarPath="com.springsource.sts/main">
+			</action>
+		</actionSet>
+	</extension>
+
+	<extension point="org.eclipse.ui.editors">
+		<editor
+			class="org.springsource.ide.eclipse.dashboard.internal.ui.editors.MultiPageDashboardEditor"
+			contributorClass="org.springsource.ide.eclipse.dashboard.internal.ui.editors.StsTaskEditorActionContributor"
+			icon="icons/view16/springsource.png"
+			id="com.springsource.sts.internal.ide.ui.editors.MultiPageDashboardEditor"
+			name="Dashboard">
+		</editor>
+	</extension>
+
+	<extension point="org.eclipse.ui.intro">
+		<introProductBinding introId="com.springsource.sts.ide.ui.intro"
+			productId="com.springsource.sts.ide">
+		</introProductBinding>
+		<intro class="org.eclipse.ui.intro.config.CustomizableIntroPart"
+			icon="icons/view16/welcome.png" id="com.springsource.sts.ide.ui.intro">
+		</intro>
+	</extension>
+
+	<extension point="org.eclipse.ui.intro.config">
+		<config content="introContent.xml" id="com.springsource.sts.ide.ui.intro.config"
+			introId="com.springsource.sts.ide.ui.intro">
+			<presentation
+         home-page-id="root"
+         standby-page-id="standby">
+				<implementation kind="html">
+				</implementation>
+			</presentation>
+		</config>
+	</extension>
+	<extension
+         	point="org.eclipse.ui.intro.configExtension">
+      	<configExtension
+ 			configId="org.eclipse.ui.intro.universalConfig"
+            content="content/overviewExtensionContent.xml">
+      	</configExtension>
+   	</extension>
+
+	
+
+	<extension point="org.eclipse.ui.views">
+		<category name="SpringSource Tool Suite" id="com.springsource.sts.ide.ui.dashboard">
+		</category>
+	</extension>
+	
+	<extension point="org.eclipse.mylyn.tasks.core.templates">
+		<repository addAutomatically="true" anonymous="false"
+			characterEncoding="UTF-8" label="SpringSource" repositoryKind="jira"
+			urlNewAccount="https://issuetracker.springsource.com/secure/Signup!default.jspa"
+			urlRepository="https://issuetracker.springsource.com" />
+		<repository addAutomatically="true" anonymous="false"
+			characterEncoding="UTF-8" label="Spring Framework" repositoryKind="jira"
+			urlNewAccount="http://jira.springsource.org/secure/Signup!default.jspa"
+			urlRepository="http://jira.springsource.org">
+		</repository>
+	</extension>
+	
+	<extension point="org.eclipse.ui.newWizards">
+		<category id="com.springsource.sts.category"
+			name="SpringSource Tool Suite">
+		</category>
+	</extension>
+
+	<extension point="org.eclipse.mylyn.tasks.bugs.support">
+		<category description="Commercial support"
+			id="org.eclipse.mylyn.tasks.bugs.commercial" name="Commercial Support"
+			weight="500">
+		</category>
+		<provider categoryId="org.eclipse.mylyn.tasks.bugs.commercial"
+			description="Support for SpringSource Tool Suite" icon="icons/prod/springsource_32.png"
+			id="com.springsource" name="SpringSource" url="http://www.springsource.com/services">
+		</provider>
+		<product featureId="com.springsource.sts" id="com.springsource.sts"
+			providerId="com.springsource">
+		</product>
+		<mapping namespace="com.springsource.sts" productId="com.springsource.sts">
+			<repository kind="jira" url="https://issuetracker.springsource.com">
+			</repository>
+			<property name="product" value="STS">
+			</property>
+		</mapping>
+		<mapping namespace="com.springsource.server" productId="com.springsource.sts">
+			<repository kind="jira" url="https://issuetracker.springsource.com">
+			</repository>
+			<property name="product" value="STS">
+			</property>
+		</mapping>
+		<mapping namespace="org.springframework.ide" productId="com.springsource.sts">
+			<repository kind="jira" url="https://issuetracker.springsource.com">
+			</repository>
+			<property name="product" value="STS">
+			</property>
+		</mapping>
+	</extension>
+
+	<extension point="org.eclipse.ui.perspectives">
+		<perspective
+			class="org.springsource.ide.eclipse.dashboard.internal.ui.perspective.StsPerspective"
+			icon="icons/view16/spring_perspective.gif" id="com.springsource.sts.ide.perspective"
+			name="Spring">
+		</perspective>
+	</extension>
+
+	<extension point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension targetID="com.springsource.sts.ide.perspective">
+			<actionSet id="org.eclipse.debug.ui.launchActionSet" />
+			<actionSet id="org.eclipse.wst.server.ui.internal.webbrowser.actionSet" />
+			<actionSet id="org.eclipse.debug.ui.breakpointActionSet" />
+			<actionSet id="com.springsource.sts.roo.ui.actionSet" />
+		</perspectiveExtension>
+	</extension>
+
+	<extension point="com.springsource.sts.core.resources">
+		<propertyDefinition id="dashboard.bug.tracker"
+			defaultValue="https://issuetracker.springsource.com/browse/STS">
+		</propertyDefinition>
+		<propertyDefinition defaultValue="%dashboard.feeds.blogs.defaultValue"
+			id="dashboard.feeds.blogs" label="%dashboard.feeds.blogs.label"
+			multiValue="true" userConfigurable="true">
+		</propertyDefinition>
+		<propertyDefinition id="dashboard.feeds.update"
+			defaultValue="http://dist.springsource.com/release/STS/doc/updates.xml">
+		</propertyDefinition>
+		<propertyDefinition id="dashboard.logo"
+			defaultValue="http://www.springsource.com">
+		</propertyDefinition>
+		<propertyDefinition id="dashboard.new.and.noteworthy"
+			defaultValue="http://download.springsource.com/release/STS/doc/STS-new_and_noteworthy.pdf">
+		</propertyDefinition>
+		<propertyDefinition id="dashboard.product.page"
+			defaultValue="http://www.springsource.com/products/sts">
+		</propertyDefinition>
+		<propertyDefinition id="dashboard.search"
+			defaultValue="http://search.springsource.com/sts/?q=">
+		</propertyDefinition>
+		<propertyDefinition id="dashboard.support.commercial"
+			defaultValue="http://www.springsource.com/support/springsupport">
+		</propertyDefinition>
+		<propertyDefinition id="dashboard.support.community"
+			defaultValue="http://forum.springsource.org/forumdisplay.php?f=32">
+		</propertyDefinition>
+		<propertyDefinition id="knowledge.base.help.regexp"
+			defaultValue="http://java.sun.com/j2se/1.5.0/docs/api/java/util/regex/Pattern.html">
+		</propertyDefinition>
+		<propertyDefinition id="discovery.directory"
+			defaultValue="http://dist.springsource.com/release/STS/discovery/directory-%SHORT_VERSION%.xml">
+		</propertyDefinition>
+	</extension>
+
+	<extension point="org.eclipse.ui.preferencePages">
+		<page category="org.springframework.ide.eclipse.ui.preferencePage"
+			class="org.springsource.ide.eclipse.dashboard.internal.ui.preferences.MainPreferencesPage"
+			id="com.springsource.sts.ide.ui.preferencePage" name="Dashboard">
+		</page>
+	</extension>
+ 
+ 	<extension point="org.eclipse.ui.elementFactories">
+    	<factory
+          class="org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardEditorInputFactory"
+          id="com.springsource.sts.ide.ui.dashboard.elementFactory">
+    	</factory>
+ 	</extension>
+ 	
+ 	<extension point="org.eclipse.mylyn.tasks.ui.editors">
+		<pageFactory
+			class="org.springsource.ide.eclipse.dashboard.internal.ui.editors.StsTaskPageFactory"
+			id="com.springsource.sts.ide.ui.pageFactory.BugReport">
+		</pageFactory>
+	</extension>
+
+	<extension point="org.eclipse.wst.xml.core.catalogContributions">
+		<catalogContribution>
+			<public 
+				publicId="-//LOG4J//DTD LOG4J//EN"
+				uri="platform:/plugin/com.springsource.sts.ide.ui/dtd/log4j-1.2.dtd"
+				webURL="http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd" />
+			<public 
+				publicId="-//APACHE//DTD LOG4J 1.2//EN"
+				uri="platform:/plugin/com.springsource.sts.ide.ui/dtd/log4j-1.2.dtd"
+				webURL="http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd" />
+		</catalogContribution>
+	</extension>
+
+</plugin>

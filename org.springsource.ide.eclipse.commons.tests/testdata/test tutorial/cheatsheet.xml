@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet title="[Title]">
+   <intro>
+      <description>
+         <b>Body</b>
+      </description>
+   </intro>
+   <item title="Workspace Setup" dialog="true" skip="false">
+      <description>
+         This step creates a project in the workspace.
+      </description>
+      <command serialization="com.springsource.sts.ide.help.command.SetupTutorial" confirm="false">
+      </command>
+   </item>
+   <item title="[Add steps here]" dialog="true" skip="false">
+      <description>
+         <b>Body</b>
+      </description>
+   </item>
+   <item title="Finish" dialog="true" skip="false">
+      <description>
+         This step deletes the projects that were created during setup.
+      </description>
+      <command serialization="com.springsource.sts.ide.help.command.TearDownTutorial" confirm="false">
+      </command>
+   </item>
+</cheatsheet>

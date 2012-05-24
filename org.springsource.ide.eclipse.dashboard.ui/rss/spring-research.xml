@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+	<channel>
+		<title>White Papers</title>
+		<item>
+			<title>Migrating Enterprise Applications to Spring</title>
+			<link>http://www.springsource.com/whitepapers/form05</link>
+			<guid>http://www.springsource.com/whitepapers/form05</guid>
+			<pubDate>Wed, 08 Apr 2009 01:42:22 +0000</pubDate>
+		</item>
+		<item>
+			<title>Spring – A Manager’s Overview</title>
+			<link>http://www.springsource.com/whitepapers/form03</link>
+			<guid>http://www.springsource.com/whitepapers/form03</guid>
+			<pubDate>Wed, 08 Apr 2009 01:42:21 +0000</pubDate>
+		</item>
+		<item>
+			<title>Spring In Production</title>
+			<link>http://www.springsource.com/whitepapers/form02</link>
+			<guid>http://www.springsource.com/whitepapers/form02</guid>
+			<pubDate>Wed, 08 Apr 2009 01:42:20 +0000</pubDate>
+		</item>
+		<item>
+			<title>Current Analysis In-depth Report on SpringSource Application Platform</title>
+			<link>http://www.springsource.com/node/462</link>
+			<guid>http://www.springsource.com/node/462</guid>
+			<pubDate>Wed, 08 Apr 2009 01:42:19 +0000</pubDate>
+		</item>
+		<item>
+			<title>Burton Group Report: Complimentary Research Overview SpringSource and Spring Portfolio</title>
+			<link>http://www.burtongroup.com/spring</link>
+			<guid>http://www.burtongroup.com/spring</guid>
+			<pubDate>Wed, 08 Apr 2009 01:42:18 +0000</pubDate>
+		</item>
+	</channel>
+</rss>
