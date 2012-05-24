@@ -79,5 +79,18 @@
           class="org.springsource.ide.eclipse.commons.internal.configurator.PreferenceInitializer">
     	</initializer>
  	</extension>
+ 	
+ 	<extension
+        id="org.springsource.ide.eclipse.commons.configure"
+        point="org.eclipse.equinox.p2.engine.actions">
+		<action
+			class="org.springsource.ide.eclipse.commons.internal.configurator.touchpoint.ConfiguratorAction"
+			description="configure(target)"
+			name="com.springsource.sts.ide.configure" 
+			touchpointType="org.eclipse.equinox.p2.native"
+			touchpointVersion="1.0.0"
+			version="1.0.0">
+		</action>
+	</extension>
   
 </plugin>

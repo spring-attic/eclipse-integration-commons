@@ -10,29 +10,20 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.internal.configurator;
 
-import java.io.InputStream;
-import java.lang.reflect.Field;
-
-import org.eclipse.core.internal.registry.ExtensionRegistry;
-import org.eclipse.core.runtime.ContributorFactoryOSGi;
-import org.eclipse.core.runtime.IContributor;
+import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.DefaultScope;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.springsource.ide.eclipse.commons.internal.configurator.touchpoint.ConfiguratorAction_e_3_6;
-
 
 /**
  * The activator class controls the plug-in life cycle
  * @author Steffen Pingel
  * @author Christian Dupuis
+ * @author Leo Dos Santos
  */
-@SuppressWarnings("restriction")
 public class Activator extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID = "org.springsource.ide.eclipse.commons.configurator";
@@ -63,35 +54,14 @@ public class Activator extends AbstractUIPlugin {
 		plugin = this;
 		new DefaultScope().getNode(PLUGIN_ID).putBoolean(PROPERTY_CONFIGURATOR_PROCESSED, false);
 
-		// register configure action based on Eclipse version
 		try {
-			Field field = ExtensionRegistry.class.getDeclaredField("userToken");
-			field.setAccessible(true);
-			Object token = field.get(Platform.getExtensionRegistry());
-
-			String resource = "plugin-e3.6.xml";
-			try {
-				// try creating an instance of 3.6 compatible version
-				new ConfiguratorAction_e_3_6();
-			}
-			catch (Throwable t) {
-				// fall-back to provisional P2 APIs available in 3.5
-				resource = "plugin-e3.5.xml";
-			}
-
-			Bundle bundle = getBundle();
-			InputStream inputStream = bundle.getEntry(resource).openStream();
-			IContributor contributor = ContributorFactoryOSGi.createContributor(bundle);
-			configurationActionRegistered = Platform.getExtensionRegistry().addContribution(inputStream, contributor,
-					false, bundle.getSymbolicName(), null, token);
+			IExtension extension = Platform.getExtensionRegistry().getExtension(
+					"org.eclipse.equinox.p2.engine.actions", "org.springsource.ide.eclipse.commons.configure");
+			configurationActionRegistered = extension != null;
 			if (!configurationActionRegistered) {
 				getLog().log(
-						new Status(
-								IStatus.ERROR,
-								PLUGIN_ID,
-								NLS.bind(
-										"Registeration of configure action from ''{0}'' failed. This may cause extension install to fail.",
-										resource)));
+						new Status(IStatus.ERROR, PLUGIN_ID,
+								"Registeration of configure action failed. This may cause extension install to fail."));
 			}
 		}
 		catch (Throwable t) {

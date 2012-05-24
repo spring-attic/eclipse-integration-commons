@@ -20,11 +20,11 @@ import org.springsource.ide.eclipse.commons.internal.configurator.Configurator;
  * @author Steffen Pingel
  * @since 2.2.1
  */
-public class ConfiguratorAction_e_3_6 extends ProvisioningAction {
+public class ConfiguratorAction extends ProvisioningAction {
 
 	private final Configurator configurator;
 
-	public ConfiguratorAction_e_3_6() {
+	public ConfiguratorAction() {
 		configurator = new Configurator();
 	}
 

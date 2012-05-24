@@ -21,12 +21,10 @@ import org.osgi.framework.Version;
 import org.springsource.ide.eclipse.commons.core.CommandHistoryTest;
 import org.springsource.ide.eclipse.commons.core.ResourceProviderTest;
 import org.springsource.ide.eclipse.commons.internal.configurator.ConfiguratorImporterTest;
-import org.springsource.ide.eclipse.commons.internal.configurator.touchpoint.ConfiguratorActionTest_e_3_6;
+import org.springsource.ide.eclipse.commons.internal.configurator.touchpoint.ConfiguratorActionTest;
 import org.springsource.ide.eclipse.commons.internal.content.core.DescriptorMatcherTest;
 import org.springsource.ide.eclipse.commons.internal.help.HelpPluginTest;
 import org.springsource.ide.eclipse.commons.internal.ui.editors.UpdateNotificationTest;
-
-import com.springsource.sts.internal.ide.configurator.touchpoint.ConfiguratorActionTest_e_3_5;
 
 /**
  * @author Steffen Pingel
@@ -52,12 +50,7 @@ public class AllIdeTests {
 		suite.addTestSuite(HelpPluginTest.class);
 		suite.addTestSuite(ConfiguratorImporterTest.class);
 		// suite.addTestSuite(ServerConfiguratorTest.class);
-		if (isEclipse_3_5()) {
-			suite.addTestSuite(ConfiguratorActionTest_e_3_5.class);
-		}
-		if (isEclipse_3_6()) {
-			suite.addTestSuite(ConfiguratorActionTest_e_3_6.class);
-		}
+		suite.addTestSuite(ConfiguratorActionTest.class);
 		suite.addTestSuite(DescriptorMatcherTest.class);
 		suite.addTestSuite(ResourceProviderTest.class);
 		suite.addTestSuite(CommandHistoryTest.class);
