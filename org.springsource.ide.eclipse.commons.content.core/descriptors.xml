@@ -9,7 +9,6 @@
 		<description />
 	</descriptor>
 	
-
 	<!-- Templates (uncategorized) -->
 	<descriptor id="org.springframework.templates.mvc" kind="template"
 		local="false" name="Spring MVC Project" size="17198"
@@ -43,36 +42,6 @@
 			and an integration test
 		</description>
 	</descriptor>
-
-	<!-- Integration templates -->
-	<!-- Integration templates now live on github -->
-	<!--  
-	<descriptor
-		id="org.springframework.integration.sts.template.standalone.simple"
-		name="Spring Integration Project (Standalone) - Simple" kind="template"
-		version="1.0.0.M2" local="false" size="8390" category="Integration"
-		url="https://raw.github.com/SpringSource/spring-integration-templates/master/si-sts-templates/builds/si-template-standalone-simple-1.0.0.M2.zip">
-		<description>Creates a Spring Integration project that runs as a
-			standalone Java application using core components only.</description>
-	</descriptor>
-	<descriptor id="org.springframework.integration.sts.template.standalone"
-		name="Spring Integration Project (Standalone) - File" kind="template"
-		version="1.0.0.M2" local="false" size="10258" category="Integration"
-		url="https://raw.github.com/SpringSource/spring-integration-templates/master/si-sts-templates/builds/si-template-standalone-1.0.0.M2.zip">
-		<description>Creates a Spring Integration project that runs as a
-			standalone Java application using file polling and file output.
-		</description>
-	</descriptor>
-	<descriptor id="org.springframework.integration.sts.template.war"
-		name="Spring Integration Project (War)" kind="template" version="1.0.0.M2"
-		local="false" size="56242" category="Integration"
-		url="https://raw.github.com/SpringSource/spring-integration-templates/master/si-sts-templates/builds/si-template-war-1.0.0.M2.zip">
-		<description>Creates a Spring Integration project that runs within a
-			servlet container.
-			Uses the Spring Integration Twitter adapter.
-		</description>
-	</descriptor>
-	-->
 
 	<!-- Batch templates -->
 	<descriptor id="org.springframework.samples.batch.admin.web"
