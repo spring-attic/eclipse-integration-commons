@@ -41,14 +41,13 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.osgi.util.NLS;
 import org.springsource.ide.eclipse.commons.content.core.util.Descriptor;
+import org.springsource.ide.eclipse.commons.content.core.util.Descriptor.Dependency;
 import org.springsource.ide.eclipse.commons.content.core.util.DescriptorReader;
 import org.springsource.ide.eclipse.commons.content.core.util.IContentConstants;
-import org.springsource.ide.eclipse.commons.content.core.util.Descriptor.Dependency;
 import org.springsource.ide.eclipse.commons.core.HttpUtil;
 import org.springsource.ide.eclipse.commons.core.ResourceProvider;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 import org.springsource.ide.eclipse.commons.internal.content.core.DescriptorMatcher;
-
 
 /**
  * Manages the list of available tutorials and sample projects.
@@ -56,10 +55,18 @@ import org.springsource.ide.eclipse.commons.internal.content.core.DescriptorMatc
  * @author Steffen Pingel
  * @author Christian Dupuis
  * @author Kris De Volder
+ * @author Kaitlin Duck Sherwood
  */
 public class ContentManager {
 
 	private static final boolean DEBUG = ("" + Platform.getLocation()).contains("bamboo");
+
+	// lightweight lock
+	private boolean isRefreshing = false;
+
+	public boolean isRefreshing() {
+		return isRefreshing;
+	}
 
 	private static void debug(String msg) {
 		if (DEBUG) {
@@ -362,6 +369,7 @@ public class ContentManager {
 	public IStatus refresh(IProgressMonitor monitor) {
 		File targetFile = getStateFile();
 		Assert.isNotNull(targetFile, "stateFile not initialized");
+		isRefreshing = true;
 
 		SubMonitor progress = SubMonitor.convert(monitor, 100);
 		try {
@@ -425,6 +433,7 @@ public class ContentManager {
 			return result;
 		}
 		finally {
+			isRefreshing = false;
 			progress.done();
 		}
 	}
