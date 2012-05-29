@@ -34,6 +34,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -97,7 +98,7 @@ public class LegacyProjectConverter extends AbstractLegacyConverter implements I
         Job.getJobManager().beginRule(ResourcesPlugin.getWorkspace().getRoot(), sub);
         try {
             if (project.hasNature(GRAILS_OLD_NATURE)) {
-//                convertGrailsProject(project, sub);
+                convertGrailsProject(project, sub);
             } else if (project.hasNature(ROO_OLD_NATURE)) {
                 convertRooProject(project, sub);
             }
@@ -111,8 +112,7 @@ public class LegacyProjectConverter extends AbstractLegacyConverter implements I
         return new Status(IStatus.OK, FrameworkCoreActivator.PLUGIN_ID, "Converted " + project.getName()); //$NON-NLS-1$
     }
 
-    // probably won't be used, but keep just in case we change our mind
-//    private void convertGrailsProject(IProject project, SubMonitor sub) throws Exception {
+    private void convertGrailsProject(IProject project, SubMonitor sub) throws Exception {
 //        // nature
 //        IProjectDescription description = project.getDescription();
 //        String[] ids = description.getNatureIds();
@@ -137,12 +137,13 @@ public class LegacyProjectConverter extends AbstractLegacyConverter implements I
 //            newClasspath.add(classpath[i]);
 //        }
 //        javaProject.setRawClasspath(newClasspath.toArray(new IClasspathEntry[0]), sub);
-//        
-//        // project preferences
-//        File settingsFile = project.getFile(".settings/" + GRAILS_OLD_PREFERENCE_PREFIX + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
-//        File newSettingsFile = project.getFile(".settings/" + GRAILS_NEW_PREFERENCE_PREFIX + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
-//        copyPreferencesFile(settingsFile, newSettingsFile, GRAILS_OLD_PREFERENCE_PREFIX, GRAILS_NEW_PREFERENCE_PREFIX);
-//    }
+        
+        // project preferences
+        File settingsFile = project.getFile(".settings/" + GRAILS_OLD_PREFERENCE_PREFIX + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
+        File newSettingsFile = project.getFile(".settings/" + GRAILS_NEW_PREFERENCE_PREFIX + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
+        copyPreferencesFile(settingsFile, newSettingsFile, GRAILS_OLD_PREFERENCE_PREFIX, GRAILS_NEW_PREFERENCE_PREFIX);
+        InstanceScope.INSTANCE.getNode(GRAILS_NEW_PREFERENCE_PREFIX).sync();
+    }
 //
 //    private IClasspathAttribute[] convertGrailsClasspathAttributes(
 //            IClasspathEntry entry) {

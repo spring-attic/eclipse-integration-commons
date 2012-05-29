@@ -15,6 +15,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.IStartup;
 import org.eclipse.ui.progress.UIJob;
 import org.springsource.ide.eclipse.commons.frameworks.core.FrameworkCoreActivator;
@@ -32,12 +33,13 @@ import org.springsource.ide.eclipse.commons.frameworks.core.legacyconversion.Leg
 public class LegacySTSChecker implements IStartup, IConversionConstants {
     // set to true during testing mode
     public static boolean NON_BLOCKING = false;
+    private static final IPreferenceStore PREFERENCE_STORE = FrameworkCoreActivator.getDefault().getPreferenceStore();
 
     /**
      * This entry to the checker comes at the startup of the workbench
      */
     public void earlyStartup() {
-        FrameworkCoreActivator.getDefault().getPreferenceStore().setDefault(AUTO_CHECK_FOR_LEGACY_STS_PROJECTS, true);
+        PREFERENCE_STORE.setDefault(AUTO_CHECK_FOR_LEGACY_STS_PROJECTS, true);
         
         if (shouldPerformProjectCheck()) {
             Job job = new LegacyProjectsJob(false);
@@ -47,7 +49,6 @@ public class LegacySTSChecker implements IStartup, IConversionConstants {
         
         if (shouldPerformWorkspaceMigration()) {
             new UIJob("Convert legacy STS 2.x preferences") { //$NON-NLS-1$
-                
                 @Override
                 public IStatus runInUIThread(IProgressMonitor monitor) {
                     return new LegacyWorkspaceConverter().convert(monitor);
@@ -62,6 +63,6 @@ public class LegacySTSChecker implements IStartup, IConversionConstants {
     }
 
     private boolean shouldPerformWorkspaceMigration() {
-        return ! FrameworkCoreActivator.getDefault().getPreferenceStore().getBoolean(LEGACY_MIGRATION_ALREADY_DONE);
+        return ! PREFERENCE_STORE.getBoolean(LEGACY_MIGRATION_ALREADY_DONE);
     }
 }

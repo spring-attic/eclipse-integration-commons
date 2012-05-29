@@ -19,6 +19,8 @@ package org.springsource.ide.eclipse.commons.frameworks.core.legacyconversion;
 public interface IConversionConstants {
     String AUTO_CHECK_FOR_LEGACY_STS_PROJECTS = "org.springsource.ide.eclipse.commons.frameworks.ui.legacyconversion.autocheck"; //$NON-NLS-1$
     String LEGACY_MIGRATION_ALREADY_DONE = "org.springsource.ide.eclipse.commons.frameworks.ui.legacyconversion.done"; //$NON-NLS-1$
+    // comma separated list of plugins that already have run plugin-specific legacy conversion code
+    String LEGACY_MIGRATION_PLUGINS = "org.springsource.ide.eclipse.commons.frameworks.ui.legacyconversion.plugins"; //$NON-NLS-1$
     
     // GRAILS
     String GRAILS_OLD_PLUGIN_NAME = "com.springsource.sts.grails.core"; //$NON-NLS-1$

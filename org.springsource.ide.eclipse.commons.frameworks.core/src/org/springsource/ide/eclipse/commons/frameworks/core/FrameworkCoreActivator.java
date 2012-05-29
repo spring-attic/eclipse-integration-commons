@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.springsource.ide.eclipse.commons.frameworks.core.legacyconversion.IConversionConstants;
 
 /**
  * @author Nieraj Singh
@@ -85,5 +86,25 @@ public class FrameworkCoreActivator extends AbstractUIPlugin {
 		}
 		return new Status(IStatus.WARNING, PLUGIN_ID, 0, message, exception);
 	}
-
+	
+    /**
+     * Returns true if the plugin id has not yet run legacy conversion for this workspace yet
+     * @param pluginid plugin id to check
+     * @return true iff legacy conversion has not taken place for this plugin, but it has for the workspace as a whole
+     */
+    public boolean shouldMigratePlugin(String pluginid) {
+        if (getPreferenceStore().getBoolean(IConversionConstants.LEGACY_MIGRATION_ALREADY_DONE)) {
+            String plugins = getPreferenceStore().getString(IConversionConstants.LEGACY_MIGRATION_PLUGINS);
+            return plugins.contains("," + pluginid + ","); //$NON-NLS-1$ //$NON-NLS-2$
+        } else {
+            // workspace legacy migration has not yet been successfully performed
+            return false;
+        }
+    }
+    
+    public void registerPluginMigrationComplete(String pluginid) {
+        String plugins = getPreferenceStore().getString(IConversionConstants.LEGACY_MIGRATION_PLUGINS);
+        plugins += "," + pluginid + ","; //$NON-NLS-1$ //$NON-NLS-2$
+        getPreferenceStore().putValue(IConversionConstants.LEGACY_MIGRATION_PLUGINS, plugins);
+    }
 }

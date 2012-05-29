@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceDeltaVisitor;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.springsource.ide.eclipse.commons.frameworks.core.FrameworkCoreActivator;
 import org.springsource.ide.eclipse.commons.frameworks.core.legacyconversion.IConversionConstants;
@@ -67,4 +68,8 @@ public class LegacyProjectListener implements IResourceChangeListener, IConversi
         }
         return projects;
     }
+    
+    public void dispose() {
+        ResourcesPlugin.getWorkspace().removeResourceChangeListener(LegacyProjectListener.LISTENER);
+   }
 }

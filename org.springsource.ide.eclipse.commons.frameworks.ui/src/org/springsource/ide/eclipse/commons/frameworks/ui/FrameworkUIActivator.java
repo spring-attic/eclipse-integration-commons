@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.springsource.ide.eclipse.commons.frameworks.ui.internal.legacyconversion.LegacyProjectListener;
 
 /**
  * @author Nieraj Singh
@@ -49,6 +50,7 @@ public class FrameworkUIActivator extends AbstractUIPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
+		LegacyProjectListener.LISTENER.dispose();
 		super.stop(context);
 	}
 
@@ -60,7 +62,6 @@ public class FrameworkUIActivator extends AbstractUIPlugin {
 	public static FrameworkUIActivator getDefault() {
 		return plugin;
 	}
-	
 
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
@@ -69,5 +70,4 @@ public class FrameworkUIActivator extends AbstractUIPlugin {
 	public static void log(IStatus status) {
 		getDefault().getLog().log(status);
 	}
-
 }
