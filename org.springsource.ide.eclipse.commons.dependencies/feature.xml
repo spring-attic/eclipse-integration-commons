@@ -109,6 +109,13 @@
          unpack="false"/>
 
    <plugin
+         id="com.springsource.util.common"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.springframework.aop"
          download-size="0"
          install-size="0"
@@ -193,7 +200,14 @@
          unpack="false"/>
 
    <plugin
-         id="com.springsource.util.common"
+        id="org.springframework.web.servlet"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.springframework.web"
          download-size="0"
          install-size="0"
          version="0.0.0"
