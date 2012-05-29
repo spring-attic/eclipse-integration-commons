@@ -55,6 +55,12 @@ public interface IConversionConstants {
     String STS_NEW_IDE_UI = "org.springsource.ide.eclipse.commons.ui"; //$NON-NLS-1$
     
     String[] STS_OLD_WORKSPACE_PREFS = new String[] {
+            "com.springsource.sts.grails.core", //$NON-NLS-1$
+            "com.springsource.sts.grails.ui", //$NON-NLS-1$
+            "com.springsource.sts.grails.editor.gsp", //$NON-NLS-1$
+            "com.springsource.sts.grails.explorer", //$NON-NLS-1$
+            "com.springsource.sts.grails.refactoring", //$NON-NLS-1$
+            "com.springsource.sts.grails.groovy.debug.core", //$NON-NLS-1$
             "com.springsource.sts.config.ui", //$NON-NLS-1$
             "com.springsource.sts.core", //$NON-NLS-1$
             "com.springsource.sts.gradle.core", //$NON-NLS-1$
@@ -64,6 +70,12 @@ public interface IConversionConstants {
             "com.springsource.sts.maven" //$NON-NLS-1$
     };
     String[] STS_NEW_WORKSPACE_PREFS = new String[] {
+            "org.grails.ide.eclipse.core", //$NON-NLS-1$
+            "org.grails.ide.eclipse.ui", //$NON-NLS-1$
+            "org.grails.ide.eclipse.editor.gsp", //$NON-NLS-1$
+            "org.grails.ide.eclipse.explorer", //$NON-NLS-1$
+            "org.grails.ide.eclipse.refactoring", //$NON-NLS-1$
+            "org.grails.ide.eclipse.groovy.debug.core", //$NON-NLS-1$
             "???", // TODO FIXLDS //$NON-NLS-1$
             "org.springsource.ide.eclipse.commons.core", //$NON-NLS-1$
             "???", // TODO FIXLDS //$NON-NLS-1$

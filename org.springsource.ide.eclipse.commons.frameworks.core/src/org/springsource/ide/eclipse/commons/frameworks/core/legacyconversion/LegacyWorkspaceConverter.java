@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.springsource.ide.eclipse.commons.frameworks.core.FrameworkCoreActivator;
 
@@ -76,6 +77,7 @@ public class LegacyWorkspaceConverter extends AbstractLegacyConverter implements
                     continue;
                 }
                 copyPreferencesFile(new File(prefsFolder, STS_OLD_WORKSPACE_PREFS[i] + ".prefs"), new File(prefsFolder, STS_NEW_WORKSPACE_PREFS[i] + ".prefs"), STS_OLD_WORKSPACE_PREFS[i], STS_NEW_WORKSPACE_PREFS[i]); //$NON-NLS-1$ //$NON-NLS-2$
+                InstanceScope.INSTANCE.getNode(STS_NEW_WORKSPACE_PREFS[i]).sync();
             }
         } catch (Exception e) {
             return new Status(IStatus.ERROR, FrameworkCoreActivator.PLUGIN_ID, "Failed to convert legacy STS workspace preferences", e); //$NON-NLS-1$
@@ -106,9 +108,9 @@ public class LegacyWorkspaceConverter extends AbstractLegacyConverter implements
         sub.subTask("Converting Grails plugin state locations"); //$NON-NLS-1$
         try {
             copyPluginStateLocation(GRAILS_OLD_PREFERENCE_PREFIX, GRAILS_NEW_PREFERENCE_PREFIX);
-            return new Status(IStatus.OK, FrameworkCoreActivator.PLUGIN_ID, "Converted Grails plugin state locations"); //$NON-NLS-1$
+            return new Status(IStatus.OK, FrameworkCoreActivator.PLUGIN_ID, "Converted legacy Grails plugin state locations"); //$NON-NLS-1$
         } catch (IOException e) {
-            return new Status(IStatus.ERROR, FrameworkCoreActivator.PLUGIN_ID, "Failed to Convert Grails plugin state locations", e); //$NON-NLS-1$
+            return new Status(IStatus.ERROR, FrameworkCoreActivator.PLUGIN_ID, "Failed to convert legacy Grails plugin state locations", e); //$NON-NLS-1$
         } finally {
             sub.worked(1);
         }
