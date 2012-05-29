@@ -18,35 +18,7 @@
    </license>
 
    <plugin
-         id="org.springframework.osgi.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.springframework.osgi.io"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="edu.emory.mathcs.backport"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.springsource.org.antlr"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="javax.annotation"
+         id="com.springsource.javax.el"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -60,11 +32,95 @@
          unpack="false"/>
 
    <plugin
+         id="com.springsource.org.apache.commons.codec"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+	<plugin
+      	id="com.springsource.org.apache.httpcomponents.httpclient"
+      	download-size="0"
+      	install-size="0"
+      	version="0.0.0"
+      	unpack="false"/>
+
+	<plugin
+      	id="com.springsource.org.apache.httpcomponents.httpcore"
+      	download-size="0"
+      	install-size="0"
+      	version="0.0.0"
+      	unpack="false"/>
+
+   <plugin
+         id="com.springsource.org.aspectj.weaver"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.springsource.org.objectweb.asm.commons"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.springsource.org.objectweb.asm"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.springsource.util.common"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="edu.emory.mathcs.backport"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="javax.activation"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="javax.annotation"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="javax.mail"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="javax.xml.stream"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+	<plugin
+      	id="javax.xml.ws"
+      	download-size="0"
+      	install-size="0"
+      	version="0.0.0"
+      	unpack="false"/>
 
    <plugin
          id="org.aopalliance"
@@ -85,34 +141,6 @@
          download-size="0"
          install-size="0"
          version="1.1.1.v201005080502"
-         unpack="false"/>
-
-   <plugin
-         id="com.springsource.org.aspectj.weaver"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.springsource.org.objectweb.asm"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.springsource.org.objectweb.asm.commons"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.springsource.util.common"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
          unpack="false"/>
 
    <plugin
@@ -180,6 +208,20 @@
 
    <plugin
          id="org.springframework.orm"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.springframework.osgi.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.springframework.osgi.io"
          download-size="0"
          install-size="0"
          version="0.0.0"
