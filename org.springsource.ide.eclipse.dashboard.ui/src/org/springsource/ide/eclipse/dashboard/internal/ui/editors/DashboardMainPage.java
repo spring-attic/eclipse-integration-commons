@@ -158,8 +158,6 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 
 	private Section updateSection;
 
-	private Section tutorialSection;
-
 	private Section helpSection;
 
 	private static final String PROXY_PREF_PAGE_ID = "org.eclipse.ui.net.NetPreferences";
@@ -263,7 +261,6 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 
 	private void adjustCollapsableSections() {
 		GridDataFactory.fillDefaults().grab(true, updateSection.isExpanded()).applyTo(updateSection);
-		GridDataFactory.fillDefaults().grab(true, tutorialSection.isExpanded()).applyTo(tutorialSection);
 		for (AbstractDashboardPart part : parts) {
 			if (part.getControl() instanceof Section) {
 				Section section = (Section) part.getControl();
@@ -273,8 +270,7 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 		GridDataFactory
 				.fillDefaults()
 				.grab(true,
-						!updateSection.isExpanded() && !tutorialSection.isExpanded()
-								&& areAllContributedSectionsCollapsed() && helpSection.isExpanded())
+						!updateSection.isExpanded() && areAllContributedSectionsCollapsed() && helpSection.isExpanded())
 				.applyTo(helpSection);
 
 		form.getBody().layout(true, true);
@@ -744,50 +740,6 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 				}
 			}
 		});
-	}
-
-	private void createTutorialSectionIfNeeded(List<AbstractDashboardPart> parts, final Composite parent) {
-		for (final AbstractDashboardPart part : parts) {
-			if ("com.springsource.sts.ide.help.dashboard.part.tutorials".equals(part.getId())) {
-				if (part.getControl() instanceof Section) {
-					GridDataFactory.fillDefaults()
-							.grab(false, getStoredExpandedState(IIdeUiConstants.PREF_TUTORIAL_SECTION_COLLAPSE, false))
-							.applyTo(part.getControl());
-
-					tutorialSection = (Section) part.getControl();
-					setUpExpandableSection(tutorialSection, IIdeUiConstants.PREF_TUTORIAL_SECTION_COLLAPSE, false);
-				}
-
-				// tutorials are installed, don't contribute place-holder
-				return;
-			}
-		}
-
-		tutorialSection = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR);
-		tutorialSection.setText("STS Tutorials");
-		tutorialSection.setLayout(new GridLayout());
-		GridDataFactory.fillDefaults().grab(false, false).applyTo(tutorialSection);
-
-		Composite composite = toolkit.createComposite(tutorialSection);
-		GridDataFactory.fillDefaults().grab(false, false).applyTo(composite);
-		composite.setLayout(new TableWrapLayout());
-
-		final Text text = new Text(composite, SWT.WRAP | SWT.MULTI | SWT.NO_BACKGROUND | SWT.NO_FOCUS);
-		text.setText("Task-Focused tutorials require installation of the SpringSource Tool Suite Tutorials feature.");
-
-		final TableWrapData data = new TableWrapData();
-		data.maxWidth = parent.getSize().x;
-		data.maxHeight = 50;
-		text.setLayoutData(data);
-
-		tutorialSection.addControlListener(new ControlAdapter() {
-			@Override
-			public void controlResized(ControlEvent e) {
-				data.maxWidth = tutorialSection.getSize().x - 25;
-				text.redraw();
-			}
-		});
-		tutorialSection.setClient(composite);
 	}
 
 	private void createUpdateSection(final Composite parent) {
@@ -1280,26 +1232,7 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 					// update section...
 					updateSection.setExpanded(false);
 					prefStore.setValue(IIdeUiConstants.PREF_UPDATE_SECTION_COLLAPSE, IIdeUiConstants.SECTION_COLLAPSED);
-					if (!section.equals(tutorialSection)) {
-						// ... and close the tutorial section, unless it is the
-						// section of interest
-						tutorialSection.setExpanded(false);
-						prefStore.setValue(IIdeUiConstants.PREF_TUTORIAL_SECTION_COLLAPSE,
-								IIdeUiConstants.SECTION_COLLAPSED);
-					}
-				}
-				else if (section == updateSection) {
-					// If we're expanding the update section, close the tutorial
-					// section and...
-					tutorialSection.setExpanded(false);
-					prefStore.setValue(IIdeUiConstants.PREF_TUTORIAL_SECTION_COLLAPSE,
-							IIdeUiConstants.SECTION_COLLAPSED);
-				}
-				else if (section == tutorialSection) {
-					// If we're expanding the tutorial section, close the update
-					// section and...
-					updateSection.setExpanded(false);
-					prefStore.setValue(IIdeUiConstants.PREF_UPDATE_SECTION_COLLAPSE, IIdeUiConstants.SECTION_COLLAPSED);
+
 				}
 
 				// ... close all contributed section that are not the section of
@@ -1394,8 +1327,6 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 				setUpExpandableSection(section, expansionProp, false);
 			}
 		}
-
-		createTutorialSectionIfNeeded(parts, leftComposite);
 
 		createHelpSection(leftComposite);
 
