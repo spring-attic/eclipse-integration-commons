@@ -341,9 +341,10 @@ public class ContentManager {
 			InputStream in = HttpUtil.stream(new URI(location), monitor);
 			try {
 				reader.read(in);
-				// BufferedReader reader = new BufferedReader(new
-				// InputStreamReader(in, method
-				// .getResponseCharSet()));
+			}
+			catch (Exception e) {
+				throw new CoreException(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, "Error downloading "
+						+ location + " - Internet connection might be down", e));
 			}
 			finally {
 				debug("exiting readFromURL: " + location);
@@ -351,7 +352,8 @@ public class ContentManager {
 					in.close();
 				}
 				catch (IOException e) {
-					// ignore
+					throw new CoreException(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, "No route to "
+							+ location + " - Internet connection might be down", e));
 				}
 			}
 		}
@@ -361,8 +363,8 @@ public class ContentManager {
 					"I/O error while retrieving data", e));
 		}
 		catch (CoreException e) {
-			debug(e);
-			throw e;
+			throw new CoreException(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, "Error while retrieving "
+					+ location, e));
 		}
 	}
 
@@ -376,7 +378,7 @@ public class ContentManager {
 			progress.beginTask("Refreshing", 200);
 
 			MultiStatus result = new MultiStatus(ContentPlugin.PLUGIN_ID, 0,
-					"Results of tutorial and sample project refresh", null);
+					"Results of tutorial, template, and/or sample project refresh:", null);
 			DescriptorReader reader = new DescriptorReader();
 
 			// local descriptors
@@ -396,7 +398,7 @@ public class ContentManager {
 									}
 								}
 								catch (CoreException e) {
-									result.add(new Status(IStatus.WARNING, ContentPlugin.PLUGIN_ID, NLS.bind(
+									result.add(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, NLS.bind(
 											"Error while parsing ''{0}''", descriptorFile.getAbsolutePath()), e));
 								}
 							}
@@ -412,18 +414,27 @@ public class ContentManager {
 			for (String descriptorLocation : getRemoteDescriptorLocations()) {
 				// remote descriptor
 				try {
-					readFromUrl(reader, descriptorLocation, progress.newChild(70));
+					if (descriptorLocation != null && descriptorLocation.length() > 0) {
+						readFromUrl(reader, descriptorLocation, progress.newChild(70));
+					}
 				}
 				catch (CoreException e) {
-					result.add(new Status(IStatus.WARNING, ContentPlugin.PLUGIN_ID, NLS.bind(
-							"Error while parsing ''{0}''", descriptorLocation), e));
+					result.add(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, NLS.bind(
+							"Error while downloading or parsing ''{0}''", descriptorLocation), e));
 				}
 			}
 
 			// store on disk
 			try {
+				// if (reader.getDescriptors().size() > 0) {
 				reader.write(targetFile);
 				init();
+				// }
+				// else {
+				// result.add(new Status(IStatus.WARNING,
+				// ContentPlugin.PLUGIN_ID, NLS.bind(
+				// "No URLs found in ''{0}''", targetFile.getAbsolutePath())));
+				// }
 			}
 			catch (CoreException e) {
 				result.add(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, NLS.bind(
