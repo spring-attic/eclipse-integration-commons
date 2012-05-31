@@ -179,7 +179,7 @@
  	<extension point="org.eclipse.ui.elementFactories">
     	<factory
           class="org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardEditorInputFactory"
-          id="com.springsource.sts.ide.ui.dashboard.elementFactory">
+          id="org.springsource.ide.eclipse.dashboard.ui.dashboard.elementFactory">
     	</factory>
  	</extension>
  	
