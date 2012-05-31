@@ -129,12 +129,19 @@ public class LegacyProjectConverter extends AbstractLegacyConverter implements I
         for (int i = 0; i < ids.length; i++) {
             if (!ids[i].equals(GRAILS_OLD_NATURE) && !ids[i].equals(GRAILS_NEW_NATURE)) {
                 newIds.add(ids[i]);
+            } else {
+                newIds.add(GRAILS_NEW_NATURE);
             }
         }
-        newIds.add(GRAILS_NEW_NATURE);
         description.setNatureIds(newIds.toArray(new String[0]));
         project.setDescription(description, sub);
     
+        // project preferences
+        File settingsFile = project.getFile(".settings/" + GRAILS_OLD_PREFERENCE_PREFIX + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
+        File newSettingsFile = project.getFile(".settings/" + GRAILS_NEW_PREFERENCE_PREFIX + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
+        copyPreferencesFile(settingsFile, newSettingsFile, GRAILS_OLD_PREFERENCE_PREFIX, GRAILS_NEW_PREFERENCE_PREFIX);
+        InstanceScope.INSTANCE.getNode(GRAILS_NEW_PREFERENCE_PREFIX).sync();
+
         // classpath container
         IJavaProject javaProject = JavaCore.create(project);
         IClasspathEntry[] classpath = javaProject.getRawClasspath();
@@ -146,14 +153,6 @@ public class LegacyProjectConverter extends AbstractLegacyConverter implements I
             newClasspath.add(classpath[i]);
         }
         javaProject.setRawClasspath(newClasspath.toArray(new IClasspathEntry[0]), sub);
-        
-        // project preferences
-        File settingsFile = project.getFile(".settings/" + GRAILS_OLD_PREFERENCE_PREFIX + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
-        File newSettingsFile = project.getFile(".settings/" + GRAILS_NEW_PREFERENCE_PREFIX + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
-        copyPreferencesFile(settingsFile, newSettingsFile, GRAILS_OLD_PREFERENCE_PREFIX, GRAILS_NEW_PREFERENCE_PREFIX);
-        InstanceScope.INSTANCE.getNode(GRAILS_NEW_PREFERENCE_PREFIX).sync();
-        
-        // launch configurations
     }
 
     private IClasspathAttribute[] convertGrailsClasspathAttributes(
