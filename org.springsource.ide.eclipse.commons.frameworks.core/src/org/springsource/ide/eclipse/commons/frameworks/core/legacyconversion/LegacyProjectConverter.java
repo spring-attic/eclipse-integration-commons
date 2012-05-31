@@ -149,8 +149,12 @@ public class LegacyProjectConverter extends AbstractLegacyConverter implements I
         for (int i = 0; i < classpath.length; i++) {
             if (classpath[i].getPath().toString().equals(GRAILS_OLD_CONTAINER)) {
                 classpath[i] = JavaCore.newContainerEntry(new Path(GRAILS_NEW_CONTAINER), classpath[i].getAccessRules(), convertGrailsClasspathAttributes(classpath[i]), classpath[i].isExported());
+            } else if (classpath[i].getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+                newClasspath.add(JavaCore.newSourceEntry(classpath[i].getPath(), classpath[i].getInclusionPatterns(), 
+                        classpath[i].getExclusionPatterns(), classpath[i].getOutputLocation(), convertGrailsClasspathAttributes(classpath[i])));
+            } else {
+                newClasspath.add(classpath[i]);
             }
-            newClasspath.add(classpath[i]);
         }
         javaProject.setRawClasspath(newClasspath.toArray(new IClasspathEntry[0]), sub);
     }
@@ -158,8 +162,8 @@ public class LegacyProjectConverter extends AbstractLegacyConverter implements I
     private IClasspathAttribute[] convertGrailsClasspathAttributes(
             IClasspathEntry entry) {
         IClasspathAttribute[] oldAttributes = entry.getExtraAttributes();
-        if (oldAttributes == null) {
-            return null;
+        if (oldAttributes == null || oldAttributes.length == 0) {
+            return new IClasspathAttribute[0];
         }
         IClasspathAttribute[] newAttributes = new IClasspathAttribute[oldAttributes.length];
         for (int i = 0; i < oldAttributes.length; i++) {
