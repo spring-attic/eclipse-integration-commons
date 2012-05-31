@@ -81,7 +81,7 @@ public class LegacyProjectsJob extends UIJob implements IConversionConstants {
         IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
         for (IProject project : allProjects) {
             try {
-                if (isLegacyProject(project)) {
+                if (isLegacyProject(project, true)) {
                     legacyProjectsList.add(project);
                 }
             } catch (CoreException e) {
@@ -104,10 +104,13 @@ public class LegacyProjectsJob extends UIJob implements IConversionConstants {
     }
     
     // TODO FIXLDS Add any other kinds of checks for roo projects
-    public static boolean isLegacyProject(IProject project) throws CoreException{
+    public static boolean isLegacyProject(IProject project, boolean isWorkspaceMigration) throws CoreException{
         return project.isAccessible() && 
                 (
-//                        project.hasNature(GRAILS_OLD_NATURE) ||
-                 project.hasNature(ROO_OLD_NATURE));
+                        // only migrate grails projects at workspace migration time.
+                        // imported grails projects are handled by the GrailsProjectVersionFixer
+                        (project.hasNature(GRAILS_OLD_NATURE) && isWorkspaceMigration) ||
+                        project.hasNature(ROO_OLD_NATURE)
+                 );
     }
 }

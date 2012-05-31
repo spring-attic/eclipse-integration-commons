@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -50,6 +51,14 @@ public class LegacyProjectConverter extends AbstractLegacyConverter implements I
     
     private final List<IProject> allLegacyProjects;
     private IProject[] selectedLegacyProjects;
+    
+    /**
+     * Converts a single project
+     */
+    public LegacyProjectConverter(IProject legacyProject) {
+        allLegacyProjects = Collections.singletonList(legacyProject);
+        selectedLegacyProjects = new IProject[] { legacyProject };
+    }
 
     public LegacyProjectConverter(List<IProject> legacyProjects) {
         this.allLegacyProjects = legacyProjects;
@@ -113,55 +122,57 @@ public class LegacyProjectConverter extends AbstractLegacyConverter implements I
     }
 
     private void convertGrailsProject(IProject project, SubMonitor sub) throws Exception {
-//        // nature
-//        IProjectDescription description = project.getDescription();
-//        String[] ids = description.getNatureIds();
-//        List<String> newIds = new ArrayList<String>(ids.length);
-//        for (int i = 0; i < ids.length; i++) {
-//            if (!ids[i].equals(GRAILS_OLD_NATURE) && !ids[i].equals(GRAILS_NEW_NATURE)) {
-//                newIds.add(ids[i]);
-//            }
-//        }
-//        newIds.add(GRAILS_NEW_NATURE);
-//        description.setNatureIds(newIds.toArray(new String[0]));
-//        project.setDescription(description, sub);
-//    
-//        // classpath container
-//        IJavaProject javaProject = JavaCore.create(project);
-//        IClasspathEntry[] classpath = javaProject.getRawClasspath();
-//        List<IClasspathEntry> newClasspath = new ArrayList<IClasspathEntry>();
-//        for (int i = 0; i < classpath.length; i++) {
-//            if (classpath[i].getPath().toString().equals(GRAILS_OLD_CONTAINER)) {
-//                classpath[i] = JavaCore.newContainerEntry(new Path(GRAILS_NEW_CONTAINER), classpath[i].getAccessRules(), convertGrailsClasspathAttributes(classpath[i]), classpath[i].isExported());
-//            }
-//            newClasspath.add(classpath[i]);
-//        }
-//        javaProject.setRawClasspath(newClasspath.toArray(new IClasspathEntry[0]), sub);
+        // nature
+        IProjectDescription description = project.getDescription();
+        String[] ids = description.getNatureIds();
+        List<String> newIds = new ArrayList<String>(ids.length);
+        for (int i = 0; i < ids.length; i++) {
+            if (!ids[i].equals(GRAILS_OLD_NATURE) && !ids[i].equals(GRAILS_NEW_NATURE)) {
+                newIds.add(ids[i]);
+            }
+        }
+        newIds.add(GRAILS_NEW_NATURE);
+        description.setNatureIds(newIds.toArray(new String[0]));
+        project.setDescription(description, sub);
+    
+        // classpath container
+        IJavaProject javaProject = JavaCore.create(project);
+        IClasspathEntry[] classpath = javaProject.getRawClasspath();
+        List<IClasspathEntry> newClasspath = new ArrayList<IClasspathEntry>();
+        for (int i = 0; i < classpath.length; i++) {
+            if (classpath[i].getPath().toString().equals(GRAILS_OLD_CONTAINER)) {
+                classpath[i] = JavaCore.newContainerEntry(new Path(GRAILS_NEW_CONTAINER), classpath[i].getAccessRules(), convertGrailsClasspathAttributes(classpath[i]), classpath[i].isExported());
+            }
+            newClasspath.add(classpath[i]);
+        }
+        javaProject.setRawClasspath(newClasspath.toArray(new IClasspathEntry[0]), sub);
         
         // project preferences
         File settingsFile = project.getFile(".settings/" + GRAILS_OLD_PREFERENCE_PREFIX + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
         File newSettingsFile = project.getFile(".settings/" + GRAILS_NEW_PREFERENCE_PREFIX + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
         copyPreferencesFile(settingsFile, newSettingsFile, GRAILS_OLD_PREFERENCE_PREFIX, GRAILS_NEW_PREFERENCE_PREFIX);
         InstanceScope.INSTANCE.getNode(GRAILS_NEW_PREFERENCE_PREFIX).sync();
+        
+        // launch configurations
     }
-//
-//    private IClasspathAttribute[] convertGrailsClasspathAttributes(
-//            IClasspathEntry entry) {
-//        IClasspathAttribute[] oldAttributes = entry.getExtraAttributes();
-//        if (oldAttributes == null) {
-//            return null;
-//        }
-//        IClasspathAttribute[] newAttributes = new IClasspathAttribute[oldAttributes.length];
-//        for (int i = 0; i < oldAttributes.length; i++) {
-//            if (oldAttributes[i].getName().equals(GRAILS_OLD_ATTRIBUTE)) {
-//                newAttributes[i] = JavaCore.newClasspathAttribute(GRAILS_NEW_ATTRIBUTE, oldAttributes[i].getValue());
-//            } else {
-//                newAttributes[i] = oldAttributes[i];
-//            }
-//        }
-//        
-//        return newAttributes;
-//    }
+
+    private IClasspathAttribute[] convertGrailsClasspathAttributes(
+            IClasspathEntry entry) {
+        IClasspathAttribute[] oldAttributes = entry.getExtraAttributes();
+        if (oldAttributes == null) {
+            return null;
+        }
+        IClasspathAttribute[] newAttributes = new IClasspathAttribute[oldAttributes.length];
+        for (int i = 0; i < oldAttributes.length; i++) {
+            if (oldAttributes[i].getName().equals(GRAILS_OLD_ATTRIBUTE)) {
+                newAttributes[i] = JavaCore.newClasspathAttribute(GRAILS_NEW_ATTRIBUTE, oldAttributes[i].getValue());
+            } else {
+                newAttributes[i] = oldAttributes[i];
+            }
+        }
+        
+        return newAttributes;
+    }
 
     // TODO FIXLDS Convert roo project
     private void convertRooProject(IProject project, SubMonitor sub) {

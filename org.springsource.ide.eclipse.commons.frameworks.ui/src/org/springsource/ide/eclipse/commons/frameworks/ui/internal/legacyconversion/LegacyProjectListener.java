@@ -55,7 +55,7 @@ public class LegacyProjectListener implements IResourceChangeListener, IConversi
                 public boolean visit(IResourceDelta innerDelta) throws CoreException {
                     if (innerDelta.getKind() == IResourceDelta.ADDED && innerDelta.getResource().getType() == IResource.PROJECT) {
                         IProject project = (IProject) innerDelta.getResource();
-                        if (LegacyProjectsJob.isLegacyProject(project)) {
+                        if (LegacyProjectsJob.isLegacyProject(project, false)) {
                             projects.add(project);
                         }
                     }
