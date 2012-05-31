@@ -7,4 +7,24 @@
               class="org.springsource.ide.eclipse.commons.frameworks.ui.internal.legacyconversion.LegacySTSChecker">
         </startup>
      </extension>
+     <extension
+           point="org.eclipse.ui.popupMenus">
+	      <!-- Deal with legacy projects -->
+	      <objectContribution
+	            objectClass="org.eclipse.core.resources.IProject"
+	            adaptable="true"
+	            id="iprojectcontributions">
+	      <visibility>
+	         	<or>
+		         	<objectState name="nature" value="com.springsource.sts.grails.core.nature"/>
+				    </or>
+	       </visibility>
+	       <action
+	               label="Migrate legacy STS projects..."
+	               class="org.springsource.ide.eclipse.commons.frameworks.ui.internal.legacyconversion.ConvertLegacyProjectAction"
+	               menubarPath="org.eclipse.ui.projectConfigure/additions"
+	               id="convertLegacy">
+	         </action>
+	      </objectContribution>
+     </extension>
 </plugin>
