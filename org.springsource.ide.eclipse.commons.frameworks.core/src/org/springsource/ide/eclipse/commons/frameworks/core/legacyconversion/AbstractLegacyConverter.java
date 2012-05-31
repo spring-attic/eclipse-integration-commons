@@ -84,7 +84,7 @@ public abstract class AbstractLegacyConverter implements IConversionConstants {
                 String oldKey = prop.getKey().toString();
                 String newKey;
                 if (oldPrefix != null && oldKey.startsWith(oldPrefix)) {
-                    newKey = newPrefix + oldKey.substring(oldPrefix.length());
+                    newKey = oldKey.replace(oldPrefix, newPrefix);
                 } else {
                     newKey = oldKey;
                 }
