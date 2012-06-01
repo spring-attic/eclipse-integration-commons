@@ -11,12 +11,9 @@
 package org.springsource.ide.eclipse.commons.frameworks.core.legacyconversion;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.eclipse.core.internal.runtime.InternalPlatform;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
@@ -87,15 +84,10 @@ public class LegacyWorkspaceConverter extends AbstractLegacyConverter implements
 
     private IStatus convertSTSPreferences(SubMonitor sub) {
         sub.subTask("Converting STS plugin state locations"); //$NON-NLS-1$
-        
         try {
-            copyPluginStateLocation(STS_OLD_CONTENT_CORE, STS_OLD_CONTENT_CORE);
-            copyPluginStateLocation(STS_OLD_CORE, STS_OLD_CORE);
-            copyPluginStateLocation(STS_OLD_IDE_UI, STS_OLD_IDE_UI);
-            
-            
-            // TODO FIXLDS Convert any other workspace preferences
-            
+            copyPluginStateLocation(STS_OLD_CONTENT_CORE, STS_NEW_CONTENT_CORE);
+            copyPluginStateLocation(STS_OLD_CORE, STS_NEW_CORE);
+            copyPluginStateLocation(STS_OLD_IDE_UI, STS_NEW_IDE_UI);            
             return new Status(IStatus.OK, FrameworkCoreActivator.PLUGIN_ID, "Converted legacy STS plugin state locations"); //$NON-NLS-1$
         } catch (IOException e) {
             return new Status(IStatus.ERROR, FrameworkCoreActivator.PLUGIN_ID, "Failed to convert legacy STS plugin state locations", e); //$NON-NLS-1$
@@ -116,11 +108,16 @@ public class LegacyWorkspaceConverter extends AbstractLegacyConverter implements
         }
     }
 
-    // TODO FIXLDS Convert roo plugin state locations
     private IStatus convertRooWorkspacePreferences(SubMonitor sub) {
-        sub.subTask("Converting Roo plugin state locations"); //$NON-NLS-1$
-        
-        sub.worked(1);
-        return new Status(IStatus.OK, FrameworkCoreActivator.PLUGIN_ID, "Converted legacy Roo plugin state locations"); //$NON-NLS-1$
+		sub.subTask("Converting Roo plugin state locations"); //$NON-NLS-1$
+		try {
+			copyPluginStateLocation(ROO_OLD_PLUGIN_NAME, ROO_NEW_PLUGIN_NAME);
+			copyPluginStateLocation(ROO_OLD_UI_NAME, ROO_NEW_UI_NAME);
+			return new Status(IStatus.OK, FrameworkCoreActivator.PLUGIN_ID, "Converted legacy Roo plugin state locations"); //$NON-NLS-1$
+		} catch (IOException e) {
+			return new Status(IStatus.ERROR, FrameworkCoreActivator.PLUGIN_ID, "Failed to convert legacy Roo plugin state locations", e); //$NON-NLS-1$
+		} finally {
+			sub.worked(1);
+		}
     }
 }

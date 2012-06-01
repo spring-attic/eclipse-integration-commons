@@ -25,11 +25,12 @@ public interface IIdeUiConstants {
 
 	public static final String LABEL_SPRINGSOURCE_BUGS = "My SpringSource Issues";
 
-	public static final String PREF_FEED_ENTRY_READ_STATE = "com.springsource.sts.ide.ui.dashboard.feed.item.state";
+	public static final String PREF_FEED_ENTRY_READ_STATE = IdeUiPlugin.PLUGIN_ID + "dashboard.feed.item.state";
 
-	public static final String PREF_OPEN_DASHBOARD_STARTUP = "com.springsource.sts.ide.ui.dashboard.startup";
+	public static final String PREF_OPEN_DASHBOARD_STARTUP = IdeUiPlugin.PLUGIN_ID + "dashboard.startup";
 
-	public static final String PREF_LAST_READ_NEW_NOTEWORTHY_SIZE = "com.springsource.sts.ide.ui.dashboard.lastReadNewAndNoteworthySize";
+	// public static final String PREF_LAST_READ_NEW_NOTEWORTHY_SIZE =
+	// "com.springsource.sts.ide.ui.dashboard.lastReadNewAndNoteworthySize";
 
 	public static final String QUERY_SPRINGSOURCE_ANALYSES = "https://issuetracker.springsource.com/secure/IssueNavigator.jspa?reset=true&type=5&pid=10000&reporterSelect=issue_current_user";
 
@@ -66,11 +67,11 @@ public interface IIdeUiConstants {
 
 	public static final String SPRINGSOURCE_PORTAL_QUERY_URL = SPRINGSOURCE_PORTAL_URL;
 
-	public static final String PREF_UPDATE_SECTION_COLLAPSE = "com.springsource.sts.ide.ui.dashboard.update.collapse";
+	public static final String PREF_UPDATE_SECTION_COLLAPSE = IdeUiPlugin.PLUGIN_ID + "dashboard.update.collapse";
 
-	public static final String PREF_TUTORIAL_SECTION_COLLAPSE = "com.springsource.sts.ide.ui.dashboard.tutorial.collapse";
+	public static final String PREF_TUTORIAL_SECTION_COLLAPSE = IdeUiPlugin.PLUGIN_ID + "dashboard.tutorial.collapse";
 
-	public static final String PREF_HELP_SECTION_COLLAPSE = "com.springsource.sts.ide.ui.dashboard.help.collapse";
+	public static final String PREF_HELP_SECTION_COLLAPSE = IdeUiPlugin.PLUGIN_ID + "dashboard.help.collapse";
 
 	public static final int SECTION_COLLAPSED = 1;
 

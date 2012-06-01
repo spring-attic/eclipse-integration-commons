@@ -28,13 +28,11 @@ public class Activator extends AbstractUIPlugin {
 
 	public static final String PLUGIN_ID = "org.springsource.ide.eclipse.commons.configurator";
 
-	public static final String LEGACY_ID = "com.springsource.sts.ide.configurator";
+	public static final String PROPERTY_CONFIGURATOR_PROCESSED = PLUGIN_ID + ".processed";
 
-	public static final String PROPERTY_CONFIGURATOR_PROCESSED = LEGACY_ID + ".processed";
+	public static final String PROPERTY_CONFIGURE_TARGETS = PLUGIN_ID + ".configuretargets";
 
-	public static final String PROPERTY_CONFIGURE_TARGETS = LEGACY_ID + ".configuretargets";
-
-	public static final String PROPERTY_USER_INSTALL_PATH = LEGACY_ID + ".installPath";
+	public static final String PROPERTY_USER_INSTALL_PATH = PLUGIN_ID + ".installPath";
 
 	private static Activator plugin;
 

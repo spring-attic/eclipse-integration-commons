@@ -30,7 +30,7 @@ import org.osgi.service.prefs.Preferences;
  */
 public class CorePlugin extends Plugin {
 
-	public static final String PLUGIN_ID = "com.springsource.sts.core";
+	public static final String PLUGIN_ID = "org.springsource.ide.eclipse.commons.core";
 
 	private static CorePlugin plugin;
 
