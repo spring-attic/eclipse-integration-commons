@@ -148,7 +148,7 @@ public class LegacyProjectConverter extends AbstractLegacyConverter implements I
         List<IClasspathEntry> newClasspath = new ArrayList<IClasspathEntry>();
         for (int i = 0; i < classpath.length; i++) {
             if (classpath[i].getPath().toString().equals(GRAILS_OLD_CONTAINER)) {
-                classpath[i] = JavaCore.newContainerEntry(new Path(GRAILS_NEW_CONTAINER), classpath[i].getAccessRules(), convertGrailsClasspathAttributes(classpath[i]), classpath[i].isExported());
+                newClasspath.add(JavaCore.newContainerEntry(new Path(GRAILS_NEW_CONTAINER), classpath[i].getAccessRules(), convertGrailsClasspathAttributes(classpath[i]), classpath[i].isExported()));
             } else if (classpath[i].getEntryKind() == IClasspathEntry.CPE_SOURCE) {
                 newClasspath.add(JavaCore.newSourceEntry(classpath[i].getPath(), classpath[i].getInclusionPatterns(), 
                         classpath[i].getExclusionPatterns(), classpath[i].getOutputLocation(), convertGrailsClasspathAttributes(classpath[i])));
