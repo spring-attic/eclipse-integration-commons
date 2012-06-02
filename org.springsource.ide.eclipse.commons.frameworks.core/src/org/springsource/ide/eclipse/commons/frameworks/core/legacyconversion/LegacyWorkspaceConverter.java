@@ -45,6 +45,7 @@ public class LegacyWorkspaceConverter extends AbstractLegacyConverter implements
         IStatus[] statuses = new IStatus[4];
         
         statuses[0] = copyPluginPreferences(sub);
+        // nothing to do for grails any more
 //        statuses[1] = convertGrailsWorkspacePreferences(sub);
         statuses[1] = Status.OK_STATUS;
         statuses[2] = convertRooWorkspacePreferences(sub);

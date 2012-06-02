@@ -38,6 +38,9 @@ public interface IConversionConstants {
     String GRAILS_OLD_PREFERENCE_PREFIX = GRAILS_OLD_PLUGIN_NAME;
     String GRAILS_NEW_PREFERENCE_PREFIX = GRAILS_NEW_PLUGIN_NAME;
     
+    String GRAILS_OLD_PERSPECTIVE_ID = "com.springsource.sts.grails.perspective"; //$NON-NLS-1$
+    String GRAILS_NEW_PERSPECTIVE_ID = "org.grails.ide.eclipse.perspective"; //$NON-NLS-1$
+    
     // ROO
     // TODO FIXLDS add more roo constants here
     String ROO_OLD_NATURE = "com.springsource.sts.roo.core.nature"; //$NON-NLS-1$

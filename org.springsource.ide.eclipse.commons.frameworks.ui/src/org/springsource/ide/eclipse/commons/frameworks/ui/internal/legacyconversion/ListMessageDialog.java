@@ -160,13 +160,10 @@ public class ListMessageDialog extends MessageDialogWithToggle implements IConve
         } else {
             sb.append("The following legacy STS project has been found:\n"); //$NON-NLS-1$
         }
-        for (IProject project : allLegacyProjects) {
-            sb.append("\t" + project.getName() + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
         if (allLegacyProjects.length > 1) {
-            sb.append("\n** These projects will not compile until they are upgraded to STS 3.0. **\n\n"); //$NON-NLS-1$
+            sb.append("\n** These projects may not compile until they are upgraded to STS 3.0. **\n\n"); //$NON-NLS-1$
         } else {
-            sb.append("\n** This project will not compile until it is upgraded to STS 3.0. **\n\n"); //$NON-NLS-1$
+            sb.append("\n** This project may not compile until it is upgraded to STS 3.0. **\n\n"); //$NON-NLS-1$
         }
         sb.append("Do you want to upgrade now?\n" + //$NON-NLS-1$
                 "You can choose to upgrade later by going to:\n" + //$NON-NLS-1$
