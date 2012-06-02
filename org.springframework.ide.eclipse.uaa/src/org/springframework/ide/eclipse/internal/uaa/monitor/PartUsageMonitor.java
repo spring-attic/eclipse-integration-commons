@@ -147,7 +147,7 @@ public class PartUsageMonitor implements IUsageMonitor {
 	}
 
 	private void recordEvent(IPerspectiveDescriptor perspective) {
-		if (manager != null) {
+		if (manager != null && perspective != null) {
 			manager.registerFeatureUse(perspectiveToBundleIdMapper.getBundleId(perspective.getId()),
 					Collections.singletonMap("perspective", perspective.getLabel()));
 		}
