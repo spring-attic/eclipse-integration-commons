@@ -44,13 +44,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.springsource.ide.eclipse.commons.frameworks.test.util"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.springsource.ide.eclipse.commons.frameworks.ui"
          download-size="0"
          install-size="0"
@@ -59,27 +52,6 @@
 
    <plugin
          id="org.springsource.ide.eclipse.commons.configurator"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.springsource.ide.eclipse.dashboard.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.springsource.ide.eclipse.commons.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.springsource.ide.eclipse.commons.tests.util"
          download-size="0"
          install-size="0"
          version="0.0.0"

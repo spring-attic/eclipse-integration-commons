@@ -29,10 +29,21 @@
 		<category name="Core / Eclipse Integration Commons" />
 	</feature>
 
+	<feature
+		url="org.springsource.ide.eclipse.dashboard_3.0.0.qualifier.jar"
+		id="org.springsource.ide.eclipse.dashboard" version="3.0.0.qualifier">
+		<category name="Core / Eclipse Integration Commons" />
+	</feature>
+
 	<!-- Dependencies - uncategorized -->
 	<feature
 		url="org.springsource.ide.eclipse.commons.dependencies_3.0.0.qualifier.jar"
 		id="org.springsource.ide.eclipse.commons.dependencies" version="3.0.0.qualifier">
+	</feature>
+
+	<feature
+		url="org.springsource.ide.eclipse.commons.test_3.0.0.qualifier.jar"
+		id="org.springsource.ide.eclipse.commons.test" version="3.0.0.qualifier">
 	</feature>
 
 	<!-- Resources -->

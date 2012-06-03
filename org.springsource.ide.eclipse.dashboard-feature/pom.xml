@@ -8,6 +8,6 @@
     <artifactId>org.springsource.ide.eclipse.commons.parent</artifactId>
     <version>3.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>org.springsource.ide.eclipse.dashboard-feature</artifactId>
+  <artifactId>org.springsource.ide.eclipse.dashboard</artifactId>
   <packaging>eclipse-feature</packaging>
 </project>

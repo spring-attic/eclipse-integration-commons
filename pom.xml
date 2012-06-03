@@ -23,6 +23,8 @@
     <module>org.springsource.ide.eclipse.commons.dependencies</module>
 
 	<module>org.springsource.ide.eclipse.commons-feature</module>
+	<module>org.springsource.ide.eclipse.commons.test-feature</module>
+	<module>org.springsource.ide.eclipse.dashboard-feature</module>
 
 	<module>org.springsource.ide.eclipse.commons.content.core</module>
 	<module>org.springsource.ide.eclipse.commons.core</module>
@@ -92,7 +94,7 @@
     <test.useUIThread>true</test.useUIThread>
     <test.skip>${maven.test.skip}</test.skip>
 
-    <tycho-version>0.14.0</tycho-version>
+    <tycho-version>0.14.1</tycho-version>
 
     <maven.test.error.ignore>true</maven.test.error.ignore>
     <maven.test.failure.ignore>true</maven.test.failure.ignore>
@@ -113,18 +115,17 @@
         <dist.platform.id>indigo</dist.platform.id>		
         <dist.platform.version>3.7</dist.platform.version>
         <package.qualifierPrefix>e37</package.qualifierPrefix>
-        <version.weaving>1.0.0.R3_6_2</version.weaving>
       </properties>
 	  <repositories>
 		<repository>
 		  <id>platform</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/eclipse/updates/4.2/</url>
+		  <url>http://download.eclipse.org/eclipse/updates/3.7/</url>
 		</repository>
 		<repository>
 		  <id>indigo</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/releases/juno/</url>
+		  <url>http://download.eclipse.org/releases/indigo/</url>
 		</repository>
 		<repository>
 		  <id>swtbot</id>
