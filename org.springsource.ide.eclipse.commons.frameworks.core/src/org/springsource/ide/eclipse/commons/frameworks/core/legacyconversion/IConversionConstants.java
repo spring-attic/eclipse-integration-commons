@@ -23,8 +23,11 @@ public interface IConversionConstants {
     String LEGACY_MIGRATION_PLUGINS = "org.springsource.ide.eclipse.commons.frameworks.ui.legacyconversion.plugins"; //$NON-NLS-1$
     
     // GRAILS
-    String GRAILS_OLD_PLUGIN_NAME = "com.springsource.sts.grails.core"; //$NON-NLS-1$
-    String GRAILS_NEW_PLUGIN_NAME = "org.grails.ide.eclipse.core"; //$NON-NLS-1$
+    String GRAILS_OLD_PREFERENCE_PREFIX =  "com.springsource.sts.grails"; //$NON-NLS-1$
+    String GRAILS_NEW_PREFERENCE_PREFIX = "org.grails.ide.eclipse"; //$NON-NLS-1$
+    
+    String GRAILS_OLD_PLUGIN_NAME = GRAILS_OLD_PREFERENCE_PREFIX + ".core"; //$NON-NLS-1$
+    String GRAILS_NEW_PLUGIN_NAME = GRAILS_NEW_PREFERENCE_PREFIX + ".core"; //$NON-NLS-1$
     
     String GRAILS_OLD_NATURE = GRAILS_OLD_PLUGIN_NAME + ".nature"; //$NON-NLS-1$
     String GRAILS_NEW_NATURE = GRAILS_NEW_PLUGIN_NAME + ".nature"; //$NON-NLS-1$
@@ -34,9 +37,6 @@ public interface IConversionConstants {
     
     String GRAILS_OLD_ATTRIBUTE = GRAILS_OLD_PLUGIN_NAME + ".SOURCE_FOLDER"; //$NON-NLS-1$
     String GRAILS_NEW_ATTRIBUTE = GRAILS_NEW_PLUGIN_NAME + ".SOURCE_FOLDER"; //$NON-NLS-1$
-    
-    String GRAILS_OLD_PREFERENCE_PREFIX = GRAILS_OLD_PLUGIN_NAME;
-    String GRAILS_NEW_PREFERENCE_PREFIX = GRAILS_NEW_PLUGIN_NAME;
     
     String GRAILS_OLD_PERSPECTIVE_ID = "com.springsource.sts.grails.perspective"; //$NON-NLS-1$
     String GRAILS_NEW_PERSPECTIVE_ID = "org.grails.ide.eclipse.perspective"; //$NON-NLS-1$
