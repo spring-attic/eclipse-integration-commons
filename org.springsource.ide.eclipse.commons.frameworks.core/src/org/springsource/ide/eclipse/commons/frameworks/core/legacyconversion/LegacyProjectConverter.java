@@ -22,8 +22,10 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.eclipse.core.internal.runtime.InternalPlatform;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -137,10 +139,12 @@ public class LegacyProjectConverter extends AbstractLegacyConverter implements I
         project.setDescription(description, sub);
     
         // project preferences
-        File settingsFile = project.getFile(".settings/" + GRAILS_OLD_PREFERENCE_PREFIX + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
-        File newSettingsFile = project.getFile(".settings/" + GRAILS_NEW_PREFERENCE_PREFIX + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
+        IFolder preferencesFolder = project.getFolder(".settings/"); //$NON-NLS-1$
+        File settingsFile = preferencesFolder.getFile(GRAILS_OLD_PREFERENCE_PREFIX + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
+        File newSettingsFile = preferencesFolder.getFile(GRAILS_NEW_PREFERENCE_PREFIX + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
         copyPreferencesFile(settingsFile, newSettingsFile, GRAILS_OLD_PREFERENCE_PREFIX, GRAILS_NEW_PREFERENCE_PREFIX);
         InstanceScope.INSTANCE.getNode(GRAILS_NEW_PREFERENCE_PREFIX).sync();
+        preferencesFolder.refreshLocal(IResource.DEPTH_ONE, sub);
 
         // classpath container
         IJavaProject javaProject = JavaCore.create(project);
