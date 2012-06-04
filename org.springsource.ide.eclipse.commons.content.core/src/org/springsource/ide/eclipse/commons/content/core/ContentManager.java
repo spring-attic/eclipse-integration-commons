@@ -377,8 +377,8 @@ public class ContentManager {
 		try {
 			progress.beginTask("Refreshing", 200);
 
-			MultiStatus result = new MultiStatus(ContentPlugin.PLUGIN_ID, 0,
-					"Results of tutorial, template, and/or sample project refresh:", null);
+			MultiStatus result = new MultiStatus(ContentPlugin.PLUGIN_ID, 0, "Results of template project refresh:",
+					null);
 			DescriptorReader reader = new DescriptorReader();
 
 			// local descriptors
