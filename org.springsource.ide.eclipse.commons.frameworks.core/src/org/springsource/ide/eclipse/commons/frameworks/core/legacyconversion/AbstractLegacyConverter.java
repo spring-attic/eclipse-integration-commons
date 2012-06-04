@@ -96,6 +96,9 @@ public abstract class AbstractLegacyConverter implements IConversionConstants {
     
     public static void copyFile(File sourceFile, File destFile)
             throws IOException {
+        if (!sourceFile.exists()) {
+            return;
+        }
         if (!destFile.exists()) {
             destFile.createNewFile();
         }

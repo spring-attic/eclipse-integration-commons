@@ -25,6 +25,7 @@ import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveRegistry;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.WorkbenchPage;
 import org.springsource.ide.eclipse.commons.frameworks.core.legacyconversion.IConversionConstants;
 import org.springsource.ide.eclipse.commons.frameworks.ui.FrameworkUIActivator;
 
@@ -48,14 +49,28 @@ public class PerspectiveMigrator {
             } catch (NullPointerException e) {
                 // something wasn't initialized...ignore
             }
-            if (page != null && page.getPerspective()  == null || page.getPerspective().getId().equals(oldPerspectiveId)) {
-                IPerspectiveDescriptor newPerspective = registry.findPerspectiveWithId(newPerspectiveId);
-                page.setPerspective(newPerspective);
-                IPerspectiveDescriptor oldPerspective = registry.findPerspectiveWithId(oldPerspectiveId);
-                monitor.worked(1);
-                if (oldPerspective != null) {
-                    page.closePerspective(oldPerspective, false, false);
-                    registry.deletePerspective(oldPerspective);
+            if (page != null) {
+                if (page.getPerspective()  == null || page.getPerspective().getId().equals(oldPerspectiveId)) {
+                    IPerspectiveDescriptor newPerspective = registry.findPerspectiveWithId(newPerspectiveId);
+                    page.setPerspective(newPerspective);
+                    IPerspectiveDescriptor oldPerspective = registry.findPerspectiveWithId(oldPerspectiveId);
+                    monitor.worked(1);
+                    if (oldPerspective != null) {
+                        page.closePerspective(oldPerspective, false, false);
+                        registry.deletePerspective(oldPerspective);
+                        
+                    }
+                }
+                // Actually, there is no mechanism to close this kind of perspective
+                // https://bugs.eclipse.org/bugs/show_bug.cgi?id=381473
+                if (page instanceof WorkbenchPage) {
+                    // error on e37???
+                    try {
+                        ((WorkbenchPage) page).closePerspective(null, IConversionConstants.GRAILS_OLD_PERSPECTIVE_ID, true, false);
+                    } catch (NoSuchMethodError e) {
+                        // e37 may not have this method
+                        FrameworkUIActivator.getDefault().getLog().log(new Status(IStatus.WARNING, FrameworkUIActivator.PLUGIN_ID, "Cannot use reflection to close legacy perspective on Eclipse 3.7.", e));
+                    }
                 }
             }
             monitor.worked(1);
