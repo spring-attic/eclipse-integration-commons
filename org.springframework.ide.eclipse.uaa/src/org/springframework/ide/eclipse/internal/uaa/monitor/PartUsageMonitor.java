@@ -154,7 +154,7 @@ public class PartUsageMonitor implements IUsageMonitor {
 	}
 
 	private void recordEvent(IWorkbenchPart part) {
-		if (manager != null) {
+		if (manager != null && part != null) {
 			if (part.getSite() instanceof IViewSite) {
 				manager.registerFeatureUse(viewToBundleIdMapper.getBundleId(part.getSite().getId()),
 						Collections.singletonMap("view", part.getSite().getRegisteredName()));
