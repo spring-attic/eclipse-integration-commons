@@ -17,6 +17,8 @@
  */
 package org.springsource.ide.eclipse.commons.frameworks.ui.internal.legacyconversion;
 
+import java.lang.reflect.Method;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -64,12 +66,12 @@ public class PerspectiveMigrator {
                 // Actually, there is no mechanism to close this kind of perspective
                 // https://bugs.eclipse.org/bugs/show_bug.cgi?id=381473
                 if (page instanceof WorkbenchPage) {
-                    // error on e37???
                     try {
-                        ((WorkbenchPage) page).closePerspective(null, IConversionConstants.GRAILS_OLD_PERSPECTIVE_ID, true, false);
-                    } catch (NoSuchMethodError e) {
-                        // e37 may not have this method
-                        FrameworkUIActivator.getDefault().getLog().log(new Status(IStatus.WARNING, FrameworkUIActivator.PLUGIN_ID, "Cannot use reflection to close legacy perspective on Eclipse 3.7.", e));
+                        Method closePerspectiveMethod = WorkbenchPage.class.getDeclaredMethod("closePerspective", IPerspectiveDescriptor.class, String.class, boolean.class, boolean.class);
+                        closePerspectiveMethod.invoke(page, null, IConversionConstants.GRAILS_OLD_PERSPECTIVE_ID, true, false);
+                    } catch (Exception e) {
+                        // this method doesn't exist on e37.  just let users know this happened and continue on as usual
+                        FrameworkUIActivator.getDefault().getLog().log(new Status(IStatus.INFO, FrameworkUIActivator.PLUGIN_ID, "Cannot use reflection to close legacy perspective on Eclipse 3.7.", e));
                     }
                 }
             }
