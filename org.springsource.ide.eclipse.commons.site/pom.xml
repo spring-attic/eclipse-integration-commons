@@ -53,13 +53,13 @@
 								<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
 
 								<path id="eclipse.classpath">
-									<fileset dir="${settings.localRepository}/org/eclipse/tycho/tycho-p2-runtime">
+									<fileset dir="${localRepository}/org/eclipse/tycho/tycho-bundles-external">
 										<include name="*/eclipse/plugins/org.eclipse.equinox.launcher_*.jar" />
 									</fileset>
 								</path>
 
 								<path id="jarprocessor.classpath">
-									<fileset dir="${settings.localRepository}/org/eclipse/tycho/tycho-p2-runtime">
+									<fileset dir="${localRepository}/org/eclipse/tycho/tycho-bundles-external">
 										<include name="*/eclipse/plugins/org.eclipse.equinox.p2.jarprocessor_*.jar" />
 									</fileset>
 								</path>
@@ -184,12 +184,6 @@
 						<groupId>ant-contrib</groupId>
 						<artifactId>ant-contrib</artifactId>
 						<version>20020829</version>
-					</dependency>
-					<dependency>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>tycho-p2-runtime</artifactId>
-						<version>0.13.0</version>
-						<type>zip</type>
 					</dependency>
 				</dependencies>
 			</plugin>
