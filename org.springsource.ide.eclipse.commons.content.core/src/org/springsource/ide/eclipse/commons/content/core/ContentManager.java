@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
@@ -84,9 +85,16 @@ public class ContentManager {
 
 		private final ContentItem rootItem;
 
+		final CountDownLatch resultLatch = new CountDownLatch(1);
+
 		private DownloadJob(String name, ContentItem rootItem) {
 			super(name);
 			this.rootItem = rootItem;
+		}
+
+		public CountDownLatch getLatch() {
+			return resultLatch;
+
 		}
 
 		@Override
@@ -113,9 +121,11 @@ public class ContentManager {
 						"Failed to determine dependencies of ''{0}'' (''{1}'')", rootItem.getName(), rootItem.getId()),
 						e);
 			}
+			finally {
+				resultLatch.countDown();
+			}
 			return result;
 		}
-
 	}
 
 	public static final String EVENT_REFRESH = "refresh";
