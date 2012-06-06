@@ -130,6 +130,13 @@
          unpack="false"/>
 
    <plugin
+         id="com.springsource.util.common.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="edu.emory.mathcs.backport"
          download-size="0"
          install-size="0"
