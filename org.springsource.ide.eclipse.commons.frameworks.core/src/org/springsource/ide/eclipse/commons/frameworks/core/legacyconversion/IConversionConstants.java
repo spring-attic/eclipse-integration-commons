@@ -42,7 +42,6 @@ public interface IConversionConstants {
     String GRAILS_NEW_PERSPECTIVE_ID = "org.grails.ide.eclipse.perspective"; //$NON-NLS-1$
     
     // ROO
-    // TODO FIXLDS add more roo constants here
     String ROO_OLD_NATURE = "com.springsource.sts.roo.core.nature"; //$NON-NLS-1$
     String ROO_NEW_NATURE = "com.springsource.sts.roo.core.nature"; //$NON-NLS-1$
     
@@ -61,7 +60,7 @@ public interface IConversionConstants {
 
     String STS_OLD_IDE_UI = "com.springsource.sts.ide.ui"; //$NON-NLS-1$
     String STS_NEW_IDE_UI = "org.springsource.ide.eclipse.dashboard.ui"; //$NON-NLS-1$
-    
+        
     String[] STS_OLD_WORKSPACE_PREFS = new String[] {
             "com.springsource.sts.grails.core", //$NON-NLS-1$
             "com.springsource.sts.grails.ui", //$NON-NLS-1$

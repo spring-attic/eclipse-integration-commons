@@ -114,7 +114,8 @@ public class LegacyWorkspaceConverter extends AbstractLegacyConverter implements
     private IStatus convertRooWorkspacePreferences(SubMonitor sub) {
 		sub.subTask("Converting Roo plugin state locations"); //$NON-NLS-1$
 		try {
-			copyPluginStateLocation(ROO_OLD_PLUGIN_NAME, ROO_NEW_PLUGIN_NAME);
+			// Let RooInstallManager migrate the roo.installs content
+			// copyPluginStateLocation(ROO_OLD_PLUGIN_NAME, ROO_NEW_PLUGIN_NAME); 
 			copyPluginStateLocation(ROO_OLD_UI_NAME, ROO_NEW_UI_NAME);
 			return new Status(IStatus.OK, FrameworkCoreActivator.PLUGIN_ID, "Converted legacy Roo plugin state locations"); //$NON-NLS-1$
 		} catch (IOException e) {

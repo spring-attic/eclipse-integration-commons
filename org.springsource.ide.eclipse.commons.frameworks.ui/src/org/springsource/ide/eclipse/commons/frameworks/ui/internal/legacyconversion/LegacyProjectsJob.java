@@ -103,7 +103,6 @@ public class LegacyProjectsJob extends UIJob implements IConversionConstants {
         return converter.getSelectedLegacyProjects() != null;
     }
     
-    // TODO FIXLDS Add any other kinds of checks for roo projects
     public static boolean isLegacyProject(IProject project, boolean isWorkspaceMigration) throws CoreException{
         return project.isAccessible() && 
                 (

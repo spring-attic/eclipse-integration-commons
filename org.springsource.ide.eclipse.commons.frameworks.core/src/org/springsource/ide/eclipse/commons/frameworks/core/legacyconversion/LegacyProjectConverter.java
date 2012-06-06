@@ -11,23 +11,15 @@
 package org.springsource.ide.eclipse.commons.frameworks.core.legacyconversion;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Properties;
 
-import org.eclipse.core.internal.runtime.InternalPlatform;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
@@ -181,8 +173,12 @@ public class LegacyProjectConverter extends AbstractLegacyConverter implements I
         return newAttributes;
     }
 
-    // TODO FIXLDS Convert roo project
-    private void convertRooProject(IProject project, SubMonitor sub) {
-        
+    private void convertRooProject(IProject project, SubMonitor sub) throws Exception {
+        IFolder preferencesFolder = project.getFolder(".settings/"); //$NON-NLS-1$
+        File settingsFile = preferencesFolder.getFile(ROO_OLD_PLUGIN_NAME + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
+        File newSettingsFile = preferencesFolder.getFile(ROO_NEW_PLUGIN_NAME + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
+        copyPreferencesFile(settingsFile, newSettingsFile, ROO_OLD_PLUGIN_NAME, ROO_NEW_PLUGIN_NAME);
+        InstanceScope.INSTANCE.getNode(ROO_OLD_PLUGIN_NAME).sync();
+        preferencesFolder.refreshLocal(IResource.DEPTH_ONE, sub);
     }
 }
