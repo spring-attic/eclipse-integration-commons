@@ -1639,7 +1639,7 @@ public abstract class PluginManagerDialog extends CommandDialog {
 		 * The current selection has priority over the original model version.
 		 * (non-Javadoc)
 		 * 
-		 * @see com.springsource.sts.grails.ui.internal.dialogues.AbstractTreeElement
+		 * @see org.springsource.ide.eclipse.commons.frameworks.ui.internal.plugins.AbstractTreeElement
 		 *      #getVersionModel()
 		 */
 		public PluginVersion getVersionModel() {

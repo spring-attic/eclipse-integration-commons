@@ -170,7 +170,7 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 
 	private static final String EXTENSION_ID_NEW_WIZARD = "org.eclipse.ui.newWizards";
 
-	private static final String GRAILS_WIZARD_ID = "com.springsource.sts.grails.ui.wizard.newGrailsProjectWizard";
+	private static final String GRAILS_WIZARD_ID = "org.grails.ide.eclipse.ui.wizard.newGrailsProjectWizard";
 
 	private static final String ROO_WIZARD_ID = "com.springsource.sts.roo.ui.wizard.newRooProjectWizard";
 

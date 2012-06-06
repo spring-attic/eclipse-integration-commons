@@ -132,7 +132,7 @@ public class StsPerspective implements IPerspectiveFactory {
 		layout.addNewWizardShortcut("org.springframework.ide.eclipse.beans.ui.wizards.newSpringProject");
 		layout.addNewWizardShortcut("com.springsource.sts.roo.ui.wizard.newRooProjectWizard");
 		// layout.addNewWizardShortcut("org.codehaus.groovy.eclipse.ui.groovyProjectWizard");
-		layout.addNewWizardShortcut("com.springsource.sts.grails.ui.wizard.newGrailsProjectWizard");
+		layout.addNewWizardShortcut("org.grails.ide.eclipse.ui.wizard.newGrailsProjectWizard");
 		layout.addNewWizardShortcut("org.eclipse.wst.web.ui.internal.wizards.SimpleWebProjectWizard");
 		layout.addNewWizardShortcut("org.eclipse.jst.servlet.ui.project.facet.WebProjectWizard");
 
@@ -141,7 +141,7 @@ public class StsPerspective implements IPerspectiveFactory {
 		layout.addPerspectiveShortcut("org.eclipse.debug.ui.DebugPerspective");
 		layout.addPerspectiveShortcut("org.eclipse.jdt.ui.JavaHierarchyPerspective");
 		layout.addPerspectiveShortcut("org.eclipse.jdt.ui.JavaBrowsingPerspective");
-		layout.addPerspectiveShortcut("com.springsource.sts.grails.perspective");
+		layout.addPerspectiveShortcut("org.grails.ide.eclipse.perspective");
 
 	}
 }
