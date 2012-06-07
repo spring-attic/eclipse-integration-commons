@@ -1,41 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- For every change done to this document increment the below version -->
-<uaa version="2">
+<uaa version="3">
 	<product id="Spring IDE" root-plugin="org.springframework.ide.eclipse">
 		<feature id="org.springframework.ide.eclipse.ajdt.feature">
 			<plugin id="org.springframework.ide.eclipse.ajdt.ui.xref" />
 			<plugin id="org.springframework.ide.eclipse.ajdt.ui.visualiser" />
-		</feature>
-		<feature id="org.springframework.ide.eclipse.ajdt.feature.source">
-			<plugin id="org.springframework.ide.eclipse.ajdt.ui.xref.source" />
-			<plugin id="org.springframework.ide.eclipse.ajdt.ui.visualiser.source" />
 		</feature>
 		<feature id="org.springframework.ide.eclipse.aop.feature">
 			<plugin id="org.springframework.ide.eclipse.aop.core" />
 			<plugin id="org.springframework.ide.eclipse.aop.ui" />
 			<plugin id="org.springframework.ide.eclipse.aop.ui.matcher" />
 		</feature>
-		<feature id="org.springframework.ide.eclipse.aop.feature.source">
-			<plugin id="org.springframework.ide.eclipse.aop.core.source" />
-			<plugin id="org.springframework.ide.eclipse.aop.ui.source" />
-			<plugin id="org.springframework.ide.eclipse.aop.ui.matcher.source" />
-		</feature>
 		<feature id="org.springframework.ide.eclipse.autowire.feature">
 			<plugin id="org.springframework.ide.eclipse.beans.core.autowire" />
 			<plugin id="org.springframework.ide.eclipse.beans.ui.autowire" />
-		</feature>
-		<feature id="org.springframework.ide.eclipse.autowire.feature.source">
-			<plugin id="org.springframework.ide.eclipse.beans.core.autowire.source" />
-			<plugin id="org.springframework.ide.eclipse.beans.ui.autowire.source" />
 		</feature>
 		<feature id="org.springframework.ide.eclipse.batch.feature">
 			<plugin id="org.springframework.ide.eclipse.batch" />
 			<plugin id="org.springframework.batch.infrastructure" />
 			<plugin id="org.springframework.batch.core" />
-		</feature>
-		<feature id="org.springframework.ide.eclipse.batch.feature.source">
-			<plugin id="org.springframework.ide.eclipse.batch.source" />
-			<plugin id="org.springframework.batch.core.source" />
 		</feature>
 		<feature id="org.springframework.ide.eclipse.feature">
 			<plugin id="org.springframework.ide.eclipse" />
@@ -75,48 +58,10 @@
 			<plugin id="org.springframework.oxm" />
 			<plugin id="org.springframework.transaction" />
 		</feature>
-		<feature id="org.springframework.ide.eclipse.feature.source">
-			<plugin id="org.springframework.ide.eclipse.source" />
-			<plugin id="org.springframework.ide.eclipse.core.source" />
-			<plugin id="org.springframework.ide.eclipse.ui.source" />
-			<plugin id="org.springframework.ide.eclipse.beans.core.source" />
-			<plugin id="org.springframework.ide.eclipse.beans.core.metadata.source" />
-			<plugin id="org.springframework.ide.eclipse.beans.ui.source" />
-			<plugin id="org.springframework.ide.eclipse.beans.ui.graph.source" />
-			<plugin id="org.springframework.ide.eclipse.beans.ui.editor.source" />
-			<plugin id="org.springframework.ide.eclipse.beans.ui.search.source" />
-			<plugin id="org.springframework.ide.eclipse.beans.ui.refactoring.source" />
-			<plugin id="edu.emory.mathcs.backport.source" />
-			<plugin id="com.springsource.org.antlr.source" />
-			<plugin id="javax.annotation.source" />
-			<plugin id="com.springsource.javax.jms.source" />
-			<plugin id="org.apache.commons.collections.source" />
-			<plugin id="org.apache.commons.logging.source" />
-			<plugin id="com.springsource.org.aspectj.weaver.source" />
-			<plugin id="com.springsource.org.objectweb.asm.source" />
-			<plugin id="com.springsource.org.objectweb.asm.commons.source" />
-			<plugin id="org.springframework.aop.source" />
-			<plugin id="org.springframework.asm.source" />
-			<plugin id="org.springframework.beans.source" />
-			<plugin id="org.springframework.context.source" />
-			<plugin id="org.springframework.context.support.source" />
-			<plugin id="org.springframework.core.source" />
-			<plugin id="org.springframework.expression.source" />
-			<plugin id="org.springframework.jdbc.source" />
-			<plugin id="org.springframework.jms.source" />
-			<plugin id="org.springframework.orm.source" />
-			<plugin id="org.springframework.oxm.source" />
-			<plugin id="org.springframework.transaction.source" />
-		</feature>
 		<feature id="org.springframework.ide.eclipse.integration.feature">
 			<plugin id="org.springframework.ide.eclipse.integration" />
 			<plugin id="org.springframework.xml" />
 			<plugin id="org.springframework.ws" />
-		</feature>
-		<feature id="org.springframework.ide.eclipse.integration.feature.source">
-			<plugin id="org.springframework.ide.eclipse.integration.source" />
-			<plugin id="org.springframework.xml.source" />
-			<plugin id="org.springframework.ws.source" />
 		</feature>
 		<feature id="org.springframework.ide.eclipse.mylyn.feature">
 			<plugin id="org.springframework.ide.eclipse.webflow.mylyn" />
@@ -124,18 +69,9 @@
 			<plugin id="org.springframework.ide.eclipse.aop.mylyn" />
 			<plugin id="org.springframework.ide.eclipse.mylyn" />
 		</feature>
-		<feature id="org.springframework.ide.eclipse.mylyn.feature.source">
-			<plugin id="org.springframework.ide.eclipse.webflow.mylyn.source" />
-			<plugin id="org.springframework.ide.eclipse.beans.mylyn.source" />
-			<plugin id="org.springframework.ide.eclipse.aop.mylyn.source" />
-			<plugin id="org.springframework.ide.eclipse.mylyn.source" />
-		</feature>
 		<feature id="org.springframework.ide.eclipse.osgi.feature">
 			<plugin id="org.springframework.ide.eclipse.osgi" />
 			<plugin id="org.springframework.ide.eclipse.osgi.targetdefinition" />
-		</feature>
-		<feature id="org.springframework.ide.eclipse.osgi.feature.source">
-			<plugin id="org.springframework.ide.eclipse.osgi.source" />
 		</feature>
 		<feature id="org.springframework.ide.eclipse.security.feature">
 			<plugin id="org.springframework.security.core" />
@@ -143,13 +79,6 @@
 			<plugin id="org.springframework.security.web" />
 			<plugin id="org.springframework.ide.eclipse.security" />
 			<plugin id="org.apache.commons.codec" />
-		</feature>
-		<feature id="org.springframework.ide.eclipse.security.feature.source">
-			<plugin id="org.springframework.security.core.source" />
-			<plugin id="org.springframework.security.config.source" />
-			<plugin id="org.springframework.security.web.source" />
-			<plugin id="org.springframework.ide.eclipse.security.source" />
-			<plugin id="org.apache.commons.codec.source" />
 		</feature>
 		<feature id="org.springframework.ide.eclipse.webflow.feature">
 			<plugin id="org.springframework.ide.eclipse.webflow.core" />
@@ -168,29 +97,10 @@
 			<plugin id="com.springsource.javax.servlet.jsp.jstl" />
 			<plugin id="com.springsource.org.apache.myfaces.javax.faces" />
 		</feature>
-		<feature id="org.springframework.ide.eclipse.webflow.feature.source">
-			<plugin id="org.springframework.ide.eclipse.webflow.core.source" />
-			<plugin id="org.springframework.ide.eclipse.webflow.ui.source" />
-			<plugin id="org.springframework.ide.eclipse.webflow.ui.editor.source" />
-			<plugin id="org.springframework.ide.eclipse.webflow.ui.graph.source" />
-			<plugin id="org.springframework.webflow.source" />
-			<plugin id="org.springframework.binding.source" />
-			<plugin id="org.springframework.faces.source" />
-			<plugin id="org.springframework.js.source" />
-			<plugin id="com.springsource.javax.el.source" />
-			<plugin id="org.springframework.web.source" />
-			<plugin id="org.springframework.web.servlet.source" />
-			<plugin id="com.springsource.javax.servlet.source" />
-			<plugin id="com.springsource.javax.servlet.jsp.source" />
-			<plugin id="com.springsource.javax.servlet.jsp.jstl.source" />
-			<plugin id="com.springsource.org.apache.myfaces.javax.faces.source" />
-		</feature>
 	</product>
 	<product id="SpringSource Tool Suite" root-plugin="com.springsource.sts">
 		<feature id="com.springsource.sts">
 			<plugin id="com.springsource.sts" />
-			<plugin id="com.springsource.sts.ide.ui" />
-			<plugin id="com.springsource.sts.bestpractices" />
 			<plugin id="com.springsource.sts.core" />
 			<plugin id="com.springsource.sts.ui" />
 			<plugin id="com.springsource.sts.ide.osgi" />
@@ -203,23 +113,20 @@
 			<plugin id="com.springsource.sts.config.flow" />
 			<plugin id="com.springsource.sts.content.core" />
 		</feature>
+		<feature id="org.springsource.ide.eclipse.commons-feature">
+			<plugin id="org.springsource.ide.eclipse.commons.configurator"/>
+			<plugin id="org.springsource.ide.eclipse.commons.core"/>
+			<plugin id="org.springsource.ide.eclipse.commons.ui"/>
+			<plugin id="org.springsource.ide.eclipse.commons.frameworks.core"/>
+			<plugin id="org.springsource.ide.eclipse.commons.frameworks.ui"/>
+			<plugin id="org.springsource.ide.eclipse.dashboard.ui"/>
+		</feature>
 		<feature id="com.springsource.sts.authoring">
 			<plugin id="com.springsource.sts.authoring" />
 		</feature>
-		<feature id="com.springsource.sts.grails">
-			<plugin id="com.springsource.sts.grails.core" />
-			<plugin id="com.springsource.sts.grails.ui" />
-			<plugin id="com.springsource.sts.grails.editor.groovy" />
-			<plugin id="com.springsource.sts.grails.editor.gsp" />
-			<plugin id="com.springsource.sts.grails.explorer" />
-			<plugin id="com.springsource.sts.frameworks.core" />
-			<plugin id="com.springsource.sts.frameworks.ui" />
-			<plugin id="com.springsource.sts.grails.runonserver" />
-			<plugin id="com.springsource.sts.groovy.debug.core" />
-			<plugin id="com.springsource.sts.groovy.debug.ui" />
-		</feature>
 		<feature id="com.springsource.sts.maven">
 			<plugin id="com.springsource.sts.maven" />
+			<plugin id="com.springsource.sts.maven.legacy" />
 		</feature>
 		<feature id="com.springsource.sts.package" />
 		<feature id="com.springsource.sts.roo">
@@ -227,9 +134,6 @@
 			<plugin id="com.springsource.sts.roo.ui" />
 			<plugin id="com.springsource.sts.frameworks.core" />
 			<plugin id="com.springsource.sts.frameworks.ui" />
-		</feature>
-		<feature id="com.springsource.sts.runtimeerroranalysis">
-			<plugin id="com.springsource.sts.runtimeerroranalysis" />
 		</feature>
 		<feature id="com.springsource.sts.server.cf">
 			<plugin id="com.springsource.sts.server.cloudfoundry.core" />
@@ -265,107 +169,74 @@
 			<plugin id="com.springsource.sts.server.tc.vmware.core" />
 			<plugin id="com.springsource.sts.server.tc.vmware.ui" />
 		</feature>
+		<feature id="org.grails.ide.eclipse">
+			<plugin id="org.grails.ide.eclipse.core" />
+			<plugin id="org.grails.ide.eclipse.explorer" />
+			<plugin id="org.grails.ide.eclipse.runonserver" />
+			<plugin id="org.grails.ide.eclipse.groovy.debug.core" />
+		</feature>
+		<feature id="com.springsource.sts.grails">
+			<plugin id="com.springsource.sts.grails.core" />
+			<plugin id="com.springsource.sts.grails.explorer" />
+			<plugin id="com.springsource.sts.grails.runonserver" />
+			<plugin id="com.springsource.sts.grails.groovy.debug.core" />
+		</feature>
 	</product>
 	<product id="Eclipse AJDT" root-plugin="org.eclipse.ajdt.core">
-		<feature id="org.eclipse.ajdt.source">
-			<plugin id="org.eclipse.ajdt.core.source" />
-			<plugin id="org.eclipse.contribution.visualiser.source" />
-			<plugin id="org.eclipse.ajdt.ui.source" />
-			<plugin id="org.eclipse.ajdt.examples.source" />
-			<plugin id="org.eclipse.ajdt.mylyn.ui.source" />
-			<plugin id="org.eclipse.contribution.weaving.jdt.source" />
-			<plugin id="org.eclipse.contribution.xref.ui.source" />
-			<plugin id="org.eclipse.contribution.xref.core.source" />
-		</feature>
 		<feature id="org.eclipse.ajdt">
-			<plugin id="org.aspectj.ajde" />
-			<plugin id="org.aspectj.runtime" />
-			<plugin id="org.aspectj.weaver" />
 			<plugin id="org.eclipse.ajdt.core" />
-			<plugin id="org.eclipse.contribution.visualiser" />
-			<plugin id="org.eclipse.ajdt.ui" />
-			<plugin id="org.eclipse.ajdt.examples" />
 			<plugin id="org.eclipse.aspectj" />
-			<plugin id="org.eclipse.ajdt.doc.user" />
-			<plugin id="org.eclipse.ajdt.mylyn.ui" />
-			<plugin id="org.eclipse.contribution.weaving.jdt" />
-			<plugin id="org.eclipse.contribution.xref.ui" />
-			<plugin id="org.eclipse.contribution.xref.core" />
-		</feature>
-		<feature id="org.eclipse.contribution.weaving.source">
-			<plugin id="org.eclipse.contribution.weaving.jdt.source" />
-			<plugin id="org.aspectj.runtime.source" />
 		</feature>
 		<feature id="org.eclipse.contribution.weaving">
 			<plugin id="org.eclipse.contribution.weaving.jdt" />
-			<plugin id="org.aspectj.runtime" />
-		</feature>
-		<feature id="org.eclipse.contribution.xref.source">
-			<plugin id="org.eclipse.contribution.xref.core.source" />
-			<plugin id="org.eclipse.contribution.xref.ui.source" />
-			<plugin id="org.aspectj.runtime.source" />
 		</feature>
 		<feature id="org.eclipse.contribution.xref">
 			<plugin id="org.eclipse.contribution.xref.core" />
-			<plugin id="org.eclipse.contribution.xref.ui" />
-			<plugin id="org.aspectj.runtime" />
 		</feature>
 	</product>
 	<product id="Groovy Eclipse" root-plugin="org.codehaus.groovy.eclipse.core">
-		<feature id="org.codehaus.groovy.eclipse.feature.source">
-			<plugin id="org.codehaus.groovy.eclipse.codebrowsing.source" />
-			<plugin id="org.codehaus.groovy.eclipse.ui.source" />
-			<plugin id="org.codehaus.groovy.eclipse.core.source" />
-			<plugin id="org.codehaus.groovy.eclipse.codeassist.completion.source" />
-			<plugin id="org.codehaus.groovy.eclipse.astviews.source" />
-			<plugin id="org.codehaus.groovy.eclipse.refactoring.source" />
-			<plugin id="org.eclipse.jdt.groovy.core.source" />
-		</feature>
 		<feature id="org.codehaus.groovy.eclipse.feature">
-			<plugin id="org.codehaus.groovy.eclipse.codebrowsing" />
-			<plugin id="org.codehaus.groovy.eclipse.ui" />
-			<plugin id="org.codehaus.groovy.eclipse.core" />
-			<plugin id="org.codehaus.groovy.eclipse.codeassist.completion" />
-			<plugin id="org.codehaus.groovy.eclipse.astviews" />
-			<plugin id="org.codehaus.groovy.eclipse.refactoring" />
-			<plugin id="org.codehaus.groovy.eclipse" />
 			<plugin id="org.eclipse.jdt.groovy.core" />
 			<plugin id="org.codehaus.groovy.eclipse.ant" />
-		</feature>
-		<feature id="org.codehaus.groovy.jdt.patch.source">
-			<plugin id="org.eclipse.jdt.core.source" />
-			<plugin id="org.codehaus.groovy.eclipse.source" />
-		</feature>
-		<feature id="org.codehaus.groovy.jdt.patch">
-			<plugin id="org.codehaus.groovy.eclipse" />
-		</feature>
-		<feature id="org.codehaus.groovy.m2eclipse.source">
-			<plugin id="org.codehaus.groovy.m2eclipse.source" />
 		</feature>
 		<feature id="org.codehaus.groovy.m2eclipse">
 			<plugin id="org.codehaus.groovy.m2eclipse" />
 		</feature>
 		<feature id="org.codehaus.groovy16.feature">
 			<plugin id="org.codehaus.groovy" />
-			<plugin id="org.codehaus.groovy.eclipse" />
 		</feature>
 		<feature id="org.codehaus.groovy17.feature">
 			<plugin id="org.codehaus.groovy" />
-			<plugin id="org.codehaus.groovy.eclipse" />
+		</feature>
+		<feature id="org.codehaus.groovy18.feature">
+			<plugin id="org.codehaus.groovy" />
+		</feature>
+		<feature id="org.codehaus.groovy20.feature">
+			<plugin id="org.codehaus.groovy" />
 		</feature>
 	</product>
-	<product id="Gradle Plugin for STS" root-plugin="com.springsource.sts.gradle.core">
+	<product id="Gradle Plugin for STS" root-plugin="org.springsource.ide.eclipse.gradle.core">
 		<feature id="com.springsource.sts.gradle.feature">
 			<plugin id="com.springsource.sts.gradle.core" />
 			<plugin id="com.springsource.sts.gradle.ui" />
 		</feature>
+		<feature id="org.springsource.ide.eclipse.gradle.feature">
+			<plugin id="org.springsource.ide.eclipse.gradle.core" />
+			<plugin id="org.springsource.ide.eclipse.gradle.ui" />
+		</feature>
 	</product>
-	<product id="Cloud Foundry for STS" root-plugin="com.cloudfoundry.sts.server.core">
+	<product id="Cloud Foundry for STS" root-plugin="org.cloudfoundry.ide.eclipse.server.core">
 		<feature id="com.cloudfoundry.sts.server">
-			<plugin id="com.cloudfoundry.sts.server.core" />
-			<plugin id="com.cloudfoundry.sts.server.ui" />
-			<plugin id="com.cloudfoundry.sts.server.rse" />
-			<plugin id="com.cloudfoundry.sts.server.ui.branding" />
+            <plugin id="com.cloudfoundry.sts.server.core" />
+            <plugin id="com.cloudfoundry.sts.server.ui" />
+            <plugin id="com.cloudfoundry.sts.server.rse" />
+            <plugin id="com.cloudfoundry.sts.server.ui.branding" />
+        </feature>
+		<feature id="org.cloudfoundry.ide.eclipse.server">
+			<plugin id="org.cloudfoundry.ide.eclipse.server.core" />
+			<plugin id="org.cloudfoundry.ide.eclipse.server.rse" />
+			<plugin id="org.cloudfoundry.ide.eclipse.server.ui" />
+			<plugin id="org.cloudfoundry.ide.eclipse.server.branding" />
 		</feature>
 	</product>
 </uaa>
