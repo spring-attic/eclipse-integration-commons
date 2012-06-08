@@ -356,7 +356,7 @@
 				<keypass>${signing.key.password}</keypass>
 			</configuration>
 		</plugin>
-
+		
     </plugins>
     <pluginManagement>
       <plugins>
