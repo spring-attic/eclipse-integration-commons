@@ -128,12 +128,20 @@
 			<plugin id="com.springsource.sts.maven" />
 			<plugin id="com.springsource.sts.maven.legacy" />
 		</feature>
+		<feature id="org.springframework.ide.eclipse.maven">
+			<plugin id="org.springframework.ide.eclipse.maven" />
+			<plugin id="org.springframework.ide.eclipse.maven.legacy" />
+		</feature>
 		<feature id="com.springsource.sts.package" />
 		<feature id="com.springsource.sts.roo">
 			<plugin id="com.springsource.sts.roo.core" />
 			<plugin id="com.springsource.sts.roo.ui" />
 			<plugin id="com.springsource.sts.frameworks.core" />
 			<plugin id="com.springsource.sts.frameworks.ui" />
+		</feature>
+		<feature id="org.springframework.ide.eclipse.roo">
+			<plugin id="org.springframework.ide.eclipse.roo.core" />
+			<plugin id="org.springframework.ide.eclipse.roo.ui" />
 		</feature>
 		<feature id="com.springsource.sts.server.cf">
 			<plugin id="com.springsource.sts.server.cloudfoundry.core" />
@@ -151,6 +159,12 @@
 			<plugin id="com.springsource.sts.server.tc.ui" />
 			<plugin id="com.springsource.sts.server.tc.reloading" />
 			<plugin id="com.springsource.sts.server.insight.ui" />
+		</feature>
+		<feature id="com.vmware.vfabric.ide.eclipse.tcserver">
+			<plugin id="com.vmware.vfabric.ide.eclipse.tcserver.core"/>
+			<plugin id="com.vmware.vfabric.ide.eclipse.tcserver.ui"/>
+			<plugin id="com.vmware.vfabric.ide.eclipse.tcserver.reloading"/>
+			<plugin id="com.vmware.vfabric.ide.eclipse.tcserver.insight.ui"/>
 		</feature>
 		<feature id="com.springsource.sts.support">
 			<plugin id="com.springsource.sts.support.core" />
