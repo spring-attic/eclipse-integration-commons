@@ -183,6 +183,11 @@
 			<plugin id="com.springsource.sts.server.tc.vmware.core" />
 			<plugin id="com.springsource.sts.server.tc.vmware.ui" />
 		</feature>
+    </product>
+	<product id="Groovy Grails Tool Suite" root-plugin="com.springsource.ggts">
+		<feature id="com.springsource.ggts">
+			<plugin id="com.springsource.ggts" />
+		</feature>
 		<feature id="org.grails.ide.eclipse">
 			<plugin id="org.grails.ide.eclipse.core" />
 			<plugin id="org.grails.ide.eclipse.explorer" />
