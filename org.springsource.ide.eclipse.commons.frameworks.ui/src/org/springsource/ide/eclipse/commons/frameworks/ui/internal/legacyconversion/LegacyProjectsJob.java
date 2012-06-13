@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.ui.internal.legacyconversion;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -31,6 +33,7 @@ import org.springsource.ide.eclipse.commons.frameworks.core.legacyconversion.Leg
  * Checks entire workspace for legacy projects
  * 
  * @author Andrew Eisenberg
+ * @author Leo Dos Santos
  * @since 3.0.0
  */
 public class LegacyProjectsJob extends UIJob implements IConversionConstants {
@@ -109,7 +112,14 @@ public class LegacyProjectsJob extends UIJob implements IConversionConstants {
                         // only migrate grails projects at workspace migration time.
                         // imported grails projects are handled by the GrailsProjectVersionFixer
                         (project.hasNature(GRAILS_OLD_NATURE) && isWorkspaceMigration) ||
-                        (project.hasNature(ROO_OLD_NATURE) && isWorkspaceMigration)
+                        (project.hasNature(ROO_OLD_NATURE) && needsRooPrefMigration(project))
                  );
     }
+    
+    private static boolean needsRooPrefMigration(IProject project) {
+    	IFolder preferencesFolder = project.getFolder(".settings/"); //$NON-NLS-1$
+        File settingsFile = preferencesFolder.getFile(ROO_NEW_PLUGIN_NAME + ".prefs").getLocation().toFile(); //$NON-NLS-1$ //$NON-NLS-2$
+    	return !settingsFile.exists();
+    }
+    
 }
