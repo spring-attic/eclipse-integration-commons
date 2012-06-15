@@ -23,17 +23,17 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-
 /**
  * Stores meta information about a downloadable item such as a tutorial or
  * sample project. Provides static helper methods for serialization.
  * @author Terry Denney
  * @author Steffen Pingel
+ * @author Kaitlin Duck Sherwood
  */
 public class Descriptor {
-	
+
 	/**
-	 * Defines a dependency on a another downloadable item.	
+	 * Defines a dependency on a another downloadable item.
 	 */
 	public static class Dependency {
 
@@ -44,7 +44,7 @@ public class Descriptor {
 		public Dependency(String id) {
 			this(id, null);
 		}
-		
+
 		public Dependency(String id, String version) {
 			this.id = id;
 			this.version = version;
@@ -233,9 +233,9 @@ public class Descriptor {
 	private boolean local;
 
 	private String filter;
-	
+
 	private String requires;
-	
+
 	private String kind;
 
 	private Set<Dependency> dependencies;
@@ -280,11 +280,11 @@ public class Descriptor {
 	public String getRequires() {
 		return requires;
 	}
-	
+
 	public String getFilter() {
 		return filter;
 	}
-	
+
 	public String getKind() {
 		return kind;
 	}
@@ -350,6 +350,7 @@ public class Descriptor {
 		this.filter = filter;
 		propertyChangeSupport.firePropertyChange("filter", oldValue, filter);
 	}
+
 	public void setRequires(String requires) {
 		String oldValue = requires;
 		this.requires = requires;
@@ -384,6 +385,11 @@ public class Descriptor {
 		String oldValue = this.version;
 		this.version = version;
 		propertyChangeSupport.firePropertyChange("version", oldValue, version);
+	}
+
+	@Override
+	public String toString() {
+		return this.name;
 	}
 
 }
