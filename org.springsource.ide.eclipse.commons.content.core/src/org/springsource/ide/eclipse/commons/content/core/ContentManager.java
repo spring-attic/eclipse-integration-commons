@@ -208,6 +208,11 @@ public class ContentManager {
 		return defaultStateFile;
 	}
 
+	/**
+	 * @param item
+	 * @return
+	 * @throws CoreException
+	 */
 	public List<ContentItem> getDependencies(ContentItem item) throws CoreException {
 		List<ContentItem> results = new ArrayList<ContentItem>();
 
@@ -220,9 +225,10 @@ public class ContentManager {
 			for (Dependency dependency : dependencies) {
 				ContentItem dependentItem = itemById.get(dependency.getId());
 				if (dependentItem == null) {
-					throw new CoreException(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, NLS.bind(
+					String message = NLS.bind(
 							"Failed to resolve dependencies: ''{0}'' requires ''{1}'' which is not available",
-							next.getId(), dependency.getId())));
+							next.getId(), dependency.getId());
+					throw new CoreException(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message));
 				}
 				if (dependentItem.needsDownload()) {
 					if (!results.contains(dependentItem)) {
@@ -353,8 +359,9 @@ public class ContentManager {
 				reader.read(in);
 			}
 			catch (Exception e) {
-				throw new CoreException(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, "Error downloading "
-						+ location + " - Internet connection might be down", e));
+				String message = NLS.bind("Error downloading {0} - Internet connection might be down", location);
+				throw new CoreException(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e));
+
 			}
 			finally {
 				debug("exiting readFromURL: " + location);
@@ -362,19 +369,21 @@ public class ContentManager {
 					in.close();
 				}
 				catch (IOException e) {
-					throw new CoreException(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, "No route to "
-							+ location + " - Internet connection might be down", e));
+					String message = NLS.bind("No route to {0} - Internet connection might be down", location);
+					throw new CoreException(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e));
+
 				}
 			}
 		}
 		catch (URISyntaxException e) {
 			debug(e);
-			throw new CoreException(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID,
-					"I/O error while retrieving data", e));
+			String message = NLS.bind("I/O error while retrieving data: ", e);
+			throw new CoreException(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e));
 		}
 		catch (CoreException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, "Error while retrieving "
-					+ location, e));
+			String message = NLS.bind("Error while retrieving {0}", location);
+			throw new CoreException(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e));
+
 		}
 	}
 
@@ -408,8 +417,9 @@ public class ContentManager {
 									}
 								}
 								catch (CoreException e) {
-									result.add(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, NLS.bind(
-											"Error while parsing ''{0}''", descriptorFile.getAbsolutePath()), e));
+									String message = NLS.bind("Error while parsing ''{0}''",
+											descriptorFile.getAbsolutePath());
+									result.add(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e));
 								}
 							}
 						}
@@ -429,26 +439,22 @@ public class ContentManager {
 					}
 				}
 				catch (CoreException e) {
-					result.add(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, NLS.bind(
-							"Error while downloading or parsing ''{0}''", descriptorLocation), e));
+					String message = NLS.bind("Error while downloading or parsing ''{0}'':\n\n{1}", descriptorLocation,
+							e);
+					result.add(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e));
+
 				}
 			}
 
 			// store on disk
 			try {
-				// if (reader.getDescriptors().size() > 0) {
 				reader.write(targetFile);
 				init();
-				// }
-				// else {
-				// result.add(new Status(IStatus.WARNING,
-				// ContentPlugin.PLUGIN_ID, NLS.bind(
-				// "No URLs found in ''{0}''", targetFile.getAbsolutePath())));
-				// }
 			}
 			catch (CoreException e) {
-				result.add(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, NLS.bind(
-						"Failed to store updated descriptors to ''{0}''", targetFile.getAbsolutePath()), e));
+				String message = NLS.bind("Failed to store updated descriptors to ''{0}''",
+						targetFile.getAbsolutePath());
+				result.add(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e));
 			}
 
 			return result;
