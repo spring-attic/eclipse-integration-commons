@@ -33,6 +33,7 @@
 				  <quiet>true</quiet>
 				  <files>
 					<file>${dist.properties}</file>
+					<file>${signing.properties}</file>
 				  </files>
 				</configuration>
 			  </execution>
