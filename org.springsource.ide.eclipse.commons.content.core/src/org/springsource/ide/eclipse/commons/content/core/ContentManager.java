@@ -266,22 +266,6 @@ public class ContentManager {
 
 	private Set<String> getRemoteDescriptorLocations() {
 		return new HashSet<String>(Arrays.asList(ResourceProvider.getUrls(RESOURCE_CONTENT_DESCRIPTORS)));
-		// Set<String> descriptorLocations = new HashSet<String>();
-		// IExtensionRegistry registry = Platform.getExtensionRegistry();
-		// IExtensionPoint extensionPoint =
-		// registry.getExtensionPoint(ContentPlugin.PLUGIN_ID + ".descriptors");
-		// IExtension[] extensions = extensionPoint.getExtensions();
-		// for (IExtension element : extensions) {
-		// IConfigurationElement[] elements =
-		// element.getConfigurationElements();
-		// for (IConfigurationElement element2 : elements) {
-		// String url = element2.getAttribute("url");
-		// if (url != null && !"".equals(url)) {
-		// descriptorLocations.add(url);
-		// }
-		// }
-		// }
-		// return descriptorLocations;
 	}
 
 	public File getStateFile() {
@@ -292,7 +276,8 @@ public class ContentManager {
 		itemById.clear();
 		itemsByKind.clear();
 
-		MultiStatus result = new MultiStatus(ContentPlugin.PLUGIN_ID, 0, "Reading of content failed", null);
+		MultiStatus result = new MultiStatus(ContentPlugin.PLUGIN_ID, 0, NLS.bind("Reading of content failed", null),
+				null);
 
 		File file = getStateFile();
 		if (file != null && file.exists()) {
