@@ -265,6 +265,7 @@
             <configuration>
               <files>
                 <file>${project.build.directory}/git.properties</file>
+				<file>${sign.properties}</file>
               </files>
               <!-- do not fail if properties file does not exist to support, required to build eclipse-repository projects -->
               <quiet>true</quiet>
