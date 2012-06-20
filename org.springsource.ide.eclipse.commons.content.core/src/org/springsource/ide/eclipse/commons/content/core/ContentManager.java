@@ -385,28 +385,31 @@ public class ContentManager {
 					null);
 			DescriptorReader reader = new DescriptorReader();
 
-			// local descriptors
+			// examine the install directory, set all content items found there
+			// to be local.
 			File dir = getInstallDirectory();
 			File[] children = dir.listFiles();
 			if (children != null) {
 				SubMonitor loopProgress = progress.newChild(30).setWorkRemaining(children.length);
 				for (File childDirectory : children) {
 					if (childDirectory.isDirectory()) {
-						for (String filename : DESCRIPTOR_FILENAMES) {
-							File descriptorFile = new File(childDirectory, filename);
-							if (descriptorFile.exists()) {
-								try {
-									List<Descriptor> localDescriptors = reader.read(descriptorFile);
-									for (Descriptor descriptor : localDescriptors) {
-										descriptor.setLocal(true);
-									}
-								}
-								catch (CoreException e) {
-									String message = NLS.bind("Error while parsing ''{0}''",
-											descriptorFile.getAbsolutePath());
-									result.add(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e));
+						IStatus descriptorParseStatus = setDescriptorsToLocal(reader, childDirectory);
+						if (descriptorParseStatus == null) {
+							// Files downloaded directly from template.xml (as
+							// opposed to via descriptors.xml) can be in a
+							// subdirectory when they first get extracted. They
+							// will eventually get moved up one directory level,
+							// but that might not happen by the time we reach
+							// here.
+							File[] grandchildren = childDirectory.listFiles();
+							for (File grandchildDirectory : grandchildren) {
+								if (grandchildDirectory.isDirectory()) {
+									descriptorParseStatus = setDescriptorsToLocal(reader, grandchildDirectory);
 								}
 							}
+						}
+						if (!descriptorParseStatus.isOK()) {
+							result.add(descriptorParseStatus);
 						}
 					}
 					loopProgress.worked(1);
@@ -447,6 +450,32 @@ public class ContentManager {
 		finally {
 			isRefreshing = false;
 			progress.done();
+		}
+	}
+
+	public IStatus setDescriptorsToLocal(DescriptorReader reader, File directory) {
+		boolean descriptorFound = false;
+		for (String filename : DESCRIPTOR_FILENAMES) {
+			File descriptorFile = new File(directory, filename);
+			if (descriptorFile.exists()) {
+				descriptorFound = true;
+				try {
+					List<Descriptor> localDescriptors = reader.read(descriptorFile);
+					for (Descriptor descriptor : localDescriptors) {
+						descriptor.setLocal(true);
+					}
+				}
+				catch (CoreException e) {
+					String message = NLS.bind("Error while parsing ''{0}''", descriptorFile.getAbsolutePath());
+					return new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e);
+				}
+			}
+		}
+		if (descriptorFound) {
+			return new Status(IStatus.OK, ContentPlugin.PLUGIN_ID, "everything is okay");
+		}
+		else {
+			return null;
 		}
 	}
 
