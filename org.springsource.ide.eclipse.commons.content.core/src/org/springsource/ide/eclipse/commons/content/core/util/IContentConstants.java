@@ -12,6 +12,7 @@ package org.springsource.ide.eclipse.commons.content.core.util;
 
 /**
  * @author Terry Denney
+ * @author Kaitlin Duck Sherwood
  */
 public interface IContentConstants {
 
@@ -26,6 +27,8 @@ public interface IContentConstants {
 	public static String TUTORIAL_DATA_FILE_NAME = "tutorial.xml";
 
 	public static final String TEMPLATE_DATA_FILE_NAME = "template.xml";
+
+	public static final String WIZARD_DATA_FILE_NAME = "wizard.json";
 
 	public static int ERROR_MISSING_PROJECT = 1;
 
