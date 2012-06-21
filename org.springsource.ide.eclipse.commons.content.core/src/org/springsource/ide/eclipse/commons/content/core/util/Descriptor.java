@@ -352,19 +352,19 @@ public class Descriptor {
 	}
 
 	public void setKind(String kind) {
-		String oldValue = kind;
+		String oldValue = this.kind;
 		this.kind = kind;
 		propertyChangeSupport.firePropertyChange("kind", oldValue, kind);
 	}
 
 	public void setFilter(String filter) {
-		String oldValue = filter;
+		String oldValue = this.filter;
 		this.filter = filter;
 		propertyChangeSupport.firePropertyChange("filter", oldValue, filter);
 	}
 
 	public void setRequires(String requires) {
-		String oldValue = requires;
+		String oldValue = this.requires;
 		this.requires = requires;
 		propertyChangeSupport.firePropertyChange("requires", oldValue, requires);
 	}
