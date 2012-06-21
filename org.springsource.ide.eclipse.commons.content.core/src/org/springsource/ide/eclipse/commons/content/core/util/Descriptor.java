@@ -118,6 +118,8 @@ public class Descriptor {
 
 	private static final String ATTRIBUTE_REQUIRES = "requires";
 
+	private static final String ATTRIBUTE_REQUIRES_BUNDLE = "requiresbundle";
+
 	private static final String ATTRIBUTE_FILTER = "filter";
 
 	private static final String NODE_DESCRIPTION = "description";
@@ -168,6 +170,7 @@ public class Descriptor {
 		info.setKind(ContentUtil.getAttributeValue(node, ATTRIBUTE_KIND));
 		info.setFilter(ContentUtil.getAttributeValue(node, ATTRIBUTE_FILTER));
 		info.setRequires(ContentUtil.getAttributeValue(node, ATTRIBUTE_REQUIRES));
+		info.setRequiresBundle(ContentUtil.getAttributeValue(node, ATTRIBUTE_REQUIRES_BUNDLE));
 		try {
 			info.setSize(Long.parseLong(ContentUtil.getAttributeValue(node, ATTRIBUTE_SIZE)));
 		}
@@ -197,6 +200,9 @@ public class Descriptor {
 		}
 		if (descriptor.getRequires() != null) {
 			node.setAttribute(ATTRIBUTE_REQUIRES, descriptor.getRequires());
+		}
+		if (descriptor.getRequiresBundle() != null) {
+			node.setAttribute(ATTRIBUTE_REQUIRES_BUNDLE, descriptor.getRequiresBundle());
 		}
 		node.setAttribute(ATTRIBUTE_LOCAL, Boolean.toString(descriptor.isLocal()));
 
@@ -242,6 +248,8 @@ public class Descriptor {
 
 	private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
+	private String requiresBundle;
+
 	public Descriptor() {
 	}
 
@@ -279,6 +287,10 @@ public class Descriptor {
 
 	public String getRequires() {
 		return requires;
+	}
+
+	public String getRequiresBundle() {
+		return requiresBundle;
 	}
 
 	public String getFilter() {
@@ -355,6 +367,12 @@ public class Descriptor {
 		String oldValue = requires;
 		this.requires = requires;
 		propertyChangeSupport.firePropertyChange("requires", oldValue, requires);
+	}
+
+	public void setRequiresBundle(String requiresBundle) {
+		String oldValue = this.requiresBundle;
+		this.requiresBundle = requiresBundle;
+		propertyChangeSupport.firePropertyChange(ATTRIBUTE_REQUIRES_BUNDLE, oldValue, requiresBundle);
 	}
 
 	public void setLocal(boolean local) {
