@@ -456,8 +456,10 @@ public class ContentManager {
 
 			// store on disk
 			try {
-				reader.write(targetFile);
-				init();
+				if (result.isOK()) {
+					reader.write(targetFile);
+					init();
+				}
 			}
 			catch (CoreException e) {
 				String message = NLS.bind("Failed to store updated descriptors to ''{0}''",
