@@ -65,6 +65,16 @@ public class ContentManager {
 	// lightweight lock
 	private boolean isRefreshing = false;
 
+	private boolean isDirty = false;
+
+	public boolean isDirty() {
+		return isDirty;
+	}
+
+	public void setDirty() {
+		isDirty = true;
+	}
+
 	public boolean isRefreshing() {
 		return isRefreshing;
 	}
@@ -163,6 +173,7 @@ public class ContentManager {
 		itemById = new HashMap<String, ContentItem>();
 		itemsByKind = new HashMap<String, Set<ContentItem>>();
 		listeners = new CopyOnWriteArrayList<PropertyChangeListener>();
+		isDirty = true;
 	}
 
 	public void addListener(PropertyChangeListener listener) {
@@ -273,6 +284,10 @@ public class ContentManager {
 	}
 
 	public void init() {
+		if (!isDirty()) {
+			return;
+		}
+
 		itemById.clear();
 		itemsByKind.clear();
 
@@ -438,6 +453,7 @@ public class ContentManager {
 			try {
 				reader.write(targetFile);
 				init();
+				isDirty = false;
 			}
 			catch (CoreException e) {
 				String message = NLS.bind("Failed to store updated descriptors to ''{0}''",
