@@ -388,6 +388,11 @@ public class ContentManager {
 	}
 
 	public IStatus refresh(IProgressMonitor monitor) {
+		if (!isDirty()) {
+			String message = NLS.bind("No change to descriptors", null);
+			return new Status(IStatus.OK, ContentPlugin.PLUGIN_ID, message);
+		}
+
 		File targetFile = getStateFile();
 		Assert.isNotNull(targetFile, "stateFile not initialized");
 		isRefreshing = true;
@@ -404,7 +409,7 @@ public class ContentManager {
 			// to be local.
 			File dir = getInstallDirectory();
 			File[] children = dir.listFiles();
-			if (children != null) {
+			if (children != null && children.length > 0) {
 				SubMonitor loopProgress = progress.newChild(30).setWorkRemaining(children.length);
 				for (File childDirectory : children) {
 					if (childDirectory.isDirectory()) {
@@ -453,7 +458,6 @@ public class ContentManager {
 			try {
 				reader.write(targetFile);
 				init();
-				isDirty = false;
 			}
 			catch (CoreException e) {
 				String message = NLS.bind("Failed to store updated descriptors to ''{0}''",
@@ -461,6 +465,9 @@ public class ContentManager {
 				result.add(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e));
 			}
 
+			if (result.isOK()) {
+				isDirty = false;
+			}
 			return result;
 		}
 		finally {
@@ -488,10 +495,11 @@ public class ContentManager {
 			}
 		}
 		if (descriptorFound) {
-			return new Status(IStatus.OK, ContentPlugin.PLUGIN_ID, "everything is okay");
+			return new Status(IStatus.OK, ContentPlugin.PLUGIN_ID, NLS.bind("Everything is okay", null));
 		}
 		else {
-			return null;
+			return new Status(IStatus.OK, ContentPlugin.PLUGIN_ID, NLS.bind(
+					"There are zero descriptors, but that is okay.", null));
 		}
 	}
 
