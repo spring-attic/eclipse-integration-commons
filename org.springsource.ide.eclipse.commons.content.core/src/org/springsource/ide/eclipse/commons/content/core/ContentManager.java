@@ -124,7 +124,8 @@ public class ContentManager {
 					result.add(status);
 				}
 
-				refresh(progress.newChild(1));
+				// walk the file system to see if the download is there
+				refresh(progress.newChild(1), false);
 			}
 			catch (CoreException e) {
 				return new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, 0, NLS.bind(
@@ -384,7 +385,7 @@ public class ContentManager {
 		}
 	}
 
-	public IStatus refresh(IProgressMonitor monitor) {
+	public IStatus refresh(IProgressMonitor monitor, boolean shouldDownloadRemotes) {
 
 		File targetFile = getStateFile();
 		Assert.isNotNull(targetFile, "stateFile not initialized");
@@ -398,52 +399,23 @@ public class ContentManager {
 					null);
 			DescriptorReader reader = new DescriptorReader();
 
-			// examine the install directory, set all content items found there
-			// to be local.
-			File dir = getInstallDirectory();
-			File[] children = dir.listFiles();
-			if (children != null && children.length > 0) {
-				SubMonitor loopProgress = progress.newChild(30).setWorkRemaining(children.length);
-				for (File childDirectory : children) {
-					if (childDirectory.isDirectory()) {
-						IStatus descriptorParseStatus = setDescriptorsToLocal(reader, childDirectory);
-						if (descriptorParseStatus == null) {
-							// Files downloaded directly from template.xml (as
-							// opposed to via descriptors.xml) can be in a
-							// subdirectory when they first get extracted. They
-							// will eventually get moved up one directory level,
-							// but that might not happen by the time we reach
-							// here.
-							File[] grandchildren = childDirectory.listFiles();
-							for (File grandchildDirectory : grandchildren) {
-								if (grandchildDirectory.isDirectory()) {
-									descriptorParseStatus = setDescriptorsToLocal(reader, grandchildDirectory);
-								}
-							}
-						}
-						if (!descriptorParseStatus.isOK()) {
-							result.add(descriptorParseStatus);
+			markLocalTemplatesAsLocal(progress, result, reader);
+
+			if (shouldDownloadRemotes) {
+
+				for (String descriptorLocation : getRemoteDescriptorLocations()) {
+					// remote descriptor
+					try {
+						if (descriptorLocation != null && descriptorLocation.length() > 0) {
+							readFromUrl(reader, descriptorLocation, progress.newChild(70));
 						}
 					}
-					loopProgress.worked(1);
-				}
-			}
-			else {
-				progress.setWorkRemaining(70);
-			}
+					catch (CoreException e) {
+						String message = NLS.bind("Error while downloading or parsing ''{0}'':\n\n{1}",
+								descriptorLocation, e);
+						result.add(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e));
 
-			for (String descriptorLocation : getRemoteDescriptorLocations()) {
-				// remote descriptor
-				try {
-					if (descriptorLocation != null && descriptorLocation.length() > 0) {
-						readFromUrl(reader, descriptorLocation, progress.newChild(70));
 					}
-				}
-				catch (CoreException e) {
-					String message = NLS.bind("Error while downloading or parsing ''{0}'':\n\n{1}", descriptorLocation,
-							e);
-					result.add(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e));
-
 				}
 			}
 
@@ -471,7 +443,48 @@ public class ContentManager {
 		}
 	}
 
-	public IStatus setDescriptorsToLocal(DescriptorReader reader, File directory) {
+	// Right after a template project is downloaded, the ContentManager doesn't
+	// know yet that the project has been downloaded. The way that the
+	// ContentManager finds that out is by walking the installation directory
+	// and marking every project it finds as local.
+	// Note that the ContentManager determines if a download was successful by
+	// looking to see if that project is now marked as local.
+	public void markLocalTemplatesAsLocal(SubMonitor progress, MultiStatus result, DescriptorReader reader) {
+
+		File dir = getInstallDirectory();
+		File[] children = dir.listFiles();
+		if (children != null && children.length > 0) {
+			SubMonitor loopProgress = progress.newChild(30).setWorkRemaining(children.length);
+			for (File childDirectory : children) {
+				if (childDirectory.isDirectory()) {
+					IStatus descriptorParseStatus = setDirectoryDescriptorsToLocal(reader, childDirectory);
+					if (descriptorParseStatus == null) {
+						// Files downloaded directly from template.xml (as
+						// opposed to via descriptors.xml) can be in a
+						// subdirectory when they first get extracted. They
+						// will eventually get moved up one directory level,
+						// but that might not happen by the time we reach
+						// here.
+						File[] grandchildren = childDirectory.listFiles();
+						for (File grandchildDirectory : grandchildren) {
+							if (grandchildDirectory.isDirectory()) {
+								descriptorParseStatus = setDirectoryDescriptorsToLocal(reader, grandchildDirectory);
+							}
+						}
+					}
+					if (!descriptorParseStatus.isOK()) {
+						result.add(descriptorParseStatus);
+					}
+				}
+				loopProgress.worked(1);
+			}
+		}
+		else {
+			progress.setWorkRemaining(70);
+		}
+	}
+
+	public IStatus setDirectoryDescriptorsToLocal(DescriptorReader reader, File directory) {
 		boolean descriptorFound = false;
 		for (String filename : DESCRIPTOR_FILENAMES) {
 			File descriptorFile = new File(directory, filename);
