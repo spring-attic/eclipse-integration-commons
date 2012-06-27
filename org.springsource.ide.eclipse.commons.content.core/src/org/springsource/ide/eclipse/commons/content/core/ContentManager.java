@@ -284,9 +284,6 @@ public class ContentManager {
 	}
 
 	public void init() {
-		if (!isDirty()) {
-			return;
-		}
 
 		itemById.clear();
 		itemsByKind.clear();
@@ -388,10 +385,6 @@ public class ContentManager {
 	}
 
 	public IStatus refresh(IProgressMonitor monitor) {
-		if (!isDirty()) {
-			String message = NLS.bind("No change to descriptors", null);
-			return new Status(IStatus.OK, ContentPlugin.PLUGIN_ID, message);
-		}
 
 		File targetFile = getStateFile();
 		Assert.isNotNull(targetFile, "stateFile not initialized");
