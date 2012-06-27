@@ -30,6 +30,8 @@ public interface IContentConstants {
 
 	public static final String WIZARD_DATA_FILE_NAME = "wizard.json";
 
+	public static final String SERVER_DATA_FILE_NAME = "server.xml";
+
 	public static int ERROR_MISSING_PROJECT = 1;
 
 }

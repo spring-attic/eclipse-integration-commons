@@ -156,7 +156,8 @@ public class ContentManager {
 	public static final String ARCHIVE_EXTENSION = ".zip";
 
 	public static final String[] DESCRIPTOR_FILENAMES = { IContentConstants.SAMPLE_PROJECT_DATA_FILE_NAME,
-			IContentConstants.TUTORIAL_DATA_FILE_NAME, "server.xml", "template.xml" };
+			IContentConstants.TUTORIAL_DATA_FILE_NAME, IContentConstants.SERVER_DATA_FILE_NAME,
+			IContentConstants.TEMPLATE_DATA_FILE_NAME };
 
 	public static final String RESOURCE_CONTENT_DESCRIPTORS = "content.descriptors";
 
@@ -450,37 +451,42 @@ public class ContentManager {
 	// Note that the ContentManager determines if a download was successful by
 	// looking to see if that project is now marked as local.
 	public void markLocalTemplatesAsLocal(SubMonitor progress, MultiStatus result, DescriptorReader reader) {
+		IStatus descriptorParseStatus = new Status(IStatus.OK, ContentPlugin.PLUGIN_ID, NLS.bind(
+				"No descriptors were found.", null));
 
 		File dir = getInstallDirectory();
 		File[] children = dir.listFiles();
-		if (children != null && children.length > 0) {
-			SubMonitor loopProgress = progress.newChild(30).setWorkRemaining(children.length);
-			for (File childDirectory : children) {
-				if (childDirectory.isDirectory()) {
-					IStatus descriptorParseStatus = setDirectoryDescriptorsToLocal(reader, childDirectory);
-					if (descriptorParseStatus == null) {
-						// Files downloaded directly from template.xml (as
-						// opposed to via descriptors.xml) can be in a
-						// subdirectory when they first get extracted. They
-						// will eventually get moved up one directory level,
-						// but that might not happen by the time we reach
-						// here.
-						File[] grandchildren = childDirectory.listFiles();
-						for (File grandchildDirectory : grandchildren) {
-							if (grandchildDirectory.isDirectory()) {
-								descriptorParseStatus = setDirectoryDescriptorsToLocal(reader, grandchildDirectory);
-							}
+		if (children == null || children.length <= 0) {
+			progress.setWorkRemaining(70);
+			return;
+		}
+
+		SubMonitor loopProgress = progress.newChild(30).setWorkRemaining(children.length);
+
+		for (File childDirectory : children) {
+			if (childDirectory.isDirectory()) {
+				if ((new File(childDirectory, IContentConstants.TEMPLATE_DATA_FILE_NAME).exists())) {
+					descriptorParseStatus = setDirectoryDescriptorsToLocal(reader, childDirectory);
+				}
+				else {
+					// Files downloaded directly from template.xml (as opposed
+					// to via descriptors.xml) can be in a subdirectory when
+					// they first get extracted. They will eventually get moved
+					// up one directory level, but that might not happen by the
+					// time we reach here.
+					File[] grandchildren = childDirectory.listFiles();
+					for (File grandchildDirectory : grandchildren) {
+						if (grandchildDirectory.isDirectory()) {
+							descriptorParseStatus = setDirectoryDescriptorsToLocal(reader, grandchildDirectory);
 						}
 					}
-					if (!descriptorParseStatus.isOK()) {
-						result.add(descriptorParseStatus);
-					}
 				}
-				loopProgress.worked(1);
+
+				if (!descriptorParseStatus.isOK()) {
+					result.add(descriptorParseStatus);
+				}
 			}
-		}
-		else {
-			progress.setWorkRemaining(70);
+			loopProgress.worked(1);
 		}
 	}
 
