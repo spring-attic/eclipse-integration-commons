@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 
-
 /**
  * @author Terry Denney
  * @author Steffen Pingel
@@ -32,7 +31,7 @@ public class ContentPlugin extends Plugin {
 	/**
 	 * The file that contains default descriptors located in the bundle root.
 	 */
-	private static final String FILENAME_DESCRIPTORS = "descriptors.xml";
+	public static final String FILENAME_DESCRIPTORS = "descriptors.xml";
 
 	/**
 	 * The file in the bundle state directory that has information about
