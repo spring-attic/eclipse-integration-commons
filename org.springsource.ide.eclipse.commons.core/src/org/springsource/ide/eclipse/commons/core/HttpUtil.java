@@ -32,7 +32,6 @@ import org.springsource.ide.eclipse.commons.internal.core.net.HttpClientTranspor
 import org.springsource.ide.eclipse.commons.internal.core.net.ITransportService;
 import org.springsource.ide.eclipse.commons.internal.core.net.P2TransportService;
 
-
 /**
  * Provides helper methods for downloading files.
  * @author Steffen Pingel
@@ -78,6 +77,10 @@ public class HttpUtil {
 			try {
 				URL fileUrl = archiveFile.toURI().toURL();
 				ZipFileUtil.unzip(fileUrl, targetDirectory, prefix, progress.newChild(30));
+				if (targetDirectory.listFiles().length <= 0) {
+					String message = NLS.bind("Zip file {0} appears to be empty", archiveFile);
+					return new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID, message);
+				}
 			}
 			catch (IOException e) {
 				return new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID, "Error while extracting archive", e);
