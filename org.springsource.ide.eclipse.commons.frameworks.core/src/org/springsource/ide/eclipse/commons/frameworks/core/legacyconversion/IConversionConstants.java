@@ -70,7 +70,7 @@ public interface IConversionConstants {
             "com.springsource.sts.grails.groovy.debug.core", //$NON-NLS-1$
             "com.springsource.sts.config.ui", //$NON-NLS-1$
             "com.springsource.sts.core", //$NON-NLS-1$
-            "com.springsource.sts.gradle.core", //$NON-NLS-1$
+ //           "com.springsource.sts.gradle.core", Gradle does its own thing.
             "com.springsource.sts.groovy.debug.core",  //$NON-NLS-1$
             "com.springsource.sts.ide.configurator",  //$NON-NLS-1$
             "com.springsource.sts.ide.metadata", //$NON-NLS-1$
@@ -88,7 +88,7 @@ public interface IConversionConstants {
             "org.grails.ide.eclipse.groovy.debug.core", //$NON-NLS-1$
             "org.springframework.ide.eclipse.config.ui", //$NON-NLS-1$
             "org.springsource.ide.eclipse.commons.core", //$NON-NLS-1$
-            "???", // TODO FIXKDV //$NON-NLS-1$
+//            "org.springsource.ide.eclipse.gradle.core", //$NON-NLS-1$
             "org.grails.ide.eclipse.groovy.debug.core", //$NON-NLS-1$
             "org.springsource.ide.eclipse.commons.configurator", //$NON-NLS-1$
             "org.springframework.ide.eclipse.metadata", //$NON-NLS-1$
