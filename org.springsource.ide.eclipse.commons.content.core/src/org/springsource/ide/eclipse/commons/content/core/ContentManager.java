@@ -400,9 +400,8 @@ public class ContentManager {
 					null);
 			DescriptorReader reader = new DescriptorReader();
 
-			markLocalTemplatesAsLocal(progress, result, reader);
-
 			if (shouldDownloadRemotes) {
+				markLocalTemplatesAsLocal(progress, result, reader);
 
 				for (String descriptorLocation : getRemoteDescriptorLocations()) {
 					// remote descriptor
@@ -418,6 +417,17 @@ public class ContentManager {
 
 					}
 				}
+			}
+			else {
+				try {
+					reader.read(targetFile);
+				}
+				catch (CoreException e) {
+					String message = NLS.bind("Failed to store updated descriptors to ''{0}''",
+							targetFile.getAbsolutePath());
+					result.add(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e));
+				}
+				markLocalTemplatesAsLocal(progress, result, reader);
 			}
 
 			// store on disk
