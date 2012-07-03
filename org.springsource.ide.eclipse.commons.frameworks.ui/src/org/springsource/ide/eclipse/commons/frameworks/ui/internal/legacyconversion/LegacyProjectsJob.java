@@ -112,7 +112,9 @@ public class LegacyProjectsJob extends UIJob implements IConversionConstants {
                         // only migrate grails projects at workspace migration time.
                         // imported grails projects are handled by the GrailsProjectVersionFixer
                         (project.hasNature(GRAILS_OLD_NATURE) && isWorkspaceMigration) ||
-                        (project.hasNature(ROO_OLD_NATURE) && needsRooPrefMigration(project))
+                        (project.hasNature(ROO_OLD_NATURE) && needsRooPrefMigration(project)) ||
+                        //only migrate gradle projects at workspace migration time, GradleImportOperation deals with old natures etc. during project import.
+                        (project.hasNature(GRADLE_OLD_NATURE) && isWorkspaceMigration)
                  );
     }
     

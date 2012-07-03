@@ -31,7 +31,7 @@ public interface IConversionConstants {
     
     String GRAILS_OLD_NATURE = GRAILS_OLD_PLUGIN_NAME + ".nature"; //$NON-NLS-1$
     String GRAILS_NEW_NATURE = GRAILS_NEW_PLUGIN_NAME + ".nature"; //$NON-NLS-1$
-    
+
     String GRAILS_OLD_CONTAINER = GRAILS_OLD_PLUGIN_NAME + ".CLASSPATH_CONTAINER"; //$NON-NLS-1$
     String GRAILS_NEW_CONTAINER = GRAILS_NEW_PLUGIN_NAME + ".CLASSPATH_CONTAINER"; //$NON-NLS-1$
     
@@ -40,6 +40,14 @@ public interface IConversionConstants {
     
     String GRAILS_OLD_PERSPECTIVE_ID = "com.springsource.sts.grails.perspective"; //$NON-NLS-1$
     String GRAILS_NEW_PERSPECTIVE_ID = "org.grails.ide.eclipse.perspective"; //$NON-NLS-1$
+   
+    // GRADLE
+    String GRADLE_OLD_PREFIX = "com.springsource.sts.gradle"; //$NON-NLS-1$
+    String GRADLE_NEW_PREFIX = "org.springsource.ide.eclipse.gradle"; //$NON-NLS-1$
+    String GRADLE_OLD_PLUGIN_NAME = "com.springsource.sts.gradle.core"; //$NON-NLS-1$
+    String GRADLE_NEW_PLUGIN_NAME = "org.springsource.ide.eclipse.gradle.core"; //$NON-NLS-1$
+    String GRADLE_OLD_NATURE = GRADLE_OLD_PLUGIN_NAME + ".nature"; //$NON-NLS-1$
+    String GRADLE_NEW_NATURE = GRADLE_NEW_PLUGIN_NAME + ".nature"; //$NON-NLS-1$
     
     // ROO
     String ROO_OLD_NATURE = "com.springsource.sts.roo.core.nature"; //$NON-NLS-1$

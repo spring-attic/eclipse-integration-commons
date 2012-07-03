@@ -104,6 +104,8 @@ public class LegacyProjectConverter extends AbstractLegacyConverter implements I
                 convertGrailsProject(project, sub);
             } else if (project.hasNature(ROO_OLD_NATURE)) {
                 convertRooProject(project, sub);
+            } else if (project.hasNature(GRADLE_OLD_NATURE)) {
+            	convertGradleProject(project, sub);
             }
         } catch (Exception e) {
             return new Status(IStatus.ERROR, FrameworkCoreActivator.PLUGIN_ID, "Failed to convert " + project.getName(), e); //$NON-NLS-1$
@@ -115,7 +117,43 @@ public class LegacyProjectConverter extends AbstractLegacyConverter implements I
         return new Status(IStatus.OK, FrameworkCoreActivator.PLUGIN_ID, "Converted " + project.getName()); //$NON-NLS-1$
     }
 
-    private void convertGrailsProject(IProject project, SubMonitor sub) throws Exception {
+    private static void convertGradleProject(IProject project, SubMonitor sub) throws Exception {
+        // nature
+        IProjectDescription description = project.getDescription();
+        String[] ids = description.getNatureIds();
+        List<String> newIds = new ArrayList<String>(ids.length);
+        for (int i = 0; i < ids.length; i++) {
+            if (!ids[i].equals(GRADLE_OLD_NATURE) && !ids[i].equals(GRADLE_NEW_NATURE)) {
+                newIds.add(ids[i]);
+            } else {
+                newIds.add(GRADLE_NEW_NATURE);
+            }
+        }
+        description.setNatureIds(newIds.toArray(new String[0]));
+        project.setDescription(description, sub);
+    
+        // project preferences
+        // DO NOTHING: gradle tooling handles these itself by reading in both old and new locations.
+
+        // classpath container
+        IJavaProject javaProject = JavaCore.create(project);
+        IClasspathEntry[] classpath = javaProject.getRawClasspath();
+        List<IClasspathEntry> newClasspath = new ArrayList<IClasspathEntry>();
+        for (int i = 0; i < classpath.length; i++) {
+        	IClasspathEntry entry = classpath[i];
+        	if (entry.getEntryKind()==IClasspathEntry.CPE_CONTAINER) {
+        		String path = entry.getPath().toString();
+        		if (path.contains(GRADLE_OLD_PREFIX)) {
+                    entry = JavaCore.newContainerEntry(new Path(path.replace(GRADLE_OLD_PREFIX, GRADLE_NEW_PREFIX)), 
+                    		entry.getAccessRules(), entry.getExtraAttributes(), entry.isExported());
+                }
+        	}
+            newClasspath.add(entry);
+        }
+        javaProject.setRawClasspath(newClasspath.toArray(new IClasspathEntry[0]), sub);
+	}
+
+	private void convertGrailsProject(IProject project, SubMonitor sub) throws Exception {
         // nature
         IProjectDescription description = project.getDescription();
         String[] ids = description.getNatureIds();
