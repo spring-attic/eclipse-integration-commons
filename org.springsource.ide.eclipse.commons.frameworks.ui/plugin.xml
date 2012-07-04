@@ -17,7 +17,8 @@
 	      <visibility>
 	         	<or>
 		         	<objectState name="nature" value="com.springsource.sts.grails.core.nature"/>
-				    </or>
+		         	<objectState name="nature" value="com.springsource.sts.gradle.core.nature"/>
+				 </or>
 	       </visibility>
 	       <action
 	               label="Migrate legacy STS projects..."
