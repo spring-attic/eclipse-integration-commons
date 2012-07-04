@@ -411,7 +411,8 @@ public class ContentManager {
 						}
 					}
 					catch (CoreException e) {
-						String message = NLS.bind("Error while downloading or parsing ''{0}'':\n\n{1}",
+						String message = NLS.bind(
+								"Error while downloading or parsing descriptors file ''{0}'':\n\n{1}",
 								descriptorLocation, e);
 						result.add(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e));
 
