@@ -111,21 +111,21 @@ public class ContentManager {
 		public IStatus run(IProgressMonitor monitor) {
 			MultiStatus result = new MultiStatus(ContentPlugin.PLUGIN_ID, 0, NLS.bind(
 					"Download of ''{0}'' (''{1}'') failed", rootItem.getName(), rootItem.getId()), null);
+			SubMonitor progress = SubMonitor.convert(monitor, 20);
 			try {
 				List<ContentItem> dependencies = getDependencies(rootItem);
-				SubMonitor progress = SubMonitor.convert(monitor, dependencies.size() * 3 + 1);
 				for (ContentItem item : dependencies) {
 					String url = item.getRemoteDescriptor().getUrl();
 					File baseDirectory = getInstallDirectory();
 					File archiveFile = new File(baseDirectory, item.getPathFromRemoteDescriptor() + ARCHIVE_EXTENSION);
 					File directory = new File(baseDirectory, item.getPathFromRemoteDescriptor());
 
-					IStatus status = HttpUtil.download(url, archiveFile, directory, progress.newChild(3));
+					IStatus status = HttpUtil.download(url, archiveFile, directory, progress);
 					result.add(status);
 				}
 
 				// walk the file system to see if the download is there
-				refresh(progress.newChild(1), false);
+				refresh(progress, false);
 			}
 			catch (CoreException e) {
 				return new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, 0, NLS.bind(
@@ -134,6 +134,7 @@ public class ContentManager {
 			}
 			finally {
 				resultLatch.countDown();
+				progress.done();
 			}
 			return result;
 		}
