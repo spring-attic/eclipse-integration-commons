@@ -11,6 +11,7 @@
 package org.springsource.ide.eclipse.commons.tests.util;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.ServerSocket;
@@ -510,7 +512,12 @@ public class StsTestUtil {
 		IMarker[] problems = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
 		for (IMarker problem : problems) {
 			if (problem.getAttribute(IMarker.SEVERITY, 0) >= IMarker.SEVERITY_ERROR) {
-				Assert.fail("Expecting no problems but found: " + markerMessage(problem));
+				IJavaProject javaproject = JavaCore.create(project);
+				ByteArrayOutputStream capture = new ByteArrayOutputStream();
+				PrintStream out = new PrintStream(capture);
+				StsTestUtil.dumpClasspathInfo(javaproject, out);
+				out.close();
+				Assert.fail("Expecting no problems but found: " + markerMessage(problem)+"\n"+capture.toString());
 			}
 		}
 	}
@@ -663,18 +670,22 @@ public class StsTestUtil {
 	}
 
 	public static void dumpClasspathInfo(IJavaProject javaProject) throws JavaModelException {
-		System.out.println(">>>>> classpath for "+javaProject.getElementName());
-		System.out.println("RAW classpath for "+javaProject.getElementName());
+		dumpClasspathInfo(javaProject, System.out);
+	}
+
+	public static void dumpClasspathInfo(IJavaProject javaProject, PrintStream out) throws JavaModelException {
+		out.println(">>>>> classpath for "+javaProject.getElementName());
+		out.println("RAW classpath for "+javaProject.getElementName());
 		IClasspathEntry[] entries = javaProject.getRawClasspath();
 		for (IClasspathEntry e : entries) {
-			System.out.println(e);
+			out.println(e);
 		}
-		System.out.println("RESOLVED classpath for "+javaProject.getElementName());
+		out.println("RESOLVED classpath for "+javaProject.getElementName());
 		entries = javaProject.getResolvedClasspath(true);
 		for (IClasspathEntry e : entries) {
-			System.out.println(e);
+			out.println(e);
 		}
-		System.out.println("<<<<<< classpath for "+javaProject.getElementName());
+		out.println("<<<<<< classpath for "+javaProject.getElementName());
 	}
 
 }
