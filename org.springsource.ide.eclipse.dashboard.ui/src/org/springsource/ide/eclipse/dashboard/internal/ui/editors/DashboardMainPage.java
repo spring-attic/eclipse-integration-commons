@@ -28,6 +28,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -69,6 +70,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbenchPage;
@@ -1099,7 +1101,14 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 			@Override
 			public void done(IJobChangeEvent event) {
 				unfinishedJobs.remove(job);
-				getSite().getShell().getDisplay().asyncExec(new Runnable() {
+
+				IWorkbenchPartSite site = getSite();
+				Assert.isNotNull(site);
+				Shell shell = site.getShell();
+				Assert.isNotNull(shell);
+				Display display = shell.getDisplay();
+				Assert.isNotNull(display);
+				display.asyncExec(new Runnable() {
 					public void run() {
 						if (getManagedForm().getForm().isDisposed()) {
 							return;
