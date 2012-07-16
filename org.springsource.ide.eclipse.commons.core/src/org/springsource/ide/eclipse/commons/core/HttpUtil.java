@@ -46,6 +46,11 @@ public class HttpUtil {
 
 	public static IStatus download(String url, File archiveFile, File targetDirectory, String prefix,
 			IProgressMonitor monitor) {
+
+		if (monitor.isCanceled()) {
+			return Status.CANCEL_STATUS;
+		}
+
 		SubMonitor progress = SubMonitor.convert(monitor, 100);
 
 		targetDirectory.mkdirs();
@@ -62,8 +67,7 @@ public class HttpUtil {
 							"I/O error while retrieving data: {0}", e.getMessage()), e);
 				}
 				catch (URISyntaxException e) {
-					return new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID, NLS.bind(
-							"Error while retrieving data. Invalid URL: {0}", url), e);
+					return new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID, NLS.bind("Invalid URL: {0}", url), e);
 				}
 				finally {
 					out.close();

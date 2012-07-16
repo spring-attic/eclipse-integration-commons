@@ -33,7 +33,6 @@ import org.eclipse.mylyn.commons.net.WebLocation;
 import org.eclipse.osgi.util.NLS;
 import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
 
-
 /**
  * A utility for accessing web resources.
  * @author Steffen Pingel
@@ -87,9 +86,22 @@ public class HttpClientTransportService implements ITransportService {
 							}
 
 							if (monitor.isCanceled()) {
+								// this point is reached if the user requests a
+								// cancellation
 								throw new OperationCanceledException();
 							}
+
 						}
+					}
+					catch (OperationCanceledException e) {
+						// this point is reached if there is some problem with
+						// the download
+						throw toException(location, result);
+					}
+					catch (IOException e) {
+						// this point is reached if there is some problem with
+						// the network
+						throw toException(location, 500);
 					}
 					finally {
 						in.close();

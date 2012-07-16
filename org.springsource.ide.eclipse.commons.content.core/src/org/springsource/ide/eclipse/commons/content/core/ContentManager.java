@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.CountDownLatch;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
@@ -39,7 +38,6 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.osgi.util.NLS;
 import org.springsource.ide.eclipse.commons.content.core.util.Descriptor;
 import org.springsource.ide.eclipse.commons.content.core.util.Descriptor.Dependency;
@@ -91,55 +89,6 @@ public class ContentManager {
 		}
 	}
 
-	public class DownloadJob extends Job {
-
-		private final ContentItem rootItem;
-
-		final CountDownLatch resultLatch = new CountDownLatch(1);
-
-		private DownloadJob(String name, ContentItem rootItem) {
-			super(name);
-			this.rootItem = rootItem;
-		}
-
-		public CountDownLatch getLatch() {
-			return resultLatch;
-
-		}
-
-		@Override
-		public IStatus run(IProgressMonitor monitor) {
-			MultiStatus result = new MultiStatus(ContentPlugin.PLUGIN_ID, 0, NLS.bind(
-					"Download of ''{0}'' (''{1}'') failed", rootItem.getName(), rootItem.getId()), null);
-			SubMonitor progress = SubMonitor.convert(monitor, 20);
-			try {
-				List<ContentItem> dependencies = getDependencies(rootItem);
-				for (ContentItem item : dependencies) {
-					String url = item.getRemoteDescriptor().getUrl();
-					File baseDirectory = getInstallDirectory();
-					File archiveFile = new File(baseDirectory, item.getPathFromRemoteDescriptor() + ARCHIVE_EXTENSION);
-					File directory = new File(baseDirectory, item.getPathFromRemoteDescriptor());
-
-					IStatus status = HttpUtil.download(url, archiveFile, directory, progress);
-					result.add(status);
-				}
-
-				// walk the file system to see if the download is there
-				refresh(progress, false);
-			}
-			catch (CoreException e) {
-				return new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, 0, NLS.bind(
-						"Failed to determine dependencies of ''{0}'' (''{1}'')", rootItem.getName(), rootItem.getId()),
-						e);
-			}
-			finally {
-				resultLatch.countDown();
-				progress.done();
-			}
-			return result;
-		}
-	}
-
 	public static final String EVENT_REFRESH = "refresh";
 
 	public static final String KIND_SAMPLE = "sample";
@@ -183,8 +132,8 @@ public class ContentManager {
 		listeners.add(listener);
 	}
 
-	public DownloadJob createDownloadJob(ContentItem item) {
-		return new DownloadJob(NLS.bind("Downloading {0}", item.getName()), item);
+	public TemplateDownloader createDownloader(ContentItem item) {
+		return new TemplateDownloader(item);
 	}
 
 	private ContentItem createItem(Descriptor descriptor) {
