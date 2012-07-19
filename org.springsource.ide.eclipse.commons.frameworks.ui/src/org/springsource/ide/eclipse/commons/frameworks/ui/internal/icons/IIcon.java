@@ -20,7 +20,7 @@ public interface IIcon {
 	/**
 	 * The icon location should be an full file system path or a platform URI
 	 * pointing to an icon image file. (e.g.,
-	 * "platform:/plugin/com.springsource.sts.grails.explorer/icons/full/obj16/controllers.gif"
+	 * "platform:/plugin/org.grails.ide.eclipse.explorer/icons/full/obj16/controllers.gif"
 	 * )
 	 * 
 	 * @return

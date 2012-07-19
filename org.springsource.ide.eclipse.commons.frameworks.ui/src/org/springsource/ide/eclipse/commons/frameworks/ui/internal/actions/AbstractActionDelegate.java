@@ -35,7 +35,7 @@ public abstract class AbstractActionDelegate implements IObjectActionDelegate,
 		IWorkbenchWindowActionDelegate {
 	
 	private static final String DEBUG_CLASS = null;
-	//"com.springsource.sts.grails.ui.internal.actions.OpenGrailsPluginsManagerActionDelegate";
+	//"org.grails.ide.eclipse.ui.internal.actions.OpenGrailsPluginsManagerActionDelegate";
 
 	protected void debug(String msg) {
 		if (this.getClass().getName().equals(DEBUG_CLASS)) {
