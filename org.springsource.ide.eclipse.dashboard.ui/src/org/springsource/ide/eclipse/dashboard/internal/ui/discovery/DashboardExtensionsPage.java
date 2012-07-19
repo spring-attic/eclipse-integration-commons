@@ -82,7 +82,6 @@ import org.springsource.ide.eclipse.dashboard.ui.AbstractDashboardPage;
 import org.springsource.ide.eclipse.dashboard.ui.IConfigurator;
 import org.springsource.ide.eclipse.dashboard.ui.IEnabledDashboardPart;
 
-
 /**
  * @author Steffen Pingel
  * @author Christian Dupuis
@@ -492,8 +491,11 @@ public class DashboardExtensionsPage extends AbstractDashboardPage implements IR
 					}
 				}
 
-				IdeUiPlugin.log(new Status(IStatus.INFO, IdeUiPlugin.PLUGIN_ID, "About to uninstall: "
-						+ definitelyUninstall + " to make way for new version of m2eclipse"));
+				if (definitelyUninstall.size() > 0) {
+					IdeUiPlugin.log(new Status(IStatus.INFO, IdeUiPlugin.PLUGIN_ID,
+							"To make way for a new version of m2eclipse, we will uninstall these features: "
+									+ definitelyUninstall));
+				}
 				return definitelyUninstall;
 			}
 
