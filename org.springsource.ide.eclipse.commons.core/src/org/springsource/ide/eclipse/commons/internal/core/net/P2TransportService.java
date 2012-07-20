@@ -25,7 +25,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
 
-
 /**
  * @author Steffen Pingel
  */
@@ -66,6 +65,10 @@ public class P2TransportService implements ITransportService {
 	}
 
 	private static Object getTransport_e3_7() throws Exception {
+		// This line is here merely to make sure that the bundle gets activated
+		// before trying to use the service (to get rid of a race condition).
+		Class<?> clazz = Class.forName("org.eclipse.equinox.p2.core.IProvisioningAgent"); //$NON-NLS-1$
+
 		BundleContext bundleContext = CorePlugin.getDefault().getBundle().getBundleContext();
 		ServiceReference serviceReference = bundleContext
 				.getServiceReference("org.eclipse.equinox.p2.core.IProvisioningAgent");
