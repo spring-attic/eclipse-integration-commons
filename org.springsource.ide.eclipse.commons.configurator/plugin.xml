@@ -13,7 +13,7 @@
 	</extension>
 	
 	<extension point="org.eclipse.ui.preferencePages">
-		<page category="org.springframework.ide.eclipse.ui.preferencePage"
+		<page category="org.springsource.ide.eclipse.commons.preferencePage"
 			class="org.springsource.ide.eclipse.commons.internal.configurator.ui.ConfiguratorPreferencesPage"
 			id="com.springsource.sts.ide.ui.preferencePage.AutoConfiguration" name="Auto Configuration">
 		</page>
