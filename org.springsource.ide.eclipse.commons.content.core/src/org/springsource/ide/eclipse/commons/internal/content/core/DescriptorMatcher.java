@@ -26,7 +26,6 @@ import org.osgi.framework.Version;
 import org.springsource.ide.eclipse.commons.content.core.ContentManager;
 import org.springsource.ide.eclipse.commons.content.core.util.Descriptor;
 
-
 /**
  * Verifies if a descriptor is valid for the environment by matching the filter
  * expression and version constraints.
@@ -47,15 +46,15 @@ public class DescriptorMatcher {
 	public DescriptorMatcher(ContentManager manager) {
 		this.environment = new Hashtable<Object, Object>(System.getProperties());
 		this.manager = manager;
-		Bundle bundle = Platform.getBundle("com.springsource.sts"); //$NON-NLS-1$
+		Bundle bundle = Platform.getBundle("org.springsource.sts"); //$NON-NLS-1$
 		if (bundle != null) {
 			String versionString = (String) bundle.getHeaders().get("Bundle-Version");
 			if (versionString != null) {
 				this.version = new Version(versionString);
-				this.environment.put("com.springsource.sts.version", version.toString()); //$NON-NLS-1$
-				this.environment.put("com.springsource.sts.version.major", version.getMajor()); //$NON-NLS-1$
-				this.environment.put("com.springsource.sts.version.minor", version.getMinor()); //$NON-NLS-1$
-				this.environment.put("com.springsource.sts.version.micro", version.getMicro()); //$NON-NLS-1$
+				this.environment.put("org.springsource.sts.version", version.toString()); //$NON-NLS-1$
+				this.environment.put("org.springsource.sts.version.major", version.getMajor()); //$NON-NLS-1$
+				this.environment.put("org.springsource.sts.version.minor", version.getMinor()); //$NON-NLS-1$
+				this.environment.put("org.springsource.sts.version.micro", version.getMicro()); //$NON-NLS-1$
 			}
 		}
 	}

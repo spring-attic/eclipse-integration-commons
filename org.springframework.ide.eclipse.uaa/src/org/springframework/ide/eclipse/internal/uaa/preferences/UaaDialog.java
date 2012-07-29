@@ -52,7 +52,7 @@ public class UaaDialog extends TitleAreaDialog {
 	
 	private Image image = UaaPlugin.imageDescriptorFromPlugin(UaaPlugin.PLUGIN_ID, "icons/full/wizban/uaa_wiz.png").createImage();
 	
-	public static final String PLATFORM_NAME = Platform.getBundle("com.springsource.sts") != null ? "SpringSource Tool Suite"
+	public static final String PLATFORM_NAME = Platform.getBundle("org.springsource.sts") != null ? "SpringSource Tool Suite"
 			: "Spring IDE";
 
 	public static UaaDialog createDialog(Shell shell) {

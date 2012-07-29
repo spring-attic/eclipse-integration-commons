@@ -15,8 +15,6 @@ import junit.framework.TestCase;
 import org.osgi.framework.Version;
 import org.springsource.ide.eclipse.commons.content.core.ContentManager;
 import org.springsource.ide.eclipse.commons.content.core.util.Descriptor;
-import org.springsource.ide.eclipse.commons.internal.content.core.DescriptorMatcher;
-
 
 /**
  * @author Steffen Pingel
@@ -30,7 +28,7 @@ public class DescriptorMatcherTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		descriptor = new Descriptor();
-		System.setProperty("com.springsource.sts", "abc");
+		System.setProperty("org.springsource.sts", "abc");
 		matcher = new DescriptorMatcher(new ContentManager());
 		matcher.setVersion(null);
 	}
@@ -38,9 +36,9 @@ public class DescriptorMatcherTest extends TestCase {
 	public void testMatchFilter() {
 		descriptor.setRequires("1.0.0");
 		assertTrue(matcher.match(descriptor));
-		descriptor.setFilter("(com.springsource.sts=abc)");
+		descriptor.setFilter("(org.springsource.sts=abc)");
 		assertTrue(matcher.match(descriptor));
-		descriptor.setFilter("(com.springsource.sts=def)");
+		descriptor.setFilter("(org.springsource.sts=def)");
 		assertFalse(matcher.match(descriptor));
 	}
 
