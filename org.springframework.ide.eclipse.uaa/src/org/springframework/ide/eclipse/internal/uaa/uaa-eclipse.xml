@@ -32,6 +32,8 @@
 			<plugin id="org.springframework.ide.eclipse.beans.ui.editor" />
 			<plugin id="org.springframework.ide.eclipse.beans.ui.search" />
 			<plugin id="org.springframework.ide.eclipse.beans.ui.refactoring" />
+			<plugin id="org.springframework.ide.eclipse.quickfix" />
+			<plugin id="org.springframework.ide.eclipse.wizard" />
 			<plugin id="org.springframework.osgi.core" />
 			<plugin id="org.springframework.osgi.io" />
 			<plugin id="edu.emory.mathcs.backport" />
@@ -97,21 +99,22 @@
 			<plugin id="com.springsource.javax.servlet.jsp.jstl" />
 			<plugin id="com.springsource.org.apache.myfaces.javax.faces" />
 		</feature>
+		<feature id="org.springframework.ide.eclipse.roo">
+			<plugin id="org.springframework.ide.eclipse.roo.core" />
+			<plugin id="org.springframework.ide.eclipse.roo.ui" />
+		</feature>
+		<feature id="org.springframework.ide.eclipse.maven">
+			<plugin id="org.springframework.ide.eclipse.maven" />
+			<plugin id="org.springframework.ide.eclipse.maven.legacy" />
+		</feature>
+		<feature id="org.springframework.ide.eclipse.data">
+			<plugin id="org.springframework.ide.eclipse.data.core" />
+			<plugin id="org.springframework.data.core" />
+		</feature>
 	</product>
-	<product id="SpringSource Tool Suite" root-plugin="com.springsource.sts">
-		<feature id="com.springsource.sts">
-			<plugin id="com.springsource.sts" />
-			<plugin id="com.springsource.sts.core" />
-			<plugin id="com.springsource.sts.ui" />
-			<plugin id="com.springsource.sts.ide.osgi" />
-			<plugin id="com.springsource.sts.ide.metadata" />
-			<plugin id="com.springsource.sts.config.ui" />
-			<plugin id="com.springsource.sts.config.core" />
-			<plugin id="com.springsource.sts.quickfix" />
-			<plugin id="com.springsource.sts.wizard" />
-			<plugin id="com.springsource.sts.ide.configurator" />
-			<plugin id="com.springsource.sts.config.flow" />
-			<plugin id="com.springsource.sts.content.core" />
+	<product id="SpringSource Tool Suite" root-plugin="org.springsource.sts">
+		<feature id="org.springsource.sts">
+			<plugin id="org.springsource.sts" />
 		</feature>
 		<feature id="org.springsource.ide.eclipse.commons-feature">
 			<plugin id="org.springsource.ide.eclipse.commons.configurator"/>
@@ -121,84 +124,28 @@
 			<plugin id="org.springsource.ide.eclipse.commons.frameworks.ui"/>
 			<plugin id="org.springsource.ide.eclipse.dashboard.ui"/>
 		</feature>
-		<feature id="com.springsource.sts.authoring">
-			<plugin id="com.springsource.sts.authoring" />
+		<feature id="org.springsource.sts.package" />
+    </product>
+	<product id="Groovy Grails Tool Suite" root-plugin="org.springsource.ggts">
+		<feature id="org.springsource.ggts">
+			<plugin id="org.springsource.ggts" />
 		</feature>
-		<feature id="com.springsource.sts.maven">
-			<plugin id="com.springsource.sts.maven" />
-			<plugin id="com.springsource.sts.maven.legacy" />
-		</feature>
-		<feature id="org.springframework.ide.eclipse.maven">
-			<plugin id="org.springframework.ide.eclipse.maven" />
-			<plugin id="org.springframework.ide.eclipse.maven.legacy" />
-		</feature>
-		<feature id="com.springsource.sts.package" />
-		<feature id="com.springsource.sts.roo">
-			<plugin id="com.springsource.sts.roo.core" />
-			<plugin id="com.springsource.sts.roo.ui" />
-			<plugin id="com.springsource.sts.frameworks.core" />
-			<plugin id="com.springsource.sts.frameworks.ui" />
-		</feature>
-		<feature id="org.springframework.ide.eclipse.roo">
-			<plugin id="org.springframework.ide.eclipse.roo.core" />
-			<plugin id="org.springframework.ide.eclipse.roo.ui" />
-		</feature>
-		<feature id="com.springsource.sts.server.cf">
-			<plugin id="com.springsource.sts.server.cloudfoundry.core" />
-			<plugin id="com.springsource.sts.server.cloudfoundry.ui" />
-		</feature>
-		<feature id="com.springsource.sts.server.dm">
-			<plugin id="com.springsource.sts.server.quickfix" />
-		</feature>
-		<feature id="com.springsource.sts.server.ec2">
-			<plugin id="com.springsource.sts.server.tc.ec2.core" />
-			<plugin id="com.springsource.sts.server.tc.ec2.ui" />
-		</feature>
-		<feature id="com.springsource.sts.server.tc">
-			<plugin id="com.springsource.sts.server.tc.core" />
-			<plugin id="com.springsource.sts.server.tc.ui" />
-			<plugin id="com.springsource.sts.server.tc.reloading" />
-			<plugin id="com.springsource.sts.server.insight.ui" />
-		</feature>
+		<feature id="org.springsource.ggts.package" />
+	</product>
+	<product id="VMware vFabric tc Server Integration" root-plugin="com.vmware.vfabric.ide.eclipse.tcserver.core">
 		<feature id="com.vmware.vfabric.ide.eclipse.tcserver">
 			<plugin id="com.vmware.vfabric.ide.eclipse.tcserver.core"/>
 			<plugin id="com.vmware.vfabric.ide.eclipse.tcserver.ui"/>
 			<plugin id="com.vmware.vfabric.ide.eclipse.tcserver.reloading"/>
 			<plugin id="com.vmware.vfabric.ide.eclipse.tcserver.insight.ui"/>
 		</feature>
-		<feature id="com.springsource.sts.support">
-			<plugin id="com.springsource.sts.support.core" />
-			<plugin id="com.springsource.sts.support.ui" />
-		</feature>
-		<feature id="com.springsource.sts.tutorials">
-			<plugin id="com.springsource.sts.ide.help" />
-		</feature>
-		<feature id="com.springsource.sts.vmware">
-			<plugin id="com.springsource.sts.server.vmware.core" />
-			<plugin id="com.springsource.sts.server.vmware.ui" />
-			<plugin id="com.springsource.sts.vmware.core" />
-			<plugin id="com.springsource.sts.vmware.ui" />
-			<plugin id="com.springsource.sts.server.commons.vmware.core" />
-			<plugin id="com.springsource.sts.server.commons.vmware.ui" />
-			<plugin id="com.springsource.sts.server.tc.vmware.core" />
-			<plugin id="com.springsource.sts.server.tc.vmware.ui" />
-		</feature>
     </product>
-	<product id="Groovy Grails Tool Suite" root-plugin="com.springsource.ggts">
-		<feature id="com.springsource.ggts">
-			<plugin id="com.springsource.ggts" />
-		</feature>
+	<product id="Grails IDE" root-plugin="org.grails.ide.eclipse.core">
 		<feature id="org.grails.ide.eclipse">
 			<plugin id="org.grails.ide.eclipse.core" />
 			<plugin id="org.grails.ide.eclipse.explorer" />
 			<plugin id="org.grails.ide.eclipse.runonserver" />
 			<plugin id="org.grails.ide.eclipse.groovy.debug.core" />
-		</feature>
-		<feature id="com.springsource.sts.grails">
-			<plugin id="com.springsource.sts.grails.core" />
-			<plugin id="com.springsource.sts.grails.explorer" />
-			<plugin id="com.springsource.sts.grails.runonserver" />
-			<plugin id="com.springsource.sts.grails.groovy.debug.core" />
 		</feature>
 	</product>
 	<product id="Eclipse AJDT" root-plugin="org.eclipse.ajdt.core">
@@ -234,23 +181,13 @@
 			<plugin id="org.codehaus.groovy" />
 		</feature>
 	</product>
-	<product id="Gradle Plugin for STS" root-plugin="org.springsource.ide.eclipse.gradle.core">
-		<feature id="com.springsource.sts.gradle.feature">
-			<plugin id="com.springsource.sts.gradle.core" />
-			<plugin id="com.springsource.sts.gradle.ui" />
-		</feature>
+	<product id="Gradle Integration for Eclipse" root-plugin="org.springsource.ide.eclipse.gradle.core">
 		<feature id="org.springsource.ide.eclipse.gradle.feature">
 			<plugin id="org.springsource.ide.eclipse.gradle.core" />
 			<plugin id="org.springsource.ide.eclipse.gradle.ui" />
 		</feature>
 	</product>
-	<product id="Cloud Foundry for STS" root-plugin="org.cloudfoundry.ide.eclipse.server.core">
-		<feature id="com.cloudfoundry.sts.server">
-            <plugin id="com.cloudfoundry.sts.server.core" />
-            <plugin id="com.cloudfoundry.sts.server.ui" />
-            <plugin id="com.cloudfoundry.sts.server.rse" />
-            <plugin id="com.cloudfoundry.sts.server.ui.branding" />
-        </feature>
+	<product id="Cloud Foundry Integration for Eclipse" root-plugin="org.cloudfoundry.ide.eclipse.server.core">
 		<feature id="org.cloudfoundry.ide.eclipse.server">
 			<plugin id="org.cloudfoundry.ide.eclipse.server.core" />
 			<plugin id="org.cloudfoundry.ide.eclipse.server.rse" />
