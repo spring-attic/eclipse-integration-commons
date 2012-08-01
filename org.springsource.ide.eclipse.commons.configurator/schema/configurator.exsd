@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.springsource.ide.eclipse.dashboard.ui.IConfigurator"/>
+                  <meta.attribute kind="java" basedOn=":org.springsource.ide.eclipse.commons.internal.configurator.IConfigurator"/>
                </appinfo>
             </annotation>
          </attribute>

@@ -17,7 +17,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.IStatus;
 import org.springsource.ide.eclipse.commons.internal.configurator.InstallableItem;
-import org.springsource.ide.eclipse.commons.internal.configurator.ConfiguratorImporter.ConfiguratorExtensionPointReader;
+import org.springsource.ide.eclipse.commons.internal.configurator.ConfiguratorImporter.ParticipantExtensionPointReader;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 
@@ -29,7 +29,7 @@ public class InstallableItemTest extends TestCase {
 	private File tempDir;
 
 	private InstallableItem getExtension(String id) {
-		Set<InstallableItem> extensions = ConfiguratorExtensionPointReader.getInstallableItems();
+		Set<InstallableItem> extensions = ParticipantExtensionPointReader.getInstallableItems();
 		for (InstallableItem extension : extensions) {
 			if (extension.getId().equals(id)) {
 				return extension;

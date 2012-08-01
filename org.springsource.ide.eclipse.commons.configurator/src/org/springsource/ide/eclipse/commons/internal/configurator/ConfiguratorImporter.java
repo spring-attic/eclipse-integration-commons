@@ -51,9 +51,7 @@ import org.springsource.ide.eclipse.commons.configurator.IConfigurationContext;
 import org.springsource.ide.eclipse.commons.configurator.WorkspaceConfiguratorParticipant;
 import org.springsource.ide.eclipse.commons.core.FileUtil;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
-import org.springsource.ide.eclipse.dashboard.ui.IConfigurator;
-import org.springsource.ide.eclipse.dashboard.ui.IIdeUiStartup;
-
+import org.springsource.ide.eclipse.commons.ui.IIdeUiStartup;
 
 /**
  * Automatically adds server runtimes and sample projects to the workspace by
@@ -66,7 +64,7 @@ import org.springsource.ide.eclipse.dashboard.ui.IIdeUiStartup;
 @SuppressWarnings("restriction")
 public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContext, IConfigurator {
 
-	public static class ConfiguratorExtensionPointReader {
+	public static class ParticipantExtensionPointReader {
 
 		private static final String ELEMENT_INSTALLABLEITEM = "installableItem";
 
@@ -194,7 +192,7 @@ public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContex
 
 	public List<ConfigurableExtension> detectExtensions(final IProgressMonitor monitor) {
 		final List<ConfigurableExtension> result = new ArrayList<ConfigurableExtension>();
-		Set<WorkspaceConfiguratorParticipant> participants = ConfiguratorExtensionPointReader.getParticipants();
+		Set<WorkspaceConfiguratorParticipant> participants = ParticipantExtensionPointReader.getParticipants();
 		for (final WorkspaceConfiguratorParticipant participant : participants) {
 			SafeRunner.run(new ISafeRunnable() {
 				public void handleException(Throwable exception) {
@@ -208,7 +206,7 @@ public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContex
 				}
 			});
 		}
-		Set<InstallableItem> installableItems = ConfiguratorExtensionPointReader.getInstallableItems();
+		Set<InstallableItem> installableItems = ParticipantExtensionPointReader.getInstallableItems();
 		for (final InstallableItem item : installableItems) {
 			boolean found = false;
 			for (ConfigurableExtension extension : result) {
@@ -257,7 +255,7 @@ public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContex
 
 	public Set<String> getInstalledBundles() {
 		final Set<String> installedBundles = new HashSet<String>();
-		Set<WorkspaceConfiguratorParticipant> participants = ConfiguratorExtensionPointReader.getParticipants();
+		Set<WorkspaceConfiguratorParticipant> participants = ParticipantExtensionPointReader.getParticipants();
 		for (final WorkspaceConfiguratorParticipant configurator : participants) {
 			SafeRunner.run(new ISafeRunnable() {
 				public void handleException(Throwable exception) {
