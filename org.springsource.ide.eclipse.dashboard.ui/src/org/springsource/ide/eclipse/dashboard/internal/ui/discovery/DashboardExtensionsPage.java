@@ -76,10 +76,11 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.Version;
 import org.springframework.util.StringUtils;
 import org.springsource.ide.eclipse.commons.core.ResourceProvider;
+import org.springsource.ide.eclipse.commons.internal.configurator.Activator;
+import org.springsource.ide.eclipse.commons.internal.configurator.IConfigurator;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 import org.springsource.ide.eclipse.dashboard.internal.ui.util.IdeUiUtils;
 import org.springsource.ide.eclipse.dashboard.ui.AbstractDashboardPage;
-import org.springsource.ide.eclipse.dashboard.ui.IConfigurator;
 import org.springsource.ide.eclipse.dashboard.ui.IEnabledDashboardPart;
 
 /**
@@ -571,7 +572,7 @@ public class DashboardExtensionsPage extends AbstractDashboardPage implements IR
 		@Override
 		protected Set<String> getInstalledFeatures(IProgressMonitor monitor) throws InterruptedException {
 			this.installedFeatures = super.getInstalledFeatures(monitor);
-			IConfigurator configurator = IdeUiPlugin.getConfigurator();
+			IConfigurator configurator = Activator.getConfigurator();
 			if (configurator != null) {
 				installedFeatures.addAll(configurator.getInstalledBundles());
 			}

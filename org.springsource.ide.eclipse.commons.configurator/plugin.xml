@@ -5,6 +5,8 @@
 		schema="schema/participant.exsd" />
 	<extension-point id="com.springsource.sts.ide.configurator.serverConfigurations" name="STS Server Configurations"
 		schema="schema/serverConfigurations.exsd" />
+	<extension-point id="com.springsource.sts.ide.ui.configurator" name="STS Configurator"
+		schema="schema/configurator.exsd" />
 	
 	<extension point="com.springsource.sts.ide.ui.startup">
 		<startup

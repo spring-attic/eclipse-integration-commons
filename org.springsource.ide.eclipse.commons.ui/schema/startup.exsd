@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.springsource.ide.eclipse.dashboard.ui.IIdeUiStartup"/>
+                  <meta.attribute kind="java" basedOn=":org.springsource.ide.eclipse.commons.ui.IIdeUiStartup"/>
                </appinfo>
             </annotation>
          </attribute>

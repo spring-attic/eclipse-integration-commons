@@ -8,20 +8,22 @@
  *  Contributors:
  *      VMware, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.dashboard.ui;
+package org.springsource.ide.eclipse.commons.internal.configurator;
+
+import java.util.Set;
 
 /**
- * Clients implementing this interface can hook into the initialization of STS
- * and execute additional hooks.
- * @author Leo Dos Santos
  * @author Steffen Pingel
- * @author Christian Dupuis
  */
-public interface IIdeUiStartup {
+public interface IConfigurator {
+
+	// TODO add progress monitor
+	public Set<String> getInstalledBundles();
 
 	/**
-	 * Invoked when STS starts up.
+	 * @deprecated
 	 */
-	public abstract void lazyStartup();
+	@Deprecated
+	public boolean isInstalled(String bundleId);
 
 }

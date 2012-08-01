@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.Status;
 import org.springframework.util.StringUtils;
 import org.springsource.ide.eclipse.commons.configurator.ConfigurableExtension;
 import org.springsource.ide.eclipse.commons.configurator.WorkspaceConfiguratorParticipant;
-import org.springsource.ide.eclipse.commons.internal.configurator.ConfiguratorImporter.ConfiguratorExtensionPointReader;
+import org.springsource.ide.eclipse.commons.internal.configurator.ConfiguratorImporter.ParticipantExtensionPointReader;
 
 
 /**
@@ -53,7 +53,7 @@ public class Configurator {
 		else {
 			String extensionId = (String) parameters.get(PARAM_EXTENSION);
 			if (extensionId != null) {
-				for (InstallableItem item : ConfiguratorExtensionPointReader.getInstallableItems()) {
+				for (InstallableItem item : ParticipantExtensionPointReader.getInstallableItems()) {
 					if (extensionId.equals(item.getId())) {
 						ConfiguratorImporter importer = new ConfiguratorImporter();
 						File installLocation = importer.getInstallLocation();
@@ -84,7 +84,7 @@ public class Configurator {
 		File file = new File(targetPath);
 		if (file.exists() && file.isDirectory()) {
 			// Run external contributed configurators
-			for (WorkspaceConfiguratorParticipant configurator : ConfiguratorExtensionPointReader.getParticipants()) {
+			for (WorkspaceConfiguratorParticipant configurator : ParticipantExtensionPointReader.getParticipants()) {
 				ConfigurableExtension extension = configurator.createExtension(file, new NullProgressMonitor());
 				if (extension != null) {
 					participants.add(configurator);

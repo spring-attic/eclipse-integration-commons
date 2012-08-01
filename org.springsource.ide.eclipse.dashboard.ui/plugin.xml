@@ -3,10 +3,6 @@
 <plugin>
 	<extension-point id="com.springsource.sts.ide.ui.dashboard" name="STS Dashboard"
 		schema="schema/dashboard.exsd" />
-	<extension-point id="com.springsource.sts.ide.ui.startup" name="STS Startup"
-		schema="schema/startup.exsd" />
-	<extension-point id="com.springsource.sts.ide.ui.configurator" name="STS Configurator"
-		schema="schema/configurator.exsd" />
 
 	<extension point="org.eclipse.ui.actionSets">
 		<actionSet id="com.springsource.sts.ide.ui.actionSet.workbench"
