@@ -12,5 +12,11 @@
             name="SpringSource">
       </page>
    </extension>
+   <extension
+         name="SpringSource Startup Reader"
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.springsource.ide.eclipse.commons.internal.ui.StartupExtensionPointReader"></startup>
+   </extension>
 
 </plugin>
