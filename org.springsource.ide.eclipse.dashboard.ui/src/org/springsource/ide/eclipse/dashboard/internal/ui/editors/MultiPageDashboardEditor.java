@@ -63,7 +63,6 @@ import org.springsource.ide.eclipse.dashboard.internal.ui.discovery.DashboardExt
 import org.springsource.ide.eclipse.dashboard.ui.AbstractDashboardPage;
 import org.springsource.ide.eclipse.dashboard.ui.IEnabledDashboardPart;
 
-
 /**
  * The editor for the dashboard.
  * <p>
@@ -185,7 +184,7 @@ public class MultiPageDashboardEditor extends SharedHeaderFormEditor {
 
 	private static final int VERTICAL_TOOLBAR_PADDING = 8;
 
-	private static final String TITLE = "SpringSource Tool Suite";
+	private static final String TITLE = "SpringSource Dashboard";
 
 	public static String EDITOR_ID = "com.springsource.sts.internal.ide.ui.editors.MultiPageDashboardEditor";
 
