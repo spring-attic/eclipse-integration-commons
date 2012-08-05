@@ -23,7 +23,7 @@
 	 	<page id="org.springframework.ide.eclipse.uaa.preferencePage"
   	      	name="User Agent Analysis"
 	      	class="org.springframework.ide.eclipse.internal.uaa.preferences.UaaPreferencePage"
-	      	category="org.springframework.ide.eclipse.ui.preferencePage">
+	      	category="org.springsource.ide.eclipse.commons.preferencePage">
    		</page>
 	</extension>
    
