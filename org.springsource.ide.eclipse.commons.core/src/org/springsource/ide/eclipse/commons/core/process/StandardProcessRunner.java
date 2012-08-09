@@ -26,7 +26,10 @@ public final class StandardProcessRunner implements ProcessRunner {
 
 	private static final String[] ENVIRONMENT = new String[] {
 			String.format("JAVA_HOME=%s", System.getProperty("java.home")),
-			String.format("PATH=%s", System.getenv("PATH")) };
+			String.format("PATH=%s", System.getenv("PATH")),
+			String.format("USERDOMAIN=%s", System.getenv("USERDOMAIN")),
+			String.format("USERNAME=%s", System.getenv("USERNAME")),
+			String.format("USERPROFILE=%s", System.getenv("USERPROFILE")) };
 
 	private final OutputWriter[] standardOutputWriters;
 
