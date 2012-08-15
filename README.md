@@ -25,7 +25,7 @@
 
   CI builds: http://dist.springsource.com/snapshot/TOOLS/eclipse-integration-commons/nightly
   Milestone builds: http://dist.springsource.com/milestone/TOOLS/eclipse-integration-commons/
-  Release builds: not yet available
+  Release builds: http://dist.springsource.com/release/TOOLS/eclipse-integration-commons/
 
 ## Questions and bug reports:
 
