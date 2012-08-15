@@ -111,8 +111,8 @@
   </properties>
 
   <profiles>
-    <profile>
 	
+    <profile>
       <id>e37</id>
       <activation>
         <activeByDefault>true</activeByDefault>
@@ -134,6 +134,34 @@
 		  <id>indigo</id>
 		  <layout>p2</layout>
 		  <url>http://download.eclipse.org/releases/indigo/</url>
+		</repository>
+		<repository>
+		  <id>swtbot</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/</url>
+		</repository>
+	  </repositories>
+    </profile>
+
+    <profile>
+      <id>e42</id>
+      <properties>
+        <dist.target>e4.2</dist.target>
+        <dist.platform.name>Juno</dist.platform.name>
+        <dist.platform.id>juno</dist.platform.id>		
+        <dist.platform.version>4.2</dist.platform.version>
+        <package.qualifierPrefix>e42</package.qualifierPrefix>
+      </properties>
+	  <repositories>
+		<repository>
+		  <id>platform</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/eclipse/updates/4.2/</url>
+		</repository>
+		<repository>
+		  <id>juno</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/releases/juno/</url>
 		</repository>
 		<repository>
 		  <id>swtbot</id>
@@ -318,11 +346,6 @@
 						<os>macosx</os>
 						<ws>cocoa</ws>
 						<arch>x86_64</arch>
-					</environment>
-					<environment>
-						<os>macosx</os>
-						<ws>carbon</ws>
-						<arch>x86</arch>
 					</environment>
 					<environment>
 						<os>win32</os>
