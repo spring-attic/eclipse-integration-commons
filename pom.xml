@@ -36,6 +36,7 @@
 	<module>org.springsource.ide.eclipse.dashboard.ui</module>
 	<module>org.springsource.ide.eclipse.commons.tests.util</module>
 	<module>org.springsource.ide.eclipse.commons.ui</module>
+	<module>org.springsource.ide.eclipse.commons.livexp</module>
 
 	<module>org.springframework.ide.eclipse.uaa</module>
 	<module>org.springframework.ide.eclipse.uaa.feature</module>
