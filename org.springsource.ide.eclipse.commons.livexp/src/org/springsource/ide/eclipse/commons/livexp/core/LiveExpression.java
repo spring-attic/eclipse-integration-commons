@@ -26,6 +26,7 @@ public abstract class LiveExpression<V> {
 	 */
 	private V value;
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public LiveExpression(V initialValue) {
 		this.value = initialValue;
 	}
@@ -52,6 +53,20 @@ public abstract class LiveExpression<V> {
 			return a.equals(b);
 		}
 	}
+
+	/** 
+	 *  Declare that this liveExpression depends on some other live expression. This ensures
+	 *  that this expression will be refreshed if the value of the other expression changes.
+	 */
+	public <O> LiveExpression<V> dependsOn(LiveExpression<O> other) {
+		other.addListener(new ValueListener<O>() {
+			public void gotValue(LiveExpression<O> exp, O value) {
+				refresh();
+			}
+		});
+		return this;
+	};
+
 
 	protected abstract V compute();
 

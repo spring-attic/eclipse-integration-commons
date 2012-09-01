@@ -20,4 +20,7 @@ public abstract class WizardPageSection extends PageSection {
 		super(owner);
 	}
 
+	public void dispose() {
+	}
+
 }

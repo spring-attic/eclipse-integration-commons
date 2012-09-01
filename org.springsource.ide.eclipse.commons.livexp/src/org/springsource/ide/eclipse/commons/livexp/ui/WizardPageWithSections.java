@@ -24,7 +24,6 @@ import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 
-
 /**
  * @author Kris De Volder
  */
@@ -91,6 +90,12 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 			setMessage(status.msg, IMessageProvider.NONE);
 		}
 		setPageComplete(status.isOk());
+	}
+	
+	public void dispose() {
+		for (WizardPageSection s : sections) {
+			s.dispose();
+		}
 	}
 
 }
