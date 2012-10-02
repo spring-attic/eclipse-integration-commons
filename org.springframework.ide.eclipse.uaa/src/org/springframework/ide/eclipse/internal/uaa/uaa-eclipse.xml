@@ -137,6 +137,8 @@
 			<plugin id="com.vmware.vfabric.ide.eclipse.tcserver.core"/>
 			<plugin id="com.vmware.vfabric.ide.eclipse.tcserver.ui"/>
 			<plugin id="com.vmware.vfabric.ide.eclipse.tcserver.reloading"/>
+		</feature>
+		<feature id="com.vmware.vfabric.ide.eclipse.tcserver.insight">
 			<plugin id="com.vmware.vfabric.ide.eclipse.tcserver.insight.ui"/>
 		</feature>
     </product>
