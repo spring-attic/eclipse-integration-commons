@@ -715,7 +715,7 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 
 	private void createSearchBox(Composite composite) {
 		TextSearchControl searchControl = new TextSearchControl(composite, false, null);
-		searchControl.getTextControl().setMessage("Search springsource.com");
+		searchControl.getTextControl().setMessage("Search springsource.org");
 		GridDataFactory.fillDefaults().grab(false, true).align(SWT.FILL, SWT.CENTER).hint(200, SWT.DEFAULT)
 				.applyTo(searchControl);
 		searchBox = searchControl.getTextControl();

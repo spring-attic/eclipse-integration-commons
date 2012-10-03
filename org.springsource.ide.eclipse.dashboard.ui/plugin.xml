@@ -103,16 +103,16 @@
 			defaultValue="http://dist.springsource.com/release/STS/doc/updates.xml">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.logo"
-			defaultValue="http://www.springsource.com">
+			defaultValue="http://www.springsource.org">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.new.and.noteworthy"
-			defaultValue="http://download.springsource.com/release/STS/doc/STS-new_and_noteworthy.pdf">
+			defaultValue="http://static.springsource.org/sts/nan/v310/NewAndNoteworthy.html">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.product.page"
-			defaultValue="http://www.springsource.com/products/sts">
+			defaultValue="http://www.springsource.org/sts">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.search"
-			defaultValue="http://search.springsource.com/sts/?q=">
+			defaultValue="http://www.springsource.org/search/google?query=">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.support.commercial"
 			defaultValue="http://www.springsource.com/support/springsupport">
