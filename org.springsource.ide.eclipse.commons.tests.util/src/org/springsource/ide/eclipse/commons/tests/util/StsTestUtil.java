@@ -208,25 +208,17 @@ public class StsTestUtil {
 		IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		for (IProject project : allProjects) {
 			project.refreshLocal(IResource.DEPTH_INFINITE, null);
-			deleteProject(project, true);
+			project.close(null);
+			deleteResource(project, true);
 		}
 		getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, null);
-	}
-
-	public static void deleteProject(IProject project, boolean force) throws CoreException {
-		if (project.exists() && !project.isOpen()) {
-			// force opening so that project can be deleted without logging (see
-			// bug 23629)
-			project.open(null);
-		}
-		deleteResource(project, force);
 	}
 
 	/**
 	 * Delete this resource.
 	 */
 	private static void deleteResource(IResource resource, boolean force) throws CoreException {
-		if (!resource.exists() || !resource.isAccessible()) {
+		if (!resource.exists()/* || !resource.isAccessible()*/) {
 			return;
 		}
 		waitForManualBuild();
