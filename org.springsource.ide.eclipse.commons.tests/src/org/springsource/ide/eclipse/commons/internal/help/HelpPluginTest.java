@@ -12,25 +12,30 @@ package org.springsource.ide.eclipse.commons.internal.help;
 
 import java.util.Collection;
 
+import junit.framework.TestCase;
+
 import org.springsource.ide.eclipse.commons.content.core.ContentItem;
 import org.springsource.ide.eclipse.commons.content.core.ContentManager;
 import org.springsource.ide.eclipse.commons.content.core.ContentPlugin;
-
-import junit.framework.TestCase;
-
 
 /**
  * @author Steffen Pingel
  * @author Leo Dos Santos
  * @author Christian Dupuis
  * @author Terry Denney
+ * @author Tomasz Zarna
  */
 public class HelpPluginTest extends TestCase {
 
 	public void testGetSampleProjects() {
-		Collection<ContentItem> projects = ContentPlugin.getDefault().getManager().getItemsByKind(
-				ContentManager.KIND_SAMPLE);
+		ContentManager manager = ContentPlugin.getDefault().getManager();
+		if (manager.isDirty()) {
+			// refresh to download remote descriptors
+			manager.refresh(null, true);
+		}
+
+		Collection<ContentItem> projects = manager.getItemsByKind(ContentManager.KIND_SAMPLE);
+
 		assertEquals(3, projects.size());
 	}
-
 }

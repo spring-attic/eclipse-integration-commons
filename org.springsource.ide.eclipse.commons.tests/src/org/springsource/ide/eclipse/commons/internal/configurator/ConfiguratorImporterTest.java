@@ -22,13 +22,13 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.ServerCore;
 import org.springsource.ide.eclipse.commons.configurator.ConfigurableExtension;
-import org.springsource.ide.eclipse.commons.internal.configurator.ConfiguratorImporter;
-
 
 /**
  * @author Steffen Pingel
  * @author Martin Lippert
+ * @author Tomasz Zarna
  */
+@SuppressWarnings("restriction")
 public class ConfiguratorImporterTest extends TestCase {
 
 	public void testDetectExtensions() throws Exception {
@@ -37,7 +37,7 @@ public class ConfiguratorImporterTest extends TestCase {
 		// assertContains("grails-", extensions);
 		assertContains("apache-maven-", extensions);
 		assertContains("spring-roo-", extensions);
-		assertContains("tc-server-developer-", extensions);
+		assertContains("vfabric-tc-server-developer-", extensions);
 		// assertContains("com.springsource.cloudfoundryserver.runtime.10",
 		// extensions);
 	}
@@ -53,7 +53,7 @@ public class ConfiguratorImporterTest extends TestCase {
 		assertTrue("Configurator did not complete before timeout", latch.await(120, TimeUnit.SECONDS));
 		// FIXME re-enable test
 		ConfiguratorImporter importer = new ConfiguratorImporter();
-		assertServer(importer, "SpringSource tc Server Developer Edition v2.1");
+		assertServer(importer, "VMware vFabric tc Server Developer Edition v2.7");
 	}
 
 	private void assertContains(String id, List<ConfigurableExtension> extensions) {
