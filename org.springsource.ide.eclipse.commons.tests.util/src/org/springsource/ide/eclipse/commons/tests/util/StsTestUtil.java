@@ -163,7 +163,7 @@ public class StsTestUtil {
 	 * Copy the given source directory (and all its contents) to the given
 	 * target directory.
 	 */
-	private static void copyDirectory(File source, File target) throws IOException {
+	public static void copyDirectory(File source, File target) throws IOException {
 		if (!target.exists()) {
 			target.mkdirs();
 		}
