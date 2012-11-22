@@ -485,7 +485,7 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 				GridLayout layout = new GridLayout(2, false);
 				layout.marginRight = 0;
 				layout.marginHeight = 0;
-				layout.marginTop = 3;
+				layout.marginTop = 5;
 				layout.verticalSpacing = 1;
 				composite.setLayout(layout);
 

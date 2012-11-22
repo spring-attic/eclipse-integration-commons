@@ -182,7 +182,7 @@ public class MultiPageDashboardEditor extends SharedHeaderFormEditor {
 
 	private static final int LEFT_TOOLBAR_HEADER_TOOLBAR_PADDING = 3;
 
-	private static final int VERTICAL_TOOLBAR_PADDING = 8;
+	private static final int VERTICAL_TOOLBAR_PADDING = 11;
 
 	private static final String TITLE = "SpringSource Dashboard";
 
