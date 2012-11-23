@@ -105,6 +105,9 @@
 		<propertyDefinition id="dashboard.logo"
 			defaultValue="http://www.springsource.org">
 		</propertyDefinition>
+		<propertyDefinition id="dashboard.subscribe"
+			defaultValue="http://www.springsource.org/newsletter-subscription">
+		</propertyDefinition>
 		<propertyDefinition id="dashboard.new.and.noteworthy"
 			defaultValue="http://static.springsource.org/sts/nan/v310/NewAndNoteworthy.html">
 		</propertyDefinition>

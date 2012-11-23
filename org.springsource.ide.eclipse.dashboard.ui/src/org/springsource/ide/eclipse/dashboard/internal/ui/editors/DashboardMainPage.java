@@ -61,11 +61,13 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -128,6 +130,8 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 
 	public static final String RESOURCE_DASHBOARD_LOGO = "dashboard.logo";
 
+	public static final String RESOURCE_DASHBOARD_SUBSCRIBE = "dashboard.subscribe";
+
 	public static final String RESOURCE_DASHBOARD_NEW_AND_NOTEWORTHY = "dashboard.new.and.noteworthy";
 
 	public static final String RESOURCE_DASHBOARD_PRODUCT_PAGE = "dashboard.product.page";
@@ -139,6 +143,8 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 	public static final String RESOURCE_DASHBOARD_SUPPORT_COMMUNITY = "dashboard.support.community";
 
 	private static final String LOGO_SPRINGSOURCE = "prod/springsource_logo_transparent.png";
+
+	private static final String SUBSCRIBE_SPRINGSOURCE = "prod/newsletter_subscription.gif";
 
 	public static final String PAGE_ID = "com.springsource.sts.ide.ui.dashboard.page.overview";
 
@@ -497,12 +503,47 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 			}
 		});
 
+		toolBarManager.add(new ControlContribution("subscribe") {
+			@Override
+			protected Control createControl(Composite parent) {
+				Composite composite = new Composite(parent, SWT.NONE);
+				composite.setBackground(null);
+
+				GridLayout layout = new GridLayout(2, false);
+				layout.marginRight = 2;
+				layout.marginLeft = 0;
+				layout.marginHeight = 0;
+				layout.marginTop = 12;
+				layout.verticalSpacing = 1;
+				composite.setLayout(layout);
+
+				GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BOTTOM).grab(false, true).applyTo(composite);
+
+				Button subscribeButton = new Button(composite, SWT.PUSH);
+				subscribeButton.setText("Subscribe");
+				subscribeButton.setImage(IdeUiPlugin.getImageDescriptor(SUBSCRIBE_SPRINGSOURCE).createImage());
+				subscribeButton.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
+
+				subscribeButton.addSelectionListener(new SelectionListener() {
+					public void widgetSelected(SelectionEvent e) {
+						TasksUiUtil.openUrl(ResourceProvider.getUrl(RESOURCE_DASHBOARD_SUBSCRIBE));
+					}
+
+					public void widgetDefaultSelected(SelectionEvent e) {
+					}
+				});
+
+				return composite;
+			}
+		});
+
 		toolBarManager.add(new Action("SpringSource", IdeUiPlugin.getImageDescriptor(LOGO_SPRINGSOURCE)) {
 			@Override
 			public void run() {
 				TasksUiUtil.openUrl(ResourceProvider.getUrl(RESOURCE_DASHBOARD_LOGO));
 			}
 		});
+
 		toolBarManager.update(true);
 	}
 
