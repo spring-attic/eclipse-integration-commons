@@ -10,28 +10,44 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.internal.configurator;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.wst.server.core.ServerCore;
+import org.junit.Assume;
+import org.junit.Test;
 import org.springsource.ide.eclipse.commons.configurator.ConfigurableExtension;
 
 /**
+ * Tests for @link ConfiguratorImporter.
+ *
+ * <p>
+ * Note that some of the tests are not executed during maven build, @see
+ * #isStsDistribution().
+ * </p>
+ *
  * @author Steffen Pingel
  * @author Martin Lippert
  * @author Tomasz Zarna
  */
 @SuppressWarnings("restriction")
-public class ConfiguratorImporterTest extends TestCase {
+public class ConfiguratorImporterTest {
 
+	@Test
 	public void testDetectExtensions() throws Exception {
+		Assume.assumeTrue(isStsDistribution());
 		ConfiguratorImporter importer = new ConfiguratorImporter();
 		List<ConfigurableExtension> extensions = importer.detectExtensions(new NullProgressMonitor());
 		// assertContains("grails-", extensions);
@@ -42,13 +58,16 @@ public class ConfiguratorImporterTest extends TestCase {
 		// extensions);
 	}
 
+	@Test
 	public void testGetSearchLocations() throws IOException {
 		ConfiguratorImporter importer = new ConfiguratorImporter();
 		List<File> locations = importer.getSearchLocations();
 		assertEquals(3, locations.size());
 	}
 
+	@Test
 	public void testStartupJob() throws Exception {
+		Assume.assumeTrue(isStsDistribution());
 		CountDownLatch latch = ConfiguratorImporter.getLazyStartupJobLatch();
 		assertTrue("Configurator did not complete before timeout", latch.await(120, TimeUnit.SECONDS));
 		// FIXME re-enable test
@@ -78,4 +97,12 @@ public class ConfiguratorImporterTest extends TestCase {
 		}
 	}
 
+	private boolean isStsDistribution() {
+		Location installLocation = Platform.getInstallLocation();
+		if (installLocation != null) {
+			String name = new File(installLocation.getURL().getFile()).getName();
+			return name.startsWith("sts-");
+		}
+		return false;
+	}
 }

@@ -214,7 +214,7 @@
     <repository>
       <id>bundles</id>
       <layout>p2</layout>
-      <url>file://${basedir}/../bundles/repo</url>
+      <url>file:///${basedir}/../bundles/repo</url>
     </repository>
 
 	<repository>

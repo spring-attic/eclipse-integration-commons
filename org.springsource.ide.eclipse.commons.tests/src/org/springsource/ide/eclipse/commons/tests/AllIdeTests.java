@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.tests;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.osgi.service.resolver.VersionRange;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 import org.springsource.ide.eclipse.commons.core.CommandHistoryTest;
@@ -27,10 +27,21 @@ import org.springsource.ide.eclipse.commons.internal.help.HelpPluginTest;
 import org.springsource.ide.eclipse.commons.internal.ui.editors.UpdateNotificationTest;
 
 /**
+ * Runs all automated tests for STS IDE.
+ *
  * @author Steffen Pingel
- * @author Leo Dos Santos
- * @author Christian Dupuis
+ * @author Tomasz Zarna
  */
+@RunWith(Suite.class)
+@SuiteClasses({ HelpPluginTest.class, //
+		ConfiguratorImporterTest.class, //
+		// ServerConfiguratorTest.class, //
+		ConfiguratorActionTest.class, //
+		DescriptorMatcherTest.class, //
+		ResourceProviderTest.class, //
+		CommandHistoryTest.class, //
+		UpdateNotificationTest.class //
+})
 public class AllIdeTests {
 
 	public static boolean isEclipse_3_4() {
@@ -45,24 +56,10 @@ public class AllIdeTests {
 		return new VersionRange("2.0.0").isIncluded(getP2EngineVersion());
 	}
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite(AllIdeTests.class.getName());
-		suite.addTestSuite(HelpPluginTest.class);
-		suite.addTestSuite(ConfiguratorImporterTest.class);
-		// suite.addTestSuite(ServerConfiguratorTest.class);
-		suite.addTestSuite(ConfiguratorActionTest.class);
-		suite.addTestSuite(DescriptorMatcherTest.class);
-		suite.addTestSuite(ResourceProviderTest.class);
-		suite.addTestSuite(CommandHistoryTest.class);
-		suite.addTestSuite(UpdateNotificationTest.class);
-		return suite;
-	}
-
 	private static Version getP2EngineVersion() {
 		Bundle bundle = Platform.getBundle("org.eclipse.equinox.p2.engine"); //$NON-NLS-1$
 		Assert.isNotNull(bundle);
-		// TODO e3.5 replace new Version(...) by bundle.getVersion()
-		return new Version((String) bundle.getHeaders().get("Bundle-Version"));
+		return bundle.getVersion();
 	}
 
 }

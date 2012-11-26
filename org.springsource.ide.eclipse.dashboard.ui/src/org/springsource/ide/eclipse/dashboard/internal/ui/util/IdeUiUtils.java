@@ -44,12 +44,12 @@ import org.springsource.ide.eclipse.commons.ui.UiUtil;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IIdeUiConstants;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 
-
 /**
  * @author Steffen Pingel
  * @author Wesley Coelho
  * @author Leo Dos Santos
  * @author Christian Dupuis
+ * @author Tomasz Zarna
  */
 public class IdeUiUtils {
 
@@ -257,17 +257,7 @@ public class IdeUiUtils {
 	}
 
 	public static Version getVersion() {
-		return getVersion(IdeUiPlugin.PLUGIN_ID);
-	}
-
-	public static Version getVersion(String symbolicName) {
-		Bundle bundle = Platform.getBundle(symbolicName);
-		// TODO e3.5 replace by bundle.getVersion()
-		String versionString = (String) bundle.getHeaders().get("Bundle-Version"); //$NON-NLS-1$
-		if (versionString != null) {
-			return new Version(versionString);
-		}
-		return Version.emptyVersion;
+		return IdeUiPlugin.getDefault().getBundle().getVersion();
 	}
 
 	public static void openNewRuntimeErrorAnalysisEditor(String runtimeErrorMessage) {
