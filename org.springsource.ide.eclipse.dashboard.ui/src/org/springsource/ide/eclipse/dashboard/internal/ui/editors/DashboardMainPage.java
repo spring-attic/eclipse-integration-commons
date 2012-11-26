@@ -411,7 +411,10 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 					for (SyndFeed entry : reader.getFeeds()) {
 						entries.addAll(entry.getEntries());
 					}
-					displayFeeds(entries, feedsComposite, feedsScrolled, pagebook, disclaimer, section);
+
+					if (!getManagedForm().getForm().isDisposed()) {
+						displayFeeds(entries, feedsComposite, feedsScrolled, pagebook, disclaimer, section);
+					}
 				}
 				catch (IllegalArgumentException e) {
 					StatusHandler.log(new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
