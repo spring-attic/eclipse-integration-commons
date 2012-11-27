@@ -992,7 +992,8 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 			public void done(IJobChangeEvent event) {
 				unfinishedJobs.remove(job);
 				IWorkbenchPartSite site = getSite();
-				if (site != null) {
+				if (site != null && site.getShell() != null && !site.getShell().isDisposed()
+						&& site.getShell().getDisplay() != null && !site.getShell().getDisplay().isDisposed()) {
 					site.getShell().getDisplay().asyncExec(new Runnable() {
 						public void run() {
 							Map<SyndEntry, SyndFeed> entryToFeed = job.getFeedReader().getFeedsWithEntries();
@@ -1144,43 +1145,46 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 			public void done(IJobChangeEvent event) {
 				unfinishedJobs.remove(job);
 
-				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-					public void run() {
-						if (getManagedForm().getForm().isDisposed()) {
-							return;
-						}
-
-						List<UpdateNotification> notifications = job.getNotifications();
-						if (notifications.isEmpty()) {
-							pagebook.showPage(disclaimer);
-							return;
-						}
-
-						// make sure the entries are sorted correctly
-						Collections.sort(notifications, new Comparator<UpdateNotification>() {
-							public int compare(UpdateNotification o1, UpdateNotification o2) {
-								return o2.getEntry().getPublishedDate().compareTo(o1.getEntry().getPublishedDate());
+				Display display = PlatformUI.getWorkbench().getDisplay();
+				if (display != null && !display.isDisposed()) {
+					display.asyncExec(new Runnable() {
+						public void run() {
+							if (getManagedForm().getForm().isDisposed()) {
+								return;
 							}
-						});
 
-						int counter = 0;
-						Control[] children = composite.getChildren();
-						for (UpdateNotification notification : notifications) {
-							displayUpdate(notification.getEntry(), notification.getSeverity(), composite, counter,
-									children);
-							counter++;
+							List<UpdateNotification> notifications = job.getNotifications();
+							if (notifications.isEmpty()) {
+								pagebook.showPage(disclaimer);
+								return;
+							}
+
+							// make sure the entries are sorted correctly
+							Collections.sort(notifications, new Comparator<UpdateNotification>() {
+								public int compare(UpdateNotification o1, UpdateNotification o2) {
+									return o2.getEntry().getPublishedDate().compareTo(o1.getEntry().getPublishedDate());
+								}
+							});
+
+							int counter = 0;
+							Control[] children = composite.getChildren();
+							for (UpdateNotification notification : notifications) {
+								displayUpdate(notification.getEntry(), notification.getSeverity(), composite, counter,
+										children);
+								counter++;
+							}
+
+							for (int i = counter * 2; i < children.length; i++) {
+								children[i].dispose();
+							}
+
+							composite.changed(composite.getChildren());
+							composite.pack(true);
+							composite.redraw();
+							composite.getParent().redraw();
 						}
-
-						for (int i = counter * 2; i < children.length; i++) {
-							children[i].dispose();
-						}
-
-						composite.changed(composite.getChildren());
-						composite.pack(true);
-						composite.redraw();
-						composite.getParent().redraw();
-					}
-				});
+					});
+				}
 			}
 		});
 		unfinishedJobs.add(job);
