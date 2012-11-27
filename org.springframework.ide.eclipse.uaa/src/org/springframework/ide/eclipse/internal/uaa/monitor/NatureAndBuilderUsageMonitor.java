@@ -67,7 +67,7 @@ public class NatureAndBuilderUsageMonitor implements IUsageMonitor {
 				IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(ResourcesPlugin.PI_RESOURCES,
 						ResourcesPlugin.PT_NATURES);
 				for (IExtension extension : point.getExtensions()) {
-					map.put(extension.getUniqueIdentifier(), extension.getNamespaceIdentifier());
+					map.put(extension.getUniqueIdentifier(), extension.getContributor().getName());
 				}
 			};
 
@@ -84,7 +84,7 @@ public class NatureAndBuilderUsageMonitor implements IUsageMonitor {
 				IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(ResourcesPlugin.PI_RESOURCES,
 						ResourcesPlugin.PT_BUILDERS);
 				for (IExtension extension : point.getExtensions()) {
-					map.put(extension.getUniqueIdentifier(), extension.getNamespaceIdentifier());
+					map.put(extension.getUniqueIdentifier(), extension.getContributor().getName());
 				}
 			};
 
