@@ -71,7 +71,7 @@ public class ExtensionIdToBundleMapper {
 		IConfigurationElement[] elements = Platform.getExtensionRegistry()
 				.getConfigurationElementsFor(extensionPointId);
 		for (IConfigurationElement element : elements) {
-			map.put(extractId(element), element.getContributor().getName()); //$NON-NLS-1$
+			map.put(extractId(element), element.getContributor().getName());
 		}
 	}
 
