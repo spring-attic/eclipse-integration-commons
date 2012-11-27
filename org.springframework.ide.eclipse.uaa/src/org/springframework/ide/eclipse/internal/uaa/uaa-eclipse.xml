@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- For every change done to this document increment the below version -->
-<uaa version="3">
+<uaa version="5">
 	<product id="Spring IDE" root-plugin="org.springframework.ide.eclipse">
 		<feature id="org.springframework.ide.eclipse.ajdt.feature">
 			<plugin id="org.springframework.ide.eclipse.ajdt.ui.xref" />
