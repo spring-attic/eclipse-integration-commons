@@ -23,8 +23,8 @@
   However, if you want to install those features yourself, you could use the following update
   sites manually:
 
-  CI builds: http://dist.springsource.com/snapshot/TOOLS/eclipse-integration-commons/nightly
-  Milestone builds: http://dist.springsource.com/milestone/TOOLS/eclipse-integration-commons/
+  CI builds: http://dist.springsource.com/snapshot/TOOLS/eclipse-integration-commons/nightly  
+  Milestone builds: http://dist.springsource.com/milestone/TOOLS/eclipse-integration-commons/  
   Release builds: http://dist.springsource.com/release/TOOLS/eclipse-integration-commons/
 
 ## Questions and bug reports:
@@ -52,7 +52,7 @@
   The Eclipse Integration Common Components project uses Maven Tycho to do continuous integration
   builds and to produce p2 repos and update sites. To build the project yourself, you can execute:
 
-  mvn -Pe37 -Dmaven.test.skip=true clean install
+  `mvn -Pe37 -Dmaven.test.skip=true clean install`
 
 ## Contributing
 
