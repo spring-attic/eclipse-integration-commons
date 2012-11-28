@@ -6,7 +6,7 @@ Bundle-Version: 3.2.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: SpringSource
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Require-Bundle: org.eclipse.swtbot.go;resolution:=optional,
+Require-Bundle: org.eclipse.swtbot.go,
  org.eclipse.core.resources,
  org.springsource.ide.eclipse.commons.tests.util,
  org.eclipse.debug.core

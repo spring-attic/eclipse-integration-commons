@@ -11,6 +11,7 @@
 package org.springsource.ide.eclipse.commons.frameworks.test.util;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withRegex;
 import static org.eclipse.swtbot.swt.finder.waits.Conditions.waitForShell;
 import static org.junit.Assert.assertTrue;
 
@@ -63,6 +64,7 @@ import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
  * Utility methods that are useful in writing SWTBot tests.
  * @author Kris De Volder
  * @author Nieraj Singh
+ * @author Tomasz Zarna
  */
 public class SWTBotUtils {
 
@@ -197,12 +199,23 @@ public class SWTBotUtils {
 		return new SWTBotShell(shells(parentShell).get(0));
 	}
 
+	/**
+	 * Wait for a shell with the given regular expression.
+	 * 
+	 * @param bot the SWTBot
+	 * @param regex the regular expression
+	 */
+	public static void waitForShellWithRegex(SWTBot bot, String regex) {
+		Matcher<Shell> withRegex = withRegex(regex);
+		WaitForObjectCondition<Shell> waitForShell = waitForShell(withRegex);
+		bot.waitUntilWidgetAppears(waitForShell);
+	}
+
 	public static void doubleClick(SWTWorkbenchBot bot,
 			final SWTBotTable table, int row, int col) {
 		table.click(row, col);
 		// Note: table.doubleClick() method doesn't work, table appears not to
-		// be listenening
-		// to the events that are being posted by this method.
+		// be listening to the events that are being posted by this method.
 		// Use this workaround instead:
 		// http://dev.eclipse.org/mhonarc/newsLists/news.eclipse.swtbot/msg00309.html
 		UIThreadRunnable.asyncExec(bot.getDisplay(), new VoidResult() {
