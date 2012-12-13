@@ -218,7 +218,7 @@ public class StsTestUtil {
 	 * Delete this resource.
 	 */
 	private static void deleteResource(IResource resource, boolean force) throws CoreException {
-		if (!resource.exists()/* || !resource.isAccessible()*/) {
+		if (!resource.exists()/* || !resource.isAccessible() */) {
 			return;
 		}
 		waitForManualBuild();
@@ -509,7 +509,7 @@ public class StsTestUtil {
 				PrintStream out = new PrintStream(capture);
 				StsTestUtil.dumpClasspathInfo(javaproject, out);
 				out.close();
-				Assert.fail("Expecting no problems but found: " + markerMessage(problem)+"\n"+capture.toString());
+				Assert.fail("Expecting no problems but found: " + markerMessage(problem) + "\n" + capture.toString());
 			}
 		}
 	}
@@ -629,7 +629,7 @@ public class StsTestUtil {
 	public static Thread[] getAllThreads() {
 		ThreadGroup rootGroup = Thread.currentThread().getThreadGroup();
 		ThreadGroup parentGroup = rootGroup.getParent();
-		while (parentGroup!=null) {
+		while (parentGroup != null) {
 			rootGroup = parentGroup;
 			parentGroup = rootGroup.getParent();
 		}
@@ -637,9 +637,11 @@ public class StsTestUtil {
 		Thread[] threads;
 		do {
 			count = rootGroup.activeCount();
-			threads = new Thread[count*2];
+			threads = new Thread[count * 2];
 			count = rootGroup.enumerate(threads);
-		} while (!(count<threads.length)); //If array filled to the max, we have no guarantee we got all threads.
+		} while (!(count < threads.length)); // If array filled to the max, we
+												// have no guarantee we got all
+												// threads.
 		Thread[] result = new Thread[count];
 		System.arraycopy(threads, 0, result, 0, count);
 		return result;
@@ -666,18 +668,18 @@ public class StsTestUtil {
 	}
 
 	public static void dumpClasspathInfo(IJavaProject javaProject, PrintStream out) throws JavaModelException {
-		out.println(">>>>> classpath for "+javaProject.getElementName());
-		out.println("RAW classpath for "+javaProject.getElementName());
+		out.println(">>>>> classpath for " + javaProject.getElementName());
+		out.println("RAW classpath for " + javaProject.getElementName());
 		IClasspathEntry[] entries = javaProject.getRawClasspath();
 		for (IClasspathEntry e : entries) {
 			out.println(e);
 		}
-		out.println("RESOLVED classpath for "+javaProject.getElementName());
+		out.println("RESOLVED classpath for " + javaProject.getElementName());
 		entries = javaProject.getResolvedClasspath(true);
 		for (IClasspathEntry e : entries) {
 			out.println(e);
 		}
-		out.println("<<<<<< classpath for "+javaProject.getElementName());
+		out.println("<<<<<< classpath for " + javaProject.getElementName());
 	}
 
 }
