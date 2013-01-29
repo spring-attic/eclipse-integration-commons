@@ -1,6 +1,6 @@
 // COPIED from spring-ide org.springframework.ide.eclipse.core.SpringCoreUtils
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012, 2013 VMware, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -69,7 +69,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-
 /**
  * Some helper methods.
  * @author Torsten Juergeleit
@@ -120,7 +119,7 @@ public final class SpringCoreUtils {
 
 	private static final String XPATH_EXPRESSION = "//project-modules/wb-module/wb-resource";
 
-	private static final String BUILDER_ID = "org.springframework.ide.eclipse.core.springbuilder";
+	private static final String SPRING_BUILDER_ID = "org.springframework.ide.eclipse.core.springbuilder";
 
 	private static final String MARKER_ID = "org.springframework.ide.eclipse.core.problemmarker";
 
@@ -209,10 +208,7 @@ public final class SpringCoreUtils {
 	 * @param project the project to build
 	 */
 	public static void buildProject(IProject project) {
-		if (ResourcesPlugin.getWorkspace().isAutoBuilding()) {
-			scheduleBuildInBackground(project, ResourcesPlugin.getWorkspace().getRuleFactory().buildRule(),
-					new Object[] { ResourcesPlugin.FAMILY_AUTO_BUILD }, true);
-		}
+		buildProject(project, SPRING_BUILDER_ID);
 	}
 
 	/**
@@ -221,9 +217,21 @@ public final class SpringCoreUtils {
 	 * @param project the project to build
 	 */
 	public static void buildFullProject(IProject project) {
+		buildProject(project, null);
+	}
+
+	/**
+	 * Triggers a build of the given {@link IProject} instance, but only the
+	 * Spring builder
+	 * @param project the project to build
+	 * @param builderID the ID of the specific builder that should be executed
+	 * on the project
+	 * @since 3.2.0
+	 */
+	public static void buildProject(IProject project, String builderID) {
 		if (ResourcesPlugin.getWorkspace().isAutoBuilding()) {
 			scheduleBuildInBackground(project, ResourcesPlugin.getWorkspace().getRuleFactory().buildRule(),
-					new Object[] { ResourcesPlugin.FAMILY_AUTO_BUILD }, false);
+					new Object[] { ResourcesPlugin.FAMILY_AUTO_BUILD }, builderID);
 		}
 	}
 
@@ -757,7 +765,7 @@ public final class SpringCoreUtils {
 	}
 
 	private static void scheduleBuildInBackground(final IProject project, ISchedulingRule rule,
-			final Object[] jobFamilies, final boolean springBuilderOnly) {
+			final Object[] jobFamilies, final String builderID) {
 		Job job = new Job("Building workspace") {
 
 			@Override
@@ -776,8 +784,8 @@ public final class SpringCoreUtils {
 			@Override
 			public IStatus run(IProgressMonitor monitor) {
 				try {
-					if (springBuilderOnly) {
-						project.build(IncrementalProjectBuilder.FULL_BUILD, BUILDER_ID, null, monitor);
+					if (builderID != null) {
+						project.build(IncrementalProjectBuilder.FULL_BUILD, builderID, null, monitor);
 					}
 					else {
 						project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
