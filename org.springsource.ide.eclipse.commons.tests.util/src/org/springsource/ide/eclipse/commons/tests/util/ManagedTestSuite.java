@@ -101,7 +101,7 @@ public class ManagedTestSuite extends TestSuite {
 			final String fileName = "screenshots/screenshot-" + ClassUtils.simpleClassName(test.getClass()) + "." //$NON-NLS-1$ //$NON-NLS-2$
 					+ SWTBotPreferences.SCREENSHOT_FORMAT.toLowerCase();
 			File screenshotFile = new File("screenshots");
-			System.err.println("Captured screenshot to " + screenshotFile);
+			System.err.println("Captured screenshot to " + screenshotFile.getAbsolutePath());
 			screenshotFile.mkdirs();
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 				public void run() {
