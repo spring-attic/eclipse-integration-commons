@@ -100,8 +100,9 @@ public class ManagedTestSuite extends TestSuite {
 			// capture screenshot for diagnosis
 			final String fileName = "screenshots/screenshot-" + ClassUtils.simpleClassName(test.getClass()) + "." //$NON-NLS-1$ //$NON-NLS-2$
 					+ SWTBotPreferences.SCREENSHOT_FORMAT.toLowerCase();
-			System.err.println("Captured screenshot to " + fileName);
-			new File("screenshots").mkdirs(); //$NON-NLS-1$
+			File screenshotFile = new File("screenshots");
+			System.err.println("Captured screenshot to " + screenshotFile);
+			screenshotFile.mkdirs();
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 				public void run() {
 					// This deadlocks when run in UI thread!
