@@ -70,8 +70,8 @@ public class PerspectiveMigrator {
                         Method closePerspectiveMethod = WorkbenchPage.class.getDeclaredMethod("closePerspective", IPerspectiveDescriptor.class, String.class, boolean.class, boolean.class);
                         closePerspectiveMethod.invoke(page, null, IConversionConstants.GRAILS_OLD_PERSPECTIVE_ID, true, false);
                     } catch (Exception e) {
-                        // this method doesn't exist on e37.  just let users know this happened and continue on as usual
-                        FrameworkUIActivator.getDefault().getLog().log(new Status(IStatus.INFO, FrameworkUIActivator.PLUGIN_ID, "Cannot use reflection to close legacy perspective on Eclipse 3.7.", e));
+                        // this method doesn't exist on e37. OK to ignore
+//                        FrameworkUIActivator.getDefault().getLog().log(new Status(IStatus.INFO, FrameworkUIActivator.PLUGIN_ID, "Cannot use reflection to close legacy perspective on Eclipse 3.7.", e));
                     }
                 }
             }
