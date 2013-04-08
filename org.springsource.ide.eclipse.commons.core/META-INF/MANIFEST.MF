@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.equinox.p2.repository;resolution:=optional,
  org.eclipse.jdt.core,
  org.eclipse.jdt.launching,
- org.eclipse.wst.common.project.facet.core
+ org.eclipse.wst.common.project.facet.core,
+ org.apache.commons.collections
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.springsource.ide.eclipse.commons.core,
@@ -21,5 +22,3 @@ Export-Package: org.springsource.ide.eclipse.commons.core,
  org.springsource.ide.eclipse.commons.internal.core,
  org.springsource.ide.eclipse.commons.internal.core.commandhistory,
  org.springsource.ide.eclipse.commons.internal.core.net
-Import-Package: org.apache.commons.collections,
- org.apache.commons.collections.iterators
