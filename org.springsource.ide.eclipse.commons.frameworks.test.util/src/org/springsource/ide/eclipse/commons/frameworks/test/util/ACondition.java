@@ -66,13 +66,16 @@ public abstract class ACondition {
 		}
 		if (!result) {
 			//Try our best to create a 'nice' exception reflecting the reason for the test failure
-			if (e!=null)
+			System.err.println("ACondition timed out. Dumping current Thread stacks...\n" +
+					StsTestUtil.getStackDumps()
+			);
+			if (e!=null) {
 				if (e instanceof Exception) {
 					throw (Exception)e;
 				} else {
 					throw new Error(e);
 				}
-			else {
+			} else {
 				throw new Error(getMessage());
 			}
 		}
