@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Quick Search Category"
+            id="org.springsource.ide.eclipse.quicksearch.commands.category">
+      </category>
+      <command
+            name="Quick Search Command"
+            categoryId="org.springsource.ide.eclipse.quicksearch.commands.category"
+            id="org.springsource.ide.eclipse.quicksearch.commands.sampleCommand">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="org.springsource.ide.eclipse.quicksearch.commands.sampleCommand"
+            class="org.springsource.ide.eclipse.commons.quicksearch.ui.QuickSearchHandler">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.springsource.ide.eclipse.quicksearch.commands.sampleCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="M1+M2+L"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               label="Quick Search"
+               mnemonic="S"
+               id="org.springsource.ide.eclipse.quicksearch.menus.sampleMenu">
+            <command
+                  commandId="org.springsource.ide.eclipse.quicksearch.commands.sampleCommand"
+                  mnemonic="S"
+                  id="org.springsource.ide.eclipse.quicksearch.menus.sampleCommand">
+            </command>
+         </menu>
+      </menuContribution>
+<!--      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="org.springsource.ide.eclipse.quicksearch.toolbars.sampleToolbar">
+            <command
+                  commandId="org.springsource.ide.eclipse.quicksearch.commands.sampleCommand"
+                  icon="icons/sample.gif"
+                  tooltip="Say hello world"
+                  id="org.springsource.ide.eclipse.quicksearch.toolbars.sampleCommand">
+            </command>
+         </toolbar>
+      </menuContribution> -->
+   </extension>
+
+</plugin>
