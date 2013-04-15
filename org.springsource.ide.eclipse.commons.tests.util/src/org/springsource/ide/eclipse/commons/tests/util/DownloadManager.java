@@ -55,6 +55,27 @@ public class DownloadManager {
 		this(System.getProperty(
 				"com.springsource.sts.tests.cache",
 				System.getProperty("user.home") + File.separatorChar + ".sts-test-cache"));
+		deleteBuildSnapshots();
+	}
+
+	/**
+	 * Build snapshots from a previous test run shouldn't be used from the cache. So delete them
+	 * when the DownloadManager instance is created.
+	 */
+	private void deleteBuildSnapshots() {
+		File cache = new File(cacheDirectory);
+		if (cache.isDirectory()) {
+			String[] names = cache.list();
+			for (String name : names) {
+				if (name.contains("SNAPSHOT")) {
+					try {
+						new File(cache, name).delete();
+					} catch (Throwable e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
 	}
 
 	public DownloadManager(String cacheDir) {
