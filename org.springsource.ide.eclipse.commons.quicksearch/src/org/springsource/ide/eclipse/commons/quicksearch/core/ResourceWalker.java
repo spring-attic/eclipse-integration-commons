@@ -97,6 +97,11 @@ public abstract class ResourceWalker extends Job {
 
 	public ResourceWalker() {
 		super("QuickSearch");
+		init();
+	}
+
+	protected void init() {
+		queue = new PriorityQueue<ResourceWalker.QItem>();
 		queue.add(new QItem(0, ResourcesPlugin.getWorkspace().getRoot()));
 	}
 
@@ -104,7 +109,7 @@ public abstract class ResourceWalker extends Job {
 	 * Queue of work to do. When all work is done this will be set to null. So it
 	 * can also be used to determine 'done' status. 
 	 */
-	private PriorityQueue<QItem> queue = new PriorityQueue<QItem>();
+	private PriorityQueue<QItem> queue = null;
 	
 	/**
 	 * Setting this to true will cause the ResourceWalker to stop walking. If the walker is running
@@ -123,6 +128,24 @@ public abstract class ResourceWalker extends Job {
 	public void suspend() {
 		this.suspend = true;
 	}
+	
+	/**
+	 * Request the walker to be restarted... i.e. begin walking the resource tree from 
+	 * the initial state.
+	 */
+	
+	/**
+	 * Request that the walker be resumed. This clears the 'supsend' state if it is set
+	 * and ensures that the Job is scheduled.
+	 */
+	public void resume() {
+		if (isDone()) {
+			//Well... there's no work so don't bother with doing anything.
+			return;
+		}
+		this.suspend = false;
+		this.schedule();
+	}
 
 	protected boolean ignore(IResource r) {
 		String name = r.getName();
@@ -139,43 +162,55 @@ public abstract class ResourceWalker extends Job {
 	}
 	
 	public IStatus run(IProgressMonitor monitor) {
+		//TODO: progress reporting?
 		while (!suspend && queue!=null) {
-			IResource r = getWork();
-			if (r!=null) {
-				if (!ignore(r)) {
-					if (r instanceof IFile) {
-						IFile f = (IFile) r;
-						visit(f);
-					} else if (r instanceof IContainer) {
-						IContainer f = (IContainer) r;
-						try {
-							for (IResource child : f.members()) {
-								enqueue(child);
+			if (monitor.isCanceled()) {
+				queue = null;
+			} else {
+				IResource r = getWork();
+				if (r!=null) {
+					if (!ignore(r)) {
+						if (r instanceof IFile) {
+							IFile f = (IFile) r;
+							visit(f, monitor);
+						} else if (r instanceof IContainer) {
+							IContainer f = (IContainer) r;
+							try {
+								for (IResource child : f.members()) {
+									enqueue(child);
+								}
+							} catch (CoreException e) {
+								QuickSearchActivator.log(e);
 							}
-						} catch (CoreException e) {
-							QuickSearchActivator.log(e);
 						}
 					}
+				} else {
+					queue = null;
 				}
-			} else {
-				queue = null;
 			}
 		}
-		return Status.OK_STATUS;
+		if (monitor.isCanceled()) {
+			return Status.CANCEL_STATUS;
+		} else {
+			return Status.OK_STATUS;
+		}
 	}
 
 	/**
 	 * Add a resource to the work queue taking account the priority of the resource.
 	 */
 	private void enqueue(IResource child) {
-		double p = priority(child);
-		if (p==PRIORITY_IGNORE) {
-			return;
+		PriorityQueue<QItem> q = queue;
+		if (q!=null) {
+			double p = priority(child);
+			if (p==PRIORITY_IGNORE) {
+				return;
+			}
+			q.add(new QItem(p, child));
 		}
-		queue.add(new QItem(p, child));
 	}
 
-	protected abstract void visit(IFile r);
+	protected abstract void visit(IFile r, IProgressMonitor m);
 	
 	/**
 	 * Assigns a priority to a given resource. This priority will affect the order in which 
@@ -216,14 +251,12 @@ public abstract class ResourceWalker extends Job {
 	}
 
 	private IResource getWork() {
-		if (queue!=null) {
-			synchronized (queue) {
-				if (!queue.isEmpty()) {
-					return queue.remove().resource;
-				}
-			}
+		PriorityQueue<QItem> q = queue;
+		if (q!=null && !q.isEmpty()) {
+			return q.remove().resource;
 		}
 		return null;
 	}
 
+	
 }

@@ -63,19 +63,23 @@ public class DownloadManager {
 	 * when the DownloadManager instance is created.
 	 */
 	private void deleteBuildSnapshots() {
-		File cache = new File(cacheDirectory);
-		if (cache.isDirectory()) {
-			String[] names = cache.list();
-			for (String name : names) {
-				if (name.contains("SNAPSHOT")) {
-					try {
-						new File(cache, name).delete();
-					} catch (Throwable e) {
-						e.printStackTrace();
+		//Only do this on the build site, locally it is easy enough to delete buildsnaps manually
+		// as needed/desired.
+//		if (StsTestUtil.isOnBuildSite()) {
+			File cache = new File(cacheDirectory);
+			if (cache.isDirectory()) {
+				String[] names = cache.list();
+				for (String name : names) {
+					if (name.contains("SNAPSHOT")) {
+						try {
+							new File(cache, name).delete();
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			}
-		}
+//		}
 	}
 
 	public DownloadManager(String cacheDir) {

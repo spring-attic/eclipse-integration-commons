@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.quicksearch.core;
 
-import org.eclipse.search.internal.ui.text.LineElement;
 
 /**
  * Plays a similar role than SearchReqeustor in eclipse Searches. I.e. a search requestor
@@ -23,23 +22,27 @@ import org.eclipse.search.internal.ui.text.LineElement;
  * 
  * @author Kris De Volder
  */
-@SuppressWarnings("restriction")
 public class QuickTextSearchRequestor {
-
+	
 	/**
 	 * Called when a line of text containing the search text is found.
 	 */
-	public void add(LineElement line) {};
-	
+	public void add(LineItem match) {}
+
 	/**
 	 * Called when a previously added line of text needs to be redisplayed (this happens if
 	 * the query has changed but still matches the line. The line is still a match, but
 	 * the highlighting of the search term is different.
 	 */
-	public void update(LineElement line) {}
-	
+	public void update(LineItem match) {}
+
 	/**
 	 * Called when a line of text previously added is no longer a match for the current query
 	 */
-	public void revoke(LineElement line) {}
+	public void revoke(LineItem line) {}
+	
+	/**
+	 * Called when all previous results have become invalidated at once.
+	 */
+	public void clear() {}
 }

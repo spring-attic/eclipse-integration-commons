@@ -1,6 +1,9 @@
 package org.springsource.ide.eclipse.commons.quicksearch.core;
 
-import org.eclipse.search.internal.ui.text.LineElement;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 
 /**
  * Represents something you can search for with a 'quick search' text searcher. 
@@ -10,6 +13,15 @@ import org.eclipse.search.internal.ui.text.LineElement;
  * @author Kris De Volder
  */
 public class QuickTextQuery {
+
+	public class TextRange {
+		public final int start;
+		public final int len;
+		public TextRange(int start, int len) {
+			this.start = start;
+			this.len = len;
+		}
+	}
 
 	private String pattern;
 
@@ -45,8 +57,39 @@ public class QuickTextQuery {
 		return other.pattern.contains(this.pattern);
 	}
 
-	public boolean matchItem(LineElement item) {
-		return item.getContents().contains(this.pattern);
+	public boolean matchItem(LineItem item) {
+		return item.getText().contains(this.pattern);
 	}
 
+	/**
+	 * A trivial query is one that either 
+	 *   - matches anything
+	 *   - matches nothing
+	 * In other words, if a query is 'trivial' then it returns either nothing or all the text in the scope
+	 * of the search.
+	 */
+	public boolean isTrivial() {
+		return "".equals(this.pattern);
+	}
+
+	@Override
+	public String toString() {
+		return "QTQuery("+pattern+")";
+	}
+
+	public List<TextRange> searchIn(String text) {
+		if (isTrivial()) {
+			return Arrays.asList();
+		} else {
+			int len = pattern.length();
+			LinkedList<TextRange> ranges = new LinkedList<TextRange>();
+			int pos = text.indexOf(pattern);
+			while (pos>=0) {
+				ranges.add(new TextRange(pos, len));
+				pos = text.indexOf(pattern, pos+1);
+			}
+			return ranges;
+		}
+	}
+	
 }
