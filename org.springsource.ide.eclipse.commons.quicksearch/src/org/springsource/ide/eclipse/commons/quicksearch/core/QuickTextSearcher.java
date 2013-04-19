@@ -1,9 +1,10 @@
 package org.springsource.ide.eclipse.commons.quicksearch.core;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -29,7 +30,7 @@ public class QuickTextSearcher {
 	 * Keeps track of currently found matches. Items are added as they are found and may also
 	 * be removed when the query changed and they become invalid.
 	 */
-	private LinkedHashSet<LineItem> matches;
+	private Set<LineItem> matches;
 	
 	/**
 	 * Scheduling rule used by Jobs that work on the matches collection.
@@ -46,11 +47,30 @@ public class QuickTextSearcher {
 	 */
 	private QuickTextQuery newQuery;
 	
+	/**
+	 * If number of accumulated results reaches maxResults the search will be suspended.
+	 * <p>
+	 * Note that more results may still arrive beyond the limit since the searcher does not (yet) have the
+	 * capability to suspend/resume a search in the middle of a file.
+	 */
+	private int maxResults = 200;
+	
+	/**
+	 * Retrieves the current result limit.
+	 */
+	public int getMaxResults() {
+		return maxResults;
+	}
+
+	public void setMaxResults(int maxResults) {
+		this.maxResults = maxResults;
+	}
+
 	public QuickTextSearcher(QuickTextQuery query, QuickTextSearchRequestor requestor) {
 		this.requestor = requestor;
 		this.query = query;
 		this.walker = createWalker();
-		this.matches = new LinkedHashSet<LineItem>(2000);
+		this.matches =new HashSet<LineItem>(2000);
 	}
 	
 	private SearchInFilesWalker createWalker() {
@@ -66,7 +86,7 @@ public class QuickTextSearcher {
 			if (checkCanceled(mon)) {
 				return;
 			}
-			System.out.println("visit: "+f);
+//			System.out.println("visit: "+f);
 			FileTextSearchScope scope = FileTextSearchScope.newSearchScope(new IResource[] {f}, new String[] {"*"}, false);
 			FileSearchQuery search = new FileSearchQuery(query.getPattern(), false, true, scope);
 			search.run(new NullProgressMonitor());
@@ -106,8 +126,22 @@ public class QuickTextSearcher {
 			//				}
 		}
 
+		@Override
+		public void resume() {
+			//Only resume if we don't already exceed the maxResult limit.
+			if (matches.size()<maxResults) {
+				super.resume();
+			}
+		}
+		
 		private boolean checkCanceled(IProgressMonitor mon) {
 			return mon.isCanceled();
+		}
+
+		public void requestMoreResults() {
+			int currentSize = matches.size();
+			maxResults = Math.max(maxResults, currentSize + currentSize/10);
+			resume();
 		}
 
 	}
@@ -169,7 +203,7 @@ public class QuickTextSearcher {
 			requestor.clear();
 			walker.cancel();
 			walker.init(); //Reinitialize the walker work queue to its starting state
-			walker.resume(); //Ensure walker is going to start again when we release the scheduling rule.
+			walker.resume(); //Allow walker to resume when we release the scheduling rule.
 		}
 
 	}
@@ -177,6 +211,9 @@ public class QuickTextSearcher {
 	private void add(LineItem line) {
 		if (matches.add(line)) {
 			requestor.add(line);
+			if (matches.size() >= maxResults) {
+				walker.suspend();
+			}
 		}
 	}
 	
@@ -192,7 +229,8 @@ public class QuickTextSearcher {
 
 	public QuickTextQuery getQuery() {
 		//We return the newQuery as soon as it was set, even if it has not yet been effectively applied
-		// to allready found query results.
+		// to previously found query results. Most logical since when you call 'setQuery' you would 
+		// expect 'getQuery' to return the query you just set.
 		return newQuery!=null ? newQuery : query;
 	}
 	
@@ -205,6 +243,14 @@ public class QuickTextSearcher {
 		incrementalUpdate.schedule();
 	}
 
+	public boolean isDone() {
+		return walker.isDone();
+	}
 
+	public void requestMoreResults() {
+		if (walker!=null && !walker.isDone()) {
+			walker.requestMoreResults();
+		}
+	}
 
 }

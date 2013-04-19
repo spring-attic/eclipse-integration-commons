@@ -89,7 +89,6 @@ public abstract class ResourceWalker extends Job {
 			this.resource = r;
 		}
 		
-		@Override
 		public int compareTo(QItem other) {
 			return Double.compare(this.priority, other.priority);
 		}

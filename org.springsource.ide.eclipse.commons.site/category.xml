@@ -29,6 +29,12 @@
 		<category name="Core / Eclipse Integration Commons" />
 	</feature>
 
+ 	<feature
+		url="org.springsource.ide.eclipse.commons.quicksearch.feature_3.3.0.qualifier.jar"
+		id="org.springsource.ide.eclipse.commons.quicksearch.feature" version="3.3.0.qualifier">
+		<category name="Core / Eclipse Integration Commons" />
+	</feature>
+	
 	<feature
 		url="org.springsource.ide.eclipse.dashboard_3.3.0.qualifier.jar"
 		id="org.springsource.ide.eclipse.dashboard" version="3.3.0.qualifier">

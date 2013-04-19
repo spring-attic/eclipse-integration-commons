@@ -10,13 +10,14 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.quicksearch.ui;
 
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -24,6 +25,10 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.springsource.ide.eclipse.commons.quicksearch.core.LineItem;
+import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextQuery;
+import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextQuery.TextRange;
+
+import org.eclipse.jface.text.ITextSelection;
 
 /**
  * Our sample handler extends AbstractHandler, an IHandler base class.
@@ -37,7 +42,8 @@ public class QuickSearchHandler extends AbstractHandler {
 	public QuickSearchHandler() {
 	}
 
-	private static void goToLine(IEditorPart editorPart, int lineNumber) {
+	private static void goToLineAndSelectQuery(IEditorPart editorPart, LineItem line, QuickTextQuery q) {
+		int lineNumber = line.getLineNumber();
 		if (!(editorPart instanceof ITextEditor) || lineNumber <= 0) {
 			return;
 		}
@@ -45,17 +51,24 @@ public class QuickSearchHandler extends AbstractHandler {
 		IDocument document = editor.getDocumentProvider().getDocument(
 				editor.getEditorInput());
 		if (document != null) {
-			IRegion lineInfo = null;
 			try {
-				// line count internaly starts with 0, and not with 1 like in
-				// GUI
-				lineInfo = document.getLineInformation(lineNumber - 1);
+				// line count internaly starts with 0, and not with 1 like in GUI
+				IRegion lineInfo = document.getLineInformation(lineNumber - 1);
+				if (lineInfo != null) {
+					//Select first match on a line or, if match not found, select whole line.
+					int start = lineInfo.getOffset();
+					int len = lineInfo.getLength();
+					String lineText = document.get(start, len);
+					TextRange match = q.findFirst(lineText);
+					if (match!=null) {					
+						start = start+match.start;
+						len = match.len;
+//						len = matches.get
+					}
+					editor.selectAndReveal(start, len);
+				}
 			} catch (BadLocationException e) {
-				// ignored because line number may not really exist in document,
-				// we guess this...
-			}
-			if (lineInfo != null) {
-				editor.selectAndReveal(lineInfo.getOffset(), lineInfo.getLength());
+				QuickSearchActivator.log(e);
 			}
 		}
 	}
@@ -68,17 +81,38 @@ public class QuickSearchHandler extends AbstractHandler {
 		try {
 			IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 			QuickSearchDialog dialog = new QuickSearchDialog(window.getShell(), ResourcesPlugin.getWorkspace().getRoot());
+			setInitialPatternFromSelection(dialog, event);
 			int code = dialog.open();
 			if (code == QuickSearchDialog.OK) {
 				LineItem selection = (LineItem) dialog.getFirstResult();
+				QuickTextQuery q = dialog.getQuery();
 				if (selection!=null) {
 					IEditorPart editor = IDE.openEditor(window.getActivePage(), selection.getFile());
-					goToLine(editor, selection.getLineNumber());
+					goToLineAndSelectQuery(editor, selection, q);
 				}
 			}
 		} catch (PartInitException e) {
 			QuickSearchActivator.log(e);
 		}
 		return null;
+	}
+
+	/**
+	 * Based on the current active selection / context try to put something sensible into the dialog's search box 
+	 * initially.
+	 */
+	private void setInitialPatternFromSelection(QuickSearchDialog dialog, ExecutionEvent event) {
+		IEditorPart editor = HandlerUtil.getActiveEditor(event);
+		if (editor!=null && editor instanceof ITextEditor) {
+			ITextEditor textEditor = (ITextEditor)editor;
+			ISelection selection = textEditor.getSelectionProvider().getSelection();
+			if (selection!=null && selection instanceof ITextSelection) {
+				String text = ((ITextSelection) selection).getText();
+				if (text!=null && !"".equals(text)) {
+					dialog.setInitialPattern(text, QuickSearchDialog.FULL_SELECTION);
+				}
+			}
+			System.out.println(selection);
+		}
 	}
 }

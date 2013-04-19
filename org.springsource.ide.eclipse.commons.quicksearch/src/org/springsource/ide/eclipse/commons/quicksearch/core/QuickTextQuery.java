@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextQuery.TextRange;
+
 
 /**
  * Represents something you can search for with a 'quick search' text searcher. 
@@ -77,7 +79,7 @@ public class QuickTextQuery {
 		return "QTQuery("+pattern+")";
 	}
 
-	public List<TextRange> searchIn(String text) {
+	public List<TextRange> findAll(String text) {
 		if (isTrivial()) {
 			return Arrays.asList();
 		} else {
@@ -90,6 +92,17 @@ public class QuickTextQuery {
 			}
 			return ranges;
 		}
+	}
+
+	public TextRange findFirst(String str) {
+		//TODO: more efficient implementation, just search the first one 
+		// no need to find all matches then toss away everything except the
+		// first one.
+		List<TextRange> all = findAll(str);
+		if (all!=null && !all.isEmpty()) {
+			return all.get(0);
+		}
+		return null;
 	}
 	
 }

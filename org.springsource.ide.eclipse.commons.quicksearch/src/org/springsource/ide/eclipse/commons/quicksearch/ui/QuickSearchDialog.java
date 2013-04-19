@@ -16,8 +16,8 @@
 package org.springsource.ide.eclipse.commons.quicksearch.ui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -25,6 +25,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -62,6 +63,7 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Color;
@@ -75,6 +77,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
@@ -106,10 +109,97 @@ import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextSearcher;
 @SuppressWarnings({ "rawtypes", "restriction", "unchecked" })
 public class QuickSearchDialog extends SelectionStatusDialog {
 	
+//	private class SelectionChangedListener implements ISelectionChangedListener {
+//		public SelectionChangedListener(TableViewer list) {
+//			list.addSelectionChangedListener(this);
+//		}
+//
+//		@Override
+//		public void selectionChanged(SelectionChangedEvent event) {
+//			System.out.println("Selection changed: "+event.getSelection());
+//		}
+//	}
+
+//	public class ScrollListener implements SelectionListener {
+//		
+//		ScrollBar scrollbar;
+//		
+//		public ScrollListener(ScrollBar scrollbar) {
+//			this.scrollbar = scrollbar;
+//			scrollbar.addSelectionListener(this);
+//		}
+//
+//		@Override
+//		public void widgetDefaultSelected(SelectionEvent e) {
+//			processEvent(e);
+//		}
+//
+//		private int oldPercent = 0;
+//		
+//		private void processEvent(SelectionEvent e) {
+//			int min = scrollbar.getMinimum();
+//			int max = scrollbar.getMaximum();
+//			int val = scrollbar.getSelection();
+//			int thumb = scrollbar.getThumb();
+//			
+//			int total = max - min; //Total range of the scrollbar
+//			int end = val+thumb; //The bottom of visible region
+//			int belowEnd = max - end; //Size of area that is below the current visible area.
+//			int percent = (belowEnd*100)/total; // size in percentage of total area that is below visible area. 
+//			
+//			System.out.println("==== scroll event ===");
+//			System.out.println("min: "+min +"  max: "+max);
+//			System.out.println("val: "+val +"  thum: "+thumb);
+//			System.out.println("percent: "+percent);
+//			if (percent <= 10) {
+//				walker.requestMoreResults();
+//			}
+//			if (Math.abs(percent-oldPercent)>50) {
+//				System.out.println("Big jump!");
+//			}
+//			oldPercent = percent;
+//		}
+//
+//		@Override
+//		public void widgetSelected(SelectionEvent e) {
+//			processEvent(e);
+//		}
+//	}
+	
 	private UIJob refreshJob = new UIJob("Refresh") {
 		@Override
 		public IStatus runInUIThread(IProgressMonitor monitor) {
 			refresh();
+			return Status.OK_STATUS;
+		}
+	};
+	
+	/**
+	 * Job that shows a simple busy indicator while a search is active.
+	 * The job must be scheduled when a search starts/resumes. It periodically checks the
+	 */
+	private UIJob progressJob =  new UIJob("Refresh") {
+		int animate = 0; // number of dots to display.
+		
+		protected String dots(int animate) {
+			char[] chars = new char[animate];
+			for (int i = 0; i < chars.length; i++) {
+				chars[i] = '.';
+			}
+			return new String(chars);
+		}
+		
+		@Override
+		public IStatus runInUIThread(IProgressMonitor mon) {
+			if (!mon.isCanceled()) {
+				if (walker.isDone()) {
+					progressLabel.setText("");
+				} else {
+					progressLabel.setText("Searching"+dots(animate));
+					animate = (animate+1)%4;
+					this.schedule(333);
+				}
+			}
 			return Status.OK_STATUS;
 		}
 	};
@@ -125,6 +215,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	};
 
 	private static final Color YELLOW = Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW);
+	private static final Color GREY = Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY);
 
 	private final StyledCellLabelProvider LINE_TEXT_LABEL_PROVIDER = new StyledCellLabelProvider() {
 		@Override
@@ -134,7 +225,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 				QuickTextQuery query = walker.getQuery();
 				String text = item.getText();
 				cell.setText(text);
-				List<TextRange> ranges = query.searchIn(text);
+				List<TextRange> ranges = query.findAll(text);
 				if (ranges!=null && !ranges.isEmpty()) {
 					StyleRange[] styleRanges = new StyleRange[ranges.size()];
 					int pos = 0;
@@ -153,23 +244,34 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		}
 	};
 
-	private static final CellLabelProvider LINE_FILE_LABEL_PROVIDER = new CellLabelProvider() {
+	private static final StyledCellLabelProvider LINE_FILE_LABEL_PROVIDER = new StyledCellLabelProvider() {
 
 		@Override
 		public void update(ViewerCell cell) {
 			LineItem item = (LineItem) cell.getElement();
 			if (item!=null) {
-				cell.setText(item.getFile().getName());
+				IPath path = item.getFile().getFullPath();
+				String name = path.lastSegment();
+				String dir = path.removeLastSegments(1).toString();
+				cell.setText(name + " - "+dir);
+				StyleRange[] styleRanges = new StyleRange[] {
+						new StyleRange(name.length(), dir.length()+3, GREY, null)
+				};
+				cell.setStyleRanges(styleRanges);
+			} else {
+				cell.setText("");
+				cell.setStyleRanges(null);
 			}
+			super.update(cell);
 		}
 		
-		public String getToolTipText(Object element) {
-			LineItem item = (LineItem) element;
-			if (item!=null) {
-				return ""+item.getFile().getFullPath();
-			}
-			return "";
-		};
+//		public String getToolTipText(Object element) {
+//			LineItem item = (LineItem) element;
+//			if (item!=null) {
+//				return ""+item.getFile().getFullPath();
+//			}
+//			return "";
+//		};
 		
 //		public String getText(Object _item) {
 //			if (_item!=null) {
@@ -185,8 +287,9 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	private static final String DIALOG_BOUNDS_SETTINGS = "DialogBoundsSettings"; //$NON-NLS-1$
 
 	private static final String DIALOG_HEIGHT = "DIALOG_HEIGHT"; //$NON-NLS-1$
-
 	private static final String DIALOG_WIDTH = "DIALOG_WIDTH"; //$NON-NLS-1$
+	
+	private static final String DIALOG_LAST_QUERY = "LAST_QUERY";
 
 	/**
 	 * Represents an empty selection in the pattern input field (used only for
@@ -239,8 +342,6 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	private int selectionMode;
 
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
-
-	private boolean refreshWithLastSelection = false;
 
 	private IHandlerActivation showViewHandler;
 
@@ -321,6 +422,14 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * Restores dialog using persisted settings. 
 	 */
 	protected void restoreDialog(IDialogSettings settings) {
+		if (initialPatternText==null) {
+			String lastSearch = settings.get(DIALOG_LAST_QUERY);
+			if (lastSearch==null) {
+				lastSearch = "";
+			}
+			pattern.setText(lastSearch);
+			pattern.setSelection(0, lastSearch.length());
+		}
 	}
 
 	/*
@@ -329,6 +438,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * @see org.eclipse.jface.window.Window#close()
 	 */
 	public boolean close() {
+		this.progressJob.cancel();
+		this.progressJob = null;
 //		this.refreshProgressMessageJob.cancel();
 		if (showViewHandler != null) {
 			IHandlerService service = (IHandlerService) PlatformUI
@@ -352,6 +463,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 *            settings used to store dialog
 	 */
 	protected void storeDialog(IDialogSettings settings) {
+		String currentSearch = pattern.getText();
+		settings.put(DIALOG_LAST_QUERY, currentSearch);
 	}
 
 	/**
@@ -578,7 +691,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 		list = new TableViewer(content, (multi ? SWT.MULTI : SWT.SINGLE)
 				| SWT.BORDER | SWT.V_SCROLL | SWT.VIRTUAL);
-		ColumnViewerToolTipSupport.enableFor(list, ToolTip.NO_RECREATE); 
+//		ColumnViewerToolTipSupport.enableFor(list, ToolTip.NO_RECREATE); 
 		
 		list.getTable().setHeaderVisible(true);
 		list.getTable().setLinesVisible(true); 
@@ -592,6 +705,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 					}
 				});
 		list.setContentProvider(contentProvider);
+//		new ScrollListener(list.getTable().getVerticalBar());
+//		new SelectionChangedListener(list);
 		
 		TableViewerColumn col = new TableViewerColumn(list, SWT.RIGHT);
 		col.setLabelProvider(LINE_NUMBER_LABEL_PROVIDER);
@@ -763,41 +878,40 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 */
 	public void refresh() {
 		if (list != null && !list.getTable().isDisposed()) {
-
-			List lastRefreshSelection = ((StructuredSelection) list
-					.getSelection()).toList();
-			list.getTable().deselectAll();
-
+			ScrollBar sb = list.getTable().getVerticalBar();
+			int oldScroll = sb.getSelection();
 			list.setItemCount(contentProvider.getNumberOfElements());
-			list.refresh();
-
-			if (list.getTable().getItemCount() > 0) {
-				// preserve previous selection
-				if (refreshWithLastSelection && lastRefreshSelection != null
-						&& lastRefreshSelection.size() > 0) {
-					list.setSelection(new StructuredSelection(
-							lastRefreshSelection));
-				} else {
-					refreshWithLastSelection = true;
-					list.getTable().setSelection(0);
-					list.getTable().notifyListeners(SWT.Selection, new Event());
-				}
-			} else {
-				list.setSelection(StructuredSelection.EMPTY);
+			list.refresh(true, false);
+			int newScroll = sb.getSelection();
+			if (oldScroll!=newScroll) {
+				System.out.println("Scroll moved in refresh: "+oldScroll+ " => " + newScroll);
 			}
-
+			//sb.setSelection((int) Math.floor(oldScroll*sb.getMaximum()));
 		}
-
-		scheduleProgressMessageRefresh();
-	}
-
-	/**
-	 * Updates the progress label.
-	 * 
-	 * @deprecated
-	 */
-	public void updateProgressLabel() {
-		scheduleProgressMessageRefresh();
+//			
+// The code below attempts to preserve selection, but it also messes up the
+// scroll position (reset to 0) in the common case where selection is first element
+// and more elements are getting added as I scroll down to bottom of list.
+//			
+//			
+//			list.getTable().deselectAll();
+//
+//			list.setItemCount(contentProvider.getNumberOfElements());
+//			list.refresh(/*updateLabels*/true, /*reveal*/false);
+//
+//			if (list.getTable().getItemCount() > 0) {
+//				// preserve previous selection
+//				if (lastRefreshSelection != null) {
+//					if (lastRefreshSelection.size() > 0) {
+//						list.setSelection(new StructuredSelection(lastRefreshSelection), false);
+//					}
+//				} else {
+//					list.setSelection(StructuredSelection.EMPTY, false);
+//				}
+//			} else {
+//				list.setSelection(StructuredSelection.EMPTY);
+//			}
+//		}
 	}
 
 	/**
@@ -810,15 +924,6 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 //		refreshCacheJob.schedule();
 	}
 
-	/**
-	 * Schedules progress message refresh.
-	 */
-	public void scheduleProgressMessageRefresh() {
-//		if (filterJob.getState() != Job.RUNNING
-//				&& refreshProgressMessageJob.getState() != Job.RUNNING)
-//			refreshProgressMessageJob.scheduleProgressRefresh(null);
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -827,6 +932,13 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	protected void computeResult() {
 		List objectsToReturn = ((StructuredSelection) list.getSelection())
 				.toList();
+		if (objectsToReturn.isEmpty()) {
+			//Pretend that the first element is selected.
+			Object first = list.getElementAt(0);
+			if (first!=null) {
+				objectsToReturn = Arrays.asList(first);
+			}
+		}
 		setResult(objectsToReturn);
 	}
 
@@ -842,6 +954,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * @see Dialog#okPressed()
 	 */
 	protected void okPressed() {
+		
 		if (status != null
 				&& (status.isOK() || status.getCode() == IStatus.INFO)) {
 			super.okPressed();
@@ -943,7 +1056,6 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 				@Override
 				public void add(LineItem match) {
 					contentProvider.add(match);
-//					list.add(match);
 					contentProvider.refresh();
 				}
 				@Override
@@ -951,9 +1063,13 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 					contentProvider.reset();
 					contentProvider.refresh();
 				}
+				@Override
 				public void revoke(LineItem match) {
 					contentProvider.remove(match);
-					//list.remove(match);
+					contentProvider.refresh();
+				}
+				@Override
+				public void update(LineItem match) {
 					contentProvider.refresh();
 				}
 			});
@@ -962,6 +1078,9 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		} else {
 			//The QuickTextSearcher is already active update the query
 			this.walker.setQuery(newFilter);
+		}
+		if (progressJob!=null) {
+			progressJob.schedule();
 		}
 	}
 
@@ -998,24 +1117,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 */
 	private class ContentProvider implements IStructuredContentProvider, ILazyContentProvider {
 
-		/**
-		 * Raw result of the searching (unsorted, unfiltered).
-		 * <p>
-		 * Standard object flow:
-		 * <code>items -> lastSortedItems -> lastFilteredItems</code>
-		 */
 		private List items;
-
-		/**
-		 * Used for <code>getFilteredItems()</code> method canceling (when the
-		 * job that invoked the method was canceled).
-		 * <p>
-		 * Method canceling could be based (only) on monitor canceling
-		 * unfortunately sometimes the method <code>getFilteredElements()</code>
-		 * could be run with a null monitor, the <code>reset</code> flag have
-		 * to be left intact.
-		 */
-		private boolean reset;
 
 		/**
 		 * Creates new instance of <code>ContentProvider</code>.
@@ -1035,7 +1137,6 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		 * Removes all content items and resets progress message.
 		 */
 		public void reset() {
-			reset = true;
 			this.items.clear();
 		}
 
@@ -1183,6 +1284,10 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 */
 	public Control getPatternControl() {
 		return pattern;
+	}
+
+	public QuickTextQuery getQuery() {
+		return walker.getQuery();
 	}
 
 }

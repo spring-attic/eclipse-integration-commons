@@ -26,6 +26,10 @@
 	<module>org.springsource.ide.eclipse.commons.test-feature</module>
 	<module>org.springsource.ide.eclipse.dashboard-feature</module>
 
+    <!-- quick search -->
+	<module>org.springsource.ide.eclipse.commons.quicksearch.feature</module>
+	<module>org.springsource.ide.eclipse.commons.quicksearch</module>
+
 	<module>org.springsource.ide.eclipse.commons.content.core</module>
 	<module>org.springsource.ide.eclipse.commons.core</module>
 	<module>org.springsource.ide.eclipse.commons.frameworks.core</module>
