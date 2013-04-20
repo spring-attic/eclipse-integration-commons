@@ -17,14 +17,14 @@ package org.springsource.ide.eclipse.commons.quicksearch.ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -34,9 +34,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.LegacyActionTools;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.IDialogSettings;
-import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ILazyContentProvider;
@@ -49,7 +47,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
-import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.accessibility.ACC;
 import org.eclipse.swt.accessibility.AccessibleAdapter;
@@ -63,7 +60,6 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Color;
@@ -78,13 +74,18 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.ScrollBar;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.ActiveShellExpression;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IWorkbenchCommandConstants;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionStatusDialog;
 import org.eclipse.ui.handlers.IHandlerActivation;
@@ -99,6 +100,9 @@ import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextQuery;
 import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextQuery.TextRange;
 import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextSearchRequestor;
 import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextSearcher;
+import org.springsource.ide.eclipse.commons.quicksearch.core.priority.DefaultPriorityFunction;
+import org.springsource.ide.eclipse.commons.quicksearch.core.priority.PrioriTree;
+import org.springsource.ide.eclipse.commons.quicksearch.core.priority.PriorityFunction;
 
 /**
  * Shows a list of items to the user with a text entry field for a string
@@ -313,8 +317,6 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	private TableViewer list;
 
-//	private ItemsListLabelProvider itemsListLabelProvider;
-
 	private MenuManager menuManager;
 
 	private MenuManager contextMenuManager;
@@ -327,13 +329,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	private Label progressLabel;
 
-//	private RemoveHistoryItemAction removeHistoryItemAction;
-
 	private IStatus status;
-
-//	private RefreshProgressMessageJob refreshProgressMessageJob = new RefreshProgressMessageJob();
-
-	private Object[] currentSelection;
 
 	private ContentProvider contentProvider;
 
@@ -347,31 +343,23 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	private QuickTextSearcher walker;
 
+	private IWorkbenchWindow window;
+
 	/**
 	 * Creates a new instance of the class.
 	 * 
-	 * @param shell
+	 * @param window.getShell()
 	 *            shell to parent the dialog on
 	 * @param multi
 	 *            indicates whether dialog allows to select more than one
 	 *            position in its list of items
 	 */
-	public QuickSearchDialog(Shell shell, IResource context) {
-		super(shell);
+	public QuickSearchDialog(IWorkbenchWindow window) {
+		super(window.getShell());
+		this.window = window;
 		this.multi = false;
 		contentProvider = new ContentProvider();
 		selectionMode = NONE;
-	}
-
-	/**
-	 * Creates a new instance of the class. Created dialog won't allow to select
-	 * more than one item.
-	 * 
-	 * @param shell
-	 *            shell to parent the dialog on
-	 */
-	public QuickSearchDialog(Shell shell) {
-		this(shell, ResourcesPlugin.getWorkspace().getRoot());
 	}
 
 //	/**
@@ -1052,7 +1040,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		}
 		if (this.walker==null) {
 			//Create the QuickTextSearcher with the inital query.
-			this.walker = new QuickTextSearcher(newFilter, new QuickTextSearchRequestor() {
+			this.walker = new QuickTextSearcher(newFilter, createPriorityFun(), new QuickTextSearchRequestor() {
 				@Override
 				public void add(LineItem match) {
 					contentProvider.add(match);
@@ -1082,6 +1070,85 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		if (progressJob!=null) {
 			progressJob.schedule();
 		}
+	}
+	
+	/**
+	 * Gets the IFile that is currently open in the active editor.
+	 * @return IFile or null if there is no current editor or the editor isn't associated to a file.
+	 */
+	private IFile getActiveFile() {
+		IWorkbenchPage page = window.getActivePage();
+		if (page!=null) {
+			IEditorPart editor = page.getActiveEditor();
+			if (editor!=null) {
+				IEditorInput input = editor.getEditorInput();
+				if (input!=null) {
+					return (IFile) input.getAdapter(IFile.class);
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * We remember the last result of getOpenFiles in here. This is so that we can return this
+	 * if we are having trouble to compute the open files. Sometimes we may not be able to
+	 * access the active workbench page etc. In this case it is probably better to return
+	 * a stale list of files than nothing at all.
+	 */
+	private static Collection<IFile> lastOpenFiles = Arrays.asList(); //Empty list to start with.
+	
+	private Collection<IFile> getOpenFiles() {
+		System.out.println(">>> open files");
+		try {
+			IWorkbenchPage page = window.getActivePage();
+			if (page!=null) {
+				Collection<IFile> files = new ArrayList<IFile>();
+				IEditorReference[] editors = page.getEditorReferences();
+				if (editors!=null) {
+					for (IEditorReference editor : editors) {
+						try {
+							IEditorInput input = editor.getEditorInput();
+							if (input!=null) {
+								IFile file = (IFile) input.getAdapter(IFile.class);
+								System.out.println(file.getFullPath());
+								files.add(file);
+							}
+						} catch (PartInitException e) {
+							QuickSearchActivator.log(e);
+						}
+					}
+					lastOpenFiles = files;
+					return files;
+				}
+			}
+			return lastOpenFiles;
+		} finally {
+			System.out.println(">>> open files");
+		}
+	}
+
+	
+	/**
+	 * Create a walker priority function based on the current 'context' (i.e. for now this means the open editors).
+	 */
+	private PriorityFunction createPriorityFun() {
+		PrioriTree priorities = new PrioriTree();
+		try {
+			IFile currentFile = getActiveFile();
+			if (currentFile!=null) {
+				priorities.setPriority(currentFile.getFullPath(), PriorityFunction.PRIORITY_VISIT_FIRST);
+			}
+			Collection<IFile> openFiles = getOpenFiles();
+			for (IFile file : openFiles) {
+				priorities.setPriority(file.getFullPath(), PriorityFunction.PRIORITY_INTERESTING);
+			}
+			
+			return priorities;
+		} catch (Throwable e) {
+			QuickSearchActivator.log(e);
+		}
+		return new DefaultPriorityFunction();
 	}
 
 	/**

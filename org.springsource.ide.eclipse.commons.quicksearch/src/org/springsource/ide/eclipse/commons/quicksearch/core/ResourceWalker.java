@@ -16,11 +16,14 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.springsource.ide.eclipse.commons.quicksearch.core.priority.DefaultPriorityFunction;
+import org.springsource.ide.eclipse.commons.quicksearch.core.priority.PriorityFunction;
 import org.springsource.ide.eclipse.commons.quicksearch.ui.QuickSearchActivator;
 
 /**
@@ -33,53 +36,6 @@ import org.springsource.ide.eclipse.commons.quicksearch.ui.QuickSearchActivator;
  */
 public abstract class ResourceWalker extends Job {
 	
-	/**
-	 * The highest priority. Any elements in the queue with this priority will be visited before
-	 * any others in the queue. Be warned that assigning this priority to a deeply nested
-	 * element in the tree alone doesn't guarantee it will be visited early on because in
-	 * order to reach the element the parents have to be visited first. If the parent
-	 * has a low priority...
-	 */
-	public static final double PRIORITY_VISIT_FIRST = Double.POSITIVE_INFINITY;
-	
-	/**
-	 * A special priority that causes elements (and their children) to be completely ignored.
-	 */
-	public static final double PRIORITY_IGNORE = Double.NEGATIVE_INFINITY;
-	
-	/**
-	 * A default priority value. Meant to be used for elements that are neither particularly
-	 * interesting or particularly non-interesting. Use larger numbers to emphasize elements
-	 * and lower numbers to de-emphasise them. Note that in order to emphasise an element
-	 * globally it is probably also necessary to ensure the priority of their parents
-	 * are raised as well.
-	 */
-	private static final double PRIORITY_DEFAULT = 0;
-
-	/**
-	 * The default priority function causes any resources that end with these strings to
-	 * be ignored.
-	 */
-	public String[] ignoredExtensions = {
-		".png", ".jpg", ".zip", ".jar", "~"
-	};
-	
-	/**
-	 * The default priority function causes any resource who's name (i.e last path segment)
-	 * starts with any of these Strings to be ignored.
-	 */
-	public String[] ignoredPrefixes = {
-		"."
-	};
-	
-	/**
-	 * The default priority function causes any resources who's name equals any of these
-	 * Strings to be ignored.
-	 */
-	public static final String[] ignoredNames = {
-		"bin", "target", "build"
-	};
-	
 	private class QItem implements Comparable<QItem> {
 		public final double priority;
 		public final IResource resource;
@@ -90,7 +46,7 @@ public abstract class ResourceWalker extends Job {
 		}
 		
 		public int compareTo(QItem other) {
-			return Double.compare(this.priority, other.priority);
+			return Double.compare(other.priority, this.priority);
 		}
 	}
 
@@ -116,6 +72,8 @@ public abstract class ResourceWalker extends Job {
 	 * later since pending list of workitems will be retained. 
 	 */
 	private boolean suspend = false;
+
+	private PriorityFunction prioritFun = new DefaultPriorityFunction();
 	
 	public boolean isDone() {
 		return queue==null;
@@ -202,7 +160,7 @@ public abstract class ResourceWalker extends Job {
 		PriorityQueue<QItem> q = queue;
 		if (q!=null) {
 			double p = priority(child);
-			if (p==PRIORITY_IGNORE) {
+			if (p==PriorityFunction.PRIORITY_IGNORE) {
 				return;
 			}
 			q.add(new QItem(p, child));
@@ -226,29 +184,23 @@ public abstract class ResourceWalker extends Job {
 	 * @param r
 	 * @return
 	 */
-	protected double priority(IResource r) {
-		if (r!=null) {
-			String name = r.getName();
-			for (String ext : ignoredExtensions) {
-				if (name.endsWith(ext)) {
-					return PRIORITY_IGNORE;
-				}
-			}
-			for (String pre : ignoredPrefixes) {
-				if (name.startsWith(pre)) {
-					return PRIORITY_IGNORE;
-				}
-			}
-			for (String n : ignoredNames) {
-				if (name.equals(n)) {
-					return PRIORITY_IGNORE;
-				}
-			}
-			return PRIORITY_DEFAULT;
-		}
-		return PRIORITY_IGNORE;
+	final double priority(IResource r) {
+		return prioritFun.priority(r);
 	}
 
+	/**
+	 * Set the priority function to use to determine walking order. For the function to
+	 * take effect, it should be set before walking has started as the function is 
+	 * used when elements are added to the work queue during the walk. 
+	 * <p>
+	 * Elements already in the work queue are not re-prioritized if a function is set
+	 * in 'mid-run'.
+	 */
+	public void setPriorityFun(PriorityFunction f) {
+		Assert.isNotNull(f, "PriorityFunction should never be null");
+		this.prioritFun = f;
+	}
+	
 	private IResource getWork() {
 		PriorityQueue<QItem> q = queue;
 		if (q!=null && !q.isEmpty()) {

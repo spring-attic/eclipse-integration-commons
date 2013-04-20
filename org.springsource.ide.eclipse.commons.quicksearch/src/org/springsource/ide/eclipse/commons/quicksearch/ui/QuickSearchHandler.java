@@ -80,7 +80,7 @@ public class QuickSearchHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-			QuickSearchDialog dialog = new QuickSearchDialog(window.getShell(), ResourcesPlugin.getWorkspace().getRoot());
+			QuickSearchDialog dialog = new QuickSearchDialog(window);
 			setInitialPatternFromSelection(dialog, event);
 			int code = dialog.open();
 			if (code == QuickSearchDialog.OK) {
@@ -112,7 +112,6 @@ public class QuickSearchHandler extends AbstractHandler {
 					dialog.setInitialPattern(text, QuickSearchDialog.FULL_SELECTION);
 				}
 			}
-			System.out.println(selection);
 		}
 	}
 }

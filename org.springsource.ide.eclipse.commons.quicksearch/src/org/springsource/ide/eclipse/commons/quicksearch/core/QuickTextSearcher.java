@@ -1,9 +1,7 @@
 package org.springsource.ide.eclipse.commons.quicksearch.core;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -19,6 +17,7 @@ import org.eclipse.search.internal.ui.text.FileSearchQuery;
 import org.eclipse.search.internal.ui.text.FileSearchResult;
 import org.eclipse.search.ui.text.FileTextSearchScope;
 import org.eclipse.search.ui.text.Match;
+import org.springsource.ide.eclipse.commons.quicksearch.core.priority.PriorityFunction;
 import org.springsource.ide.eclipse.commons.quicksearch.util.JobUtil;
 
 @SuppressWarnings("restriction")
@@ -66,21 +65,23 @@ public class QuickTextSearcher {
 		this.maxResults = maxResults;
 	}
 
-	public QuickTextSearcher(QuickTextQuery query, QuickTextSearchRequestor requestor) {
+	public QuickTextSearcher(QuickTextQuery query, PriorityFunction priorities, QuickTextSearchRequestor requestor) {
 		this.requestor = requestor;
 		this.query = query;
-		this.walker = createWalker();
-		this.matches =new HashSet<LineItem>(2000);
+		this.walker = createWalker(priorities);
+		this.matches = new HashSet<LineItem>(2000);
 	}
 	
-	private SearchInFilesWalker createWalker() {
+	private SearchInFilesWalker createWalker(PriorityFunction priorities) {
 		final SearchInFilesWalker job = new SearchInFilesWalker();
+		job.setPriorityFun(priorities);
 		job.setRule(matchesRule);
 		job.schedule();
 		return job;
 	}
 
 	private final class SearchInFilesWalker extends ResourceWalker {
+		
 		@Override
 		protected void visit(IFile f, IProgressMonitor mon) {
 			if (checkCanceled(mon)) {
