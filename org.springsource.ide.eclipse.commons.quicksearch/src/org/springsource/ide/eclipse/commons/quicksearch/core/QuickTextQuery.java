@@ -4,38 +4,49 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextQuery.TextRange;
+import org.eclipse.jface.text.IRegion;
 
 
 /**
  * Represents something you can search for with a 'quick search' text searcher. 
- * Typically just a case-insensitive String. But maybe could be a regular expression and be case
- * sensitive or not.
  * 
  * @author Kris De Volder
  */
 public class QuickTextQuery {
 
-	public class TextRange {
+	//TODO: delete and use jface Region class instead.
+	public class TextRange implements IRegion {
 		public final int start;
 		public final int len;
 		public TextRange(int start, int len) {
 			this.start = start;
 			this.len = len;
 		}
+		@Override
+		public int getLength() {
+			return len;
+		}
+		@Override
+		public int getOffset() {
+			return start;
+		}
 	}
 
-	private String pattern;
+	private boolean caseSensitive;
+	private String orgPattern; //Original pattern case preserved even if search is case insensitive.
+	private String pattern; //pattern, converted to lower case for case insensitive searches.
 
 	/**
 	 * A query that matches anything.
 	 */
 	public QuickTextQuery() {
-		this("");
+		this("", true);
 	}
 	
-	public QuickTextQuery(String substring) {
-		this.pattern = substring;
+	public QuickTextQuery(String substring, boolean caseSensitive) {
+		this.orgPattern = substring;
+		this.pattern = caseSensitive ? orgPattern : orgPattern.toLowerCase();
+		this.caseSensitive = caseSensitive;
 	}
 
 	public String getPattern() {
@@ -43,24 +54,28 @@ public class QuickTextQuery {
 	}
 
 	public boolean equalsFilter(QuickTextQuery o) {
-		return this.pattern.equals(o.pattern);
+		return this.caseSensitive == o.caseSensitive && this.pattern.equals(o.pattern);
 	}
 
 	/**
-	 * Returns true if the other query is a specialization of this query. I.e. any results matching the other
-	 * query must also match this query. If this method returns true then we can optimize the search for other
+	 * Returns true if the other query is a specialisation of this query. I.e. any results matching the other
+	 * query must also match this query. If this method returns true then we can optimise the search for other
 	 * re-using already found results for this query. 
 	 * <p>
-	 * If it is hard or impossible to decide whether other query is a specialization of this query then this
+	 * If it is hard or impossible to decide whether other query is a specialisation of this query then this
 	 * method is allowed to 'punt' and just return false. However, the consequence of this is that the query 
 	 * will be re-run and instead of incrementally updated.
 	 */
 	public boolean isSubFilter(QuickTextQuery other) {
-		return other.pattern.contains(this.pattern);
+		return this.caseSensitive==other.caseSensitive && other.pattern.contains(this.pattern);
 	}
 
 	public boolean matchItem(LineItem item) {
-		return item.getText().contains(this.pattern);
+		if (caseSensitive) {
+			return item.getText().contains(this.pattern);
+		} else {
+			return item.getText().toLowerCase().contains(this.pattern);
+		}
 	}
 
 	/**
@@ -71,18 +86,21 @@ public class QuickTextQuery {
 	 * of the search.
 	 */
 	public boolean isTrivial() {
-		return "".equals(this.pattern);
+		return "".equals(this.orgPattern);
 	}
 
 	@Override
 	public String toString() {
-		return "QTQuery("+pattern+")";
+		return "QTQuery("+pattern+", "+(caseSensitive?"caseSens":"caseInSens")+")";
 	}
 
 	public List<TextRange> findAll(String text) {
 		if (isTrivial()) {
 			return Arrays.asList();
 		} else {
+			if (!caseSensitive) {
+				text = text.toLowerCase();
+			}
 			int len = pattern.length();
 			LinkedList<TextRange> ranges = new LinkedList<TextRange>();
 			int pos = text.indexOf(pattern);

@@ -12,6 +12,8 @@
  *  Peter Friese <peter.friese@gentleware.com>
  *     - Fix for bug 208602 - [Dialogs] Open Type dialog needs accessible labels
  *  Simon Muschel <smuschel@gmx.de> - bug 258493
+ *  Kris De Volder Copied and modified from org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog
+ *                 to create QuickSearchDialog
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.quicksearch.ui;
 
@@ -20,8 +22,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import org.eclipse.jface.text.BadLocationException;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -32,14 +32,25 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.ui.PreferenceConstants;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.LegacyActionTools;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.dialogs.DialogSettings;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.Region;
+import org.eclipse.jface.text.TextPresentation;
+import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -50,6 +61,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
+import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.jface.viewers.StyledString.Styler;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
@@ -59,6 +72,7 @@ import org.eclipse.swt.accessibility.ACC;
 import org.eclipse.swt.accessibility.AccessibleAdapter;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -70,6 +84,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
@@ -95,11 +110,13 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionStatusDialog;
+import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
 import org.eclipse.ui.internal.WorkbenchImages;
 import org.eclipse.ui.internal.WorkbenchMessages;
+import org.eclipse.ui.internal.editors.text.EditorsPlugin;
 import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.eclipse.ui.progress.UIJob;
 import org.springsource.ide.eclipse.commons.quicksearch.core.LineItem;
@@ -121,18 +138,10 @@ import org.springsource.ide.eclipse.commons.quicksearch.util.DocumentFetcher;
 @SuppressWarnings({ "rawtypes", "restriction", "unchecked" })
 public class QuickSearchDialog extends SelectionStatusDialog {
 	
-//	private class SelectionChangedListener implements ISelectionChangedListener {
-//		public SelectionChangedListener(TableViewer list) {
-//			list.addSelectionChangedListener(this);
-//		}
-//
-//		@Override
-//		public void selectionChanged(SelectionChangedEvent event) {
-//			System.out.println("Selection changed: "+event.getSelection());
-//		}
-//	}
+	public static final Styler HIGHLIGHT_STYLE = org.eclipse.search.internal.ui.text.DecoratingFileSearchLabelProvider.HIGHLIGHT_STYLE;
 
-//	public class ScrollListener implements SelectionListener {
+	
+///	public class ScrollListener implements SelectionListener {
 //		
 //		ScrollBar scrollbar;
 //		
@@ -226,8 +235,10 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		};
 	};
 
-	private static final Color YELLOW = Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW);
+	//private static final Color YELLOW = Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW);
 	private static final Color GREY = Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY);
+	
+	 //Color used to highlight the current line in the defails view
 	private static final Color CYAN = Display.getCurrent().getSystemColor(SWT.COLOR_CYAN);
 
 	private final StyledCellLabelProvider LINE_TEXT_LABEL_PROVIDER = new StyledCellLabelProvider() {
@@ -235,20 +246,9 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		public void update(ViewerCell cell) {
 			LineItem item = (LineItem) cell.getElement();
 			if (item!=null) {
-				QuickTextQuery query = walker.getQuery();
-				String text = item.getText();
-				cell.setText(text);
-				List<TextRange> ranges = query.findAll(text);
-				if (ranges!=null && !ranges.isEmpty()) {
-					StyleRange[] styleRanges = new StyleRange[ranges.size()];
-					int pos = 0;
-					for (TextRange range : ranges) {
-						styleRanges[pos++] = new StyleRange(range.start, range.len, null, YELLOW);
-					}
-					cell.setStyleRanges(styleRanges);
-				} else {
-					cell.setStyleRanges(null);
-				}
+				StyledString text = highlightMatches(item.getText());
+				cell.setText(text.getString());
+				cell.setStyleRanges(text.getStyleRanges());
 			} else {
 				cell.setText("");
 				cell.setStyleRanges(null);
@@ -303,6 +303,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	private static final String DIALOG_WIDTH = "DIALOG_WIDTH"; //$NON-NLS-1$
 	
 	private static final String DIALOG_LAST_QUERY = "LAST_QUERY";
+	private static final String CASE_SENSITIVE = "CASE_SENSITIVE";
+	private static final boolean CASE_SENSITIVE_DEFAULT = true;
 
 	/**
 	 * Represents an empty selection in the pattern input field (used only for
@@ -354,9 +356,12 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	private IWorkbenchWindow window;
 
-	private Text details;
+	private StyledText details;
 
 	private DocumentFetcher documents;
+
+
+	private ToggleCaseSensitiveAction toggleCaseSensitiveAction;
 
 	/**
 	 * Creates a new instance of the class.
@@ -433,6 +438,30 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		}
 	}
 
+	private class ToggleCaseSensitiveAction extends Action {
+
+		/**
+		 * Creates a new instance of the class.
+		 */
+		public ToggleCaseSensitiveAction(IDialogSettings settings) {
+			super(
+					"Case Sensitive",
+					IAction.AS_CHECK_BOX
+			);
+			if (settings.get(CASE_SENSITIVE)==null) {
+				setChecked(CASE_SENSITIVE_DEFAULT);
+			} else{
+				setChecked(settings.getBoolean(CASE_SENSITIVE));
+			}
+		}
+
+		public void run() {
+			//setChecked(!isChecked());
+			applyFilter();
+		}
+	}
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -466,6 +495,9 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	protected void storeDialog(IDialogSettings settings) {
 		String currentSearch = pattern.getText();
 		settings.put(DIALOG_LAST_QUERY, currentSearch);
+		if (toggleCaseSensitiveAction!=null) {
+			settings.put(CASE_SENSITIVE, toggleCaseSensitiveAction.isChecked());
+		}
 	}
 
 	/**
@@ -590,8 +622,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 *            the menu manager
 	 */
 	protected void fillViewMenu(IMenuManager menuManager) {
-//		toggleStatusLineAction = new ToggleStatusLineAction();
-//		menuManager.add(toggleStatusLineAction);
+		toggleCaseSensitiveAction = new ToggleCaseSensitiveAction(getDialogSettings());
+		menuManager.add(toggleCaseSensitiveAction);
 	}
 
 	private void showViewMenu() {
@@ -663,6 +695,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * 
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite dialogArea = (Composite) super.createDialogArea(parent);
 
@@ -817,11 +850,26 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		return dialogArea;
 	}
 
+	
 	private void createDetailsArea(Composite parent) {
-		details = new Text(parent, SWT.MULTI+SWT.READ_ONLY+SWT.BORDER);
-		details.setText("Line 1\nLine 2\nLine 3\nLine 4\nLine5");
+		details = new StyledText(parent, SWT.MULTI+SWT.READ_ONLY+SWT.BORDER);
+		details.setText("Line 1\nLine 2\nLine 3\nLine 4\nLine 5");
 		details.setFont(JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT));
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(details);
+		
+		
+//		details = new SourceViewer(parent, null, SWT.READ_ONLY+SWT.MULTI+SWT.BORDER);
+//		details.getTextWidget().setText("Line 1\nLine 2\nLine 3\nLine 4\nLine 5");
+//		details.setEditable(false);
+//		
+//		IPreferenceStore prefs = EditorsPlugin.getDefault().getPreferenceStore();
+//		TextSourceViewerConfiguration sourceViewerConf = new TextSourceViewerConfiguration(prefs);
+//		details.configure(sourceViewerConf);
+//		
+//		GridDataFactory.fillDefaults().grab(true, false).applyTo(details);
+//		Font font= JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT);
+//		details.getTextWidget().setFont(font);
+		
 		
 		list.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
@@ -830,9 +878,11 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			}
 		});
 	}
+
 	
+	// Dumber version just using the a 'raw' StyledText widget.
 	private void refreshDetails() {
-		if (details!=null && list!=null && !details.isDisposed() && !list.getTable().isDisposed()) {
+		if (details!=null && list!=null && !list.getTable().isDisposed()) {
 			if (documents==null) {
 				documents = new DocumentFetcher();
 			}
@@ -842,23 +892,84 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 				LineItem item = (LineItem) sel.getFirstElement();
 				IDocument document = documents.getDocument(item.getFile());
 				try {
-					int line = item.getLineNumber();
-					int start = document.getLineOffset(Math.max(line-3, 0));
+					int line = item.getLineNumber()-1; //in document lines are 0 based. In search 1 based.
+					int start = document.getLineOffset(Math.max(line-2, 0));
 					int end = document.getLength();
 					try {
-						end = document.getLineOffset(line+2);
+						end = document.getLineOffset(line+3);
 					} catch (BadLocationException e) {
 						//Presumably line number is past the end of document.
 						//ignore.
 					}
-					details.setText(document.get(start, end-start));
+
+					StyledString styledString = highlightMatches(document.get(start, end-start));
+					details.setText(styledString.getString());
+					details.setStyleRanges(styledString.getStyleRanges());
+
 					return;
 				} catch (BadLocationException e) {
 				}
 			}
+			//empty selection or some error:
 			details.setText("");
 		}
 	}
+
+	/**
+	 * Helper function to highlight all the matches for the current query in a given piece
+	 * of text.
+	 * 
+	 * @return StyledString instance.
+	 */
+	private StyledString highlightMatches(String visibleText) {
+		StyledString styledText = new StyledString(visibleText);
+		List<TextRange> matches = getQuery().findAll(visibleText);
+		for (TextRange m : matches) {
+			styledText.setStyle(m.getOffset(), m.getLength(), HIGHLIGHT_STYLE);
+		}
+		return styledText;
+	}
+	
+// Version using sourceviewer
+//	private void refreshDetails() {
+//		if (details!=null && list!=null && !list.getTable().isDisposed()) {
+//			if (documents==null) {
+//				documents = new DocumentFetcher();
+//			}
+//			IStructuredSelection sel = (IStructuredSelection) list.getSelection();
+//			if (sel!=null && !sel.isEmpty()) {
+//				//Not empty selection
+//				LineItem item = (LineItem) sel.getFirstElement();
+//				IDocument document = documents.getDocument(item.getFile());
+//				try {
+//					int line = item.getLineNumber()-1; //in document lines are 0 based. In search 1 based.
+//					int start = document.getLineOffset(Math.max(line-2, 0));
+//					int end = document.getLength();
+//					try {
+//						end = document.getLineOffset(line+3);
+//					} catch (BadLocationException e) {
+//						//Presumably line number is past the end of document.
+//						//ignore.
+//					}
+//					details.setDocument(document, start, end-start);
+//					
+//					String visibleText = document.get(start, end-start);
+//					List<TextRange> matches = getQuery().findAll(visibleText);
+//					Region visibleRegion = new Region(start, end-start);
+//					TextPresentation presentation = new TextPresentation(visibleRegion, 20);
+//					presentation.setDefaultStyleRange(new StyleRange(0, document.getLength(), null, null));
+//					for (TextRange m : matches) {
+//						presentation.addStyleRange(new StyleRange(m.start+start, m.len, null, YELLOW));
+//					}
+//					details.changeTextPresentation(presentation, true);
+//					
+//					return;
+//				} catch (BadLocationException e) {
+//				}
+//			}
+//			details.setDocument(null);
+//		}
+//	}
 
 	/**
 	 * This method is a hook for subclasses to override default dialog behavior.
@@ -1083,7 +1194,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 *         the list.
 	 */
 	protected QuickTextQuery createFilter() {
-		return new QuickTextQuery(pattern.getText());
+		return new QuickTextQuery(pattern.getText(), toggleCaseSensitiveAction.isChecked());
 	}
 
 	/**
@@ -1155,7 +1266,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * a stale list of files than nothing at all.
 	 */
 	private static Collection<IFile> lastOpenFiles = Arrays.asList(); //Empty list to start with.
-	
+
 	private Collection<IFile> getOpenFiles() {
 		System.out.println(">>> open files");
 		try {
