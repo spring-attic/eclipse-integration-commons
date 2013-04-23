@@ -872,7 +872,6 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		
 		
 		list.addSelectionChangedListener(new ISelectionChangedListener() {
-			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				refreshDetails();
 			}
