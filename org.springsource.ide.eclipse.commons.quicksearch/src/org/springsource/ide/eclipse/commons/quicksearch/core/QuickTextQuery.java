@@ -65,7 +65,7 @@ public class QuickTextQuery {
 	 * <p>
 	 * If it is hard or impossible to decide whether other query is a specialisation of this query then this
 	 * method is allowed to 'punt' and just return false. However, the consequence of this is that the query 
-	 * will be re-run and instead of incrementally updated.
+	 * will be re-run instead of incrementally updated.
 	 */
 	public boolean isSubFilter(QuickTextQuery other) {
 		if (this.caseSensitive==other.caseSensitive) {
