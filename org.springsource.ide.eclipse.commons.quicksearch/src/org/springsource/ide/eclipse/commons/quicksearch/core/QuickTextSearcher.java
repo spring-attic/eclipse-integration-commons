@@ -254,4 +254,11 @@ public class QuickTextSearcher {
 		}
 	}
 
+	public void cancel() {
+		if (walker!=null) {
+			walker.cancel();
+			walker = null;
+		}
+	}
+
 }

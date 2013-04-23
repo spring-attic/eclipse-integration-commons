@@ -483,6 +483,9 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		if (contextMenuManager != null)
 			contextMenuManager.dispose();
 		storeDialog(getDialogSettings());
+		if (walker!=null) {
+			walker.cancel();
+		}
 		return super.close();
 	}
 
