@@ -22,11 +22,9 @@ public class QuickTextQuery {
 			this.start = start;
 			this.len = len;
 		}
-		@Override
 		public int getLength() {
 			return len;
 		}
-		@Override
 		public int getOffset() {
 			return start;
 		}
