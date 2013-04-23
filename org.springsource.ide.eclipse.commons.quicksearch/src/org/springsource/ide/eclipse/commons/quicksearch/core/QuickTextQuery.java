@@ -2,7 +2,6 @@ package org.springsource.ide.eclipse.commons.quicksearch.core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.jface.text.IRegion;
@@ -51,9 +50,9 @@ public class QuickTextQuery {
 		this.caseSensitive = caseSensitive;
 	}
 
-	public StringMatcher getPattern() {
-		return pattern;
-	}
+//	public StringMatcher getPattern() {
+//		return pattern;
+//	}
 
 	public boolean equalsFilter(QuickTextQuery o) {
 		return this.caseSensitive == o.caseSensitive && this.pattern.equals(o.pattern);
@@ -128,7 +127,7 @@ public class QuickTextQuery {
 		}
 		return null;
 	}
-
+	
 	public String getPatternString() {
 		return orgPattern;
 	}
