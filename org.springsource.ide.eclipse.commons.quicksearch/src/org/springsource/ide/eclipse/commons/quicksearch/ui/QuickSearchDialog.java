@@ -1279,8 +1279,9 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 							IEditorInput input = editor.getEditorInput();
 							if (input!=null) {
 								IFile file = (IFile) input.getAdapter(IFile.class);
-								System.out.println(file.getFullPath());
-								files.add(file);
+								if (file != null) {
+								    files.add(file);
+								}
 							}
 						} catch (PartInitException e) {
 							QuickSearchActivator.log(e);

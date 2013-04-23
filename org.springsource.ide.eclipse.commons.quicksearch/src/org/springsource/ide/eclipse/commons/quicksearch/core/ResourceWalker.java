@@ -132,12 +132,14 @@ public abstract class ResourceWalker extends Job {
 							visit(f, monitor);
 						} else if (r instanceof IContainer) {
 							IContainer f = (IContainer) r;
-							try {
-								for (IResource child : f.members()) {
-									enqueue(child);
-								}
-							} catch (CoreException e) {
-								QuickSearchActivator.log(e);
+							if (f.isAccessible()) {
+    							try {
+    								for (IResource child : f.members()) {
+    									enqueue(child);
+    								}
+    							} catch (CoreException e) {
+    								QuickSearchActivator.log(e);
+    							}
 							}
 						}
 					}
