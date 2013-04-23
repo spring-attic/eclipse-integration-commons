@@ -13,12 +13,13 @@ package org.springsource.ide.eclipse.commons.quicksearch.ui;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -27,8 +28,6 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import org.springsource.ide.eclipse.commons.quicksearch.core.LineItem;
 import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextQuery;
 import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextQuery.TextRange;
-
-import org.eclipse.jface.text.ITextSelection;
 
 /**
  * Our sample handler extends AbstractHandler, an IHandler base class.
@@ -81,7 +80,7 @@ public class QuickSearchHandler extends AbstractHandler {
 		try {
 			IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 			QuickSearchDialog dialog = new QuickSearchDialog(window);
-			setInitialPatternFromSelection(dialog, event);
+			initializeFromSelection(dialog, event);
 			int code = dialog.open();
 			if (code == QuickSearchDialog.OK) {
 				LineItem selection = (LineItem) dialog.getFirstResult();
@@ -98,14 +97,14 @@ public class QuickSearchHandler extends AbstractHandler {
 	}
 
 	/**
-	 * Based on the current active selection / context try to put something sensible into the dialog's search box 
-	 * initially.
+	 * Based on the current active selection initialize the priority function and/or
+	 * the initial contents of the search box.
 	 */
-	private void setInitialPatternFromSelection(QuickSearchDialog dialog, ExecutionEvent event) {
-		IEditorPart editor = HandlerUtil.getActiveEditor(event);
-		if (editor!=null && editor instanceof ITextEditor) {
-			ITextEditor textEditor = (ITextEditor)editor;
-			ISelection selection = textEditor.getSelectionProvider().getSelection();
+	private void initializeFromSelection(QuickSearchDialog dialog, ExecutionEvent event) {
+		IWorkbenchWindow workbench = HandlerUtil.getActiveWorkbenchWindow(event);
+		if (workbench!=null) {
+			ISelectionService selectionService = workbench.getSelectionService();
+			ISelection selection = selectionService.getSelection();
 			if (selection!=null && selection instanceof ITextSelection) {
 				String text = ((ITextSelection) selection).getText();
 				if (text!=null && !"".equals(text)) {
@@ -113,5 +112,16 @@ public class QuickSearchHandler extends AbstractHandler {
 				}
 			}
 		}
+//		IEditorPart editor = HandlerUtil.getActiveEditor(event);
+//		if (editor!=null && editor instanceof ITextEditor) {
+//			ITextEditor textEditor = (ITextEditor)editor;
+//			ISelection selection = textEditor.getSelectionProvider().getSelection();
+//			if (selection!=null && selection instanceof ITextSelection) {
+//				String text = ((ITextSelection) selection).getText();
+//				if (text!=null && !"".equals(text)) {
+//					dialog.setInitialPattern(text, QuickSearchDialog.FULL_SELECTION);
+//				}
+//			}
+//		}
 	}
 }
