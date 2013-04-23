@@ -51,7 +51,7 @@ public class QuickSearchHandler extends AbstractHandler {
 				editor.getEditorInput());
 		if (document != null) {
 			try {
-				// line count internaly starts with 0, and not with 1 like in GUI
+				// line count internally starts with 0, and not with 1 like in GUI
 				IRegion lineInfo = document.getLineInformation(lineNumber - 1);
 				if (lineInfo != null) {
 					//Select first match on a line or, if match not found, select whole line.

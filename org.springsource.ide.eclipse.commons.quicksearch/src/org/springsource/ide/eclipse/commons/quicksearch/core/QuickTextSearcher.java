@@ -89,7 +89,7 @@ public class QuickTextSearcher {
 			}
 //			System.out.println("visit: "+f);
 			FileTextSearchScope scope = FileTextSearchScope.newSearchScope(new IResource[] {f}, new String[] {"*"}, false);
-			FileSearchQuery search = new FileSearchQuery(query.getPattern(), false, true, scope);
+			FileSearchQuery search = new FileSearchQuery(query.getPatternString(), false, query.isCaseSensitive(), scope);
 			search.run(new NullProgressMonitor());
 			FileSearchResult result = (FileSearchResult) search.getSearchResult();
 			for (Object el : result.getElements()) {

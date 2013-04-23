@@ -1,10 +1,13 @@
 package org.springsource.ide.eclipse.commons.quicksearch.core;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.ui.internal.misc.StringMatcher;
+import org.eclipse.ui.internal.misc.StringMatcher.Position;
 
 
 /**
@@ -12,6 +15,7 @@ import org.eclipse.jface.text.IRegion;
  * 
  * @author Kris De Volder
  */
+@SuppressWarnings("restriction")
 public class QuickTextQuery {
 
 	//TODO: delete and use jface Region class instead.
@@ -32,7 +36,7 @@ public class QuickTextQuery {
 
 	private boolean caseSensitive;
 	private String orgPattern; //Original pattern case preserved even if search is case insensitive.
-	private String pattern; //pattern, converted to lower case for case insensitive searches.
+	private StringMatcher pattern;
 
 	/**
 	 * A query that matches anything.
@@ -43,11 +47,11 @@ public class QuickTextQuery {
 	
 	public QuickTextQuery(String substring, boolean caseSensitive) {
 		this.orgPattern = substring;
-		this.pattern = caseSensitive ? orgPattern : orgPattern.toLowerCase();
+		this.pattern = new StringMatcher(orgPattern, !caseSensitive, false);
 		this.caseSensitive = caseSensitive;
 	}
 
-	public String getPattern() {
+	public StringMatcher getPattern() {
 		return pattern;
 	}
 
@@ -65,15 +69,20 @@ public class QuickTextQuery {
 	 * will be re-run and instead of incrementally updated.
 	 */
 	public boolean isSubFilter(QuickTextQuery other) {
-		return this.caseSensitive==other.caseSensitive && other.pattern.contains(this.pattern);
+		if (this.caseSensitive==other.caseSensitive) {
+			if (this.caseSensitive) {
+				return other.orgPattern.contains(this.orgPattern);
+			} else {
+				return other.orgPattern.toLowerCase().contains(this.orgPattern.toLowerCase());
+			}
+		}
+		return false;
 	}
 
 	public boolean matchItem(LineItem item) {
-		if (caseSensitive) {
-			return item.getText().contains(this.pattern);
-		} else {
-			return item.getText().toLowerCase().contains(this.pattern);
-		}
+		String text = item.getText();
+		Position pos = pattern.find(item.getText(), 0, text.length());
+		return pos!=null;
 	}
 
 	/**
@@ -99,12 +108,11 @@ public class QuickTextQuery {
 			if (!caseSensitive) {
 				text = text.toLowerCase();
 			}
-			int len = pattern.length();
-			LinkedList<TextRange> ranges = new LinkedList<TextRange>();
-			int pos = text.indexOf(pattern);
-			while (pos>=0) {
-				ranges.add(new TextRange(pos, len));
-				pos = text.indexOf(pattern, pos+1);
+			Position pos = pattern.find(text, 0, text.length());
+			List<TextRange> ranges = new ArrayList<QuickTextQuery.TextRange>();
+			while (pos!=null) {
+				ranges.add(new TextRange(pos.getStart(), pos.getEnd()-pos.getStart()));
+				pos = pattern.find(text, Math.max(pos.getEnd(), pos.getStart()+1), text.length());
 			}
 			return ranges;
 		}
@@ -119,6 +127,14 @@ public class QuickTextQuery {
 			return all.get(0);
 		}
 		return null;
+	}
+
+	public String getPatternString() {
+		return orgPattern;
+	}
+
+	public boolean isCaseSensitive() {
+		return caseSensitive;
 	}
 	
 }
