@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.jface.text.BadLocationException;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.IHandler;
@@ -29,17 +31,22 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.LegacyActionTools;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ILazyContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
@@ -103,6 +110,7 @@ import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextSearcher;
 import org.springsource.ide.eclipse.commons.quicksearch.core.priority.DefaultPriorityFunction;
 import org.springsource.ide.eclipse.commons.quicksearch.core.priority.PrioriTree;
 import org.springsource.ide.eclipse.commons.quicksearch.core.priority.PriorityFunction;
+import org.springsource.ide.eclipse.commons.quicksearch.util.DocumentFetcher;
 
 /**
  * Shows a list of items to the user with a text entry field for a string
@@ -220,6 +228,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	private static final Color YELLOW = Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW);
 	private static final Color GREY = Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY);
+	private static final Color CYAN = Display.getCurrent().getSystemColor(SWT.COLOR_CYAN);
 
 	private final StyledCellLabelProvider LINE_TEXT_LABEL_PROVIDER = new StyledCellLabelProvider() {
 		@Override
@@ -344,6 +353,10 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	private QuickTextSearcher walker;
 
 	private IWorkbenchWindow window;
+
+	private Text details;
+
+	private DocumentFetcher documents;
 
 	/**
 	 * Creates a new instance of the class.
@@ -778,6 +791,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 			}
 		});
+		
+		createDetailsArea(content);
 
 		applyDialogFont(content);
 
@@ -800,6 +815,49 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		applyFilter();
 
 		return dialogArea;
+	}
+
+	private void createDetailsArea(Composite parent) {
+		details = new Text(parent, SWT.MULTI+SWT.READ_ONLY+SWT.BORDER);
+		details.setText("Line 1\nLine 2\nLine 3\nLine 4\nLine5");
+		details.setFont(JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT));
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(details);
+		
+		list.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				refreshDetails();
+			}
+		});
+	}
+	
+	private void refreshDetails() {
+		if (details!=null && list!=null && !details.isDisposed() && !list.getTable().isDisposed()) {
+			if (documents==null) {
+				documents = new DocumentFetcher();
+			}
+			IStructuredSelection sel = (IStructuredSelection) list.getSelection();
+			if (sel!=null && !sel.isEmpty()) {
+				//Not empty selection
+				LineItem item = (LineItem) sel.getFirstElement();
+				IDocument document = documents.getDocument(item.getFile());
+				try {
+					int line = item.getLineNumber();
+					int start = document.getLineOffset(Math.max(line-3, 0));
+					int end = document.getLength();
+					try {
+						end = document.getLineOffset(line+2);
+					} catch (BadLocationException e) {
+						//Presumably line number is past the end of document.
+						//ignore.
+					}
+					details.setText(document.get(start, end-start));
+					return;
+				} catch (BadLocationException e) {
+				}
+			}
+			details.setText("");
+		}
 	}
 
 	/**
