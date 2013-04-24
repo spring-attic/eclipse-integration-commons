@@ -77,10 +77,15 @@ public class QuickSearchHandler extends AbstractHandler {
 	 * from the application context.
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+		doQuickSearch(window);
+		return null;
+	}
+
+	public static void doQuickSearch(IWorkbenchWindow window) {
 		try {
-			IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 			QuickSearchDialog dialog = new QuickSearchDialog(window);
-			initializeFromSelection(dialog, event);
+			initializeFromSelection(window, dialog);
 			int code = dialog.open();
 			if (code == QuickSearchDialog.OK) {
 				LineItem selection = (LineItem) dialog.getFirstResult();
@@ -93,15 +98,13 @@ public class QuickSearchHandler extends AbstractHandler {
 		} catch (PartInitException e) {
 			QuickSearchActivator.log(e);
 		}
-		return null;
 	}
 
 	/**
 	 * Based on the current active selection initialize the priority function and/or
 	 * the initial contents of the search box.
 	 */
-	private void initializeFromSelection(QuickSearchDialog dialog, ExecutionEvent event) {
-		IWorkbenchWindow workbench = HandlerUtil.getActiveWorkbenchWindow(event);
+	 static private void initializeFromSelection(IWorkbenchWindow workbench, QuickSearchDialog dialog) {
 		if (workbench!=null) {
 			ISelectionService selectionService = workbench.getSelectionService();
 			ISelection selection = selectionService.getSelection();
