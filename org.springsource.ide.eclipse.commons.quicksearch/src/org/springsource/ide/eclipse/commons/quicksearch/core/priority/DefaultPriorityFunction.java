@@ -1,7 +1,6 @@
 package org.springsource.ide.eclipse.commons.quicksearch.core.priority;
 
 import org.eclipse.core.resources.IResource;
-import org.springsource.ide.eclipse.commons.quicksearch.core.ResourceWalker;
 
 /**
  * Default implementation of PriorityFunction. It doesn't de-emphasize anything but
@@ -18,7 +17,7 @@ public class DefaultPriorityFunction extends PriorityFunction {
 	 * be ignored.
 	 */
 	public String[] ignoredExtensions = {
-		".gif", ".exe", ".png", ".jpg", ".zip", ".jar", "~"
+		".gif", ".exe", ".png", ".jpg", ".zip", ".jar", "~", ".svg"
 	};
 	
 	/**
