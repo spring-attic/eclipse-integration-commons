@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2013 VMWare, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     VMWare, Inc. - initial API and implementation
+ *******************************************************************************/
 package org.springsource.ide.eclipse.commons.quicksearch.core.priority;
 
 import java.util.HashMap;
@@ -5,16 +15,18 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Platform;
 
 /**
  * A PrioriTree is an implementation of PriorityFunction that is based on assigning specific priorities
  * to a finite set of paths. The paths are kept in a tree-like structure internally so that
- * assinging a priority to a given path also implicitly forces all the children leading to that
+ * assigning a priority to a given path also implicitly forces all the children leading to that
  * path to have a priority that is at least as high as that of the path itself.
  * <p>
  * If a path is not in the tree than the DefaultPriorityFunction implementation will be used to
  * assign a priority.
+ * 
+ * TODO: The priority function produced by this tree would probably be better if it also raised/affected
+ * the priority of nodes in a subtree of a node, but not by as much as the node itself.
  * 
  * @author Kris De Volder
  */
