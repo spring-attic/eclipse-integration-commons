@@ -97,6 +97,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
@@ -301,6 +302,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	private static final String DIALOG_HEIGHT = "DIALOG_HEIGHT"; //$NON-NLS-1$
 	private static final String DIALOG_WIDTH = "DIALOG_WIDTH"; //$NON-NLS-1$
+	private static final String DIALOG_COLUMNS = "COLUMN_WIDTHS";
 	
 	private static final String DIALOG_LAST_QUERY = "LAST_QUERY";
 	private static final String CASE_SENSITIVE = "CASE_SENSITIVE";
@@ -349,6 +351,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	private int selectionMode;
 
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
+
 
 	private IHandlerActivation showViewHandler;
 
@@ -436,6 +439,22 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			pattern.setText(lastSearch);
 			pattern.setSelection(0, lastSearch.length());
 		}
+		
+		if (settings.getArray(DIALOG_COLUMNS)!=null) {
+			String[] columnWidths = settings.getArray(DIALOG_COLUMNS);
+			Table table = list.getTable();
+			int cols = table.getColumnCount();
+			for (int i = 0; i < cols; i++) {
+				TableColumn col = table.getColumn(i);
+				try {
+					if (col!=null) {
+						col.setWidth(Integer.valueOf(columnWidths[i]));
+					}
+				} catch (Throwable e) {
+					QuickSearchActivator.log(e);
+				}
+			}
+		}
 	}
 
 	private class ToggleCaseSensitiveAction extends Action {
@@ -500,6 +519,14 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		settings.put(DIALOG_LAST_QUERY, currentSearch);
 		if (toggleCaseSensitiveAction!=null) {
 			settings.put(CASE_SENSITIVE, toggleCaseSensitiveAction.isChecked());
+		}
+		Table table = list.getTable();
+		if (table.getColumnCount()>0) {
+			String[] columnWidths = new String[table.getColumnCount()];
+			for (int i = 0; i < columnWidths.length; i++) {
+				columnWidths[i] = ""+table.getColumn(i).getWidth();
+			}
+			settings.put(DIALOG_COLUMNS, columnWidths);
 		}
 	}
 
@@ -1270,7 +1297,6 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	private static Collection<IFile> lastOpenFiles = Arrays.asList(); //Empty list to start with.
 
 	private Collection<IFile> getOpenFiles() {
-		System.out.println(">>> open files");
 		try {
 			IWorkbenchPage page = window.getActivePage();
 			if (page!=null) {
@@ -1296,7 +1322,6 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			}
 			return lastOpenFiles;
 		} finally {
-			System.out.println(">>> open files");
 		}
 	}
 
