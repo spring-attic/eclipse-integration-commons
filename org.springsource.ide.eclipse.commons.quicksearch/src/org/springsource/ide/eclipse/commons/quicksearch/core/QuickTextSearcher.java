@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2013 VMWare, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     VMWare, Inc. - initial API and implementation
+ *******************************************************************************/
 package org.springsource.ide.eclipse.commons.quicksearch.core;
 
 import java.util.HashSet;
@@ -29,7 +39,7 @@ public class QuickTextSearcher {
 	 * Keeps track of currently found matches. Items are added as they are found and may also
 	 * be removed when the query changed and they become invalid.
 	 */
-	private Set<LineItem> matches;
+	private Set<LineItem> matches = new HashSet<LineItem>(2000);
 	
 	/**
 	 * Scheduling rule used by Jobs that work on the matches collection.
@@ -69,7 +79,6 @@ public class QuickTextSearcher {
 		this.requestor = requestor;
 		this.query = query;
 		this.walker = createWalker(priorities);
-		this.matches = new HashSet<LineItem>(2000);
 	}
 	
 	private SearchInFilesWalker createWalker(PriorityFunction priorities) {

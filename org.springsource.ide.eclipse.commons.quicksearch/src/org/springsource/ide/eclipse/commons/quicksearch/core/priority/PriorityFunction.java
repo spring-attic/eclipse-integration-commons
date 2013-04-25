@@ -25,12 +25,13 @@ public abstract class PriorityFunction {
 	 * order to reach the element the parents have to be visited first. If the parent
 	 * has a low priority...
 	 */
-	public static final double PRIORITY_VISIT_FIRST = Double.POSITIVE_INFINITY;
+	public static final double PRIORITY_HIGHEST = Double.POSITIVE_INFINITY;
 	
 	/**
-	 * A special priority that causes elements (and their children) to be completely ignored.
+	 * Priority indicating something that is moderately more interesting than the default.
+	 * So it should be processed before default stuff but not before "VISIT_FIRST" priority.
 	 */
-	public static final double PRIORITY_IGNORE = Double.NEGATIVE_INFINITY;
+	public static final double PRIORITY_INTERESTING = 100;
 	
 	/**
 	 * A default priority value. Meant to be used for elements that are neither particularly
@@ -40,12 +41,14 @@ public abstract class PriorityFunction {
 	 * can't be reached without passing through their parent.
 	 */
 	public static final double PRIORITY_DEFAULT = 0;
-
+	
+	
 	/**
-	 * Priority indicating something that is moderately more interesting than the default.
-	 * So it should be processed before default stuff but not before "VISIT_FIRST" priority.
+	 * A special priority that causes elements (and their children) to be completely ignored.
 	 */
-	public static final double PRIORITY_INTERESTING = 100;
+	public static final double PRIORITY_IGNORE = Double.NEGATIVE_INFINITY;
+	
+
 	
 	
 	public abstract double priority(IResource r);

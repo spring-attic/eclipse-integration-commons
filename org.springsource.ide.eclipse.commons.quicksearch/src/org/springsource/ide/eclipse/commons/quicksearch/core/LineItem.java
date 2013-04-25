@@ -19,17 +19,20 @@ public class LineItem {
 	IFile f;
 	String line;
 	int lineNumber;
+	int lineOffset;
 
-	public LineItem(IFile f, String line, int lineNumber) {
+	public LineItem(IFile f, String line, int lineNumber, int lineOffset) {
 		this.f = f;
 		this.line = line;
 		this.lineNumber = lineNumber;
+		this.lineOffset = lineOffset;
 	}
 	
 	public LineItem(FileMatch match) {
 		this.f = match.getFile();
 		this.line = match.getLineElement().getContents();
 		this.lineNumber = match.getLineElement().getLine();
+		this.lineOffset = match.getLineElement().getOffset();
 	}
 
 	@Override
@@ -75,6 +78,10 @@ public class LineItem {
 		if (lineNumber != other.lineNumber)
 			return false;
 		return true;
+	}
+
+	public int getOffset() {
+		return lineOffset;
 	}
 
 	

@@ -883,7 +883,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	
 	private void createDetailsArea(Composite parent) {
 		details = new StyledText(parent, SWT.MULTI+SWT.READ_ONLY+SWT.BORDER);
-		details.setText("Line 1\nLine 2\nLine 3\nLine 4\nLine 5");
+		details.setText("\n\n\n\n"); // Putting some lines of text so the widget will be sized to fit it.
 		details.setFont(JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT));
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(details);
 		
@@ -1334,7 +1334,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		try {
 			IFile currentFile = getActiveFile();
 			if (currentFile!=null) {
-				priorities.setPriority(currentFile.getFullPath(), PriorityFunction.PRIORITY_VISIT_FIRST);
+				priorities.setPriority(currentFile.getFullPath(), PriorityFunction.PRIORITY_HIGHEST);
 			}
 			Collection<IFile> openFiles = getOpenFiles();
 			for (IFile file : openFiles) {
