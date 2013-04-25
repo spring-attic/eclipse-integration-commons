@@ -40,7 +40,6 @@ public class TableResizeHelper {
 	}
 
 	protected void resizeTable() {
-		System.out.println("Resizing");
 		Composite tableComposite = tableViewer.getTable().getParent();
 		Rectangle tableCompositeArea = tableComposite.getClientArea();
 		int width = tableCompositeArea.width;
