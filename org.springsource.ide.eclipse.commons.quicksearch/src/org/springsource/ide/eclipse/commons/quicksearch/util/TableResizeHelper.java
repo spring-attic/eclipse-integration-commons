@@ -64,21 +64,15 @@ public class TableResizeHelper {
 
 		int total = 0;
 
-		// resize only if there is empty space at the end of the table
 		for (TableColumn column : tableColumns) {
 			total += column.getWidth();
 		}
 
-		//if (total < tableWidth) {
-			// resize the last one
-			TableColumn lastColumn = tableColumns[tableColumns.length - 1];
-			int newWidth = (tableWidth - total) + lastColumn.getWidth(); //TODO: why 4 ???
-			if (newWidth>0) {
-				System.out.println("lastcol width = "+newWidth);
-				lastColumn.setWidth(newWidth);
-			}
-		//	lastColumn.setWidth(20);
-		//}
+		TableColumn lastColumn = tableColumns[tableColumns.length - 1];
+		int newWidth = (tableWidth - total) + lastColumn.getWidth(); 
+		if (newWidth>0) {
+			lastColumn.setWidth(newWidth);
+		}
 
 	}
 
