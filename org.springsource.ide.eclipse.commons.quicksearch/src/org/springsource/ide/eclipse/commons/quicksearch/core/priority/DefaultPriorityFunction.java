@@ -23,6 +23,12 @@ import org.eclipse.core.resources.IResource;
 public class DefaultPriorityFunction extends PriorityFunction {
 	
 	/**
+	 * If true, any resources marked as 'derived' in the Eclipse workspace will
+	 * be ignored.
+	 */
+	public boolean ignoreDerived = true;
+	
+	/**
 	 * The default priority function causes any resources that end with these strings to
 	 * be ignored.
 	 */
@@ -48,7 +54,10 @@ public class DefaultPriorityFunction extends PriorityFunction {
 
 	@Override
 	public double priority(IResource r) {
-		if (r!=null) {
+		if (r!=null && r.isAccessible()) {
+			if (ignoreDerived && r.isDerived()) {
+				return PRIORITY_IGNORE;
+			}
 			String name = r.getName();
 			for (String ext : ignoredExtensions) {
 				if (name.endsWith(ext)) {
