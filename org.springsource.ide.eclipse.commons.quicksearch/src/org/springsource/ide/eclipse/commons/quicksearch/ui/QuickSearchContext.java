@@ -63,6 +63,13 @@ public class QuickSearchContext {
 	public PriorityFunction createPriorityFun() {
 		PrioriTree priorities = new PrioriTree();
 		try {
+// TODO: This is not working correctly right now, if the selected resources are containers / folders. 
+// The PrioriTree only assigns a priority to the folder itself, but not to its children.
+// So open editors will automatically take priority over the children of selected projects.
+// To fix, PrioriTree will need a mechanism to assign priorities to children.
+// If doing so, care must be taken not to accidentally assign priorities to ignored 
+// resources.
+			
 			Collection<IResource> selectedResources = getSelectedResources();
 			for (IResource r : selectedResources) {
 				priorities.setPriority(r.getFullPath(), 3*PriorityFunction.PRIORITY_INTERESTING);
