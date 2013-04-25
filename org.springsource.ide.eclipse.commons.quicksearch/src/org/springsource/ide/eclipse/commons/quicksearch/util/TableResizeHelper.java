@@ -5,6 +5,7 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
@@ -40,12 +41,16 @@ public class TableResizeHelper {
 	}
 
 	protected void resizeTable() {
-		Composite tableComposite = tableViewer.getTable().getParent();
+		Composite tableComposite = tableViewer.getTable();//.getParent();
 		Rectangle tableCompositeArea = tableComposite.getClientArea();
 		int width = tableCompositeArea.width;
+//		ScrollBar sb = tableViewer.getTable().getVerticalBar();
+//		if (sb!=null && sb.isVisible()) {
+//			width = width - sb.getSize().x;
+//		}
 		resizeTableColumns(width, tableViewer.getTable());
 	}
-
+	
 	protected void resizeTableColumns(int tableWidth, Table table) {
 		TableColumn[] tableColumns = table.getColumns();
 
@@ -63,10 +68,12 @@ public class TableResizeHelper {
 		//if (total < tableWidth) {
 			// resize the last one
 			TableColumn lastColumn = tableColumns[tableColumns.length - 1];
-			int newWidth = (tableWidth - total) + lastColumn.getWidth()-4; //TODO: why 4 ???
-			if (newWidth>=0) {
+			int newWidth = (tableWidth - total) + lastColumn.getWidth(); //TODO: why 4 ???
+			if (newWidth>0) {
+				System.out.println("lastcol width = "+newWidth);
 				lastColumn.setWidth(newWidth);
 			}
+		//	lastColumn.setWidth(20);
 		//}
 
 	}
