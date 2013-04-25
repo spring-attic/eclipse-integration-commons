@@ -38,19 +38,11 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.LegacyActionTools;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.dialogs.DialogSettings;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.Region;
-import org.eclipse.jface.text.TextPresentation;
-import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -84,7 +76,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
@@ -111,13 +102,11 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionStatusDialog;
-import org.eclipse.ui.editors.text.TextSourceViewerConfiguration;
 import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.internal.IWorkbenchGraphicConstants;
 import org.eclipse.ui.internal.WorkbenchImages;
 import org.eclipse.ui.internal.WorkbenchMessages;
-import org.eclipse.ui.internal.editors.text.EditorsPlugin;
 import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.eclipse.ui.progress.UIJob;
 import org.springsource.ide.eclipse.commons.quicksearch.core.LineItem;
@@ -129,6 +118,7 @@ import org.springsource.ide.eclipse.commons.quicksearch.core.priority.DefaultPri
 import org.springsource.ide.eclipse.commons.quicksearch.core.priority.PrioriTree;
 import org.springsource.ide.eclipse.commons.quicksearch.core.priority.PriorityFunction;
 import org.springsource.ide.eclipse.commons.quicksearch.util.DocumentFetcher;
+import org.springsource.ide.eclipse.commons.quicksearch.util.TableResizeHelper;
 
 /**
  * Shows a list of items to the user with a text entry field for a string
@@ -785,6 +775,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		col.setLabelProvider(LINE_FILE_LABEL_PROVIDER);
 		col.getColumn().setWidth(150);
 		
+		new TableResizeHelper(list).enableResizing();
 		
 		//list.setLabelProvider(getItemsListLabelProvider());
 		list.setInput(new Object[0]);
@@ -1055,7 +1046,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			settings = IDEWorkbenchPlugin.getDefault().getDialogSettings()
 					.addNewSection(DIALOG_SETTINGS);
 		}
-
+		
 		return settings;
 	}
 
