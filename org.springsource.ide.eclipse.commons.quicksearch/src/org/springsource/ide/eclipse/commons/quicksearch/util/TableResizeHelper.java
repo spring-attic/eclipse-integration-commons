@@ -70,7 +70,6 @@ public class TableResizeHelper {
 			TableColumn lastColumn = tableColumns[tableColumns.length - 1];
 			int newWidth = (tableWidth - total) + lastColumn.getWidth(); //TODO: why 4 ???
 			if (newWidth>0) {
-				System.out.println("lastcol width = "+newWidth);
 				lastColumn.setWidth(newWidth);
 			}
 		//	lastColumn.setWidth(20);
