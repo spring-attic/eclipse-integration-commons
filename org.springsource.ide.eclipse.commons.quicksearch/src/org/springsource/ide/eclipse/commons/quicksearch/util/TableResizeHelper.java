@@ -1,11 +1,11 @@
 package org.springsource.ide.eclipse.commons.quicksearch.util;
 
+import org.eclipse.jdt.internal.ui.wizards.dialogfields.ListDialogField.ColumnsDescription;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
@@ -24,16 +24,20 @@ public class TableResizeHelper {
 	}
 
 	public void enableResizing() {
-		tableViewer.getTable().addControlListener(new ControlListener() {
-
+		ControlListener resizeListener = new ControlListener() {
 			public void controlResized(ControlEvent e) {
 				resizeTable();
 			}
-
 			public void controlMoved(ControlEvent e) {
-
 			}
-		});
+		};
+		tableViewer.getTable().addControlListener(resizeListener);
+		TableColumn[] cols = tableViewer.getTable().getColumns();
+		if (cols!=null) {
+			for (int i = 0; i < cols.length-1; i++) {
+				cols[i].addControlListener(resizeListener);
+			}
+		}
 
 		// Initial resize of the columns
 		resizeTable();
@@ -70,6 +74,7 @@ public class TableResizeHelper {
 			TableColumn lastColumn = tableColumns[tableColumns.length - 1];
 			int newWidth = (tableWidth - total) + lastColumn.getWidth(); //TODO: why 4 ???
 			if (newWidth>0) {
+				System.out.println("lastcol width = "+newWidth);
 				lastColumn.setWidth(newWidth);
 			}
 		//	lastColumn.setWidth(20);
