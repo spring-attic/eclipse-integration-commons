@@ -27,6 +27,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -347,14 +348,14 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	private QuickTextSearcher walker;
 
-	private IWorkbenchWindow window;
-
 	private StyledText details;
 
 	private DocumentFetcher documents;
 
 
 	private ToggleCaseSensitiveAction toggleCaseSensitiveAction;
+
+	private QuickSearchContext context;
 
 	/**
 	 * Creates a new instance of the class.
@@ -367,7 +368,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 */
 	public QuickSearchDialog(IWorkbenchWindow window) {
 		super(window.getShell());
-		this.window = window;
+		this.context = new QuickSearchContext(window);
 		this.multi = false;
 		contentProvider = new ContentProvider();
 		selectionMode = NONE;
@@ -1229,7 +1230,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		}
 		if (this.walker==null) {
 			//Create the QuickTextSearcher with the inital query.
-			this.walker = new QuickTextSearcher(newFilter, createPriorityFun(), new QuickTextSearchRequestor() {
+			this.walker = new QuickTextSearcher(newFilter, context.createPriorityFun(), new QuickTextSearchRequestor() {
 				@Override
 				public void add(LineItem match) {
 					contentProvider.add(match);
@@ -1261,83 +1262,6 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		}
 	}
 	
-	/**
-	 * Gets the IFile that is currently open in the active editor.
-	 * @return IFile or null if there is no current editor or the editor isn't associated to a file.
-	 */
-	private IFile getActiveFile() {
-		IWorkbenchPage page = window.getActivePage();
-		if (page!=null) {
-			IEditorPart editor = page.getActiveEditor();
-			if (editor!=null) {
-				IEditorInput input = editor.getEditorInput();
-				if (input!=null) {
-					return (IFile) input.getAdapter(IFile.class);
-				}
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * We remember the last result of getOpenFiles in here. This is so that we can return this
-	 * if we are having trouble to compute the open files. Sometimes we may not be able to
-	 * access the active workbench page etc. In this case it is probably better to return
-	 * a stale list of files than nothing at all.
-	 */
-	private static Collection<IFile> lastOpenFiles = Arrays.asList(); //Empty list to start with.
-
-	private Collection<IFile> getOpenFiles() {
-		try {
-			IWorkbenchPage page = window.getActivePage();
-			if (page!=null) {
-				Collection<IFile> files = new ArrayList<IFile>();
-				IEditorReference[] editors = page.getEditorReferences();
-				if (editors!=null) {
-					for (IEditorReference editor : editors) {
-						try {
-							IEditorInput input = editor.getEditorInput();
-							if (input!=null) {
-								IFile file = (IFile) input.getAdapter(IFile.class);
-								if (file != null) {
-								    files.add(file);
-								}
-							}
-						} catch (PartInitException e) {
-							QuickSearchActivator.log(e);
-						}
-					}
-					lastOpenFiles = files;
-					return files;
-				}
-			}
-			return lastOpenFiles;
-		} finally {
-		}
-	}
-
-	
-	/**
-	 * Create a walker priority function based on the current 'context' (i.e. for now this means the open editors).
-	 */
-	private PriorityFunction createPriorityFun() {
-		PrioriTree priorities = new PrioriTree();
-		try {
-			IFile currentFile = getActiveFile();
-			if (currentFile!=null) {
-				priorities.setPriority(currentFile.getFullPath(), PriorityFunction.PRIORITY_HIGHEST);
-			}
-			Collection<IFile> openFiles = getOpenFiles();
-			for (IFile file : openFiles) {
-				priorities.setPriority(file.getFullPath(), PriorityFunction.PRIORITY_INTERESTING);
-			}
-			
-			return priorities;
-		} catch (Throwable e) {
-			QuickSearchActivator.log(e);
-		}
-		return new DefaultPriorityFunction();
-	}
 
 	/**
 	 * Returns name for then given object.

@@ -19,6 +19,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.search.internal.ui.text.EditorOpener;
 import org.eclipse.search.ui.text.Match;
 import org.eclipse.ui.IEditorInput;
@@ -89,11 +90,12 @@ public class QuickSearchHandler extends AbstractHandler {
 			ISelectionService selectionService = workbench.getSelectionService();
 			ISelection selection = selectionService.getSelection();
 			if (selection!=null && selection instanceof ITextSelection) {
+				//Use text selection to set initial search pattern.
 				String text = ((ITextSelection) selection).getText();
 				if (text!=null && !"".equals(text)) {
 					dialog.setInitialPattern(text, QuickSearchDialog.FULL_SELECTION);
 				}
-			}
+			} 
 		}
 //		IEditorPart editor = HandlerUtil.getActiveEditor(event);
 //		if (editor!=null && editor instanceof ITextEditor) {
