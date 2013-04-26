@@ -19,8 +19,7 @@
         doesn't work for the search menu.
         So we have to use the old mechanism using actionSets 
         See here http://stackoverflow.com/questions/7113380/how-to-extend-the-source-menu-in-eclipse-or-what-is-its-locationuri
-        -->
-
+    -->
    <extension
          point="org.eclipse.ui.actionSets">
          
@@ -61,15 +60,15 @@
       </actionSet>
    </extension>
    
-<!-- This doesn't work unfortunately...
+<!-- This doesn't work unfortunately... 
   <extension point="org.eclipse.ui.menus">
-     <menuContribution locationURI="menu:org.eclipse.search.menu?after=extraSearchGroup">
+     <menuContribution locationURI="menu:navigate?after=additions">
         <command commandId="org.springsource.ide.eclipse.quicksearch.commands.quicksearchCommand"
                  label="Quick Search"
                  mnemonic="Q">
         </command>
      </menuContribution>
-   </extension>  -->
+   </extension> -->
    
    <!-- Allthough we have an action defined, it seems the action isn't always working. So for good measure
        also define a handler -->
@@ -91,49 +90,6 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
       </key>
    </extension>
-<!--	<extension point="org.eclipse.ui.actionSets">
-	  <actionSet label="Quick Search Action Set"
-	             description="Action set containing the Quick Search Action"
-	             visible="false"
-	             id="org.springsource.ide.eclipse.commons.quicksearch.actionSet">
-	    <action class="org.springsource.ide.eclipse.commons.quicksearch.ui.QuickSearchAction"
-         	    definitionId="org.springsource.ide.eclipse.quicksearch.commands.sampleCommand"
-	            id="org.springsource.ide.eclipse.commons.quicksearch.ui.QuickSearchAction"
-	            label="Quick Search"
-         	    style="push" 
-	            menubarPath="org.eclipse.search.menu/textSearchSubMenu/group2">
-	    </action>
-	  </actionSet>
-	</extension> -->
-<!--   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
-         <menu
-               label="Quick Search"
-               mnemonic="S"
-               id="org.springsource.ide.eclipse.quicksearch.menus.sampleMenu">
-            <command
-                  commandId="org.springsource.ide.eclipse.quicksearch.commands.sampleCommand"
-                  mnemonic="S"
-                  id="org.springsource.ide.eclipse.quicksearch.menus.sampleCommand">
-            </command>
-         </menu>
-      </menuContribution> -->
-<!--      <menuContribution
-            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
-         <toolbar
-               id="org.springsource.ide.eclipse.quicksearch.toolbars.sampleToolbar">
-            <command
-                  commandId="org.springsource.ide.eclipse.quicksearch.commands.sampleCommand"
-                  icon="icons/sample.gif"
-                  tooltip="Say hello world"
-                  id="org.springsource.ide.eclipse.quicksearch.toolbars.sampleCommand">
-            </command>
-         </toolbar>
-      </menuContribution> 
-   </extension> -->
-
 
 <extension
       point = "org.eclipse.ui.preferencePages">
