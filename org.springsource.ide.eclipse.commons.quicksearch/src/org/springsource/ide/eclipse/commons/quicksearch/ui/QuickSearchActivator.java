@@ -1,11 +1,12 @@
 package org.springsource.ide.eclipse.commons.quicksearch.ui;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.springsource.ide.eclipse.commons.quicksearch.core.preferences.QuickSearchPreferences;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -17,6 +18,8 @@ public class QuickSearchActivator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static QuickSearchActivator plugin;
+
+	private QuickSearchPreferences prefs = null; //Lazy initialized
 	
 	/**
 	 * The constructor
@@ -77,6 +80,13 @@ public class QuickSearchActivator extends AbstractUIPlugin {
 	
 	public static IStatus createErrorStatus(Throwable exception) {
 		return new Status(IStatus.ERROR, PLUGIN_ID, 0, exception.getMessage(), exception);
+	}
+	
+	public QuickSearchPreferences getPreferences() {
+		if (prefs==null) {
+			prefs = new QuickSearchPreferences(InstanceScope.INSTANCE.getNode(QuickSearchActivator.PLUGIN_ID));
+		}
+		return prefs;
 	}
 	
 }

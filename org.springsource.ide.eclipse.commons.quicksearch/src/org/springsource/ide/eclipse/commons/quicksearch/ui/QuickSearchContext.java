@@ -62,6 +62,7 @@ public class QuickSearchContext {
 	 */
 	public PriorityFunction createPriorityFun() {
 		PrioriTree priorities = new PrioriTree();
+		priorities.configure(QuickSearchActivator.getDefault().getPreferences());
 		try {
 // TODO: This is not working correctly right now, if the selected resources are containers / folders. 
 // The PrioriTree only assigns a priority to the folder itself, but not to its children.

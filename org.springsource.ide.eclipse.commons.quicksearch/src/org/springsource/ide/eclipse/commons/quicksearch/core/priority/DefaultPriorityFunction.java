@@ -33,7 +33,8 @@ public class DefaultPriorityFunction extends PriorityFunction {
 	 * be ignored.
 	 */
 	public String[] ignoredExtensions = {
-		".gif", ".exe", ".png", ".jpg", ".zip", ".jar", "~", ".svg"
+		".gif", ".exe", ".png", ".jpg", ".zip", ".jar", ".svg", "~", 
+		".GIF", ".EXE", ".PNG", ".JPG", ".ZIP", ".JAR", ".SVG"
 	};
 	
 	/**
@@ -48,7 +49,7 @@ public class DefaultPriorityFunction extends PriorityFunction {
 	 * The default priority function causes any resources who's name equals any of these
 	 * Strings to be ignored.
 	 */
-	public static final String[] ignoredNames = {
+	public String[] ignoredNames = {
 		"bin", "target", "build"
 	};
 

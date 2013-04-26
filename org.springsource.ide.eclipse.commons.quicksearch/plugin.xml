@@ -134,4 +134,13 @@
       </menuContribution> 
    </extension> -->
 
+
+<extension
+      point = "org.eclipse.ui.preferencePages">
+       <page id="org.springsource.ide.eclipse.commons.quicksearch.PreferencesPage"
+	        class="org.springsource.ide.eclipse.commons.quicksearch.ui.QuickSearchPreferencesPage"
+            name="Quick Search">
+       </page>
+</extension>
+
 </plugin>

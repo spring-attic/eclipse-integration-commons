@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.springsource.ide.eclipse.commons.quicksearch.core.preferences.QuickSearchPreferences;
 
 /**
  * A PrioriTree is an implementation of PriorityFunction that is based on assigning specific priorities
@@ -131,6 +132,21 @@ public class PrioriTree extends DefaultPriorityFunction {
 			return children.get(segment);
 		}
 		return null;
+	}
+
+	public void configure(QuickSearchPreferences preferences) {
+		String[] pref = preferences.getIgnoredExtensions();
+		if (pref!=null) {
+			this.ignoredExtensions = pref;
+		}
+		pref = preferences.getIgnoredNames();
+		if (pref!=null) {
+			this.ignoredNames = pref;
+		}
+		pref = preferences.getIgnoredPrefixes();
+		if (pref!=null) {
+			this.ignoredPrefixes = pref;
+		}
 	}
 
 }
