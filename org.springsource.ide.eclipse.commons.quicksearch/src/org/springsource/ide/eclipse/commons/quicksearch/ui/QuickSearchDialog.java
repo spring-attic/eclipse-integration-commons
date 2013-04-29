@@ -357,6 +357,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 */
 	public QuickSearchDialog(IWorkbenchWindow window) {
 		super(window.getShell());
+		this.setTitle("Quick Text Search");
 		this.context = new QuickSearchContext(window);
 		this.multi = false;
 		contentProvider = new ContentProvider();
@@ -863,7 +864,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	
 	private void createDetailsArea(Composite parent) {
-		details = new StyledText(parent, SWT.MULTI+SWT.READ_ONLY+SWT.BORDER);
+		details = new StyledText(parent, SWT.MULTI+SWT.READ_ONLY+SWT.BORDER+SWT.H_SCROLL);
 		details.setText("\n\n\n\n"); // Putting some lines of text so the widget will be sized to fit it.
 		details.setFont(JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT));
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(details);
