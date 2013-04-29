@@ -11,6 +11,7 @@
 package org.springsource.ide.eclipse.commons.quicksearch.core.priority;
 
 import org.eclipse.core.resources.IResource;
+import org.springsource.ide.eclipse.commons.quicksearch.core.preferences.QuickSearchPreferences;
 
 /**
  * Default implementation of PriorityFunction. It doesn't de-emphasize anything but
@@ -78,5 +79,23 @@ public class DefaultPriorityFunction extends PriorityFunction {
 			return PRIORITY_DEFAULT;
 		}
 		return PRIORITY_IGNORE;
+	}
+
+	/**
+	 * Initialise some configurable settings from an instance of QuickSearchPreferences
+	 */
+	public void configure(QuickSearchPreferences preferences) {
+		String[] pref = preferences.getIgnoredExtensions();
+		if (pref!=null) {
+			this.ignoredExtensions = pref;
+		}
+		pref = preferences.getIgnoredNames();
+		if (pref!=null) {
+			this.ignoredNames = pref;
+		}
+		pref = preferences.getIgnoredPrefixes();
+		if (pref!=null) {
+			this.ignoredPrefixes = pref;
+		}
 	}
 }

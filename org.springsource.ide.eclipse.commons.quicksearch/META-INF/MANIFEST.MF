@@ -19,3 +19,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: SpringSource
 Bundle-Localization: plugin
+Export-Package: org.springsource.ide.eclipse.commons.quicksearch.core.priority

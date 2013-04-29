@@ -12,10 +12,12 @@ package org.springsource.ide.eclipse.commons.quicksearch.core.priority;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IPath;
-import org.springsource.ide.eclipse.commons.quicksearch.core.preferences.QuickSearchPreferences;
+import org.eclipse.core.runtime.Path;
 
 /**
  * A PrioriTree is an implementation of PriorityFunction that is based on assigning specific priorities
@@ -67,6 +69,10 @@ public class PrioriTree extends DefaultPriorityFunction {
 	 * be retained in the tree node for that path.
 	 */
 	public void setPriority(IPath path, double priority) {
+		//We are using PRIORITY_IGNORE also as an indication here that a node priority is not set
+		// so setting PRIORITY_IGNORE is not legal. A user would probably expect that setting it
+		// makes nodes 'disapear' from the search. But that is not the effect it would create!
+		Assert.isLegal(priority!=PRIORITY_IGNORE);
 		this.priority = Math.max(this.priority, priority); //Use Math.max, never reduce priorities!
 		if (path.segmentCount()>0) {
 			PrioriTree child = ensureChild(path.segment(0));
@@ -95,7 +101,7 @@ public class PrioriTree extends DefaultPriorityFunction {
 	public double priority(IResource r) {
 		PrioriTree node = this.lookup(r.getFullPath());
 		double result;
-		if (node==null) {
+		if (node==null || node.priority==PRIORITY_IGNORE) {
 			result = super.priority(r);
 		} else {
 			result = node.priority;
@@ -134,19 +140,42 @@ public class PrioriTree extends DefaultPriorityFunction {
 		return null;
 	}
 
-	public void configure(QuickSearchPreferences preferences) {
-		String[] pref = preferences.getIgnoredExtensions();
-		if (pref!=null) {
-			this.ignoredExtensions = pref;
+	/**
+	 * For debugging purposes. Dumps tree data onto System.out
+	 */
+	public void dump() {
+		dump("/", 0);
+	}
+
+	private void dump(String name, int indent) {
+		indent(indent);
+		System.out.println(name + " : " +priority);
+		if (children!=null) {
+			for (Entry<String, PrioriTree> c : children.entrySet()) {
+				c.getValue().dump(c.getKey(), indent+1);
+			}
 		}
-		pref = preferences.getIgnoredNames();
-		if (pref!=null) {
-			this.ignoredNames = pref;
+	}
+
+	private void indent(int i) {
+		for (int j = 0; j < i; j++) {
+			System.out.print("  ");
 		}
-		pref = preferences.getIgnoredPrefixes();
-		if (pref!=null) {
-			this.ignoredPrefixes = pref;
-		}
+	}
+
+	/**
+	 * This is equivalent to calling setPriority on the that path itself as well as all
+	 * descendants of the path. In other words it forces all paths that have 'path'
+	 * as a prefix to get a priority of at least 'pri'.
+	 * <p>
+	 * The only exception to this rule is paths that are assigne a 'PRIORITY_IGNORE' by
+	 * the default priority function will remain ignored. (This is to avoid undesirable
+	 * behavior where ignored files like .zip and .jar files suddenly become searcheable
+	 * if we raise the priority of a subtree in which these files occur).
+	 */
+	public void setTreePriority(Path path, double pri) {
+		setPriority(path, pri);
+		// TODO somehow force the priority of all the children of node @ path.
 	}
 
 }
