@@ -12,6 +12,7 @@ package org.springsource.ide.eclipse.commons.core;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -97,7 +98,43 @@ public class HttpUtil {
 	}
 
 	public static void download(URI uri, OutputStream out, IProgressMonitor monitor) throws CoreException {
-		getTransport().download(uri, out, monitor);
+		String protocol = uri.getScheme();
+		if ("file".equals(protocol)) {
+			// Yes. it is a bit strange that HttpUtil knows how to read from
+			// file url. But it is just easier that
+			// way. Don't need to special case file urls in other places.
+			// We should consider renaming this class but it has the potential
+			// of breaking a lot of dependencies.
+			File f = new File(uri);
+			FileInputStream contents = null;
+			try {
+				contents = new FileInputStream(f);
+				byte[] buf = new byte[40 * 1024];
+				int read;
+				while ((read = contents.read(buf)) >= 0) {
+					// read = -1 means EOF
+					// read == 0 probably is impossible but handle it anyway.
+					if (read > 0) {
+						out.write(buf, 0, read);
+					}
+				}
+			}
+			catch (IOException e) {
+				throw new CoreException(new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID, e.getMessage(), e));
+			}
+			finally {
+				try {
+					if (contents != null) {
+						contents.close();
+					}
+				}
+				catch (IOException e) {
+				}
+			}
+		}
+		else {
+			getTransport().download(uri, out, monitor);
+		}
 	}
 
 	public static long getLastModified(URI location, IProgressMonitor monitor) throws CoreException {

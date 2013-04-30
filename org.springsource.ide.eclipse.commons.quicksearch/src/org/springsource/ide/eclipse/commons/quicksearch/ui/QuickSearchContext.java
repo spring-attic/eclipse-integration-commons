@@ -61,7 +61,7 @@ public class QuickSearchContext {
 	 * Create a walker priority function based on the current 'context'.
 	 */
 	public PriorityFunction createPriorityFun() {
-		PrioriTree priorities = new PrioriTree();
+		PrioriTree priorities = PrioriTree.create();
 		priorities.configure(QuickSearchActivator.getDefault().getPreferences());
 		try {
 // TODO: This is not working correctly right now, if the selected resources are containers / folders. 

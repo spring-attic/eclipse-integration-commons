@@ -29,6 +29,7 @@
     <!-- quick search -->
 	<module>org.springsource.ide.eclipse.commons.quicksearch.feature</module>
 	<module>org.springsource.ide.eclipse.commons.quicksearch</module>
+	<module>org.springsource.ide.eclipse.commons.quicksearch.test</module>
 
 	<module>org.springsource.ide.eclipse.commons.content.core</module>
 	<module>org.springsource.ide.eclipse.commons.core</module>

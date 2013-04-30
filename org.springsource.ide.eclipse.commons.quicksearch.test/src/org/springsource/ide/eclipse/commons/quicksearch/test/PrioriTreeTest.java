@@ -14,7 +14,7 @@ public class PrioriTreeTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		tree = new PrioriTree();
+		tree = PrioriTree.create();
 	}
 
 	public void testWithEmptyTree() {
@@ -51,9 +51,12 @@ public class PrioriTreeTest extends TestCase {
 		checkPriority(PRIORITY_DEFAULT, "/other/bar");
 		checkPriority(PRIORITY_DEFAULT, "/other");
 		
-		//The things nested underneath the set path should also still have default priority (in the current algorithm at least).
-		checkPriority(PRIORITY_DEFAULT, "/foo/bar/zor/nested");
-		checkPriority(PRIORITY_DEFAULT, "/foo/bar/zor/nested/deeper");
+		//The things nested underneath the set path also get assigned implicitly ...
+		checkPriority(100.0, "/foo/bar/zor/nested");
+		checkPriority(100.0, "/foo/bar/zor/nested/deeper");
+		// ... unless they are 'ignored'. Ignored paths are never converted to non-ignored.
+		
+		checkPriority(PRIORITY_IGNORE, "/foo/bar/zor/nested/big.zip");
 	}
 	
 	public void testSetOverlappingPaths() {
@@ -97,7 +100,7 @@ public class PrioriTreeTest extends TestCase {
 	 * Need support for setting priority of an entire subtree.
 	 */
 	public void testSetTreePriority() {
-		setTreePriority("/promoted", 100.0);
+		setPriority("/promoted", 100.0);
 		
 		//Stuff not in the raised subtree should be unchanged
 		checkPriority(PRIORITY_DEFAULT, "/unrelated");
@@ -111,10 +114,33 @@ public class PrioriTreeTest extends TestCase {
 		checkPriority(PRIORITY_IGNORE,  "/promoted/big.zip");
 	}
 	
-	private void setTreePriority(String pathStr, double pri) {
-		tree.setTreePriority(new Path(pathStr), pri);
+	/**
+	 * Check that setting priotity of a tree raises children priority also if those
+	 * children already had a priority assigned before.
+	 */
+	public void testSetTreePriority2() {
+		setPriority("/promoted/sub/sub", 50.0);
+		checkPriority(50.0, 			"/promoted");
+		checkPriority(50.0, 			"/promoted/sub");
+		checkPriority(50.0, 			"/promoted/sub/sub");
+		checkPriority(PRIORITY_DEFAULT,	"/promoted/other");
+		
+		setPriority("/promoted", 100.0);
+		
+		//Stuff not in the raised subtree should be unchanged
+		checkPriority(PRIORITY_DEFAULT, "/unrelated");
+		
+		//Stuff in the raised subtree should be affected.
+		checkPriority(100.0,            "/promoted");
+		checkPriority(100.0,            "/promoted/sub");
+		checkPriority(100.0,            "/promoted/sub/sub");
+		checkPriority(100.0,            "/promoted/other");
+		
+		//But... ignored stuff should never be made searchable even in a raised subtree.
+		checkPriority(PRIORITY_IGNORE,  "/promoted/sub/big.zip");
+		checkPriority(PRIORITY_IGNORE,  "/promoted/other/big.zip");
 	}
-
+	
 	private void setPriority(String pathStr, double pri) {
 		tree.setPriority(new Path(pathStr), pri);
 	}
