@@ -48,5 +48,5 @@ Export-Package: org.springsource.ide.eclipse.dashboard.internal.ui,
  org.springsource.ide.eclipse.dashboard.internal.ui.util,
  org.springsource.ide.eclipse.dashboard.ui,
  org.springsource.ide.eclipse.dashboard.ui.actions
-Import-Package: org.springframework.util;version="[3.0.5.RELEASE,3.2.0)"
+Import-Package: org.springframework.util;version="[3.0.5.RELEASE,4.1.0)"
 Bundle-ClassPath: library.jar
