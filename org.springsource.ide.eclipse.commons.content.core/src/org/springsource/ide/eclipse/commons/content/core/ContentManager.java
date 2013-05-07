@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012, 2013 VMware, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -32,13 +32,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.osgi.util.NLS;
+import org.osgi.framework.Bundle;
 import org.springsource.ide.eclipse.commons.content.core.util.Descriptor;
 import org.springsource.ide.eclipse.commons.content.core.util.Descriptor.Dependency;
 import org.springsource.ide.eclipse.commons.content.core.util.DescriptorReader;
@@ -300,17 +304,47 @@ public class ContentManager {
 		}
 	}
 
-	private void readFromUrl(DescriptorReader reader, String location, IProgressMonitor monitor) throws CoreException {
+	/**
+	 * If specifying a Bundle, any relative file URL that is encountered will be
+	 * assumed to be relative to the bundle, and the resource contained in that
+	 * bundle.
+	 * @param reader
+	 * @param location
+	 * @param monitor
+	 * @param bundle optional. Can be null.
+	 * @throws CoreException
+	 */
+	private void readFromUrl(DescriptorReader reader, String location, IProgressMonitor monitor, Bundle bundle)
+			throws CoreException {
 		debug("entering readFromURL: " + location);
 		try {
-			InputStream in = HttpUtil.stream(new URI(location), monitor);
+
+			URI uri = new URI(location);
+			InputStream in = null;
+
+			// For now, only support files within a bundle
+			if (bundle != null && uri.getScheme().startsWith("file")) {
+				try {
+					IPath path = new Path(uri.getPath());
+					in = FileLocator.openStream(bundle, path, false);
+				}
+				catch (IOException e) {
+					String message = NLS.bind("Unable to find resource {0} in bundle {1}", location,
+							bundle.getLocation());
+					throw new CoreException(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e));
+				}
+
+			}
+			else {
+				in = HttpUtil.stream(uri, monitor);
+			}
+
 			try {
 				reader.read(in);
 			}
 			catch (Exception e) {
 				String message = NLS.bind("Error downloading {0} - Internet connection might be down", location);
 				throw new CoreException(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e));
-
 			}
 			finally {
 				debug("exiting readFromURL: " + location);
@@ -336,8 +370,16 @@ public class ContentManager {
 		}
 	}
 
-	public IStatus refresh(IProgressMonitor monitor, boolean shouldDownloadRemotes) {
-
+	/**
+	 * Refreshes the list of descriptors. If a bundle is specified, it will look
+	 * for relative file URLs within the bundle, if it encounters any relative
+	 * file URLs.
+	 * @param monitor
+	 * @param shouldDownloadRemotes
+	 * @param bundle optional. can be null
+	 * @return
+	 */
+	public IStatus refresh(IProgressMonitor monitor, boolean shouldDownloadRemotes, Bundle bundle) {
 		File targetFile = getStateFile();
 		Assert.isNotNull(targetFile, "stateFile not initialized");
 		isRefreshing = true;
@@ -357,7 +399,7 @@ public class ContentManager {
 					// remote descriptor
 					try {
 						if (descriptorLocation != null && descriptorLocation.length() > 0) {
-							readFromUrl(reader, descriptorLocation, progress.newChild(70));
+							readFromUrl(reader, descriptorLocation, progress.newChild(70), bundle);
 						}
 					}
 					catch (CoreException e) {
@@ -403,6 +445,10 @@ public class ContentManager {
 			isRefreshing = false;
 			progress.done();
 		}
+	}
+
+	public IStatus refresh(IProgressMonitor monitor, boolean shouldDownloadRemotes) {
+		return refresh(monitor, shouldDownloadRemotes, null);
 	}
 
 	// Right after a template project is downloaded, the ContentManager doesn't
