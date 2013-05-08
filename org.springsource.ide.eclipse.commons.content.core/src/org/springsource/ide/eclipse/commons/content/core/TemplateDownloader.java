@@ -28,7 +28,7 @@ import org.springsource.ide.eclipse.commons.core.HttpUtil;
 
 public class TemplateDownloader {
 
-	private final ContentItem rootItem;
+	protected final ContentItem rootItem;
 
 	private CountDownLatch resultLatch;
 
@@ -41,7 +41,7 @@ public class TemplateDownloader {
 
 	private IStatus timerStatus;
 
-	private IStatus getTimerStatus() {
+	protected IStatus getTimerStatus() {
 		return timerStatus;
 	}
 
@@ -79,7 +79,7 @@ public class TemplateDownloader {
 
 	}
 
-	void stopCountdownTimer() {
+	protected void stopCountdownTimer() {
 		resultLatch.countDown();
 		if (downloadMonitor != null) {
 			downloadMonitor.setCanceled(true);
@@ -102,6 +102,7 @@ public class TemplateDownloader {
 						+ ContentManager.ARCHIVE_EXTENSION);
 				File directory = new File(baseDirectory, item.getPathFromRemoteDescriptor());
 				startCountdownTimer(monitor);
+
 				IStatus status = HttpUtil.download(url, archiveFile, directory, progress);
 				stopCountdownTimer();
 				result.add(status);
