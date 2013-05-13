@@ -10,23 +10,20 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.quicksearch.core;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.search.internal.ui.text.FileMatch;
-import org.eclipse.search.internal.ui.text.FileSearchQuery;
-import org.eclipse.search.internal.ui.text.FileSearchResult;
-import org.eclipse.search.ui.text.FileTextSearchScope;
-import org.eclipse.search.ui.text.Match;
 import org.springsource.ide.eclipse.commons.quicksearch.core.priority.PriorityFunction;
 import org.springsource.ide.eclipse.commons.quicksearch.util.JobUtil;
 
@@ -90,51 +87,67 @@ public class QuickTextSearcher {
 	}
 
 	private final class SearchInFilesWalker extends ResourceWalker {
+
 		
 		@Override
 		protected void visit(IFile f, IProgressMonitor mon) {
 			if (checkCanceled(mon)) {
 				return;
 			}
-//			System.out.println("visit: "+f);
-			FileTextSearchScope scope = FileTextSearchScope.newSearchScope(new IResource[] {f}, new String[] {"*"}, false);
-			FileSearchQuery search = new FileSearchQuery(query.getPatternString(), false, query.isCaseSensitive(), scope);
-			search.run(new NullProgressMonitor());
-			FileSearchResult result = (FileSearchResult) search.getSearchResult();
-			for (Object el : result.getElements()) {
-				for (Match _match : result.getMatches(el)) {
+
+			BufferedReader br = null;
+			try {
+				br = new BufferedReader(new FileReader(new File(f.getLocationURI())));
+				String line = null;
+				int lineIndex = 1;
+				int offset = 0;
+				while ((line = br.readLine()) != null) {
 					if (checkCanceled(mon)) {
 						return;
 					}
-					FileMatch match = (FileMatch) _match;
-					LineItem line = new LineItem(match);
-					add(line);
+
+					//int found = line.indexOf(query.getPatternString());
+					boolean found = query.matchItem(line);
+					if (found) {
+						LineItem lineItem = new LineItem(f, line, lineIndex, offset);
+						add(lineItem);
+					}
+
+					lineIndex++;
+					offset += (line.length() + 1);
+				}
+			} catch (Exception e) {
+			} finally {
+				if (br != null) {
+					try {
+						br.close();
+					} catch (IOException e) {
+					}
 				}
 			}
-
-			//				InputStream content = null;
-			//				try {
-			//					content = f.getContents();
-			//					BufferedReader lines = new BufferedReader(new InputStreamReader(content));
-			//					String line = lines.readLine();
-			//					int lineNumber = 0;
-			//					while (line!=null) {
-			//						contentProvider.add(new LineItem(f, line, lineNumber++), itemsFilter);
-			//						line = lines.readLine();
-			//					}
-			//				} catch (CoreException e) {
-			//					Activator.log(e);
-			//				} catch (IOException e) {
-			//					Activator.log(e);
-			//				} finally {
-			//					if (content!=null) {
-			//						try {
-			//							content.close();
-			//						} catch (IOException e) {
-			//						}
-			//					}
-			//				}
 		}
+		
+//		@Override
+//		protected void visit(IFile f, IProgressMonitor mon) {
+//			if (checkCanceled(mon)) {
+//				return;
+//			}
+////			System.out.println("visit: "+f);
+//			FileTextSearchScope scope = FileTextSearchScope.newSearchScope(new IResource[] {f}, new String[] {"*"}, false);
+//			FileSearchQuery search = new FileSearchQuery(query.getPatternString(), false, query.isCaseSensitive(), scope);
+//			search.run(new NullProgressMonitor());
+//			FileSearchResult result = (FileSearchResult) search.getSearchResult();
+//			for (Object el : result.getElements()) {
+//				for (Match _match : result.getMatches(el)) {
+//					if (checkCanceled(mon)) {
+//						return;
+//					}
+//					FileMatch match = (FileMatch) _match;
+//					LineItem line = new LineItem(match);
+//					add(line);
+//				}
+//			}
+//		}
 
 		@Override
 		public void resume() {

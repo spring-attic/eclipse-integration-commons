@@ -13,10 +13,10 @@ package org.springsource.ide.eclipse.commons.quicksearch.core;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.jface.text.IRegion;
-import org.eclipse.ui.internal.misc.StringMatcher;
-import org.eclipse.ui.internal.misc.StringMatcher.Position;
 
 
 /**
@@ -45,7 +45,8 @@ public class QuickTextQuery {
 
 	private boolean caseSensitive;
 	private String orgPattern; //Original pattern case preserved even if search is case insensitive.
-	private StringMatcher pattern;
+	private Matcher matcher;
+	private Pattern pattern;
 
 	/**
 	 * A query that matches anything.
@@ -56,8 +57,64 @@ public class QuickTextQuery {
 	
 	public QuickTextQuery(String substring, boolean caseSensitive) {
 		this.orgPattern = substring;
-		this.pattern = new StringMatcher(orgPattern, !caseSensitive, false);
 		this.caseSensitive = caseSensitive;
+		createMatcher(substring, caseSensitive);
+	}
+
+	/**
+	 * Compile a pattern string into an RegExp and create a Matcher for that
+	 * regexp. This is so we can 'compile' the pattern once and then keep reusing
+	 * the matcher.
+	 */
+	private void createMatcher(String patString, boolean caseSensitive) {
+		StringBuilder segment = new StringBuilder(); //Accumulates text that needs to be 'quoted'
+		StringBuilder regexp = new StringBuilder(); //Accumulates 'compiled' pattern
+		int pos = 0, len = patString.length();
+		while (pos<len) {
+			char c = patString.charAt(pos++);
+			switch (c) {
+			case '?':
+				appendSegment(segment, regexp);
+				regexp.append(".");
+				break;
+			case '*':
+				appendSegment(segment, regexp);
+				regexp.append(".*");
+				break;
+// For now not supporting escapes with '\'.
+// If this code is enabled. Should also add special case code to deal with it
+// in isSubFilter method. The naive 'contains' test will be subtly broken for
+// patterns that end with '\' and '\*'  (one searches for a '\' and the other does not!).
+//			case '\\': 
+//				if (pos+1<=len) {
+//					char nextChar = patString.charAt(pos+1);
+//					if (nextChar=='*' || nextChar=='?') {
+//						segment.append(nextChar);
+//						pos++;
+//						break;
+//					}
+//				}
+			default:
+				//Char is 'nothing special'. Add it to segment that will be wrapped in 'quotes'
+				segment.append(c);
+				break;
+			}
+		}
+		//Don't forget to process that last segment.
+		appendSegment(segment, regexp);
+		
+		this.pattern = Pattern.compile(regexp.toString(), caseSensitive?0:Pattern.CASE_INSENSITIVE);
+		this.matcher = pattern.matcher("");
+	}
+
+	private void appendSegment(StringBuilder segment, StringBuilder regexp) {
+		if (segment.length()>0) {
+			regexp.append(Pattern.quote(segment.toString()));
+			segment.setLength(0); //clear: ready for next segment
+		}
+		//else {
+		// nothing to append
+		//}
 	}
 
 //	public StringMatcher getPattern() {
@@ -65,7 +122,9 @@ public class QuickTextQuery {
 //	}
 
 	public boolean equalsFilter(QuickTextQuery o) {
-		return this.caseSensitive == o.caseSensitive && this.pattern.equals(o.pattern);
+		//TODO: actually for case insensitive matches we could relax this and treat patterns that
+		// differ only in case as the same.
+		return this.caseSensitive == o.caseSensitive && this.orgPattern.equals(o.orgPattern);
 	}
 
 	/**
@@ -88,10 +147,21 @@ public class QuickTextQuery {
 		return false;
 	}
 
+	/**
+	 * @return whether the LineItem text contains the search pattern.
+	 */
 	public boolean matchItem(LineItem item) {
-		String text = item.getText();
-		Position pos = pattern.find(item.getText(), 0, text.length());
-		return pos!=null;
+		return matchItem(item.getText());
+	}
+
+	/**
+	 * Same as matchItem except only takes the text of the item. This can
+	 * be useful for efficient processing. In particular to avoid creating 
+	 * LineItem instances for non-matching lines.
+	 */
+	public synchronized boolean matchItem(String item) {
+		matcher.reset(item);
+		return matcher.find();
 	}
 
 	/**
@@ -107,21 +177,19 @@ public class QuickTextQuery {
 
 	@Override
 	public String toString() {
-		return "QTQuery("+pattern+", "+(caseSensitive?"caseSens":"caseInSens")+")";
+		return "QTQuery("+orgPattern+", "+(caseSensitive?"caseSens":"caseInSens")+")";
 	}
 
-	public List<TextRange> findAll(String text) {
+	public synchronized List<TextRange> findAll(String text) {
 		if (isTrivial()) {
 			return Arrays.asList();
 		} else {
-			if (!caseSensitive) {
-				text = text.toLowerCase();
-			}
-			Position pos = pattern.find(text, 0, text.length());
 			List<TextRange> ranges = new ArrayList<QuickTextQuery.TextRange>();
-			while (pos!=null) {
-				ranges.add(new TextRange(pos.getStart(), pos.getEnd()-pos.getStart()));
-				pos = pattern.find(text, Math.max(pos.getEnd(), pos.getStart()+1), text.length());
+			matcher.reset(text);
+			while (matcher.find()) {
+				int start = matcher.start();
+				int end = matcher.end();
+				ranges.add(new TextRange(start, end-start));
 			}
 			return ranges;
 		}
@@ -145,5 +213,6 @@ public class QuickTextQuery {
 	public boolean isCaseSensitive() {
 		return caseSensitive;
 	}
+
 	
 }
