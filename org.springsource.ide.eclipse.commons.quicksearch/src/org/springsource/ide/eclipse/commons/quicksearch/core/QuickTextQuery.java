@@ -64,7 +64,7 @@ public class QuickTextQuery {
 	/**
 	 * Compile a pattern string into an RegExp and create a Matcher for that
 	 * regexp. This is so we can 'compile' the pattern once and then keep reusing
-	 * the matcher.
+	 * the matcher or compiled pattern.
 	 */
 	private void createMatcher(String patString, boolean caseSensitive) {
 		StringBuilder segment = new StringBuilder(); //Accumulates text that needs to be 'quoted'
@@ -154,13 +154,25 @@ public class QuickTextQuery {
 		return matchItem(item.getText());
 	}
 
+//	/**
+//	 * Same as matchItem except only takes the text of the item. This can
+//	 * be useful for efficient processing. In particular to avoid creating 
+//	 * LineItem instances for non-matching lines.
+//	 */
+//	public synchronized boolean matchItem(String item) {
+//		matcher.reset(item);
+//		return matcher.find();
+//	}
+	
 	/**
 	 * Same as matchItem except only takes the text of the item. This can
 	 * be useful for efficient processing. In particular to avoid creating 
 	 * LineItem instances for non-matching lines.
 	 */
-	public synchronized boolean matchItem(String item) {
-		matcher.reset(item);
+	public boolean matchItem(String item) {
+		//Alternate implementation. This is thread safe without synchronized,
+		// but it creates some garbage.
+		Matcher matcher = pattern.matcher(item); //Creating garbage here
 		return matcher.find();
 	}
 
@@ -180,12 +192,28 @@ public class QuickTextQuery {
 		return "QTQuery("+orgPattern+", "+(caseSensitive?"caseSens":"caseInSens")+")";
 	}
 
-	public synchronized List<TextRange> findAll(String text) {
+//	public synchronized List<TextRange> findAll(String text) {
+//		if (isTrivial()) {
+//			return Arrays.asList();
+//		} else {
+//			List<TextRange> ranges = new ArrayList<QuickTextQuery.TextRange>();
+//			matcher.reset(text);
+//			while (matcher.find()) {
+//				int start = matcher.start();
+//				int end = matcher.end();
+//				ranges.add(new TextRange(start, end-start));
+//			}
+//			return ranges;
+//		}
+//	}
+
+	public List<TextRange> findAll(String text) {
+		//alternate implementation without 'synchronized' but creates more garbage
 		if (isTrivial()) {
 			return Arrays.asList();
 		} else {
 			List<TextRange> ranges = new ArrayList<QuickTextQuery.TextRange>();
-			matcher.reset(text);
+			Matcher matcher = pattern.matcher(text);
 			while (matcher.find()) {
 				int start = matcher.start();
 				int end = matcher.end();
@@ -194,7 +222,7 @@ public class QuickTextQuery {
 			return ranges;
 		}
 	}
-
+	
 	public TextRange findFirst(String str) {
 		//TODO: more efficient implementation, just search the first one 
 		// no need to find all matches then toss away everything except the
