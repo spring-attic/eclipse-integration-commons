@@ -502,15 +502,24 @@ public class StsTestUtil {
 		waitForAutoBuild();
 
 		IMarker[] problems = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+		StringBuilder errors = new StringBuilder();
+		int errorCount = 0;
 		for (IMarker problem : problems) {
 			if (problem.getAttribute(IMarker.SEVERITY, 0) >= IMarker.SEVERITY_ERROR) {
-				IJavaProject javaproject = JavaCore.create(project);
-				ByteArrayOutputStream capture = new ByteArrayOutputStream();
-				PrintStream out = new PrintStream(capture);
-				StsTestUtil.dumpClasspathInfo(javaproject, out);
-				out.close();
-				Assert.fail("Expecting no problems but found: " + markerMessage(problem) + "\n" + capture.toString());
+				errors.append(markerMessage(problem)+"\n");
+				errorCount++;
+				if (errorCount>=10) { //don't include hundreds of errors. 10 is reasonable
+					break;
+				}
 			}
+		}
+		if (errorCount>0) {
+			IJavaProject javaproject = JavaCore.create(project);
+			ByteArrayOutputStream capture = new ByteArrayOutputStream();
+			PrintStream out = new PrintStream(capture);
+			StsTestUtil.dumpClasspathInfo(javaproject, out);
+			out.close();
+			Assert.fail("Expecting no problems but found: " + errors.toString() + "\n" + capture.toString());
 		}
 	}
 
