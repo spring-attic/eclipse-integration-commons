@@ -32,17 +32,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.osgi.util.NLS;
-import org.osgi.framework.Bundle;
 import org.springsource.ide.eclipse.commons.content.core.util.Descriptor;
 import org.springsource.ide.eclipse.commons.content.core.util.Descriptor.Dependency;
 import org.springsource.ide.eclipse.commons.content.core.util.DescriptorReader;
@@ -53,7 +49,17 @@ import org.springsource.ide.eclipse.commons.core.StatusHandler;
 import org.springsource.ide.eclipse.commons.internal.content.core.DescriptorMatcher;
 
 /**
- * Manages the list of available tutorials and sample projects.
+ * Manages the list of available tutorials, template and sample projects.
+ * Refresh requests only refresh descriptors for tutorials, templates and sample
+ * projects that are stored in a state file. The refresh operation reads changed
+ * descriptors and persists them in a state file, and then reinitialises the
+ * content item model with the changed content.
+ * 
+ * <p/>
+ * In addition, it also supports descriptors specified through additional
+ * content locations (for example locations inside an Eclipse bundle), which are
+ * meant to point to descriptors that are not persisted in state files, and only
+ * loaded during the runtime session.
  * @author Terry Denney
  * @author Steffen Pingel
  * @author Christian Dupuis
@@ -125,15 +131,32 @@ public class ContentManager {
 
 	private File defaultStateFile;
 
+	// Additional content locations that are not meant to be persisted in state
+	// files
+	private final List<ContentLocation> contentLocations;
+
 	public ContentManager() {
 		itemById = new HashMap<String, ContentItem>();
 		itemsByKind = new HashMap<String, Set<ContentItem>>();
 		listeners = new CopyOnWriteArrayList<PropertyChangeListener>();
+		contentLocations = new ArrayList<ContentLocation>();
 		isDirty = true;
 	}
 
 	public void addListener(PropertyChangeListener listener) {
 		listeners.add(listener);
+	}
+
+	/**
+	 * Adds a non-null content location, if not already present. Initialises the
+	 * content manager afterward.
+	 * @param contentLocation
+	 */
+	public void addContentLocation(ContentLocation contentLocation) {
+		if (contentLocation != null && !contentLocations.contains(contentLocation)) {
+			contentLocations.add(contentLocation);
+			init();
+		}
 	}
 
 	public TemplateDownloader createDownloader(ContentItem item) {
@@ -269,6 +292,23 @@ public class ContentManager {
 			}
 		}
 
+		// Handle additional content locations only on init. These are not
+		// persisted so its
+		// not necessary to read them again on refresh, as the purpose of
+		// refresh is to update the persistance state of descriptors.
+		for (ContentLocation location : contentLocations) {
+			file = location.getContentLocationFile();
+			if (file != null && file.exists()) {
+				try {
+					read(file);
+				}
+				catch (CoreException e) {
+					result.add(new Status(IStatus.WARNING, ContentPlugin.PLUGIN_ID, NLS.bind(
+							"Detected error in ''{0}''", file.getAbsoluteFile()), e));
+				}
+			}
+		}
+
 		if (!result.isOK()) {
 			StatusHandler.log(result);
 		}
@@ -305,39 +345,19 @@ public class ContentManager {
 	}
 
 	/**
-	 * If specifying a Bundle, any relative file URL that is encountered will be
-	 * assumed to be relative to the bundle, and the resource contained in that
-	 * bundle.
-	 * @param reader
-	 * @param location
+	 * @param reader reads content from the specified location
+	 * @param location an HTTP URL
 	 * @param monitor
-	 * @param bundle optional. Can be null.
+	 * 
 	 * @throws CoreException
 	 */
-	private void readFromUrl(DescriptorReader reader, String location, IProgressMonitor monitor, Bundle bundle)
-			throws CoreException {
+	private void readFromUrl(DescriptorReader reader, String location, IProgressMonitor monitor) throws CoreException {
 		debug("entering readFromURL: " + location);
+
 		try {
 
 			URI uri = new URI(location);
-			InputStream in = null;
-
-			// For now, only support files within a bundle
-			if (bundle != null && uri.getScheme().startsWith("file")) {
-				try {
-					IPath path = new Path(uri.getPath());
-					in = FileLocator.openStream(bundle, path, false);
-				}
-				catch (IOException e) {
-					String message = NLS.bind("Unable to find resource {0} in bundle {1}", location,
-							bundle.getLocation());
-					throw new CoreException(new Status(IStatus.ERROR, ContentPlugin.PLUGIN_ID, message, e));
-				}
-
-			}
-			else {
-				in = HttpUtil.stream(uri, monitor);
-			}
+			InputStream in = HttpUtil.stream(uri, monitor);
 
 			try {
 				reader.read(in);
@@ -371,15 +391,14 @@ public class ContentManager {
 	}
 
 	/**
-	 * Refreshes the list of descriptors. If a bundle is specified, it will look
-	 * for relative file URLs within the bundle, if it encounters any relative
-	 * file URLs.
+	 * Refreshes the list of descriptors, and persists them in the state file.
+	 * It then re-initialises all the content items.
 	 * @param monitor
 	 * @param shouldDownloadRemotes
 	 * @param bundle optional. can be null
 	 * @return
 	 */
-	public IStatus refresh(IProgressMonitor monitor, boolean shouldDownloadRemotes, Bundle bundle) {
+	public IStatus refresh(IProgressMonitor monitor, boolean shouldDownloadRemotes) {
 		File targetFile = getStateFile();
 		Assert.isNotNull(targetFile, "stateFile not initialized");
 		isRefreshing = true;
@@ -399,7 +418,7 @@ public class ContentManager {
 					// remote descriptor
 					try {
 						if (descriptorLocation != null && descriptorLocation.length() > 0) {
-							readFromUrl(reader, descriptorLocation, progress.newChild(70), bundle);
+							readFromUrl(reader, descriptorLocation, progress.newChild(70));
 						}
 					}
 					catch (CoreException e) {
@@ -445,10 +464,6 @@ public class ContentManager {
 			isRefreshing = false;
 			progress.done();
 		}
-	}
-
-	public IStatus refresh(IProgressMonitor monitor, boolean shouldDownloadRemotes) {
-		return refresh(monitor, shouldDownloadRemotes, null);
 	}
 
 	// Right after a template project is downloaded, the ContentManager doesn't
