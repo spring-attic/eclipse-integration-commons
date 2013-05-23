@@ -18,7 +18,7 @@
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>0.16.0</version>
+				<version>${tycho-version}</version>
 				<configuration>
 					<useUIHarness>true</useUIHarness>
 					<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
