@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012, 2013 VMware, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -118,6 +118,8 @@ public class Descriptor {
 
 	private static final String ATTRIBUTE_REQUIRES = "requires";
 
+	private static final String ATTRIBUTE_SPRING_VERSION = "springversion";
+
 	private static final String ATTRIBUTE_REQUIRES_BUNDLE = "requiresbundle";
 
 	private static final String ATTRIBUTE_FILTER = "filter";
@@ -165,6 +167,7 @@ public class Descriptor {
 		}
 		info.setDescription(description);
 
+		info.setSpringVersion(ContentUtil.getAttributeValue(node, ATTRIBUTE_SPRING_VERSION));
 		info.setCategory(ContentUtil.getAttributeValue(node, ATTRIBUTE_CATEGORY));
 		info.setUrl(ContentUtil.getAttributeValue(node, ATTRIBUTE_URL));
 		info.setKind(ContentUtil.getAttributeValue(node, ATTRIBUTE_KIND));
@@ -203,6 +206,9 @@ public class Descriptor {
 		}
 		if (descriptor.getRequiresBundle() != null) {
 			node.setAttribute(ATTRIBUTE_REQUIRES_BUNDLE, descriptor.getRequiresBundle());
+		}
+		if (descriptor.getSpringVersion() != null) {
+			node.setAttribute(ATTRIBUTE_SPRING_VERSION, descriptor.getSpringVersion());
 		}
 		node.setAttribute(ATTRIBUTE_LOCAL, Boolean.toString(descriptor.isLocal()));
 
@@ -250,6 +256,8 @@ public class Descriptor {
 
 	private String requiresBundle;
 
+	private String springVersion;
+
 	public Descriptor() {
 	}
 
@@ -287,6 +295,10 @@ public class Descriptor {
 
 	public String getRequires() {
 		return requires;
+	}
+
+	public String getSpringVersion() {
+		return springVersion;
 	}
 
 	public String getRequiresBundle() {
@@ -355,6 +367,12 @@ public class Descriptor {
 		String oldValue = this.kind;
 		this.kind = kind;
 		propertyChangeSupport.firePropertyChange("kind", oldValue, kind);
+	}
+
+	public void setSpringVersion(String springVersion) {
+		String oldValue = this.springVersion;
+		this.springVersion = springVersion;
+		propertyChangeSupport.firePropertyChange("springversion", oldValue, springVersion);
 	}
 
 	public void setFilter(String filter) {
