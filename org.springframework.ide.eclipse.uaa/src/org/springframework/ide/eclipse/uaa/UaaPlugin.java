@@ -69,6 +69,7 @@ public class UaaPlugin extends AbstractUIPlugin {
 
 				// Make sure that Platform is already started; if it is not re-schedule to retry later
 				if (!PlatformUI.isWorkbenchRunning()) {
+					setPriority(Job.DECORATE);
 					schedule(5000);
 				}
 				else {
@@ -97,6 +98,7 @@ public class UaaPlugin extends AbstractUIPlugin {
 			}
 		};
 		startupJob.setSystem(true);
+		startupJob.setPriority(Job.DECORATE);
 		startupJob.schedule(5000);
 
 		if (usageMonitorManager.getPrivacyLevel() == IUaa.UNDECIDED_TOU) {

@@ -110,6 +110,7 @@ public class NatureAndBuilderUsageMonitor implements IUsageMonitor {
 
 		};
 		startup.setSystem(true);
+		startup.setPriority(Job.DECORATE);
 		startup.schedule(3000);
 	}
 

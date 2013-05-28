@@ -373,6 +373,7 @@ public class UaaManager implements IUaa {
 			}
 		};
 		transmissionJob.setSystem(true);
+		transmissionJob.setPriority(Job.DECORATE);
 		// Schedule this for 10 minutes into the running instance
 		transmissionJob.schedule(10L * 60L * 1000L);
 	}
