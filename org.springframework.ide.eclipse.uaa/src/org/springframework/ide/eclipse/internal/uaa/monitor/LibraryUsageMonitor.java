@@ -91,6 +91,7 @@ public class LibraryUsageMonitor implements IUsageMonitor {
 
 						};
 						update.setSystem(true);
+						update.setPriority(Job.DECORATE);
 						update.schedule();
 					}
 				}
@@ -128,6 +129,7 @@ public class LibraryUsageMonitor implements IUsageMonitor {
 
 		};
 		startup.setSystem(true);
+		startup.setPriority(Job.DECORATE);
 		startup.schedule(5000);
 	}
 
