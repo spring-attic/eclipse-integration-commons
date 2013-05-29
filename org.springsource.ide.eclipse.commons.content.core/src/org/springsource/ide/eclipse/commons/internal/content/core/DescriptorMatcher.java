@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012, 2013 VMware, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -38,11 +38,20 @@ public class DescriptorMatcher {
 
 	private final Dictionary<Object, Object> environment;
 
+	private File installDirectory;
+
 	/**
 	 * Installed version of STS.
 	 */
 	private Version version;
 
+	/**
+	 * 
+	 * @param manager content manager that handles the download of descriptor
+	 * data. The content manager should also indicate the installation directory
+	 * of the content, as this is used to match a descriptor id and version with
+	 * the actual content that was downloaded.
+	 */
 	public DescriptorMatcher(ContentManager manager) {
 		this.environment = new Hashtable<Object, Object>(System.getProperties());
 		this.manager = manager;
@@ -57,6 +66,18 @@ public class DescriptorMatcher {
 				this.environment.put("org.springsource.sts.version.micro", version.getMicro()); //$NON-NLS-1$
 			}
 		}
+	}
+
+	/**
+	 * An alternative to passing a Content Manager that points to an
+	 * installation directory used for descriptor version and ID matching, is to
+	 * pass the installation directory itself.
+	 * @param installDirectory local directory where contents are installed,
+	 * typically in [workspacelocation]/.metadata/.sts/[content directory]
+	 */
+	public DescriptorMatcher(File installDirectory) {
+		this((ContentManager) null);
+		this.installDirectory = installDirectory;
 	}
 
 	public Map<Object, Object> getEnvironment() {
@@ -98,7 +119,8 @@ public class DescriptorMatcher {
 			}
 		}
 		if (descriptor.isLocal()) {
-			File baseDirectory = manager.getInstallDirectory();
+
+			File baseDirectory = installDirectory == null ? manager.getInstallDirectory() : installDirectory;
 			File directory = new File(baseDirectory, descriptor.getId() + "-" + descriptor.getVersion());
 			if (!directory.exists()) {
 				return false;
