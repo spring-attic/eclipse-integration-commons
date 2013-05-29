@@ -131,32 +131,15 @@ public class ContentManager {
 
 	private File defaultStateFile;
 
-	// Additional content locations that are not meant to be persisted in state
-	// files
-	private final List<ContentLocation> contentLocations;
-
 	public ContentManager() {
 		itemById = new HashMap<String, ContentItem>();
 		itemsByKind = new HashMap<String, Set<ContentItem>>();
 		listeners = new CopyOnWriteArrayList<PropertyChangeListener>();
-		contentLocations = new ArrayList<ContentLocation>();
 		isDirty = true;
 	}
 
 	public void addListener(PropertyChangeListener listener) {
 		listeners.add(listener);
-	}
-
-	/**
-	 * Adds a non-null content location, if not already present. Initialises the
-	 * content manager afterward.
-	 * @param contentLocation
-	 */
-	public void addContentLocation(ContentLocation contentLocation) {
-		if (contentLocation != null && !contentLocations.contains(contentLocation)) {
-			contentLocations.add(contentLocation);
-			init();
-		}
 	}
 
 	public TemplateDownloader createDownloader(ContentItem item) {
@@ -289,23 +272,6 @@ public class ContentManager {
 			catch (CoreException e) {
 				StatusHandler.log(new Status(IStatus.WARNING, ContentPlugin.PLUGIN_ID, NLS.bind(
 						"Detected error in ''{0}''", file.getAbsoluteFile()), e));
-			}
-		}
-
-		// Handle additional content locations only on init. These are not
-		// persisted so its
-		// not necessary to read them again on refresh, as the purpose of
-		// refresh is to update the persistance state of descriptors.
-		for (ContentLocation location : contentLocations) {
-			file = location.getContentLocationFile();
-			if (file != null && file.exists()) {
-				try {
-					read(file);
-				}
-				catch (CoreException e) {
-					result.add(new Status(IStatus.WARNING, ContentPlugin.PLUGIN_ID, NLS.bind(
-							"Detected error in ''{0}''", file.getAbsoluteFile()), e));
-				}
 			}
 		}
 
