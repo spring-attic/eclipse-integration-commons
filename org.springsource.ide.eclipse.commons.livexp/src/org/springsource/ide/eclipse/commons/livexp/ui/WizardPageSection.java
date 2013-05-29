@@ -16,7 +16,7 @@ package org.springsource.ide.eclipse.commons.livexp.ui;
  */
 public abstract class WizardPageSection extends PageSection {
 
-	public WizardPageSection(WizardPageWithSections owner) {
+	public WizardPageSection(IPageWithSections owner) {
 		super(owner);
 	}
 

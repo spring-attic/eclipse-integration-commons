@@ -34,9 +34,11 @@ public class ValidationResult {
 	public static ValidationResult error(String msg) {
 		return new ValidationResult(IStatus.ERROR, msg);
 	}
-	
 	public static ValidationResult warning(String msg) {
 		return new ValidationResult(IStatus.WARNING, msg);
+	}
+	public static ValidationResult info(String msg) {
+		return new ValidationResult(IStatus.INFO, msg);
 	}
 	
 	/* (non-Javadoc)
@@ -91,6 +93,5 @@ public class ValidationResult {
 			return ""+s;
 		}
 	}
-	
 	
 }

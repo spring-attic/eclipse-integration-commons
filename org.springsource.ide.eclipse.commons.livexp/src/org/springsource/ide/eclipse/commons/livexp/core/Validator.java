@@ -15,8 +15,25 @@ package org.springsource.ide.eclipse.commons.livexp.core;
  */
 public abstract class Validator extends LiveExpression<ValidationResult> {
 
+	public static final LiveExpression<ValidationResult> OK = constant(ValidationResult.OK);
+
 	public Validator() {
 		super(ValidationResult.OK);
+	}
+
+	public static <T> LiveExpression<ValidationResult> notNull(final LiveExpression<T> target, final String errorMessage) {
+		Validator v = new Validator() {
+			@Override
+			protected ValidationResult compute() {
+				if (target.getValue()==null) {
+					return ValidationResult.error(errorMessage);
+				} else {
+					return ValidationResult.OK;
+				}
+			}
+		};
+		v.dependsOn(target);
+		return v;
 	}
 
 }

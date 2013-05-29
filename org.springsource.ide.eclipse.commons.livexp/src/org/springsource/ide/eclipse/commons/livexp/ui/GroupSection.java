@@ -39,6 +39,10 @@ public class GroupSection extends WizardPageSection {
 	 */
 	public final LiveVariable<Boolean> isVisible = new LiveVariable<Boolean>(true);
 
+	/**
+	 * If title is null then it creates a normal composite without a box around it. Otherwise
+	 * it creates a 'group' and uses the title as label for the group.
+	 */
 	public GroupSection(WizardPageWithSections owner, String title, WizardPageSection... _sections) {
 		super(owner);
 		this.groupTitle = title;
@@ -62,10 +66,7 @@ public class GroupSection extends WizardPageSection {
 
 	@Override
 	public void createContents(Composite page) {
-		final Group group = new Group(page, SWT.NONE);
-		group.setText(groupTitle);
-		group.setLayout(new GridLayout(1, false));
-		GridDataFactory.fillDefaults().grab(true, false).applyTo(group);
+		final Composite group = createComposite(page);
 		for (WizardPageSection s : sections) {
 			s.createContents(group);
 		}
@@ -78,6 +79,31 @@ public class GroupSection extends WizardPageSection {
 				owner.getShell().layout(new Control[] {group});
 			};
 		});
+	}
+
+	private Composite createComposite(Composite page) {
+		if (groupTitle!=null) {
+			//Create a group with box around it and a title
+			final Group group = new Group(page, SWT.NONE);
+			group.setText(groupTitle);
+			group.setLayout(createLayout());
+			GridDataFactory.fillDefaults().grab(true, false).applyTo(group);
+			return group;
+		} else {
+			//Create a normal composite. No box
+			final Composite composite = new Composite(page, SWT.NONE);
+			composite.setLayout(createLayout());
+			GridDataFactory.fillDefaults().grab(true, false).applyTo(composite);
+			return composite;
+		}
+	}
+
+	/**
+	 * Factory method that creates the layout for the group. Subclass may overide to change how
+	 * components in the group are layed out. Default just creates a 1 column GridLayout
+	 */
+	protected GridLayout createLayout() {
+		return new GridLayout(1, false);
 	}
 	
 	@Override
