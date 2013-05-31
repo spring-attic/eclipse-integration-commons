@@ -63,14 +63,6 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 		return sections;
 	}
 	
-//	@Override
-//	public boolean isPageComplete() {
-//		if (validator!=null) {
-//			return validator.getValue().isOk();
-//		}
-//		return false;
-//	}
-	
 	/**
 	 * This method should be implemented to generate the contents of the page.
 	 */
