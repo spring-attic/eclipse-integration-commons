@@ -11,7 +11,6 @@
 package org.springsource.ide.eclipse.commons.quicksearch.ui;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springsource.ide.eclipse.commons.livexp.ui.PreferencePageWithSections;

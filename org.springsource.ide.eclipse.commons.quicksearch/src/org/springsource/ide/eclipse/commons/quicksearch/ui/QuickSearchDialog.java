@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2011 IBM Corporation and others.
+ * Copyright (c) 2000, 2011, 2013 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -216,12 +216,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		};
 	};
 
-	//private static final Color YELLOW = Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW);
 	private static final Color GREY = Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY);
 	
-	 //Color used to highlight the current line in the defails view
-	private static final Color CYAN = Display.getCurrent().getSystemColor(SWT.COLOR_CYAN);
-
 	private final StyledCellLabelProvider LINE_TEXT_LABEL_PROVIDER = new StyledCellLabelProvider() {
 		@Override
 		public void update(ViewerCell cell) {
@@ -734,8 +730,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 		final Label listLabel = createLabels(content);
 
-		list = new TableViewer(content, (multi ? SWT.MULTI : SWT.SINGLE)
-				| SWT.BORDER | SWT.V_SCROLL | SWT.VIRTUAL);
+		list = new TableViewer(content, (multi ? SWT.MULTI : SWT.SINGLE) |
+				SWT.FULL_SELECTION | SWT.BORDER | SWT.V_SCROLL | SWT.VIRTUAL);
 //		ColumnViewerToolTipSupport.enableFor(list, ToolTip.NO_RECREATE); 
 		
 		list.getTable().setHeaderVisible(true);
