@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -40,6 +41,7 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
 	public void createControl(Composite parent) {
+		GridDataFactory.fillDefaults().grab(true,true).applyTo(parent);
 		Composite page = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout(1, false);
         layout.marginHeight = 1;
@@ -52,6 +54,7 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 		}
         validator.addListener(this);
         setControl(page);
+        page.pack(true);
         getContainer().updateButtons();
         getContainer().updateMessage();
 	}
