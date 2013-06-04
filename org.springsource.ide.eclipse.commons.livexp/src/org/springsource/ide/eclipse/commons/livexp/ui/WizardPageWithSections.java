@@ -55,8 +55,10 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
         validator.addListener(this);
         setControl(page);
         page.pack(true);
-        getContainer().updateButtons();
-        getContainer().updateMessage();
+        if (getContainer().getCurrentPage()!=null) { // Otherwise an NPE will ensue when updating buttons. Buttons depend on current page so that is logical.
+	        getContainer().updateButtons();
+	        getContainer().updateMessage();
+        }
 	}
 	
 	protected synchronized List<WizardPageSection> getSections() {
