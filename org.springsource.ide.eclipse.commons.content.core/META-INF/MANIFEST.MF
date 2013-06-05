@@ -9,7 +9,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.springsource.ide.eclipse.commons.content.core.ContentPlugin
 Require-Bundle: org.eclipse.core.runtime,
  org.springsource.ide.eclipse.commons.core,
- org.eclipse.mylyn.commons.net,
  org.eclipse.core.resources
 Export-Package: org.springsource.ide.eclipse.commons.content.core,
  org.springsource.ide.eclipse.commons.content.core.util,

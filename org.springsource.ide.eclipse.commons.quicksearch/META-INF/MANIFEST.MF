@@ -11,7 +11,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.expressions,
  org.eclipse.search,
  org.eclipse.ui.editors,
- org.eclipse.text,
  org.eclipse.jface.text,
  org.eclipse.jdt.ui,
  org.springsource.ide.eclipse.commons.livexp
