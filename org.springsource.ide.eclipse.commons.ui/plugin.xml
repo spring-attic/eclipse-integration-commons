@@ -11,6 +11,12 @@
             id="org.springsource.ide.eclipse.commons.preferencePage"
             name="SpringSource">
       </page>
+      <page
+            category="org.springsource.ide.eclipse.commons.preferencePage"
+            class="org.springsource.ide.eclipse.commons.ui.PreferencesCurator"
+            id="org.springsource.ide.eclipse.commons.curatorPreferencesPage"
+            name="Global Preferences Curator">
+      </page>
    </extension>
    <extension
          name="SpringSource Startup Reader"
