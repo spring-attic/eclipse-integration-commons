@@ -41,6 +41,13 @@ public class ValidationResult {
 		return new ValidationResult(IStatus.INFO, msg);
 	}
 	
+	/**
+	 * Create a copy of a ValidationResult replacing the message
+	 */
+	public ValidationResult withMessage(String newMsg) {
+		return new ValidationResult(this.status, newMsg);
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
