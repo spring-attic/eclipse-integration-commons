@@ -24,9 +24,10 @@ import org.eclipse.swt.widgets.Label;
 public class CommentSection extends WizardPageSection {
 
 	private String text;
+	private Label l;
 
-	public CommentSection(WizardPageWithSections page, String text) {
-		super(page);
+	public CommentSection(IPageWithSections owner, String text) {
+		super(owner);
 		this.text = text;
 	}
 
@@ -37,9 +38,17 @@ public class CommentSection extends WizardPageSection {
 
 	@Override
 	public void createContents(Composite page) {
-		Label l = new Label(page, SWT.WRAP);
+		l = new Label(page, SWT.WRAP);
 		l.setText(text);
 		GridDataFactory.fillDefaults().grab(true, false).hint(300, SWT.DEFAULT).applyTo(l);
+	}
+	
+	@Override
+	public void dispose() {
+		if (l!=null && !l.isDisposed()) {
+			l.dispose();
+			l = null;
+		}
 	}
 
 }
