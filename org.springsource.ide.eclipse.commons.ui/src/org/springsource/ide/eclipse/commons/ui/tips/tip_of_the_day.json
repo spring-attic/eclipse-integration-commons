@@ -1,0 +1,15 @@
+[
+	{
+		"infoText":"Do you want to make Eclipse better?",
+		"linkText":"<a href=\"pref:org.springsource.ide.eclipse.commons.curatorPreferencesPage\">Open curated preferences page</a>"
+	},
+	{
+		"infoText":"Check out the latest info on SpringFramework",
+		"linkText":"Go to <a href=\"http://springsource.org\">SpringSource</a> website."
+	},
+	{
+		"infoText":"Do you know about the new quick search feature?",
+		"linkText":"<a href=\"command:org.springsource.ide.eclipse.quicksearch.commands.quicksearchCommand\">Try it out.</a>",
+		"keyBindingId":"org.springsource.ide.eclipse.quicksearch.commands.quicksearchCommand"
+	}
+]

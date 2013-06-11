@@ -18,7 +18,6 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.springsource.ide.eclipse.commons.internal.ui.UiPlugin;
 
-
 /**
  * @author Wesley Coelho
  * @author Leo Dos Santos
@@ -75,6 +74,16 @@ public class StsUiImages {
 	// com.springsource.sts.ide.help
 
 	public static final ImageDescriptor CHEATSHEET = create(OBJ, "tutorials.png");
+
+	// tip o' the day icons
+
+	public static final ImageDescriptor TIP_CLOSE = create(OBJ, "close.gif");
+
+	public static final ImageDescriptor TIP_CLOSE_HOT = create(OBJ, "close_hot.gif");
+
+	public static final ImageDescriptor TIP_NEXT = create(OBJ, "next.gif");
+
+	public static final ImageDescriptor TIP_PREV = create(OBJ, "prev.gif");
 
 	// unused
 

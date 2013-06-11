@@ -37,6 +37,8 @@ import org.springsource.ide.eclipse.commons.core.preferences.GlobalPreferenceEnh
  */
 public class PreferencesCurator extends PreferencePage implements IWorkbenchPreferencePage {
 
+	public final static String PREF_DIALOG_ID = "org.springsource.ide.eclipse.commons.curatorPreferencesPage";
+
 	public PreferencesCurator() {
 		super("Global Preferences Curator");
 	}
@@ -50,6 +52,37 @@ public class PreferencesCurator extends PreferencePage implements IWorkbenchPref
 	protected Control createContents(Composite parent) {
 		Composite contents = new Composite(parent, SWT.NONE);
 		contents.setLayout(new GridLayout(1, true));
+
+		Label desc = new Label(contents, SWT.WRAP);
+		desc.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+		desc.setText("We have scoured the Eclipse preferences pages and determined a handful of preferences\n"
+				+ "that are not set in an optimal way.  Do you trust us?");
+
+		Composite allComposite = new Composite(contents, SWT.BORDER);
+		allComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		allComposite.setLayout(new GridLayout(1, false));
+		Label label = new Label(allComposite, SWT.NONE);
+		label.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+		label.setText("Set/Unset all curated preferences.");
+		label.setFont(JFaceResources.getFontRegistry().getBold(JFaceResources.DIALOG_FONT));
+		Button allSetButton = new Button(allComposite, SWT.PUSH);
+		allSetButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+		allSetButton.setText("Set all preferences");
+		allSetButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				new GlobalPreferenceEnhancer().enhanceAllPreferences();
+			}
+		});
+		Button allUnsetButton = new Button(allComposite, SWT.PUSH);
+		allUnsetButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+		allUnsetButton.setText("Unset all preferences");
+		allUnsetButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				new GlobalPreferenceEnhancer().undoAll();
+			}
+		});
 
 		Composite jdtComposite = new Composite(contents, SWT.BORDER);
 		jdtComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -147,32 +180,6 @@ public class PreferencesCurator extends PreferencePage implements IWorkbenchPref
 			m2eUIArea.getControl().setEnabled(false);
 			m2eArea.getControl().setEnabled(false);
 		}
-
-		Composite allComposite = new Composite(contents, SWT.BORDER);
-		allComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		allComposite.setLayout(new GridLayout(1, false));
-		Label label = new Label(allComposite, SWT.NONE);
-		label.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-		label.setText("Set/Unset all curated preferences");
-		label.setFont(JFaceResources.getFontRegistry().getBold(JFaceResources.DIALOG_FONT));
-		Button allSetButton = new Button(allComposite, SWT.PUSH);
-		allSetButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-		allSetButton.setText("Set all preferences");
-		allSetButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				new GlobalPreferenceEnhancer().enhanceAllPreferences();
-			}
-		});
-		Button allUnsetButton = new Button(allComposite, SWT.PUSH);
-		allUnsetButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-		allUnsetButton.setText("Unset all preferences");
-		allUnsetButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				new GlobalPreferenceEnhancer().undoAll();
-			}
-		});
 
 		return contents;
 	}
