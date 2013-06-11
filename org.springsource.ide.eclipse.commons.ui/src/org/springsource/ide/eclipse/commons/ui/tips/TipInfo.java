@@ -10,29 +10,17 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.ui.tips;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.jface.bindings.Binding;
 import org.eclipse.jface.bindings.keys.KeyBinding;
 import org.eclipse.jface.bindings.keys.KeySequence;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceDialog;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.browser.IWebBrowser;
-import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.dialogs.PreferencesUtil;
-import org.eclipse.ui.internal.browser.WebBrowserPreference;
-import org.eclipse.ui.internal.browser.WorkbenchBrowserSupport;
 import org.eclipse.ui.keys.IBindingService;
-import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
-import org.springsource.ide.eclipse.commons.internal.ui.UiPlugin;
+import org.springsource.ide.eclipse.commons.ui.UiUtil;
 
 /**
  * 
@@ -101,48 +89,7 @@ class TipInfo {
 			}
 		}
 		else {
-			openUrl(text);
-		}
-	}
-
-	public static void openUrl(String location) {
-		try {
-			URL url = null;
-
-			if (location != null) {
-				url = new URL(location);
-			}
-			if (WebBrowserPreference.getBrowserChoice() == WebBrowserPreference.EXTERNAL) {
-				try {
-					IWorkbenchBrowserSupport support = PlatformUI.getWorkbench().getBrowserSupport();
-					support.getExternalBrowser().openURL(url);
-				}
-				catch (Exception e) {
-					CorePlugin.log(e);
-				}
-			}
-			else {
-				IWebBrowser browser = null;
-				int flags = 0;
-				if (WorkbenchBrowserSupport.getInstance().isInternalWebBrowserAvailable()) {
-					flags |= IWorkbenchBrowserSupport.AS_EDITOR | IWorkbenchBrowserSupport.LOCATION_BAR
-							| IWorkbenchBrowserSupport.NAVIGATION_BAR;
-				}
-				else {
-					flags |= IWorkbenchBrowserSupport.AS_EXTERNAL | IWorkbenchBrowserSupport.LOCATION_BAR
-							| IWorkbenchBrowserSupport.NAVIGATION_BAR;
-				}
-
-				browser = WorkbenchBrowserSupport.getInstance().createBrowser(flags, UiPlugin.PLUGIN_ID, null, null);
-				browser.openURL(url);
-			}
-		}
-		catch (PartInitException e) {
-			MessageDialog.openError(Display.getDefault().getActiveShell(), "Browser initialization error",
-					"Browser could not be initiated");
-		}
-		catch (MalformedURLException e) {
-			MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Malformed URL", location);
+			UiUtil.openUrl(text);
 		}
 	}
 
