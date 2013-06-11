@@ -75,15 +75,14 @@ public class TipOfTheDayPopup extends PopupDialog {
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 1;
 		dialogArea.setLayout(layout);
-		createTip(provider.nextTip());
+		createTip(provider.nextTip(), false);
 		createNextPrevArea(dialogArea);
 		createDontRemindSection(dialogArea);
-
+		resize();
 		return dialogArea;
-
 	}
 
-	private void createTip(TipInfo tip) {
+	private void createTip(TipInfo tip, boolean doResize) {
 		if (tipComposite != null) {
 			Control[] children = tipComposite.getChildren();
 			for (Control element : children) {
@@ -97,7 +96,22 @@ public class TipOfTheDayPopup extends PopupDialog {
 		}
 
 		createTipSection(tipComposite, tip);
-		tipComposite.layout(true, true);
+		if (doResize) {
+			resize();
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void resize() {
+		Shell shell = getShell();
+		shell.setRedraw(false);
+		Point size = shell.computeSize(300, SWT.DEFAULT);
+		shell.setSize(size);
+		shell.setLocation(getInitialLocation(size));
+		shell.layout(true, true);
+		shell.setRedraw(true);
 	}
 
 	private void createTipSection(Composite parent, final TipInfo info) {
@@ -114,18 +128,18 @@ public class TipOfTheDayPopup extends PopupDialog {
 			}
 		};
 
-		Label infoLabel = new Label(parent, SWT.NONE);
+		Label infoLabel = new Label(parent, SWT.WRAP);
 		infoLabel.setText(infoText);
 		infoLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		preferenceLink = new Link(parent, SWT.MULTI | SWT.WRAP | SWT.RIGHT);
+		preferenceLink = new Link(parent, SWT.WRAP | SWT.RIGHT);
 		preferenceLink.addSelectionListener(linkAction);
 		preferenceLink.setText(linkText);
 		preferenceLink.setLayoutData(new GridData(GridData.FILL_BOTH));
 		preferenceLink.setBackground(parent.getBackground());
 
 		if (bindingText != null) {
-			Label bindingLabel = new Label(parent, SWT.NONE);
+			Label bindingLabel = new Label(parent, SWT.WRAP);
 			bindingLabel.setText(bindingText);
 			bindingLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
 		}
@@ -180,7 +194,7 @@ public class TipOfTheDayPopup extends PopupDialog {
 		navButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				createTip(provider.previousTip());
+				createTip(provider.previousTip(), true);
 			}
 		});
 		navButton = new Button(nextPrevComposite, SWT.FLAT);
@@ -190,7 +204,7 @@ public class TipOfTheDayPopup extends PopupDialog {
 		navButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				createTip(provider.nextTip());
+				createTip(provider.nextTip(), true);
 			}
 		});
 
