@@ -37,7 +37,6 @@ import org.eclipse.ui.internal.browser.WorkbenchBrowserSupport;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 import org.springsource.ide.eclipse.commons.internal.ui.UiPlugin;
 
-
 /**
  * @author Steffen Pingel
  * @author Leo Dos Santos
@@ -105,11 +104,21 @@ public class UiUtil {
 		return null;
 	}
 
-	public static void openUrl(String location) {
+	public static void openUrl(final String location) {
+		// If not running in UI thread... results in NPE. So ...
 		openUrl(location, WebBrowserPreference.getBrowserChoice());
 	}
 
-	public static void openUrl(String location, int browserChoice) {
+	public static void openUrl(final String location, final int browserChoice) {
+		// If not running in UI thread... NPE ensues... so...
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				uiThreadOpenUrl(location, browserChoice);
+			}
+		});
+	}
+
+	private static void uiThreadOpenUrl(String location, int browserChoice) {
 		try {
 			URL url = null;
 			if (location != null) {
@@ -154,7 +163,6 @@ public class UiUtil {
 						"Could not open URL: " + location);
 			}
 		}
-
 	}
 
 	public static void runForked(final ICoreRunnable coreRunner) throws OperationCanceledException, CoreException {
