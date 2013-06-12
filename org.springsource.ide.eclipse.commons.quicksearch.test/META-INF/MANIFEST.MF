@@ -5,8 +5,8 @@ Bundle-SymbolicName: org.springsource.ide.eclipse.commons.quicksearch.test
 Bundle-Version: 3.3.0.qualifier
 Bundle-Activator: org.springsource.ide.eclipse.commons.quicksearch.test.QuickSearchTestActivator
 Require-Bundle: org.eclipse.core.runtime,
- org.junit4,
  org.springsource.ide.eclipse.commons.quicksearch,
- org.eclipse.core.resources
+ org.eclipse.core.resources,
+ org.junit;bundle-version="4.8.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
