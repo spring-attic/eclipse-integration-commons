@@ -67,6 +67,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
+import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -517,7 +518,13 @@ public class StsTestUtil {
 			IJavaProject javaproject = JavaCore.create(project);
 			ByteArrayOutputStream capture = new ByteArrayOutputStream();
 			PrintStream out = new PrintStream(capture);
-			StsTestUtil.dumpClasspathInfo(javaproject, out);
+			try {
+				StsTestUtil.dumpClasspathInfo(javaproject, out);
+			} catch (Throwable e) {
+				out.append("Error dumping classpath: "+ExceptionUtil.getMessage(e));
+				//don't let problems getting classpath stop the test from printing error markers!
+				e.printStackTrace();
+			}
 			out.close();
 			Assert.fail("Expecting no problems but found: " + errors.toString() + "\n" + capture.toString());
 		}
