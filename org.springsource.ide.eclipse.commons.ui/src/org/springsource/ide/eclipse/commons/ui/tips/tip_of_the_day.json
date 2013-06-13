@@ -10,6 +10,7 @@
 	{
 		"infoText":"Do you know about the new quick search feature?",
 		"linkText":"<a href=\"command:org.springsource.ide.eclipse.quicksearch.commands.quicksearchCommand\">Try it out.</a>",
-		"keyBindingId":"org.springsource.ide.eclipse.quicksearch.commands.quicksearchCommand"
+		"keyBindingId":"org.springsource.ide.eclipse.quicksearch.commands.quicksearchCommand",
+		"required":"org.springsource.ide.eclipse.commons.quicksearch"
 	}
 ]

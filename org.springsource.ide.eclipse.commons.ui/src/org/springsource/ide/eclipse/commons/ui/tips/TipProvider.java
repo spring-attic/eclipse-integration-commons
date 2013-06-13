@@ -11,8 +11,12 @@
 package org.springsource.ide.eclipse.commons.ui.tips;
 
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
+import org.eclipse.core.runtime.Platform;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,25 +47,34 @@ public class TipProvider {
 		InputStreamReader tipReader = new InputStreamReader(TipProvider.class.getClassLoader().getResourceAsStream(
 				"org/springsource/ide/eclipse/commons/ui/tips/tip_of_the_day.json"));
 		JSONTokener tokener = new JSONTokener(tipReader);
+		List<TipInfo> tipList = Collections.emptyList();
 		try {
 			JSONArray json = new JSONArray(tokener);
 			int length = json.length();
-			tips = new TipInfo[length];
+			tipList = new ArrayList<TipInfo>(length);
 			for (int i = 0; i < length; i++) {
 				JSONObject object = (JSONObject) json.get(i);
-				tips[i] = new TipInfo(object.getString("infoText"), object.getString("linkText"),
-						object.has("keyBindingId") ? object.getString("keyBindingId") : null);
+				if (object.has("required")) {
+					String requiredPlugin = object.getString("required");
+					if (Platform.getBundle(requiredPlugin) == null) {
+						continue;
+					}
+				}
+				tipList.add(new TipInfo(object.getString("infoText"), object.getString("linkText"), object
+						.has("keyBindingId") ? object.getString("keyBindingId") : null));
 			}
 		}
 		catch (JSONException e) {
 			CorePlugin.log("Error parsing tips of the day file", e);
-			tips = new TipInfo[0];
 			error = e;
 		}
 
-		if (tips.length == 0) {
+		if (tipList.size() == 0) {
 			tips = new TipInfo[] { new TipInfo("There's a lot going on with Spring",
 					"Read the latest <a href\"http://www.springsource.org/\">Spring news</a>.") };
+		}
+		else {
+			tips = tipList.toArray(new TipInfo[tipList.size()]);
 		}
 
 		pointer = RAND.nextInt(tips.length);

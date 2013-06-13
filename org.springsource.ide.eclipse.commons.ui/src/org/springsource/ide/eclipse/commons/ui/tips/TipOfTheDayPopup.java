@@ -267,7 +267,10 @@ public class TipOfTheDayPopup extends PopupDialog {
 
 	@Override
 	public boolean close() {
-		prefs.setValue(UiPlugin.SHOW_TIP_O_DAY, !dontRemindButton.getSelection());
+		if (!dontRemindButton.isDisposed()) {
+			// this is the second call to close, no need to set the value again
+			prefs.setValue(UiPlugin.SHOW_TIP_O_DAY, !dontRemindButton.getSelection());
+		}
 		return super.close();
 	}
 
