@@ -63,7 +63,7 @@ public class TipOfTheDayPopup extends PopupDialog {
 
 	public TipOfTheDayPopup(Shell parentShell, IPreferenceStore prefs, TipProvider provider) {
 		super(parentShell, PopupDialog.INFOPOPUPRESIZE_SHELLSTYLE | SWT.MODELESS, false, true, true, false, false,
-				"Tip o'the day", null);
+				"Spring Tool Tips", null);
 		this.prefs = prefs;
 		this.provider = provider;
 	}
@@ -101,9 +101,6 @@ public class TipOfTheDayPopup extends PopupDialog {
 		}
 	}
 
-	/**
-	 * 
-	 */
 	private void resize() {
 		Shell shell = getShell();
 		shell.setRedraw(false);
@@ -238,8 +235,19 @@ public class TipOfTheDayPopup extends PopupDialog {
 	protected Point getInitialLocation(Point initialSize) {
 		Shell parent = getParentShell();
 		Point parentSize, parentLocation;
+		Rectangle updateRectangle = null;
 
 		if (parent != null) {
+			// check for the p2 updates available dialog, which this one would
+			// overlap with
+			Shell[] shells = parent.getDisplay().getShells();
+			for (Shell shell : shells) {
+				// problem in that the string is not localized and will only
+				// work for English
+				if (shell.getText().equals("Updates Available")) {
+					updateRectangle = shell.getBounds();
+				}
+			}
 			parentSize = parent.getSize();
 			parentLocation = parent.getLocation();
 		}
@@ -248,12 +256,23 @@ public class TipOfTheDayPopup extends PopupDialog {
 			parentSize = new Point(bounds.width, bounds.height);
 			parentLocation = new Point(0, 0);
 		}
-		// We have to take parent location into account because SWT considers
-		// all
-		// shell locations to be in display coordinates, even if the shell is
-		// parented.
-		return new Point(parentSize.x - initialSize.x + parentLocation.x - POPUP_OFFSET, parentSize.y - initialSize.y
-				+ parentLocation.y - POPUP_OFFSET);
+
+		if (updateRectangle == null) {
+			// We have to take parent location into account because SWT
+			// considers
+			// all
+			// shell locations to be in display coordinates, even if the shell
+			// is
+			// parented.
+			return new Point(parentSize.x - initialSize.x + parentLocation.x - POPUP_OFFSET, parentSize.y
+					- initialSize.y + parentLocation.y - POPUP_OFFSET);
+		}
+		else {
+			// updates available window is open. Base location on that window
+			// bottom is POPUP_OFFSET from window
+			return new Point(parentSize.x - initialSize.x + parentLocation.x - POPUP_OFFSET, updateRectangle.y
+					- initialSize.y - POPUP_OFFSET);
+		}
 	}
 
 	protected IDialogSettings getDialogBoundsSettings() {
@@ -277,6 +296,6 @@ public class TipOfTheDayPopup extends PopupDialog {
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("Tip o'the day");
+		newShell.setText("Spring Tool Tips");
 	}
 }

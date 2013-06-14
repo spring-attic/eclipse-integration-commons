@@ -49,10 +49,16 @@ public class UiPlugin extends AbstractUIPlugin {
 		preferenceStore.setDefault(SHOW_TIP_O_DAY, true);
 		if (preferenceStore.getBoolean(SHOW_TIP_O_DAY)) {
 
-			UIJob tipJob = new UIJob("Tip of the day") {
+			UIJob tipJob = new UIJob("Spring Tool Tips") {
+
 				@Override
 				public IStatus runInUIThread(IProgressMonitor monitor) {
-					new TipOfTheDayPopup(this.getDisplay().getActiveShell(), preferenceStore, getTipProvider()).open();
+					Shell shell = getActiveWorkbenchShell();
+					if (shell != null) {
+						// don't show this unless we have a parent shell
+						// avoid popups dangling without a window
+						new TipOfTheDayPopup(shell, preferenceStore, getTipProvider()).open();
+					}
 					return Status.OK_STATUS;
 				}
 			};

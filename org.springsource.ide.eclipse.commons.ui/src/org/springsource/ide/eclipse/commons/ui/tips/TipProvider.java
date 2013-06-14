@@ -45,7 +45,7 @@ public class TipProvider {
 	public void refresh() {
 		error = null;
 		InputStreamReader tipReader = new InputStreamReader(TipProvider.class.getClassLoader().getResourceAsStream(
-				"org/springsource/ide/eclipse/commons/ui/tips/tip_of_the_day.json"));
+				"org/springsource/ide/eclipse/commons/ui/tips/spring_tool_tips.json"));
 		JSONTokener tokener = new JSONTokener(tipReader);
 		List<TipInfo> tipList = Collections.emptyList();
 		try {

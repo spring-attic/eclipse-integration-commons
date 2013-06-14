@@ -10,12 +10,18 @@
             class="org.springsource.ide.eclipse.commons.ui.CommonsPreferencePage"
             id="org.springsource.ide.eclipse.commons.preferencePage"
             name="SpringSource">
+         <keywordReference
+               id="org.springsource.ide.eclipse.commons.ui.tips.keyword">
+         </keywordReference>
       </page>
       <page
             category="org.springsource.ide.eclipse.commons.preferencePage"
             class="org.springsource.ide.eclipse.commons.ui.PreferencesCurator"
             id="org.springsource.ide.eclipse.commons.curatorPreferencesPage"
             name="Global Preferences Curator">
+         <keywordReference
+               id="org.springsource.ide.eclipse.commons.ui.global_prefs.keyword">
+         </keywordReference>
       </page>
    </extension>
    <extension
@@ -37,5 +43,16 @@
 				webURL="http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd" />
 		</catalogContribution>
 	</extension>
+ <extension
+       point="org.eclipse.ui.keywords">
+    <keyword
+          id="org.springsource.ide.eclipse.commons.ui.tips.keyword"
+          label="tip tips spring tool">
+    </keyword>
+    <keyword
+          id="org.springsource.ide.eclipse.commons.ui.global_prefs.keyword"
+          label="global curator preferences curated spring tool">
+    </keyword>
+ </extension>
 
 </plugin>

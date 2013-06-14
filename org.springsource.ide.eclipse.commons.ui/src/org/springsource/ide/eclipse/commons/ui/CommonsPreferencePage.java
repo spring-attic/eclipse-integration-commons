@@ -41,17 +41,16 @@ public class CommonsPreferencePage extends FieldEditorPreferencePage implements 
 
 	@Override
 	protected void createFieldEditors() {
-		addField(new BooleanFieldEditor(UiPlugin.SHOW_TIP_O_DAY, "Show tip o' the day on startup",
+		addField(new BooleanFieldEditor(UiPlugin.SHOW_TIP_O_DAY, "Show Spring Tool Tips on startup",
 				getFieldEditorParent()));
 
 		Button openTipButton = new Button(getFieldEditorParent(), SWT.PUSH);
 		openTipButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-		openTipButton.setText("Open tip o' the day now");
+		openTipButton.setText("Open Spring Tool Tips now");
 		openTipButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				new TipOfTheDayPopup(shell == null ? getShell() : shell, getPreferenceStore(), UiPlugin.getDefault()
-						.getTipProvider()).open();
+				new TipOfTheDayPopup(getShell(), getPreferenceStore(), UiPlugin.getDefault().getTipProvider()).open();
 			}
 		});
 	}
