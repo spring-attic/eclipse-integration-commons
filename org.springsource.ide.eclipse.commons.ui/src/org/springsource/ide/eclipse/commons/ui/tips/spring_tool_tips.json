@@ -12,5 +12,20 @@
 		"linkText":"<a href=\"command:org.springsource.ide.eclipse.quicksearch.commands.quicksearchCommand\">Try it out.</a>",
 		"keyBindingId":"org.springsource.ide.eclipse.quicksearch.commands.quicksearchCommand",
 		"required":"org.springsource.ide.eclipse.commons.quicksearch"
+	},
+	{
+		"infoText":"Grails-aware refactoring",
+		"linkText":"Renaming a Grails domain class or controller action will be aware of Grails naming conventions.",
+		"required":"org.grails.ide.eclipse.core"
+	},
+	{
+		"infoText":"Are your Grails commands timing out?",
+		"linkText":"Bump up the command time out on the <a href=\"pref:org.grails.ide.eclipse.ui.launchPreferencePage\">Grails Launch</a> preferences page",
+		"required":"org.grails.ide.eclipse.core"
+	},
+	{
+		"infoText":"Do you have Groovy scripts that are not compiled until runtime?",
+		"linkText":"Configure this at the <a href=\"pref:org.codehaus.groovy.eclipse.preferences.compiler\">Groovy Compiler</a> preferences page",
+		"required":"org.eclipse.jdt.groovy.core"
 	}
 ]
