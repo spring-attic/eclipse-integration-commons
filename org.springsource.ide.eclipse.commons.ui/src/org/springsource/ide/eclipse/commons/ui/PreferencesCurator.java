@@ -63,7 +63,7 @@ public class PreferencesCurator extends PreferencePage implements IWorkbenchPref
 		allComposite.setLayout(new GridLayout(1, false));
 		Label label = new Label(allComposite, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-		label.setText("Set/Unset all curated preferences.");
+		label.setText("Set/Reset all curated preferences.");
 		label.setFont(JFaceResources.getFontRegistry().getBold(JFaceResources.DIALOG_FONT));
 		Button allSetButton = new Button(allComposite, SWT.PUSH);
 		allSetButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
@@ -76,7 +76,7 @@ public class PreferencesCurator extends PreferencePage implements IWorkbenchPref
 		});
 		Button allUnsetButton = new Button(allComposite, SWT.PUSH);
 		allUnsetButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-		allUnsetButton.setText("Unset all preferences");
+		allUnsetButton.setText("Reset all preferences");
 		allUnsetButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -109,7 +109,7 @@ public class PreferencesCurator extends PreferencePage implements IWorkbenchPref
 		});
 		Button jdtUnsetButton = new Button(jdtComposite, SWT.PUSH);
 		jdtUnsetButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-		jdtUnsetButton.setText("Unset JDT preferences only");
+		jdtUnsetButton.setText("Reset JDT preferences only");
 		jdtUnsetButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -153,7 +153,7 @@ public class PreferencesCurator extends PreferencePage implements IWorkbenchPref
 		});
 		Button m2eUnsetButton = new Button(m2eComposite, SWT.PUSH);
 		m2eUnsetButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-		m2eUnsetButton.setText("Unset M2E preferences only");
+		m2eUnsetButton.setText("Reset M2E preferences only");
 		m2eUnsetButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
