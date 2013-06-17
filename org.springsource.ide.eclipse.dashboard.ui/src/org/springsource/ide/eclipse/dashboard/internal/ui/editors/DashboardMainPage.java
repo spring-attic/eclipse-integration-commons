@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012, 2013 GoPivotal, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -142,7 +142,7 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 
 	public static final String RESOURCE_DASHBOARD_SUPPORT_COMMUNITY = "dashboard.support.community";
 
-	private static final String LOGO_SPRINGSOURCE = "prod/springsource_logo_transparent.png";
+	private static final String LOGO_SPRINGSOURCE = "prod/spring_logo_transparent.png";
 
 	private static final String SUBSCRIBE_SPRINGSOURCE = "prod/newsletter_subscription.gif";
 

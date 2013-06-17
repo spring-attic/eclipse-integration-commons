@@ -19,7 +19,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 
-
 /**
  * @author Steffen Pingel
  * @author Leo Dos Santos
@@ -49,7 +48,7 @@ public class HeaderPart extends AbstractTaskEditorPart {
 				.applyTo(label);
 
 		label = toolkit.createLabel(composite, null);
-		label.setImage(IdeUiPlugin.getImage("prod/springsource_logo_transparent.png"));
+		label.setImage(IdeUiPlugin.getImage("prod/spring_logo_transparent.png"));
 
 		setControl(composite);
 	}
