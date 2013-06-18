@@ -785,6 +785,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 				if (e.keyCode == SWT.ARROW_DOWN) {
 					if (list.getTable().getItemCount() > 0) {
 						list.getTable().setFocus();
+						list.getTable().select(0);
 					}
 				}
 			}
@@ -807,8 +808,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		list.getTable().addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 
-				if (e.keyCode == SWT.ARROW_UP && (e.stateMask & SWT.SHIFT) != 0
-						&& (e.stateMask & SWT.CTRL) != 0) {
+				if (e.keyCode == SWT.ARROW_UP && (e.stateMask & SWT.SHIFT) == 0
+						&& (e.stateMask & SWT.CTRL) == 0) {
 					StructuredSelection selection = (StructuredSelection) list
 							.getSelection();
 
@@ -1118,11 +1119,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * @see Dialog#okPressed()
 	 */
 	protected void okPressed() {
-		
-		if (status != null
-				&& (status.isOK() || status.getCode() == IStatus.INFO)) {
-			super.okPressed();
-		}
+		super.okPressed();
 	}
 
 	/**
