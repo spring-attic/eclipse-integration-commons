@@ -267,7 +267,10 @@ public class QuickTextSearcher {
 	}
 
 	public boolean isDone() {
-		return walker.isDone();
+		//Walker can be null if job was canceled because dialog closed. But stuff like 
+		//the job that shows 'Searching ...' doesn't instantly stop and may still
+		//be asking the incremental update job whether its done.
+		return walker!=null && walker.isDone();
 	}
 
 	public void requestMoreResults() {

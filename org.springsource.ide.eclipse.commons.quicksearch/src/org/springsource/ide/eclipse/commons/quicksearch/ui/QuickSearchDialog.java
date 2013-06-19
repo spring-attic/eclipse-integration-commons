@@ -194,7 +194,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		@Override
 		public IStatus runInUIThread(IProgressMonitor mon) {
 			if (!mon.isCanceled()) {
-				if (walker.isDone()) {
+				if (searcher.isDone()) {
 					progressLabel.setText("");
 				} else {
 					progressLabel.setText("Searching"+dots(animate));
@@ -331,7 +331,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	private IHandlerActivation showViewHandler;
 
-	private QuickTextSearcher walker;
+	private QuickTextSearcher searcher;
 
 	private StyledText details;
 
@@ -479,8 +479,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		if (contextMenuManager != null)
 			contextMenuManager.dispose();
 		storeDialog(getDialogSettings());
-		if (walker!=null) {
-			walker.cancel();
+		if (searcher!=null) {
+			searcher.cancel();
 		}
 		return super.close();
 	}
@@ -786,6 +786,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 					if (list.getTable().getItemCount() > 0) {
 						list.getTable().setFocus();
 						list.getTable().select(0);
+						//programatic selection may not fire selection events so...
+						refreshDetails();
 					}
 				}
 			}
@@ -1211,9 +1213,9 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		if (newFilter.isTrivial()) {
 			return;
 		}
-		if (this.walker==null) {
+		if (this.searcher==null) {
 			//Create the QuickTextSearcher with the inital query.
-			this.walker = new QuickTextSearcher(newFilter, context.createPriorityFun(), new QuickTextSearchRequestor() {
+			this.searcher = new QuickTextSearcher(newFilter, context.createPriorityFun(), new QuickTextSearchRequestor() {
 				@Override
 				public void add(LineItem match) {
 					contentProvider.add(match);
@@ -1238,7 +1240,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 //			this.list.setInput(input)
 		} else {
 			//The QuickTextSearcher is already active update the query
-			this.walker.setQuery(newFilter);
+			this.searcher.setQuery(newFilter);
 		}
 		if (progressJob!=null) {
 			progressJob.schedule();
@@ -1449,7 +1451,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	}
 
 	public QuickTextQuery getQuery() {
-		return walker.getQuery();
+		return searcher.getQuery();
 	}
 
 }
