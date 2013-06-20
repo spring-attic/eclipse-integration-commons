@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.quicksearch.core;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -26,8 +24,8 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
 import org.springsource.ide.eclipse.commons.quicksearch.core.priority.PriorityFunction;
 import org.springsource.ide.eclipse.commons.quicksearch.util.JobUtil;
+import org.springsource.ide.eclipse.commons.quicksearch.util.LineReader;
 
-@SuppressWarnings("restriction")
 public class QuickTextSearcher {
 	private final QuickTextSearchRequestor requestor;
 	private QuickTextQuery query;
@@ -95,18 +93,17 @@ public class QuickTextSearcher {
 				return;
 			}
 
-			BufferedReader br = null;
+			LineReader lr = null;
 			try {
-				br = new BufferedReader(new FileReader(new File(f.getLocationURI())));
+				lr = new LineReader(new FileReader(new File(f.getLocationURI())));
 				String line = null;
 				int lineIndex = 1;
-				int offset = 0;
-				while ((line = br.readLine()) != null) {
+				while ((line = lr.readLine()) != null) {
+					int offset = lr.getLastLineOffset();
 					if (checkCanceled(mon)) {
 						return;
 					}
 
-					//int found = line.indexOf(query.getPatternString());
 					boolean found = query.matchItem(line);
 					if (found) {
 						LineItem lineItem = new LineItem(f, line, lineIndex, offset);
@@ -114,15 +111,11 @@ public class QuickTextSearcher {
 					}
 
 					lineIndex++;
-					offset += (line.length() + 1);
 				}
 			} catch (Exception e) {
 			} finally {
-				if (br != null) {
-					try {
-						br.close();
-					} catch (IOException e) {
-					}
+				if (lr != null) {
+					lr.close();
 				}
 			}
 		}
@@ -220,13 +213,17 @@ public class QuickTextSearcher {
 		}
 		
 		private void performRestart(IProgressMonitor mon) {
-			//since we are inside Job here that uses same scheduling rule as walker, we 
-			//know walker is not currently executing. so walker cancel should be instantenous
-			matches.clear();
-			requestor.clear();
-			walker.cancel();
-			walker.init(); //Reinitialize the walker work queue to its starting state
-			walker.resume(); //Allow walker to resume when we release the scheduling rule.
+			//walker may be null if dialog got closed already before we managed to
+			// 'performRestart'.
+			if (walker!=null) {
+				//since we are inside Job here that uses same scheduling rule as walker, we 
+				//know walker is not currently executing. so walker cancel should be instantenous
+				matches.clear();
+				requestor.clear();
+				walker.cancel();
+				walker.init(); //Reinitialize the walker work queue to its starting state
+				walker.resume(); //Allow walker to resume when we release the scheduling rule.
+			}
 		}
 
 	}
