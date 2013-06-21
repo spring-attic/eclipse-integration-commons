@@ -45,6 +45,7 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ILazyContentProvider;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -61,8 +62,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.accessibility.ACC;
 import org.eclipse.swt.accessibility.AccessibleAdapter;
 import org.eclipse.swt.accessibility.AccessibleEvent;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -74,6 +78,8 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
@@ -279,6 +285,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	private static final String DIALOG_HEIGHT = "DIALOG_HEIGHT"; //$NON-NLS-1$
 	private static final String DIALOG_WIDTH = "DIALOG_WIDTH"; //$NON-NLS-1$
 	private static final String DIALOG_COLUMNS = "COLUMN_WIDTHS";
+	private static final String DIALOG_SASH_WEIGHTS = "SASH_WEIGHTS";
 	
 	private static final String DIALOG_LAST_QUERY = "LAST_QUERY";
 	private static final String CASE_SENSITIVE = "CASE_SENSITIVE";
@@ -329,6 +336,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
 
+
 	private IHandlerActivation showViewHandler;
 
 	private QuickTextSearcher searcher;
@@ -341,6 +349,9 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	private ToggleCaseSensitiveAction toggleCaseSensitiveAction;
 
 	private QuickSearchContext context;
+
+
+	private SashForm sashForm;
 
 	/**
 	 * Creates a new instance of the class.
@@ -408,29 +419,43 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * Restores dialog using persisted settings. 
 	 */
 	protected void restoreDialog(IDialogSettings settings) {
-		if (initialPatternText==null) {
-			String lastSearch = settings.get(DIALOG_LAST_QUERY);
-			if (lastSearch==null) {
-				lastSearch = "";
+		try {
+			if (initialPatternText==null) {
+				String lastSearch = settings.get(DIALOG_LAST_QUERY);
+				if (lastSearch==null) {
+					lastSearch = "";
+				}
+				pattern.setText(lastSearch);
+				pattern.setSelection(0, lastSearch.length());
 			}
-			pattern.setText(lastSearch);
-			pattern.setSelection(0, lastSearch.length());
-		}
-		
-		if (settings.getArray(DIALOG_COLUMNS)!=null) {
-			String[] columnWidths = settings.getArray(DIALOG_COLUMNS);
-			Table table = list.getTable();
-			int cols = table.getColumnCount();
-			for (int i = 0; i < cols; i++) {
-				TableColumn col = table.getColumn(i);
-				try {
-					if (col!=null) {
-						col.setWidth(Integer.valueOf(columnWidths[i]));
+			
+			if (settings.getArray(DIALOG_COLUMNS)!=null) {
+				String[] columnWidths = settings.getArray(DIALOG_COLUMNS);
+				Table table = list.getTable();
+				int cols = table.getColumnCount();
+				for (int i = 0; i < cols; i++) {
+					TableColumn col = table.getColumn(i);
+					try {
+						if (col!=null) {
+							col.setWidth(Integer.valueOf(columnWidths[i]));
+						}
+					} catch (Throwable e) {
+						QuickSearchActivator.log(e);
 					}
-				} catch (Throwable e) {
-					QuickSearchActivator.log(e);
 				}
 			}
+			
+			if (settings.getArray(DIALOG_SASH_WEIGHTS)!=null) {
+				String[] _weights = settings.getArray(DIALOG_SASH_WEIGHTS);
+				int[] weights = new int[_weights.length];
+				for (int i = 0; i < weights.length; i++) {
+					weights[i] = Integer.valueOf(_weights[i]);
+				}
+				sashForm.setWeights(weights);
+			}
+		} catch (Throwable e) {
+			//None of this stuff is critical so shouldn't stop opening dialog if it fails!
+			QuickSearchActivator.log(e);
 		}
 	}
 
@@ -504,6 +529,14 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 				columnWidths[i] = ""+table.getColumn(i).getWidth();
 			}
 			settings.put(DIALOG_COLUMNS, columnWidths);
+		}
+		if (sashForm.getWeights()!=null) {
+			int[] w = sashForm.getWeights();
+			String[] ws = new String[w.length];
+			for (int i = 0; i < ws.length; i++) {
+				ws[i] = ""+w[i];
+			}
+			settings.put(DIALOG_SASH_WEIGHTS, ws);
 		}
 	}
 
@@ -727,10 +760,13 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		});
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		pattern.setLayoutData(gd);
-
+		
 		final Label listLabel = createLabels(content);
 
-		list = new TableViewer(content, (multi ? SWT.MULTI : SWT.SINGLE) |
+		sashForm = new SashForm(content, SWT.VERTICAL);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(sashForm);
+
+		list = new TableViewer(sashForm, (multi ? SWT.MULTI : SWT.SINGLE) |
 				SWT.FULL_SELECTION | SWT.BORDER | SWT.V_SCROLL | SWT.VIRTUAL);
 //		ColumnViewerToolTipSupport.enableFor(list, ToolTip.NO_RECREATE); 
 		
@@ -836,7 +872,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			}
 		});
 		
-		createDetailsArea(content);
+		createDetailsArea(sashForm);
+		sashForm.setWeights(new int[] {5,1});
 
 		applyDialogFont(content);
 
@@ -864,9 +901,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	
 	private void createDetailsArea(Composite parent) {
 		details = new StyledText(parent, SWT.MULTI+SWT.READ_ONLY+SWT.BORDER+SWT.H_SCROLL);
-		details.setText("\n\n\n\n"); // Putting some lines of text so the widget will be sized to fit it.
 		details.setFont(JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT));
-		GridDataFactory.fillDefaults().grab(true, false).applyTo(details);
+//		GridDataFactory.fillDefaults().grab(true, false).applyTo(details);
 		
 		
 //		details = new SourceViewer(parent, null, SWT.READ_ONLY+SWT.MULTI+SWT.BORDER);
@@ -887,6 +923,12 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 				refreshDetails();
 			}
 		});
+		details.addControlListener(new ControlAdapter() {
+			@Override
+			public void controlResized(ControlEvent e) {
+				refreshDetails();
+			}
+		});
 	}
 
 	
@@ -897,27 +939,32 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 				documents = new DocumentFetcher();
 			}
 			IStructuredSelection sel = (IStructuredSelection) list.getSelection();
-			if (sel!=null && !sel.isEmpty()) {
+			if (sel==null || sel.isEmpty()) {
+				details.setText("");
+			} else {
 				//Not empty selection
-				LineItem item = (LineItem) sel.getFirstElement();
-				IDocument document = documents.getDocument(item.getFile());
-				try {
-					int line = item.getLineNumber()-1; //in document lines are 0 based. In search 1 based.
-					int start = document.getLineOffset(Math.max(line-2, 0));
-					int end = document.getLength();
+				int numLines = computeLines();
+				if (numLines > 0) {
+					LineItem item = (LineItem) sel.getFirstElement();
+					IDocument document = documents.getDocument(item.getFile());
 					try {
-						end = document.getLineOffset(line+3);
+						int line = item.getLineNumber()-1; //in document lines are 0 based. In search 1 based.
+						int start = document.getLineOffset(Math.max(line-(numLines-1)/2, 0));
+						int end = document.getLength();
+						try {
+							end = document.getLineOffset(start+numLines);
+						} catch (BadLocationException e) {
+							//Presumably line number is past the end of document.
+							//ignore.
+						}
+	
+						StyledString styledString = highlightMatches(document.get(start, end-start));
+						details.setText(styledString.getString());
+						details.setStyleRanges(styledString.getStyleRanges());
+	
+						return;
 					} catch (BadLocationException e) {
-						//Presumably line number is past the end of document.
-						//ignore.
 					}
-
-					StyledString styledString = highlightMatches(document.get(start, end-start));
-					details.setText(styledString.getString());
-					details.setStyleRanges(styledString.getStyleRanges());
-
-					return;
-				} catch (BadLocationException e) {
 				}
 			}
 			//empty selection or some error:
@@ -925,6 +972,25 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		}
 	}
 
+	/**
+	 * Computes how much lines of text can be displayed in the details section based on
+	 * its current height and font metrics.
+	 */
+	private int computeLines() {
+		if (details!=null && !details.isDisposed()) {
+			GC gc = new GC(details);
+			try {
+				FontMetrics fm = gc.getFontMetrics();
+				int itemH = fm.getHeight();
+				int areaH = details.getClientArea().height;
+				return (areaH+itemH-1) / itemH;
+			} finally {
+				gc.dispose();
+			}
+		}
+		return 0;
+	}
+	
 	/**
 	 * Helper function to highlight all the matches for the current query in a given piece
 	 * of text.
@@ -1047,7 +1113,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		if (list != null && !list.getTable().isDisposed()) {
 			ScrollBar sb = list.getTable().getVerticalBar();
 			int oldScroll = sb.getSelection();
-			list.setItemCount(contentProvider.getNumberOfElements());
+			int itemCount = contentProvider.getNumberOfElements();
+			list.setItemCount(itemCount);
 			list.refresh(true, false);
 			int newScroll = sb.getSelection();
 			if (oldScroll!=newScroll) {
