@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.dashboard.ui.actions;
 
+import java.util.Date;
+
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -25,7 +28,6 @@ import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardEditorInput;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.MultiPageDashboardEditor;
 
-
 /**
  * Displays the dashboard.
  * <p>
@@ -34,6 +36,20 @@ import org.springsource.ide.eclipse.dashboard.internal.ui.editors.MultiPageDashb
  * @author Terry Denney
  */
 public abstract class ShowDashboardPageAction implements IWorkbenchWindowActionDelegate {
+
+	private static final boolean useNewDashboard = isActivatedNow();
+
+	private static final Date ACTIVATION_DATE = new Date(1023, 8, 1);
+
+	private static boolean isActivatedNow() {
+		// return true;
+		String loc = "" + Platform.getLocation();
+		if (loc.contains("kdvolder")) {
+			return true;
+		}
+		Date now = new Date();
+		return now.after(ACTIVATION_DATE);
+	}
 
 	private IWorkbenchWindow window;
 
@@ -56,9 +72,21 @@ public abstract class ShowDashboardPageAction implements IWorkbenchWindowActionD
 		if (intro != null) {
 			introMgr.closeIntro(intro);
 		}
-
 		IWorkbenchPage page = window.getActivePage();
 		try {
+			try {
+				if (useNewDashboard) {
+					// MessageDialog.openInformation(window.getShell(),
+					// "New Dashboard should open",
+					// "But it is not implemented yet. Try again on next release");
+					page.openEditor(DashboardEditorInput.INSTANCE, MultiPageDashboardEditor.NEW_EDITOR_ID);
+					return;
+				}
+			}
+			catch (Throwable e) {
+				IdeUiPlugin.log(e);
+			}
+			// Using new dashboard is disabled or failed... use the old one
 			FormEditor editor = (FormEditor) page.openEditor(DashboardEditorInput.INSTANCE,
 					MultiPageDashboardEditor.EDITOR_ID);
 			editor.setActivePage(pageId);

@@ -65,7 +65,7 @@ public class DownloadManager {
 	private void deleteBuildSnapshots() {
 		//Only do this on the build site, locally it is easy enough to delete buildsnaps manually
 		// as needed/desired.
-//		if (StsTestUtil.isOnBuildSite()) {
+		if (StsTestUtil.isOnBuildSite()) {
 			File cache = new File(cacheDirectory);
 			if (cache.isDirectory()) {
 				String[] names = cache.list();
@@ -79,7 +79,7 @@ public class DownloadManager {
 					}
 				}
 			}
-//		}
+		}
 	}
 
 	public DownloadManager(String cacheDir) {

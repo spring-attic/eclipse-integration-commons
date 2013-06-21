@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Display;
  * This class should be used instead of ValueListener when the code it 
  * wants to execute upon receiving a 'gotValue' event is required 
  * to run in the UIThread (i.e. typically this is code that needs to
- * update widgets in the UI).
+ * update or read widgets in the UI).
  */
 public abstract class UIValueListener<T> implements ValueListener<T> {
 	
