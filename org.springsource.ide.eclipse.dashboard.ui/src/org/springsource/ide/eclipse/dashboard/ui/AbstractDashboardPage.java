@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012 - 2013 GoPivotal, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
  *  http://www.eclipse.org/legal/epl-v10.html
  *
  *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ *      GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.dashboard.ui;
 
@@ -38,7 +38,6 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
-
 
 /**
  * A dashboard page that support part contributions.
@@ -171,16 +170,17 @@ public abstract class AbstractDashboardPage extends FormPage {
 
 					public void run() throws Exception {
 						AbstractDashboardPart part = descriptor.createPart();
-
-						if (part instanceof IEnabledDashboardPart) {
-							if (!((IEnabledDashboardPart) part).shouldAdd()) {
-								return;
+						if (part != null) {
+							if (part instanceof IEnabledDashboardPart) {
+								if (!((IEnabledDashboardPart) part).shouldAdd()) {
+									return;
+								}
 							}
-						}
 
-						part.setId(descriptor.getId());
-						parts.add(part);
-						initializePart(parent, part);
+							part.setId(descriptor.getId());
+							parts.add(part);
+							initializePart(parent, part);
+						}
 					}
 				});
 				it.remove();
