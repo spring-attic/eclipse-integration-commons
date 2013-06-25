@@ -182,9 +182,7 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 
 	private static final String GROOVY_WIZARD_ID = "org.codehaus.groovy.eclipse.ui.groovyProjectWizard";
 
-	private static final String TEMPLATE_WIZARD_ID = "com.springsource.sts.wizard.template";
-
-	private static final String SPRING_WIZARD_ID = "org.springframework.ide.eclipse.beans.ui.wizards.newSpringProject";
+	private static final String SPRING_WIZARD_ID = "com.springsource.sts.wizard.template";
 
 	private static final String JAVA_WIZARD_ID = "org.eclipse.jdt.ui.wizards.JavaProjectWizard";
 
@@ -734,7 +732,7 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 		IExtension[] extensions = extensionPoint.getExtensions();
 
 		IConfigurationElement[] foundElements = new IConfigurationElement[6];
-		String[] ids = new String[] { JAVA_WIZARD_ID, SPRING_WIZARD_ID, TEMPLATE_WIZARD_ID, ROO_WIZARD_ID,
+		String[] ids = new String[] { JAVA_WIZARD_ID, SPRING_WIZARD_ID, ROO_WIZARD_ID,
 				GROOVY_WIZARD_ID, GRAILS_WIZARD_ID };
 
 		for (IExtension extension : extensions) {
