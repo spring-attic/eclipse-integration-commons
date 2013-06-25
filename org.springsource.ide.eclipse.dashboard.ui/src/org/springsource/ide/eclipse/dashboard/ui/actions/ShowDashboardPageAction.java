@@ -40,13 +40,14 @@ public abstract class ShowDashboardPageAction implements IWorkbenchWindowActionD
 	private static final boolean useNewDashboard = isActivatedNow();
 
 	private static boolean isActivatedNow() {
-		// return true;
-		String loc = "" + Platform.getLocation();
-		if (loc.contains("kdvolder")) {
-			return true;
-		}	
-		Date now = new Date();
-		return now.after(new Date(1023, 8, 1));
+//TODO: Turn on conditionally after SpingOne Date
+//		Date now = new Date();
+//		return now.after(new Date(** insert Spring One Data**));
+//		String loc = "" + Platform.getLocation();
+//		if (loc.contains("kdvolder")) {
+//			return true;
+//		}
+		return false;
 	}
 
 	private IWorkbenchWindow window;
