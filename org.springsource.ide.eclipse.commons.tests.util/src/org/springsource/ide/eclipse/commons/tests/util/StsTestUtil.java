@@ -20,11 +20,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -35,9 +38,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import junit.framework.Assert;
-
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -51,20 +53,31 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaModelMarker;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.search.IJavaSearchConstants;
+import org.eclipse.jdt.core.search.SearchEngine;
+import org.eclipse.jdt.core.search.SearchPattern;
+import org.eclipse.jdt.core.search.TypeNameRequestor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.junit.Assert;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
@@ -193,6 +206,7 @@ public class StsTestUtil {
 		StsTestUtil.getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, null);
 		return jp.getProject();
 	}
+
 
 	public static File createTempDirectory() throws IOException {
 		return createTempDirectory("sts", null);
@@ -495,6 +509,10 @@ public class StsTestUtil {
 		}
 	}
 
+	public static boolean isAutoBuilding() {
+		return getWorkspace().getDescription().isAutoBuilding();
+	}
+
 	public static void assertNoErrors(IProject project) throws CoreException {
 		setAutoBuilding(false);
 		project.build(IncrementalProjectBuilder.CLEAN_BUILD, null);
@@ -698,4 +716,193 @@ public class StsTestUtil {
 		out.println("<<<<<< classpath for " + javaProject.getElementName());
 	}
 
+
+	///////////////////////////////////////////////////////////////////////////////
+	// Utilities for manipulating projectsAJ
+	///////////////////////////////////////////////////////////////////////////////
+	protected static class Requestor extends TypeNameRequestor { }
+    /**
+     * Force indexes to be populated
+     */
+    public static void performDummySearch(IJavaElement element) throws CoreException {
+        new SearchEngine().searchAllTypeNames(
+            null,
+            SearchPattern.R_EXACT_MATCH,
+            "XXXXXXXXX".toCharArray(), // make sure we search a concrete name. This is faster according to Kent
+            SearchPattern.R_EXACT_MATCH,
+            IJavaSearchConstants.CLASS,
+            SearchEngine.createJavaSearchScope(new IJavaElement[]{element}),
+            new Requestor(),
+            IJavaSearchConstants.WAIT_UNTIL_READY_TO_SEARCH,
+            null);
+    }
+
+    public static ICompilationUnit createCompilationUnit(IPackageFragment pack, String cuName,
+            String source) throws JavaModelException {
+        StringBuffer buf = new StringBuffer();
+        buf.append(source);
+        ICompilationUnit unit = pack.createCompilationUnit(cuName,
+                buf.toString(), false, null);
+        waitForManualBuild();
+        waitForAutoBuild();
+        return unit;
+    }
+
+    public static ICompilationUnit createCompilationUnitAndPackage(String packageName, String fileName,
+            String source, IJavaProject javaProject) throws CoreException {
+        return createCompilationUnit(createPackage(packageName, javaProject), fileName, source);
+    }
+
+    public static IPackageFragment createPackage(String name, IJavaProject javaProject) throws CoreException {
+        return createPackage(name, null, javaProject);
+    }
+    public static IPackageFragment createPackage(String name, IPackageFragmentRoot sourceFolder, IJavaProject javaProject) throws CoreException {
+        if (sourceFolder == null) {
+			sourceFolder = createDefaultSourceFolder(javaProject);
+		}
+        return sourceFolder.createPackageFragment(name, false, null);
+    }
+
+    public static void buildProject(IJavaProject javaProject) throws CoreException {
+        javaProject.getProject().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+        assertNoErrors(javaProject.getProject());
+        performDummySearch(javaProject);
+    }
+
+    public static String getProblems(IProject project) throws CoreException {
+        IMarker[] markers = project.findMarkers(IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, true, IResource.DEPTH_INFINITE);
+        StringBuffer sb = new StringBuffer();
+        if (markers == null || markers.length == 0) {
+            return null;
+        }
+        boolean errorFound = false;
+        sb.append("Problems:\n");
+        for (int i = 0; i < markers.length; i++) {
+            if (((Integer) markers[i].getAttribute(IMarker.SEVERITY)).intValue() == IMarker.SEVERITY_ERROR) {
+                sb.append("  ");
+                sb.append(markers[i].getResource().getName()).append(" : ");
+                sb.append(markers[i].getAttribute(IMarker.LINE_NUMBER)).append(" : ");
+                sb.append(markers[i].getAttribute(IMarker.MESSAGE)).append("\n");
+                if (!((String) markers[i].getAttribute(IMarker.MESSAGE)).contains("can't determine modifiers of missing type")) {
+                    errorFound = true;
+                }
+            }
+        }
+        return errorFound ? sb.toString() : null;
+    }
+
+    private static IPackageFragmentRoot createDefaultSourceFolder(IJavaProject javaProject) throws CoreException {
+        IProject project = javaProject.getProject();
+        IFolder folder = project.getFolder("src");
+        if (!folder.exists()) {
+			ensureExists(folder);
+		}
+
+        // if already exists, do nothing
+        final IClasspathEntry[] entries = javaProject
+                .getResolvedClasspath(false);
+        final IPackageFragmentRoot root = javaProject
+                .getPackageFragmentRoot(folder);
+        for (final IClasspathEntry entry : entries) {
+            if (entry.getPath().equals(folder.getFullPath())) {
+                return root;
+            }
+        }
+
+
+        // else, remove old source folders and add this new one
+        IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
+        List<IClasspathEntry> oldEntriesList = new ArrayList<IClasspathEntry>();
+        oldEntriesList.add(JavaCore.newSourceEntry(root.getPath()));
+        for (IClasspathEntry entry : oldEntries) {
+            if (entry.getEntryKind() != IClasspathEntry.CPE_SOURCE) {
+                oldEntriesList.add(entry);
+            }
+        }
+
+        IClasspathEntry[] newEntries = oldEntriesList.toArray(new IClasspathEntry[0]);
+        javaProject.setRawClasspath(newEntries, null);
+        return root;
+    }
+
+    public static ICompilationUnit[] createUnits(String[] packages, String[] cuNames, String[] cuContents, IJavaProject project) throws CoreException {
+        boolean oldAutoBuilding = isAutoBuilding();
+        setAutoBuilding(false);
+
+        try {
+            ICompilationUnit[] units = new ICompilationUnit[cuNames.length];
+            for (int i = 0; i < units.length; i++) {
+                units[i] = createCompilationUnitAndPackage(packages[i], cuNames[i], cuContents[i], project);
+            }
+            project.getProject().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+            waitForManualBuild();
+            waitForAutoBuild();
+            assertNoErrors(project.getProject());
+            return units;
+        } finally {
+            setAutoBuilding(oldAutoBuilding);
+        }
+    }
+
+    static private void ensureExists(IFolder folder) throws CoreException {
+        if (folder.getParent().getType() == IResource.FOLDER && !folder.getParent().exists()) {
+            ensureExists((IFolder) folder.getParent());
+        }
+        folder.create(false, true, null);
+    }
+
+    public static class ReaderInputStream extends InputStream {
+
+    	private final Reader reader;
+
+    	public ReaderInputStream(Reader reader){
+    		this.reader = reader;
+    	}
+
+    	@Override
+		public int read() throws IOException {
+    		return reader.read();
+    	}
+
+
+        @Override
+		public void close() throws IOException {
+        	reader.close();
+        }
+
+    }
+    public static class StringInputStream extends ReaderInputStream {
+        public StringInputStream(String s) {
+            super(new StringReader(s));
+        }
+    }
+
+
+    public static IFile createXMLConfig(String fullPath, String beansContents) throws CoreException {
+    	String fullContents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
+    			"<beans xmlns=\"http://www.springframework.org/schema/beans\"\r\n" +
+    			"	xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n" +
+    			"	xmlns:context=\"http://www.springframework.org/schema/context\"\r\n" +
+    			"	xsi:schemaLocation=\"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd\r\n" +
+    			"		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd\">\r\n" +
+    			beansContents +
+    			"\n</beans>";
+
+        InputStream input = new StringInputStream(fullContents);
+        IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(fullPath));
+        try {
+        	if (!file.exists()) {
+        		file.create(input, true, null);
+        	} else {
+        		file.setContents(input, IResource.FORCE, null);
+        	}
+        } finally {
+            try {
+                input.close();
+            } catch (IOException e) {
+                //ignore
+            }
+        }
+        return file;
+    }
 }
