@@ -47,7 +47,8 @@ public abstract class ShowDashboardPageAction implements IWorkbenchWindowActionD
 //		if (newDashProp!=null && !"false".equals(newDashProp)) {
 //			return true;
 //		}
-		return Boolean.getBoolean("sts.newdash");
+//		return Boolean.getBoolean("sts.newdash");
+		return Platform.getBundle("org.springframework.ide.eclipse.gettingstarted")!=null;
 	}
 
 	private IWorkbenchWindow window;
