@@ -5,15 +5,15 @@
       version="3.3.0.qualifier"
       provider-name="%providerName">
 
-   <description url="http://www.example.com/description">
+   <description>
       %description
    </description>
 
-   <copyright url="http://www.example.com/copyright">
+   <copyright>
       %copyright
    </copyright>
 
-   <license url="http://www.example.com/license">
+   <license url="%licenseUrl">
       %license
    </license>
 
