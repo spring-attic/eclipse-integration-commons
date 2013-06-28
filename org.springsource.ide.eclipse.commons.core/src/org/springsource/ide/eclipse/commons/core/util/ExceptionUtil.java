@@ -66,11 +66,8 @@ public class ExceptionUtil {
 		// The message of nested exception is usually more interesting than the
 		// one on top.
 		Throwable cause = getDeepestCause(e);
-		String msg = cause.getMessage();
-		if (msg != null) {
-			return msg;
-		}
-		return e.getMessage();
+		String msg = cause.getClass().getSimpleName() + ": " + cause.getMessage();
+		return msg;
 	}
 
 	public static IllegalStateException notImplemented(String string) {
