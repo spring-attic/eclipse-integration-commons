@@ -43,11 +43,11 @@ public abstract class ShowDashboardPageAction implements IWorkbenchWindowActionD
 //TODO: Turn on conditionally after SpingOne Date
 //		Date now = new Date();
 //		return now.after(new Date(** insert Spring One Data**));
-//		String loc = "" + Platform.getLocation();
-//		if (loc.contains("kdvolder")) {
+//		String newDashProp = System.getProperty("sts.newdash");
+//		if (newDashProp!=null && !"false".equals(newDashProp)) {
 //			return true;
 //		}
-		return false;
+		return Boolean.getBoolean("sts.newdash");
 	}
 
 	private IWorkbenchWindow window;
