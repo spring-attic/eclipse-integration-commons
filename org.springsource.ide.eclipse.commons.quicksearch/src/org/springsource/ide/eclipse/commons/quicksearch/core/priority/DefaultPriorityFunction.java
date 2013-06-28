@@ -34,8 +34,8 @@ public class DefaultPriorityFunction extends PriorityFunction {
 	 * be ignored.
 	 */
 	public String[] ignoredExtensions = {
-		".gif", ".exe", ".png", ".jpg", ".zip", ".jar", ".svg", "~", 
-		".GIF", ".EXE", ".PNG", ".JPG", ".ZIP", ".JAR", ".SVG"
+		".gif", ".exe", ".png", ".jpg", ".zip", ".jar", ".svg", ".psd", "~",
+		".GIF", ".EXE", ".PNG", ".JPG", ".ZIP", ".JAR", ".SVG", ".PSD"
 	};
 	
 	/**
