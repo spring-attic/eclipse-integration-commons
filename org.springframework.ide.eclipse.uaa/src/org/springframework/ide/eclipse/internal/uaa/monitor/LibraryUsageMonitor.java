@@ -165,6 +165,10 @@ public class LibraryUsageMonitor implements IUsageMonitor {
 
 	private void projectClasspathChanged(IJavaProject source) {
 		IProject project = source.getProject();
+		if (project==null || !project.isAccessible()) {
+			//probably project deleted already. Ignore.
+			return; 
+		}
 		List<ProductMatch> productMatches = new ArrayList<ProductMatch>();
 		try {
 			IPackageFragmentRoot[] classpath = source.getPackageFragmentRoots();
