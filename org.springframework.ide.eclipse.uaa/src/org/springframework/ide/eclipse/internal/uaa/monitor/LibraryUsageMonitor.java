@@ -167,7 +167,7 @@ public class LibraryUsageMonitor implements IUsageMonitor {
 		// make sure we only work on existing projects
 		if (source != null) {
 			IProject project = source.getProject();
-			if (project != null && project.isAccessible()) {
+			if (project != null && project.isAccessible() && project.isOpen()) {
 
 				List<ProductMatch> productMatches = new ArrayList<ProductMatch>();
 				try {
@@ -175,9 +175,9 @@ public class LibraryUsageMonitor implements IUsageMonitor {
 					for (IPackageFragmentRoot entry : classpath) {
 						// Obtain the ProductMatch from the classpath entry
 						ProductMatch productMatch = readPackageFragmentRoot(source, entry);
-						
+
 						if (productMatch != null) {
-		
+
 							// We only want the highest version per product; therefore check if one has
 							// already been registered and compare the versions
 							int ix = productMatches.indexOf(productMatch);
@@ -193,7 +193,7 @@ public class LibraryUsageMonitor implements IUsageMonitor {
 								productMatches.add(productMatch);
 							}
 						}
-						
+
 					}
 				}
 				catch (Exception e) {
@@ -462,7 +462,9 @@ public class LibraryUsageMonitor implements IUsageMonitor {
 	private void recordEvent(ProductMatch productMatch, String projectName) {
 		if (productMatch != null && productMatch.getInfo() != null && productMatch.getVersion() != null) {
 			ProductInfo info = productMatch.getInfo();
-			if (info != null && UaaServiceFactory.getUaaDetectedProducts().shouldReportUsage(info.getGroupId(), info.getArtifactId())) {
+			if (info != null
+					&& UaaServiceFactory.getUaaDetectedProducts().shouldReportUsage(info.getGroupId(),
+							info.getArtifactId())) {
 				manager.registerProductUse(info.getProductName(), productMatch.getVersion(), projectName);
 			}
 		}
