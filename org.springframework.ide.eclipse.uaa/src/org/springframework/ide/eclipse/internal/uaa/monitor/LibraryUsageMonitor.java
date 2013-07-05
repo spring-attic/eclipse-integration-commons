@@ -164,45 +164,47 @@ public class LibraryUsageMonitor implements IUsageMonitor {
 	}
 
 	private void projectClasspathChanged(IJavaProject source) {
-		IProject project = source.getProject();
-		if (project==null || !project.isAccessible()) {
-			//probably project deleted already. Ignore.
-			return; 
-		}
-		List<ProductMatch> productMatches = new ArrayList<ProductMatch>();
-		try {
-			IPackageFragmentRoot[] classpath = source.getPackageFragmentRoots();
-			for (IPackageFragmentRoot entry : classpath) {
-				// Obtain the ProductMatch from the classpath entry
-				ProductMatch productMatch = readPackageFragmentRoot(source, entry);
-				
-				if (productMatch != null) {
+		// make sure we only work on existing projects
+		if (source != null) {
+			IProject project = source.getProject();
+			if (project != null && project.isAccessible()) {
 
-					// We only want the highest version per product; therefore check if one has
-					// already been registered and compare the versions
-					int ix = productMatches.indexOf(productMatch);
-					if (ix >= 0) {
-						String newVersion = productMatch.getVersion();
-						String oldVersion = productMatches.get(ix).getVersion();
-						if (newVersion != null && newVersion.compareTo(oldVersion) > 0) {
-							productMatches.remove(ix);
-							productMatches.add(productMatch);
+				List<ProductMatch> productMatches = new ArrayList<ProductMatch>();
+				try {
+					IPackageFragmentRoot[] classpath = source.getPackageFragmentRoots();
+					for (IPackageFragmentRoot entry : classpath) {
+						// Obtain the ProductMatch from the classpath entry
+						ProductMatch productMatch = readPackageFragmentRoot(source, entry);
+						
+						if (productMatch != null) {
+		
+							// We only want the highest version per product; therefore check if one has
+							// already been registered and compare the versions
+							int ix = productMatches.indexOf(productMatch);
+							if (ix >= 0) {
+								String newVersion = productMatch.getVersion();
+								String oldVersion = productMatches.get(ix).getVersion();
+								if (newVersion != null && newVersion.compareTo(oldVersion) > 0) {
+									productMatches.remove(ix);
+									productMatches.add(productMatch);
+								}
+							}
+							else {
+								productMatches.add(productMatch);
+							}
 						}
-					}
-					else {
-						productMatches.add(productMatch);
+						
 					}
 				}
-				
-			}
-		}
-		catch (Exception e) {
-			// Intentionally only onto the console
-			e.printStackTrace();
-		}
-		finally {
-			for (ProductMatch productMatch : productMatches) {
-				recordEvent(productMatch, project.getName());
+				catch (Exception e) {
+					// Intentionally only onto the console
+					e.printStackTrace();
+				}
+				finally {
+					for (ProductMatch productMatch : productMatches) {
+						recordEvent(productMatch, project.getName());
+					}
+				}
 			}
 		}
 	}
