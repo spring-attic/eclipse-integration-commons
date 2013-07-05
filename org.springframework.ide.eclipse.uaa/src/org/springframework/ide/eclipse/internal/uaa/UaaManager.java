@@ -103,7 +103,7 @@ public class UaaManager implements IUaa {
 		}
 		catch (MalformedURLException neverHappens) {
 			throw new IllegalStateException(neverHappens);
-		}
+		} 
 	}
 	
 	private static final String THREAD_NAME_TEMPLATE = "Reporting Thread-%s (%s/%s.%s.%s)";

@@ -71,7 +71,7 @@ public class UaaPreferencePage extends PreferencePage implements IWorkbenchPrefe
 		entryTable.setLayout(layout);
 
 		Label label = new Label(entryTable, SWT.NONE | SWT.WRAP);
-		label.setText("Spring User Agent Analysis (UAA) provides anonymous, non-identifiable usage data to help us better understand community usage of Spring technologies. You can use this preferences page to adjust the privacy settings of UAA and view information it has collected.");
+		label.setText("Spring UAA provides anonymous, non-identifiable usage data to help us better understand community usage of Spring technologies. You can use this preferences page to adjust the privacy settings of UAA and view information it has collected.");
 		label.setFont(parent.getFont());
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = 1;
@@ -173,7 +173,7 @@ public class UaaPreferencePage extends PreferencePage implements IWorkbenchPrefe
 		decodedUserAgentText.setEditable(false);
 
 		Link link = new Link(entryTable, SWT.NONE | SWT.WRAP);
-		link.setText("Note: the User Agent Analysis feature will record certain usage events which you can review in the 'Usage information' text box. The collected information will be presented to VMware domains such as springide.org, springsource.org and springsource.com.\n\nMore information can be obtained from the Spring UAA <a href=\"tou\">Terms of Use</a> and <a href=\"faq\">FAQ</a>.");
+		link.setText("Note: the UAA feature will record certain usage events which you can review in the 'Usage information' text box. The collected information will be presented to Pivotal domains such as springide.org, springsource.org and springsource.com.\n\nMore information can be obtained from the Spring UAA <a href=\"tou\">Terms of Use</a> and <a href=\"faq\">FAQ</a>.");
 		link.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

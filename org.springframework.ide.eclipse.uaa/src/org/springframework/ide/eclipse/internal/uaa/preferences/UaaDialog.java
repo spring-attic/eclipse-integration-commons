@@ -36,19 +36,19 @@ import org.springframework.ide.eclipse.uaa.UaaUtils;
  */
 public class UaaDialog extends TitleAreaDialog {
 
-	private static final String DIALOG_TITLE = "User Agent Analysis";
+	private static final String DIALOG_TITLE = "Spring UAA";
 
-	private static final String TITLE = "Spring User Agent Analysis (UAA)";
+	private static final String TITLE = "Spring UAA";
 
-	private static final String MESSAGE = "%name% wants to download resources from VMware domains to improve your experience. We include anonymous usage information as part of these downloads.\n"
+	private static final String MESSAGE = "%name% wants to download resources from Pivotal domains to improve your experience. We include anonymous usage information as part of these downloads.\n"
 			+ "\n"
 			+ "The Spring team gathers anonymous usage information to improve your Spring experience, not for marketing purposes. We also use this information to help guide our roadmap, prioritizing the features most valued by the community and enabling us to optimize the compatibility of technologies frequently used together.\n"
 			+ "\n"
-			+ "Please see the Spring User Agent Analysis (UAA) <a href=\"tou\">Terms of Use</a> for more information on what information is collected and how such information is used. There is also an <a href=\"faq\">FAQ</a> for your convenience.\n"
+			+ "Please see the Spring UAA <a href=\"tou\">Terms of Use</a> for more information on what information is collected and how such information is used. There is also an <a href=\"faq\">FAQ</a> for your convenience.\n"
 			+ "\n"
 			+ "To consent to the Terms of Use, please click 'Accept'. If you do not click 'Accept' to indicate your consent anonymous data collection will remain disabled.\n"
 			+ "\n"
-			+ "You can review usage data captured by UAA in the <a href=\"prefs\">User Agent Analysis</a> preferences.";
+			+ "You can review usage data captured by UAA in the <a href=\"prefs\">preferences</a>.";
 	
 	private Image image = UaaPlugin.imageDescriptorFromPlugin(UaaPlugin.PLUGIN_ID, "icons/full/wizban/uaa_wiz.png").createImage();
 	
