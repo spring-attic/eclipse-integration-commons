@@ -579,7 +579,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	}
 
 	private void refreshHeaderLabel() {
-		String msg = toggleCaseSensitiveAction.isChecked() ? "Case Sensitive" : "Case Insensitive";
+		String msg = toggleCaseSensitiveAction.isChecked() ? "Case SENSITIVE" : "Case INSENSITIVE";
 		msg += " Pattern (? = any character, * = any string)";
 		headerLabel.setText(msg);
 	}
