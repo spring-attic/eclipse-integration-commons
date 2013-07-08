@@ -45,7 +45,6 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ILazyContentProvider;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -75,6 +74,7 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Color;
@@ -128,7 +128,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	public static final Styler HIGHLIGHT_STYLE = org.eclipse.search.internal.ui.text.DecoratingFileSearchLabelProvider.HIGHLIGHT_STYLE;
 
 	
-///	public class ScrollListener implements SelectionListener {
+//	public class ScrollListener implements SelectionListener {
 //		
 //		ScrollBar scrollbar;
 //		
@@ -353,6 +353,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	private SashForm sashForm;
 
+	private Label headerLabel;
+
 	/**
 	 * Creates a new instance of the class.
 	 * 
@@ -478,6 +480,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 		public void run() {
 			//setChecked(!isChecked());
+			refreshHeaderLabel();
 			applyFilter();
 		}
 	}
@@ -555,10 +558,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		layout.marginHeight = 0;
 		header.setLayout(layout);
 
-		Label headerLabel = new Label(header, SWT.NONE);
-		headerLabel.setText((getMessage() != null && getMessage().trim()
-				.length() > 0) ? getMessage()
-				: WorkbenchMessages.FilteredItemsSelectionDialog_patternLabel);
+		headerLabel = new Label(header, SWT.NONE);
 		headerLabel.addTraverseListener(new TraverseListener() {
 			public void keyTraversed(TraverseEvent e) {
 				if (e.detail == SWT.TRAVERSE_MNEMONIC && e.doit) {
@@ -573,7 +573,15 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 		createViewMenu(header);
 		header.setLayoutData(gd);
+		
+		refreshHeaderLabel();
 		return headerLabel;
+	}
+
+	private void refreshHeaderLabel() {
+		String msg = toggleCaseSensitiveAction.isChecked() ? "Case Sensitive" : "Case Insensitive";
+		msg += " Pattern (? = any character, * = any string)";
+		headerLabel.setText(msg);
 	}
 
 	/**
@@ -750,6 +758,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		content.setLayout(layout);
 
 		final Label headerLabel = createHeader(content);
+
 
 		pattern = new Text(content, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
 		pattern.getAccessible().addAccessibleListener(new AccessibleAdapter() {
