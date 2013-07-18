@@ -137,6 +137,9 @@ public class QuickTextQuery {
 	 * will be re-run instead of incrementally updated.
 	 */
 	public boolean isSubFilter(QuickTextQuery other) {
+		if (this.isTrivial()) {
+			return false;
+		}
 		if (this.caseSensitive==other.caseSensitive) {
 			if (this.caseSensitive) {
 				return other.orgPattern.contains(this.orgPattern);

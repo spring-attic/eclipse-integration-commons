@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.dashboard.ui.actions;
 
-import java.util.Date;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -37,9 +35,9 @@ import org.springsource.ide.eclipse.dashboard.internal.ui.editors.MultiPageDashb
  */
 public abstract class ShowDashboardPageAction implements IWorkbenchWindowActionDelegate {
 	
-	private static final boolean useNewDashboard = isActivatedNow();
+//	private static final boolean useNewDashboard = isActivatedNow();
 
-	private static boolean isActivatedNow() {
+	private static boolean useNewDashboard() {
 //TODO: Turn on conditionally after SpingOne Date
 //		Date now = new Date();
 //		return now.after(new Date(** insert Spring One Data**));
@@ -48,6 +46,7 @@ public abstract class ShowDashboardPageAction implements IWorkbenchWindowActionD
 //			return true;
 //		}
 //		return Boolean.getBoolean("sts.newdash");
+//		return false;
 		return Platform.getBundle("org.springframework.ide.eclipse.gettingstarted")!=null;
 	}
 
@@ -75,7 +74,7 @@ public abstract class ShowDashboardPageAction implements IWorkbenchWindowActionD
 		IWorkbenchPage page = window.getActivePage();
 		try {
 			try {
-				if (useNewDashboard) {
+				if (useNewDashboard()) {
 					// MessageDialog.openInformation(window.getShell(),
 					// "New Dashboard should open",
 					// "But it is not implemented yet. Try again on next release");

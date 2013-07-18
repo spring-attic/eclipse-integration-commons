@@ -221,8 +221,10 @@ public class QuickTextSearcher {
 				matches.clear();
 				requestor.clear();
 				walker.cancel();
-				walker.init(); //Reinitialize the walker work queue to its starting state
-				walker.resume(); //Allow walker to resume when we release the scheduling rule.
+				if (!query.isTrivial()) {
+					walker.init(); //Reinitialize the walker work queue to its starting state
+					walker.resume(); //Allow walker to resume when we release the scheduling rule.
+				}
 			}
 		}
 

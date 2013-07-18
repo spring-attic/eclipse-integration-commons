@@ -200,7 +200,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		@Override
 		public IStatus runInUIThread(IProgressMonitor mon) {
 			if (!mon.isCanceled()) {
-				if (searcher.isDone()) {
+				if (searcher==null || searcher.isDone()) {
 					progressLabel.setText("");
 				} else {
 					progressLabel.setText("Searching"+dots(animate));
@@ -1286,33 +1286,32 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 */
 	protected void applyFilter() {
 		QuickTextQuery newFilter = createFilter();
-		if (newFilter.isTrivial()) {
-			return;
-		}
 		if (this.searcher==null) {
-			//Create the QuickTextSearcher with the inital query.
-			this.searcher = new QuickTextSearcher(newFilter, context.createPriorityFun(), new QuickTextSearchRequestor() {
-				@Override
-				public void add(LineItem match) {
-					contentProvider.add(match);
-					contentProvider.refresh();
-				}
-				@Override
-				public void clear() {
-					contentProvider.reset();
-					contentProvider.refresh();
-				}
-				@Override
-				public void revoke(LineItem match) {
-					contentProvider.remove(match);
-					contentProvider.refresh();
-				}
-				@Override
-				public void update(LineItem match) {
-					contentProvider.refresh();
-				}
-			});
-			refresh();
+			if (!newFilter.isTrivial()) {
+				//Create the QuickTextSearcher with the inital query.
+				this.searcher = new QuickTextSearcher(newFilter, context.createPriorityFun(), new QuickTextSearchRequestor() {
+					@Override
+					public void add(LineItem match) {
+						contentProvider.add(match);
+						contentProvider.refresh();
+					}
+					@Override
+					public void clear() {
+						contentProvider.reset();
+						contentProvider.refresh();
+					}
+					@Override
+					public void revoke(LineItem match) {
+						contentProvider.remove(match);
+						contentProvider.refresh();
+					}
+					@Override
+					public void update(LineItem match) {
+						contentProvider.refresh();
+					}
+				});
+				refresh();
+			}
 //			this.list.setInput(input)
 		} else {
 			//The QuickTextSearcher is already active update the query

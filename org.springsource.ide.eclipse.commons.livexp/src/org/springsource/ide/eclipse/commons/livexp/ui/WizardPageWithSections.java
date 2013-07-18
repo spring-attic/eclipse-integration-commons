@@ -20,6 +20,8 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.springsource.ide.eclipse.commons.livexp.core.CompositeValidator;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
@@ -74,23 +76,29 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 	protected abstract List<WizardPageSection> createSections();
 	
 	public void gotValue(LiveExpression<ValidationResult> exp, final ValidationResult status) {
-		getShell().getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				setErrorMessage(null);
-				setMessage(null);
-				if (status.isOk()) {
-				} else if (status.status == IStatus.ERROR) {
-					setErrorMessage(status.msg);
-				} else if (status.status == IStatus.WARNING) {
-					setMessage(status.msg, IMessageProvider.WARNING);
-				} else if (status.status == IStatus.INFO) {
-					setMessage(status.msg, IMessageProvider.INFORMATION);
-				} else {
-					setMessage(status.msg, IMessageProvider.NONE);
-				}
-				setPageComplete(status.isOk());
+		Shell shell = getShell();
+		if (shell!=null) {
+			Display display = shell.getDisplay();
+			if (display!=null) {
+				display.asyncExec(new Runnable() {
+					public void run() {
+						setErrorMessage(null);
+						setMessage(null);
+						if (status.isOk()) {
+						} else if (status.status == IStatus.ERROR) {
+							setErrorMessage(status.msg);
+						} else if (status.status == IStatus.WARNING) {
+							setMessage(status.msg, IMessageProvider.WARNING);
+						} else if (status.status == IStatus.INFO) {
+							setMessage(status.msg, IMessageProvider.INFORMATION);
+						} else {
+							setMessage(status.msg, IMessageProvider.NONE);
+						}
+						setPageComplete(status.isOk());
+					}
+				});
 			}
-		});
+		}
 	}
 	
 	public void dispose() {
