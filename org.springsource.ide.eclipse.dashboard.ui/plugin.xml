@@ -68,25 +68,41 @@
 			description="Support for SpringSource Tool Suite" icon="icons/prod/springsource_32.png"
 			id="com.springsource" name="SpringSource" url="http://www.springsource.com/services">
 		</provider>
-		<product featureId="com.springsource.sts" id="com.springsource.sts"
-			providerId="com.springsource">
+		<product featureId="org.springsource.sts" id="org.springsource.sts"
+        	providerId="com.springsource">
 		</product>
-		<mapping namespace="com.springsource.sts" productId="com.springsource.sts">
+		<mapping namespace="org.springsource.sts" productId="org.springsource.sts">
 			<repository kind="jira" url="https://issuetracker.springsource.com">
 			</repository>
 			<property name="product" value="STS">
 			</property>
 		</mapping>
-		<mapping namespace="com.springsource.server" productId="com.springsource.sts">
+		<mapping namespace="com.vmware.vfabric.ide" productId="org.springsource.sts">
+			<repository kind="jira" url="https://issuetracker.springsource.com">
+			</repository>
+			<property name="product" value="STS">
+			</property>
+			<property name="component" value="SERVER">
+			</property>
+		</mapping>
+		<mapping namespace="org.springframework.ide" productId="org.springsource.sts">
 			<repository kind="jira" url="https://issuetracker.springsource.com">
 			</repository>
 			<property name="product" value="STS">
 			</property>
 		</mapping>
-		<mapping namespace="org.springframework.ide" productId="com.springsource.sts">
+		<mapping namespace="org.springsource.ide" productId="org.springsource.sts">
 			<repository kind="jira" url="https://issuetracker.springsource.com">
 			</repository>
 			<property name="product" value="STS">
+			</property>
+		</mapping>
+		<mapping namespace="org.cloudfoundry.ide" productId="org.springsource.sts">
+			<repository kind="jira" url="https://issuetracker.springsource.com">
+			</repository>
+			<property name="product" value="STS">
+			</property>
+			<property name="component" value="CLOUDFOUNDRY">
 			</property>
 		</mapping>
 	</extension>
