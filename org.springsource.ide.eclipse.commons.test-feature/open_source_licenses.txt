@@ -1,6 +1,6 @@
 open_source_license.txt
 
-Eclipse Integration Commons 3.3.0 GA
+Eclipse Integration Commons 3.4.0 GA
 
 =================================================================
 
