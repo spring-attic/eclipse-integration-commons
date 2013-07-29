@@ -11,7 +11,7 @@
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
 /**
- * Abstract base class for implementing 'sections' containing a group of widgets that can be added to the Gradle preferences page.
+ * Abstract base class for implementing 'sections' containing a group of widgets that can be added to a PreferencePageWithSections.
  * 
  * @author Kris De Volder
  */
