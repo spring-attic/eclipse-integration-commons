@@ -11,7 +11,9 @@
 package org.springsource.ide.eclipse.commons.quicksearch.core;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -92,10 +94,11 @@ public class QuickTextSearcher {
 			if (checkCanceled(mon)) {
 				return;
 			}
+			
 
 			LineReader lr = null;
 			try {
-				lr = new LineReader(new FileReader(new File(f.getLocationURI())));
+				lr = new LineReader(new InputStreamReader(f.getContents(true), f.getCharset()));
 				String line = null;
 				int lineIndex = 1;
 				while ((line = lr.readLine()) != null) {
