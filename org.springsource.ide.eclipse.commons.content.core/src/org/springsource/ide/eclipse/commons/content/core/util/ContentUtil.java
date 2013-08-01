@@ -23,7 +23,6 @@ import org.springsource.ide.eclipse.commons.content.core.ContentPlugin;
 import org.springsource.ide.eclipse.commons.core.SpringCoreUtils;
 import org.w3c.dom.Node;
 
-
 /**
  * @author Steffen Pingel
  * @author Christian Dupuis
@@ -48,6 +47,7 @@ public class ContentUtil {
 		}
 		else {
 			DocumentBuilderFactory xmlFact = DocumentBuilderFactory.newInstance();
+			xmlFact.setExpandEntityReferences(false);
 			try {
 				return xmlFact.newDocumentBuilder();
 			}

@@ -38,6 +38,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.prefs.Preferences;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.eclipse.core.net.proxy.IProxyData;
 import org.eclipse.core.net.proxy.IProxyService;
 import org.eclipse.core.runtime.IBundleGroup;
@@ -325,7 +327,9 @@ public class UaaManager implements IUaa {
 	public void start() {
 		// Since we run in an restricted environment we need to obtain the builder factory from the OSGi service
 		// registry instead of trying to create a new one from the API
-		XmlUtils.setDocumentBuilderFactory(UaaUtils.getDocumentBuilderFactory());
+		DocumentBuilderFactory documentBuilderFactory = UaaUtils.getDocumentBuilderFactory();
+		documentBuilderFactory.setExpandEntityReferences(false);
+		XmlUtils.setDocumentBuilderFactory(documentBuilderFactory);
 		
 		try { initProductDescriptions(getDefaultDetectedProducts(), getDefaultDetectedProductsSignaturer()); }
 		catch (IOException e) {}

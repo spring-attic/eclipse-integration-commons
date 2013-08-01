@@ -126,6 +126,8 @@ public class StsTestUtil {
 
 	public static String canocalizeXml(String originalServerXml) throws Exception {
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		documentBuilderFactory.setExpandEntityReferences(false);
+
 		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
 		Document document = builder.parse(new InputSource(new StringReader(originalServerXml)));
 		document.normalize();

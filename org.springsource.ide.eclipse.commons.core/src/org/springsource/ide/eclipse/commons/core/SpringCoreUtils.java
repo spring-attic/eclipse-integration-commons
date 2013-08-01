@@ -349,7 +349,9 @@ public final class SpringCoreUtils {
 
 	public static DocumentBuilder getDocumentBuilder() {
 		try {
-			return getDocumentBuilderFactory().newDocumentBuilder();
+			DocumentBuilderFactory documentBuilderFactory = getDocumentBuilderFactory();
+			documentBuilderFactory.setExpandEntityReferences(false);
+			return documentBuilderFactory.newDocumentBuilder();
 		}
 		catch (Exception e) {
 			StatusHandler.log(new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID, "Error creating DocumentBuilder", e));
