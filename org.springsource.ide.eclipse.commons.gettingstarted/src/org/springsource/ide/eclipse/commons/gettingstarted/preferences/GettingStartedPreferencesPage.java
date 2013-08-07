@@ -8,7 +8,7 @@
  *  Contributors:
  *      GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.gettingstarted.preferences;
+package org.springsource.ide.eclipse.commons.gettingstarted.preferences;
 
 import java.util.ArrayList;
 import java.util.List;

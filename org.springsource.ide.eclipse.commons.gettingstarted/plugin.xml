@@ -48,7 +48,7 @@
     <extension
       point = "org.eclipse.ui.preferencePages">
        <page id="org.springsource.ide.eclipse.gettingstarted.preferences.GettingStartedPreferencesPage"
-	        class="org.springsource.ide.eclipse.gettingstarted.preferences.GettingStartedPreferencesPage"
+	        class="org.springsource.ide.eclipse.commons.gettingstarted.preferences.GettingStartedPreferencesPage"
             category="org.springsource.ide.eclipse.commons.preferencePage"
             name="Dashboard (New)">
        </page>

@@ -8,7 +8,7 @@
  *  Contributors:
  *      GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.gettingstarted.preferences;
+package org.springsource.ide.eclipse.commons.gettingstarted.preferences;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,8 +54,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
-import org.springsource.ide.eclipse.commons.gettingstarted.preferences.GettingStartedPreferences;
-import org.springsource.ide.eclipse.commons.gettingstarted.preferences.URLBookmark;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.ui.IPageWithSections;
