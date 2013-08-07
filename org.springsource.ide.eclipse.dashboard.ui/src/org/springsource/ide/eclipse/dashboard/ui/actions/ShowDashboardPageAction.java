@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
@@ -78,7 +79,7 @@ public abstract class ShowDashboardPageAction implements IWorkbenchWindowActionD
 					// MessageDialog.openInformation(window.getShell(),
 					// "New Dashboard should open",
 					// "But it is not implemented yet. Try again on next release");
-					page.openEditor(DashboardEditorInput.INSTANCE, MultiPageDashboardEditor.NEW_EDITOR_ID);
+					IEditorPart editor = page.openEditor(DashboardEditorInput.INSTANCE, MultiPageDashboardEditor.NEW_EDITOR_ID);
 					return;
 				}
 			}
