@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Guides
-Bundle-SymbolicName: org.springframework.ide.eclipse.gettingstarted;singleton:=true
+Bundle-SymbolicName: org.springsource.ide.eclipse.commons.gettingstarted;singleton:=true
 Bundle-Version: 3.4.0.qualifier
 Bundle-Activator: org.springframework.ide.eclipse.gettingstarted.GettingStartedActivator
 Bundle-Vendor: SpringSource

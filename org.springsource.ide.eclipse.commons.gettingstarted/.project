@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.springframework.ide.eclipse.gettingstarted</name>
+	<name>org.springsource.ide.eclipse.commons.gettingstarted</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -27,7 +27,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1368834386864</id>
+			<id>0</id>
 			<name></name>
 			<type>10</type>
 			<matcher>

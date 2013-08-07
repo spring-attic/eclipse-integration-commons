@@ -4,14 +4,14 @@
 	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-	<groupId>org.springframework.ide.eclipse</groupId>
-	<artifactId>org.springframework.ide.eclipse.gettingstarted.parent</artifactId>
+	<groupId>org.springsource.ide.eclipse.commons</groupId>
+	<artifactId>org.springsource.ide.eclipse.commons.gettingstarted.parent</artifactId>
 	<version>3.4.0-SNAPSHOT</version>
-	<relativePath>../org.springframework.ide.eclipse.gettingstarted.parent/pom.xml</relativePath> 
+	<relativePath>../org.springsource.ide.eclipse.commons.gettingstarted.parent/pom.xml</relativePath> 
   </parent>
-  <artifactId>org.springframework.ide.eclipse.gettingstarted.tests</artifactId>
+  <artifactId>org.springsource.ide.eclipse.commons.gettingstarted.tests</artifactId>
   <packaging>eclipse-test-plugin</packaging>
-  <name>org.springframework.ide.eclipse.gettingstarted.tests</name>
+  <name>org.springsource.ide.eclipse.commons.gettingstarted.tests</name>
 
 	<build>
 		<plugins>
@@ -23,7 +23,7 @@
 					<useUIHarness>true</useUIHarness>
 					<useUIThread>true</useUIThread>
 					<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
-					<testSuite>org.springframework.ide.eclipse.gettingstarted.tests</testSuite>
+					<testSuite>org.springsource.ide.eclipse.commons.gettingstarted.tests</testSuite>
 					<testClass>org.springframework.ide.eclipse.gettingstarted.tests.AllGettingStartedTests</testClass>
 					<argLine>-Dgithub.user.name=${github.user.name} -Dgithub.user.password=${github.user.password} -Xmx1024m -XX:MaxPermSize=256m</argLine>
 				</configuration>

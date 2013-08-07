@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Browser Initializer Linux
-Bundle-SymbolicName: org.springframework.ide.eclipse.gettingstarted.browserinit
+Bundle-SymbolicName: org.springsource.ide.eclipse.commons.gettingstarted.browserinit
 Bundle-Version: 3.4.0.qualifier
 Bundle-Vendor: GoPivotal Inc.
 Fragment-Host: org.eclipse.swt

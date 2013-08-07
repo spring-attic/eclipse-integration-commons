@@ -11,8 +11,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.springframework.ide.eclipse</groupId>
-	<artifactId>org.springframework.ide.eclipse.gettingstarted.parent</artifactId>
+	<groupId>org.springsource.ide.eclipse.commons</groupId>
+	<artifactId>org.springsource.ide.eclipse.commons.gettingstarted.parent</artifactId>
 	<version>3.4.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -93,11 +93,11 @@
 		<!-- Note: only a plugin an test plugin at the moment, no hookup
 		     via feature, not published on update sites etc.
 		     -->
-		<module>../org.springframework.ide.eclipse.gettingstarted</module>
-		<module>../org.springframework.ide.eclipse.gettingstarted.browserinit</module>
-		<module>../org.springframework.ide.eclipse.gettingstarted.tests</module>
-		<module>../org.springframework.ide.eclipse.gettingstarted.feature</module>
-		<module>../org.springframework.ide.eclipse.gettingstarted.site</module>
+		<module>../org.springsource.ide.eclipse.commons.gettingstarted</module>
+		<module>../org.springsource.ide.eclipse.commons.gettingstarted.browserinit</module>
+		<module>../org.springsource.ide.eclipse.commons.gettingstarted.tests</module>
+		<module>../org.springsource.ide.eclipse.commons.gettingstarted.feature</module>
+		<module>../org.springsource.ide.eclipse.commons.gettingstarted.site</module>
 	</modules>
 
 	<profiles>
