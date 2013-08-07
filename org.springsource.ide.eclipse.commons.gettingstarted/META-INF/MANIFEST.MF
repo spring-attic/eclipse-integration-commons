@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Guides
 Bundle-SymbolicName: org.springsource.ide.eclipse.commons.gettingstarted;singleton:=true
 Bundle-Version: 3.4.0.qualifier
-Bundle-Activator: org.springframework.ide.eclipse.gettingstarted.GettingStartedActivator
+Bundle-Activator: org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator
 Bundle-Vendor: SpringSource
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -34,8 +34,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.debug.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: org.springframework.ide.eclipse.gettingstarted,
- org.springframework.ide.eclipse.gettingstarted.content,
- org.springframework.ide.eclipse.gettingstarted.importing,
- org.springframework.ide.eclipse.gettingstarted.util
+Export-Package: org.springsource.ide.eclipse.commons.gettingstarted,
+ org.springsource.ide.eclipse.commons.gettingstarted.content,
+ org.springsource.ide.eclipse.commons.gettingstarted.importing,
+ org.springsource.ide.eclipse.commons.gettingstarted.util
 Eclipse-BundleShape: dir

@@ -5,7 +5,7 @@
      point="org.eclipse.ui.importWizards"> 
       <wizard
             category="org.springsource.ide.eclipse.gettingstarted.wizards.import.category"
-            class="org.springframework.ide.eclipse.gettingstarted.wizard.GSImportWizard"
+            class="org.springsource.ide.eclipse.commons.gettingstarted.wizard.GSImportWizard"
             icon="resources/icons/guide-import.png"
             id="org.springsource.ide.eclipse.gettingstarted.wizards.import.generic"
             name="Getting Started Content"> 
@@ -36,9 +36,9 @@
  
 	<extension point="org.eclipse.ui.editors">
 		<editor
-			class="org.springframework.ide.eclipse.gettingstarted.dashboard.DashboardEditor"
+			class="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.DashboardEditor"
 			icon="resources/icons/dashboard_16.png"
-			id="org.springframework.ide.eclipse.gettingstarted.dashboard.DashboardEditor"
+			id="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.DashboardEditor"
 			name="Dashboard">
 		</editor>
 	</extension>
