@@ -28,13 +28,15 @@ import org.eclipse.ui.part.EditorPart;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.gettingstarted.preferences.URLBookmark;
 
+import org.springsource.ide.eclipse.dashboard.ui.actions.IDashboardWithPages;
+
 /**
  * New Dashboard that will replace the old. On some yet to be determined
  * activation date.
  * 
  * @author Kris De Volder
  */
-public class DashboardEditor extends EditorPart {
+public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 	
 	private CTabFolder folder;
 	private DashboardPageContainer[] pages = null; //Lazy initialized
@@ -162,6 +164,20 @@ public class DashboardEditor extends EditorPart {
 	public boolean isSaveAsAllowed() {
 		//This isn't a real editor. There's nothing to save.
 		return false;
+	}
+
+	@Override
+	public void setActivePage(String pageId) {
+		for (CTabItem item : folder.getItems()) {
+			Object _p = item.getData();
+			if (_p instanceof DashboardPageContainer) {
+				DashboardPageContainer p = (DashboardPageContainer)_p;
+				if (pageId.equals(p.getPageId())) {
+					folder.setSelection(item);
+					ensureSelectedTabInitialized();
+				}
+			}
+		}
 	}
 
 }

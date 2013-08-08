@@ -80,6 +80,10 @@ public abstract class ShowDashboardPageAction implements IWorkbenchWindowActionD
 					// "New Dashboard should open",
 					// "But it is not implemented yet. Try again on next release");
 					IEditorPart editor = page.openEditor(DashboardEditorInput.INSTANCE, MultiPageDashboardEditor.NEW_EDITOR_ID);
+					if (editor instanceof IDashboardWithPages) {
+						IDashboardWithPages dashboard = (IDashboardWithPages) editor;
+						dashboard.setActivePage(pageId);
+					}
 					return;
 				}
 			}

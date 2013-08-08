@@ -63,5 +63,9 @@ public class DashboardPageContainer {
 			page.dispose();
 			page = null;
 		}
+	}
+
+	public String getPageId() {
+		return page.getPageId();
 	}	
 }

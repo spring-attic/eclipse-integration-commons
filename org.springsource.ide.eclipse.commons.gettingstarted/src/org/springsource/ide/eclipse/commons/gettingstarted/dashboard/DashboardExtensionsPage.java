@@ -642,4 +642,10 @@ public class DashboardExtensionsPage extends FormDashboardPage implements IRunna
 	public String getName() {
 		return "Extensions";
 	}
+	
+	@Override
+	public String getPageId() {
+		return "extensions";
+	}
+	
 }

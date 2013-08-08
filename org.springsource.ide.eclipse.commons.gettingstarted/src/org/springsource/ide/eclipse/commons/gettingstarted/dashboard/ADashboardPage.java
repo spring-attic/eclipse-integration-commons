@@ -53,5 +53,10 @@ public abstract class ADashboardPage implements IDashboardPage {
 	public void dispose() {
 		this.site = null;
 	}
+	
+	@Override
+	public String getPageId() {
+		return null;
+	}
 
 }

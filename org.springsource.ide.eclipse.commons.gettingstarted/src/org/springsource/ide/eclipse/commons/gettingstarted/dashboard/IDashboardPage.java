@@ -13,6 +13,7 @@ package org.springsource.ide.eclipse.commons.gettingstarted.dashboard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbenchPartSite;
+import org.springsource.ide.eclipse.dashboard.ui.actions.ShowDashboardPageAction;
 
 /**
  * A page that can be added to the (new) Dashboard should implement this
@@ -37,5 +38,12 @@ public interface IDashboardPage {
 	 * Called when the dashboard is closed and all pages get disposed.
 	 */
 	public void dispose();
+
+	
+	/**
+	 * Pages that should targetable specifically by {@link ShowDashboardPageAction} should provide
+	 * an id. It is ok for pages that aren't targetable by this action to have null ids.
+	 */
+	public String getPageId();
 	
 }
