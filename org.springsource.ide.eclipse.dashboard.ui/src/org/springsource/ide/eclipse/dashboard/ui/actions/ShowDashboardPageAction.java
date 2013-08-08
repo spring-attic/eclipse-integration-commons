@@ -34,7 +34,7 @@ import org.springsource.ide.eclipse.dashboard.internal.ui.editors.MultiPageDashb
  * class loader warnings.
  * @author Terry Denney
  */
-public abstract class ShowDashboardPageAction implements IWorkbenchWindowActionDelegate {
+public class ShowDashboardPageAction implements IWorkbenchWindowActionDelegate {
 	
 //	private static final boolean useNewDashboard = isActivatedNow();
 

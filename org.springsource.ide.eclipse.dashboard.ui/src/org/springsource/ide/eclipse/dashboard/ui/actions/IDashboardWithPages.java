@@ -21,7 +21,9 @@ public interface IDashboardWithPages {
 	/**
 	 * Make page with given id visible. Does nothing if page with this id can not
 	 * be found.
+	 * 
+	 * @return Whether or not the page with given id was found.
 	 */
-	void setActivePage(String pageId);
+	boolean setActivePage(String pageId);
 	
 }

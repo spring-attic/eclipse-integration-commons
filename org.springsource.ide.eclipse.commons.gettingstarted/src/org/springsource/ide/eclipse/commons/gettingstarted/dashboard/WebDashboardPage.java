@@ -80,7 +80,7 @@ public class WebDashboardPage extends ADashboardPage /* implements IExecutableEx
 	public void createControl(Composite parent) {
 		this.shell = parent.getShell();
 		parent.setLayout(new FillLayout());
-		STSBrowserViewer browserViewer = BrowserFactory.create(parent);
+		STSBrowserViewer browserViewer = BrowserFactory.create(parent, hasToolbar());
 		Browser browser = browserViewer.getBrowser();
 		if (homeUrl!=null) {
 			browserViewer.setHomeUrl(homeUrl);
@@ -91,6 +91,15 @@ public class WebDashboardPage extends ADashboardPage /* implements IExecutableEx
 			);
 		}
 		addBrowserHooks(browser);
+	}
+
+	/**
+	 * Subclasses may override if they don't want the url and buttons toolbar.
+	 * Defailt implementation returns true causing the toolbar to be added
+	 * when the browser widget is created.
+	 */
+	protected boolean hasToolbar() {
+		return true;
 	}
 
 	/**

@@ -18,7 +18,9 @@ import java.util.Properties;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.internal.browser.BrowserViewer;
 import org.osgi.framework.Bundle;
@@ -49,8 +51,8 @@ public class BrowserFactory {
 	//    -Dorg.eclipse.swt.browser.DefaultType=mozilla
 	
 	private static class BrowserFactoryImplementation {
-		STSBrowserViewer create(Composite parent) {
-			STSBrowserViewer viewer = new STSBrowserViewer(parent, BrowserViewer.BUTTON_BAR|BrowserViewer.LOCATION_BAR);
+		STSBrowserViewer create(Composite parent, boolean toolbar) {
+			STSBrowserViewer viewer = new STSBrowserViewer(parent, toolbar ? BrowserViewer.BUTTON_BAR|BrowserViewer.LOCATION_BAR : SWT.NONE);
 			return viewer;
 //			return new Browser(parent, SWT.NONE);
 		}
@@ -143,10 +145,14 @@ public class BrowserFactory {
 
 	private static BrowserFactoryImplementation implementation;
 
-	public static STSBrowserViewer create(Composite body) {
-		STSBrowserViewer viewer = implementation().create(body);
+	public static STSBrowserViewer create(Composite body, boolean toolbar) {
+		STSBrowserViewer viewer = implementation().create(body, toolbar);
 		customizeBrowser(viewer.getBrowser());
 		return viewer;
+	}
+	
+	public static STSBrowserViewer create(Composite comp) {
+		return create(comp, true);
 	}
 
 	/**
@@ -169,5 +175,4 @@ public class BrowserFactory {
 		}
 		return implementation;
 	}
-
 }

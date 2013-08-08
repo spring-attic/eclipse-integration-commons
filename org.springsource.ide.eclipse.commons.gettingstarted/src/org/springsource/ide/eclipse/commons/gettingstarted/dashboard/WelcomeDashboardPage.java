@@ -1,0 +1,121 @@
+/*******************************************************************************
+ *  Copyright (c) 2013 GoPivotal, Inc.
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *
+ *  Contributors:
+ *      GoPivotal, Inc. - initial API and implementation
+ *******************************************************************************/
+package org.springsource.ide.eclipse.commons.gettingstarted.dashboard;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.browser.LocationEvent;
+import org.eclipse.swt.browser.LocationListener;
+import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
+import org.springsource.ide.eclipse.commons.gettingstarted.browser.BrowserContext;
+import org.springsource.ide.eclipse.commons.ui.UiUtil;
+
+
+public class WelcomeDashboardPage extends WebDashboardPage {
+
+	private File welcomeHtml;
+	private DashboardEditor dashboard;
+
+	public WelcomeDashboardPage(DashboardEditor dashboard) throws URISyntaxException, IOException {
+		this.dashboard = dashboard;
+		URL entry = GettingStartedActivator.getDefault().getBundle().getEntry("resources/welcome/index.html");
+		welcomeHtml = new File(FileLocator.toFileURL(entry).toURI());
+		setName("Welcome");
+		setHomeUrl(welcomeHtml.toURI().toString());
+	}
+	
+	@Override
+	protected boolean hasToolbar() {
+		return false;
+	}
+
+	@Override
+	protected void addBrowserHooks(Browser browser) {
+		super.addBrowserHooks(browser);
+		browser.addLocationListener(new URLInterceptor(browser));
+	}
+	
+	/**
+	 * Not used anymore. Now only using the JavaScript function approach.
+	 */
+	public class URLInterceptor extends BrowserContext implements LocationListener {
+		
+		public URLInterceptor(Browser browser) {
+			super(browser);
+		}
+		
+		@Override
+		public void changed(LocationEvent event) {
+			// TODO Auto-generated method stub
+		}
+		
+		
+		@Override
+		public void changing(LocationEvent event) {
+			System.out.println("Navigation: "+event.location);
+			
+			
+			//Be careful...any  exception thrown out of here have a nasty tendency to deadlock Eclipse 
+			// (By crashing native UI thread maybe?)
+			try {
+				URI uri = new URI(event.location);
+				//zip file containing a codeset single codeset:
+				// https://github.com/kdvolder/gs-one-codeset/archive/master.zip?sts_codeset=true
+//				Map<String, String> params = URIParams.parse(uri);
+				IPath path = new Path(uri.getPath());
+				String host = uri.getHost();
+				if (host.equals("dashboard")) {
+					if (dashboard.setActivePage(getPageId(path))) {
+						event.doit = false;
+						return;
+					}
+				}
+				
+				if (!allowNavigation(event.location)) {
+					event.doit = false;
+					System.out.println("Navigation intercepted: "+event.location);
+					UiUtil.openUrl(event.location);
+				}
+			} catch (Throwable e) {
+				GettingStartedActivator.log(e);
+			}
+		}
+
+
+		private String getPageId(IPath path) {
+			String pageId = path.toString();
+			if (pageId.startsWith("/")) {
+				pageId = pageId.substring(1);
+			}
+			return pageId;
+		}
+
+		private boolean allowNavigation(String location) {
+			//any url not should open in a new browser.
+			return false;
+		}
+//
+//		@Override
+//		public void changed(LocationEvent event) {
+//		}
+//
+	}
+		
+	
+}

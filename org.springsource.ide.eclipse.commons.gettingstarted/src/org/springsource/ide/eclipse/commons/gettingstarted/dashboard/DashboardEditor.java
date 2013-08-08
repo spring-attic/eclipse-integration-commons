@@ -110,7 +110,12 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 	 */
 	protected List<IDashboardPage> createPages() {
 		List<IDashboardPage> pages = new ArrayList<IDashboardPage>();
-		addDashboadWebPages(pages);
+		try {
+			pages.add(new WelcomeDashboardPage(this));
+		} catch (Exception e) {
+			GettingStartedActivator.log(e);
+		}
+		addDashboardWebPages(pages);
 		
 		try {
 			pages.add(new GeneratedGuidesDashboardPage());
@@ -126,7 +131,7 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 		return pages;
 	}
 
-	private void addDashboadWebPages(List<IDashboardPage> pages) {
+	private void addDashboardWebPages(List<IDashboardPage> pages) {
 		URLBookmark[] bookmarks = GettingStartedActivator.getDefault().getPreferences().getDashboardWebPages();
 
 		for (URLBookmark bm : bookmarks) {
@@ -167,7 +172,7 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 	}
 
 	@Override
-	public void setActivePage(String pageId) {
+	public boolean setActivePage(String pageId) {
 		for (CTabItem item : folder.getItems()) {
 			Object _p = item.getData();
 			if (_p instanceof DashboardPageContainer) {
@@ -175,9 +180,11 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 				if (pageId.equals(p.getPageId())) {
 					folder.setSelection(item);
 					ensureSelectedTabInitialized();
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 
 }

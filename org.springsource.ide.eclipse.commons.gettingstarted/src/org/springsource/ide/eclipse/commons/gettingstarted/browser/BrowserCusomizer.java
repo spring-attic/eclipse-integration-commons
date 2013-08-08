@@ -12,22 +12,15 @@ package org.springsource.ide.eclipse.commons.gettingstarted.browser;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
 
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
-import org.eclipse.swt.browser.LocationEvent;
-import org.eclipse.swt.browser.LocationListener;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.gettingstarted.content.GettingStartedContent;
 import org.springsource.ide.eclipse.commons.gettingstarted.content.GettingStartedGuide;
-import org.springsource.ide.eclipse.commons.gettingstarted.util.URIParams;
 import org.springsource.ide.eclipse.commons.gettingstarted.wizard.GSImportWizard;
-import org.springsource.ide.eclipse.commons.ui.UiUtil;
 
 public class BrowserCusomizer extends BrowserContext {
 
@@ -87,7 +80,7 @@ public class BrowserCusomizer extends BrowserContext {
 	}
 	
 	protected void addBrowserHooks(Browser browser) {
-		browser.addLocationListener(new UrlInterceptor(browser));
+//		browser.addLocationListener(new UrlInterceptor(browser));
 
 		importFun = new ImportJSFunction(browser);
 		
@@ -102,20 +95,20 @@ public class BrowserCusomizer extends BrowserContext {
 		});
 	}
 	
-	/**
-	 * Not used anymore. Now only using the JavaScript function approach.
-	 */
-	public class UrlInterceptor extends BrowserContext implements LocationListener {
-		
-		public UrlInterceptor(Browser browser) {
-			super(browser);
-		}
-		
-		@Override
-		public void changing(LocationEvent event) {
-			System.out.println("Navigation: "+event.location);
-			
-			
+//	/**
+//	 * Not used anymore. Now only using the JavaScript function approach.
+//	 */
+//	public class UrlInterceptor extends BrowserContext implements LocationListener {
+//		
+//		public UrlInterceptor(Browser browser) {
+//			super(browser);
+//		}
+//		
+//		@Override
+//		public void changing(LocationEvent event) {
+//			System.out.println("Navigation: "+event.location);
+//			
+//			
 //			//Be careful...any  exception thrown out of here have a nasty tendency to deadlock Eclipse 
 //			// (By crashing native UI thread maybe?)
 //			try {
@@ -175,10 +168,10 @@ public class BrowserCusomizer extends BrowserContext {
 //				System.out.println("Navigation intercepted: "+event.location);
 //				UiUtil.openUrl(event.location);
 //			}
-		}
+//		}
 
-		private boolean allowNavigation(String location) {
-			return true; //ok to navigate anywhere now. We have a 'home' button.
+//		private boolean allowNavigation(String location) {
+//			return true; //ok to navigate anywhere now. We have a 'home' button.
 //			//We white list some urls for navigation since they are needed to allow signing it with github at the moment
 //			try {
 //				if (location.startsWith("https://github.com/login?return_to")) {
@@ -191,13 +184,13 @@ public class BrowserCusomizer extends BrowserContext {
 //			} catch (URISyntaxException e) {
 //			}
 //			return false;
-		}
-
-		@Override
-		public void changed(LocationEvent event) {
-		}
-
-	}
+//		}
+//
+//		@Override
+//		public void changed(LocationEvent event) {
+//		}
+//
+//	}
 	
 	
 }
