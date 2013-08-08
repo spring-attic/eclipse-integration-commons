@@ -64,6 +64,7 @@ public class GSImportWizard extends Wizard implements IImportWizard {
 	public class PageOne extends WizardPageWithSections {
 
 		private GSImportWizardModel model;
+		private ChooseTypedContentSection contentChooser;
 
 		protected PageOne(GSImportWizardModel model) {
 			super("Page One", "Import Getting Started Content", IMAGE);
@@ -74,7 +75,7 @@ public class GSImportWizard extends Wizard implements IImportWizard {
 		protected List<WizardPageSection> createSections() {
 			List<WizardPageSection> sections = new ArrayList<WizardPageSection>();
 
-			sections.add(new ChooseTypedContentSection(this, model.getGSContentSelectionModel(), model.getRawSelection(), model.getContentManager()));
+			sections.add(getContentChooser());
 			sections.add(new ValidatorSection(this, model.downloadStatus));
 			sections.add(new DescriptionSection(this, model.description));
 			sections.add(new BuildTypeRadiosSection(this, model.getBuildTypeModel()));
@@ -82,6 +83,18 @@ public class GSImportWizard extends Wizard implements IImportWizard {
 			sections.add(new OpenUrlSection(this, "Home Page", model.homePage, model.getEnableOpenHomePage()));
 			
 			return sections;
+		}
+
+		private ChooseTypedContentSection getContentChooser() {
+			if (contentChooser==null) {
+				contentChooser = new ChooseTypedContentSection(this, model.getGSContentSelectionModel(), 
+						model.getRawSelection(), model.getContentManager());
+			}
+			return contentChooser;
+		}
+
+		public void setFilterText(String text) {
+			getContentChooser().setFilterText(text);
 		}
 	}
 
@@ -115,9 +128,6 @@ public class GSImportWizard extends Wizard implements IImportWizard {
 //		addPage(pageTwo);
 	}
 
-	
-	
-
 	@Override
 	public boolean performFinish() {
 		Job job = new Job("Import Getting Started Content") {
@@ -137,7 +147,6 @@ public class GSImportWizard extends Wizard implements IImportWizard {
 		job.schedule();
 		return true;
 	}
-	
 	
 //Old Version of performFinish that uses an "In Dialog Progress Bar". Dialog stays open until import is
 // complete:
@@ -195,8 +204,6 @@ public class GSImportWizard extends Wizard implements IImportWizard {
 		dialog.setBlockOnOpen(true);
 		return dialog.open(); 
 	}
-	
-	
 
 	private void setContentManager(ContentManager cm) {
 		model.setContentManager(cm);
@@ -207,6 +214,7 @@ public class GSImportWizard extends Wizard implements IImportWizard {
 	 */
 	public void setItem(GSContent guide) {
 		this.model.setItem(guide);
+		pageOne.setFilterText(guide.getDisplayName());
 	}
 
 }

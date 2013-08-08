@@ -110,11 +110,11 @@ public class DashboardEditor extends EditorPart {
 		List<IDashboardPage> pages = new ArrayList<IDashboardPage>();
 		addDashboadWebPages(pages);
 		
-//		try {
-//			pages.add(new GeneratedGuidesDashboardPage());
-//		} catch (Exception e) {
-//			GettingStartedActivator.log(e);
-//		}
+		try {
+			pages.add(new GeneratedGuidesDashboardPage());
+		} catch (Exception e) {
+			GettingStartedActivator.log(e);
+		}
 		
 		pages.add(new DashboardExtensionsPage());
 //		pages.add(new GuidesDashboardPageWithPreview());

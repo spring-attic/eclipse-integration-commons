@@ -223,6 +223,8 @@ public class ChooseTypedContentSection extends WizardPageSection {
 	private ContentManager content;
 	private ContentProvider contentProvider;
 	private LiveVariable<Object> rawSelection;
+	private TreeViewer treeviewer;
+	private String initialFilterText;
 
 	public ChooseTypedContentSection(IPageWithSections owner, SelectionModel<GSContent> selection, 
 			LiveVariable<Object> rawSelection, ContentManager content) {
@@ -255,34 +257,38 @@ public class ChooseTypedContentSection extends WizardPageSection {
 			fieldNameLabel.setText(sectionLabel);
 		}
 		
-		final TreeViewer tv = new TreeViewer(field, SWT.SINGLE|SWT.BORDER|SWT.V_SCROLL);
-		tv.addFilter(filter = new ChoicesFilter());
-		tv.setLabelProvider(labelProvider);
-		tv.setContentProvider(contentProvider);
-		tv.setInput(content);
-		tv.expandAll();
+		treeviewer = new TreeViewer(field, SWT.SINGLE|SWT.BORDER|SWT.V_SCROLL);
+		treeviewer.addFilter(filter = new ChoicesFilter());
+		treeviewer.setLabelProvider(labelProvider);
+		treeviewer.setContentProvider(contentProvider);
+		treeviewer.setInput(content);
+		treeviewer.expandAll();
 		
 		if (fieldNameLabel!=null) {
 			GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(fieldNameLabel);
 		}
 		GridDataFactory grab = GridDataFactory.fillDefaults().grab(true, true).hint(SWT.DEFAULT, 150);
 		grab.applyTo(field);
-		grab.applyTo(tv.getControl());
+		grab.applyTo(treeviewer.getControl());
 		
-		whenVisible(tv.getControl(), new Runnable() {
+		whenVisible(treeviewer.getControl(), new Runnable() {
 			public void run() {
 				GSContent preSelect = selection.selection.getValue();
 				if (preSelect!=null) {
-					tv.setSelection(new StructuredSelection(preSelect), true);
+					treeviewer.setSelection(new StructuredSelection(preSelect), true);
 				} else {
-					tv.setSelection(StructuredSelection.EMPTY, true);
+					treeviewer.setSelection(StructuredSelection.EMPTY, true);
+				}
+				if (initialFilterText!=null) {
+					searchBox.setText(initialFilterText);
+					updateFilter();
 				}
 			}
 		});
 		
-		tv.addSelectionChangedListener(new ISelectionChangedListener() {
+		treeviewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
-				ISelection sel = tv.getSelection();
+				ISelection sel = treeviewer.getSelection();
 				if (sel.isEmpty()) {
 					setSelection(null);
 				} else if (sel instanceof IStructuredSelection){
@@ -308,9 +314,7 @@ public class ChooseTypedContentSection extends WizardPageSection {
 		
 		searchBox.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				filter.setSearchTerm(searchBox.getText());
-				tv.refresh();
-				tv.expandAll();
+				updateFilter();
 			}
 		});
 	}
@@ -325,6 +329,24 @@ public class ChooseTypedContentSection extends WizardPageSection {
 		control.addPaintListener(l);
 	}
 
+	public void setFilterText(String text) {
+		if (searchBox!=null) {
+			searchBox.setText(text);
+			updateFilter();
+		} else {
+			//UI isn't there yet so remember the text as intial filter text to be set when
+			// ui is created later.
+			this.initialFilterText = text;
+		}
+	}
+
+	
+	private void updateFilter() {
+		filter.setSearchTerm(searchBox.getText());
+		treeviewer.refresh();
+		treeviewer.expandAll();
+	}
+	
 //	private String[] getLabels() {
 //		String[] labels = new String[options.length]; 
 //		for (int i = 0; i < labels.length; i++) {
