@@ -23,7 +23,7 @@ import org.springsource.ide.eclipse.commons.gettingstarted.preferences.GettingSt
 public class GettingStartedActivator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.springframework.ide.eclipse.gettingstarted"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.springsource.ide.eclipse.commons.gettingstarted"; //$NON-NLS-1$
 
 	// The shared instance
 	private static GettingStartedActivator plugin;
