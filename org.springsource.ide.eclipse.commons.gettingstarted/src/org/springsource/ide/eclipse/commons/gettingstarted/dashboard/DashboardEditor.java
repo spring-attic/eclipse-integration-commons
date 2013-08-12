@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -32,7 +31,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.part.EditorPart;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
-import org.springsource.ide.eclipse.commons.gettingstarted.preferences.URLBookmark;
 import org.springsource.ide.eclipse.dashboard.ui.actions.IDashboardWithPages;
 
 /**
@@ -149,7 +147,7 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 				}
 			}
 		}
-		addDashboardWebPages(pages);
+//		addDashboardWebPages(pages);
 		
 //		try {
 //			pages.add(new GeneratedGuidesDashboardPage());
@@ -171,13 +169,13 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 		customNames = props;
 	}
 
-	private void addDashboardWebPages(List<IDashboardPage> pages) {
-		URLBookmark[] bookmarks = GettingStartedActivator.getDefault().getPreferences().getDashboardWebPages();
-
-		for (URLBookmark bm : bookmarks) {
-			pages.add(new WebDashboardPage(bm.getName(), bm.getUrl()));
-		}
-	}
+//	private void addDashboardWebPages(List<IDashboardPage> pages) {
+//		URLBookmark[] bookmarks = GettingStartedActivator.getDefault().getPreferences().getDashboardWebPages();
+//
+//		for (URLBookmark bm : bookmarks) {
+//			pages.add(new WebDashboardPage(bm.getName(), bm.getUrl()));
+//		}
+//	}
 
 	@Override
 	public void init(IEditorSite site, IEditorInput input) {

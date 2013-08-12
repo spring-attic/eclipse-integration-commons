@@ -15,7 +15,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-import org.springsource.ide.eclipse.commons.gettingstarted.preferences.GettingStartedPreferences;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -28,7 +27,7 @@ public class GettingStartedActivator extends AbstractUIPlugin {
 	// The shared instance
 	private static GettingStartedActivator plugin;
 
-	private GettingStartedPreferences prefs;
+//	private GettingStartedPreferences prefs;
 
 //	private ServiceTracker tracker;
 	
@@ -89,12 +88,12 @@ public class GettingStartedActivator extends AbstractUIPlugin {
 	}
 
 	
-	public GettingStartedPreferences getPreferences() {
-		if (prefs==null) {
-			prefs = new GettingStartedPreferences(InstanceScope.INSTANCE.getNode(GettingStartedActivator.PLUGIN_ID));
-		}
-		return prefs;
-	}
+//	public GettingStartedPreferences getPreferences() {
+//		if (prefs==null) {
+//			prefs = new GettingStartedPreferences(InstanceScope.INSTANCE.getNode(GettingStartedActivator.PLUGIN_ID));
+//		}
+//		return prefs;
+//	}
 	
 //	@SuppressWarnings("unchecked")
 //	public synchronized IProxyService getProxyService() {

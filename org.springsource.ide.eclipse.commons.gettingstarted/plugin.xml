@@ -43,7 +43,10 @@
 		</editor>
 	</extension>
  
-  <!-- Preference page -->
+  <!-- Preference page
+ 
+   Disabled for now. Nothing interesting on this page anymore. 
+   The urls for dash webpages are now better added as links on the landing page.
  
     <extension
       point = "org.eclipse.ui.preferencePages">
@@ -53,6 +56,7 @@
             name="Dashboard (New)">
        </page>
     </extension>
- 
+  
+   --> 
  
 </plugin>
