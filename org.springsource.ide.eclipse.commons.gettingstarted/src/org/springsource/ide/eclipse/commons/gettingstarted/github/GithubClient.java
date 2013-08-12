@@ -126,7 +126,7 @@ public class GithubClient {
 	 * Fetch info about repos under a given organization.
 	 */
 	public Repo[] getOrgRepos(String orgName) {
-		return get("/orgs/{orgName}/repos", Repo[].class, orgName);
+		return get("/orgs/{orgName}/repos?per_page=100", Repo[].class, orgName);
 	}
 	
 	/**

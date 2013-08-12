@@ -170,12 +170,13 @@ public class GettingStartedGuide extends GithubRepoContent {
 	
 	@Override
 	public URL getHomePage() {
-		//Looks like this now: http://sagan.cfapps.io/guides/gs/device-detection/content
+		//Looks like this now:
+		//http://sagan.cfapps.io/guides/gs/spring-boot/
 		try {
 			String gsGuideName = getName();
 			if (gsGuideName.startsWith("gs-")) {
 				String guideName = gsGuideName.substring(3);
-				return new URL("http://sagan.cfapps.io/guides/gs/"+guideName+"/content");
+				return new URL("http://sagan.cfapps.io/guides/gs/"+guideName);
 			}
 		} catch (MalformedURLException e) {
 			GettingStartedActivator.log(e);
