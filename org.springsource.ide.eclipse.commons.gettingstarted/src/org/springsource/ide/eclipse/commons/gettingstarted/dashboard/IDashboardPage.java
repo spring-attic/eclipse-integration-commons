@@ -32,7 +32,7 @@ public interface IDashboardPage {
 	 * Called to create the widgetry on the page. Note that this is only
 	 * called when the page is first made visible (user clicks on the Tab).
 	 */
-	public void createContents(IWorkbenchPartSite site, Composite parent);
+	public void createContents(IWorkbenchPartSite site, DashboardPageContainer container, Composite parent);
 
 	/**
 	 * Called when the dashboard is closed and all pages get disposed.
@@ -45,5 +45,10 @@ public interface IDashboardPage {
 	 * an id. It is ok for pages that aren't targetable by this action to have null ids.
 	 */
 	public String getPageId();
+	
+	/**
+	 * Return true if pages tab should have a close button.
+	 */
+	public boolean canClose();
 	
 }

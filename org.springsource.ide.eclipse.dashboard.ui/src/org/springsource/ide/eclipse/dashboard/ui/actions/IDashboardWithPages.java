@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.dashboard.ui.actions;
 
+
 /**
  * Interface that the new Dashboard implements so that this plugin can call methods on
  * it without creating a direct dependency on the new gettingstarted plugins.

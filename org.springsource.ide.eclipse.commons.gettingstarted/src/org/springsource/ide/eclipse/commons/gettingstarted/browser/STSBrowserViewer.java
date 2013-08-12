@@ -224,7 +224,7 @@ public class STSBrowserViewer extends Composite {
 						}
 
 						public void mouseDown(MouseEvent e) {
-							home();
+							goHome();
 //							setURL("http://www.eclipse.org"); //$NON-NLS-1$
 						}
 
@@ -289,7 +289,7 @@ public class STSBrowserViewer extends Composite {
     /**
      * Navigate to the home URL.
      */
-    public void home() {
+    public void goHome() {
     	if (homeUrl!=null) {
     		browser.setUrl(homeUrl);
     	} else {
@@ -686,7 +686,7 @@ public class STSBrowserViewer extends Composite {
     private void setURL(String url, boolean browse) {
     //    Trace.trace(Trace.FINEST, "setURL: " + url + " " + browse); //$NON-NLS-1$ //$NON-NLS-2$
         if (url == null) {
-            home();
+            goHome();
             return;
         }
 
@@ -796,7 +796,7 @@ public class STSBrowserViewer extends Composite {
 		home.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				home();
+				goHome();
 			}
 		});
 		  
@@ -998,4 +998,5 @@ public class STSBrowserViewer extends Composite {
    	 browser.removeLocationListener(locationListener2);
    	 locationListener2 = null;
     }
+
 }

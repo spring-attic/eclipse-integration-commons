@@ -177,6 +177,11 @@ public class DashboardExtensionsPage extends FormDashboardPage implements IRunna
 		}
 	}
 
+	@Override
+	public boolean canClose() {
+		return false;
+	}
+	
 	public boolean shouldAdd() {
 		String url = ResourceProvider.getUrl(RESOURCE_DISCOVERY_DIRECTORY);
 		return StringUtils.hasText(url);
@@ -647,5 +652,5 @@ public class DashboardExtensionsPage extends FormDashboardPage implements IRunna
 	public String getPageId() {
 		return "extensions";
 	}
-	
+
 }

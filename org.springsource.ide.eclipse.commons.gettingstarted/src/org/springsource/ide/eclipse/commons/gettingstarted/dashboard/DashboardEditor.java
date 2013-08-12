@@ -10,8 +10,14 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.gettingstarted.dashboard;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
@@ -27,7 +33,6 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.part.EditorPart;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.gettingstarted.preferences.URLBookmark;
-
 import org.springsource.ide.eclipse.dashboard.ui.actions.IDashboardWithPages;
 
 /**
@@ -39,46 +44,27 @@ import org.springsource.ide.eclipse.dashboard.ui.actions.IDashboardWithPages;
 public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 	
 	private CTabFolder folder;
-	private DashboardPageContainer[] pages = null; //Lazy initialized
+	
+	/**
+	 * Assigns custom names to some urls that can be displayed in the dashboard.
+	 * This is because the web page titles aren't allways good enough (too long,
+	 * not clear in context etc.).
+	 */
+	private Map<Object, Object> customNames = null;
 	
 	public DashboardEditor() {
 	}
-	
-	public DashboardPageContainer[] getPages() {
-		if (pages==null) {
-			List<IDashboardPage> _pages = createPages();
-			List<DashboardPageContainer> containers = new ArrayList<DashboardPageContainer>(_pages.size());
-			for (IDashboardPage page : _pages) {
-				boolean add = true;
-				if (page instanceof IEnablableDashboardPart) {
-					add = ((IEnablableDashboardPart) page).shouldAdd();
-				}
-				if (add) {
-					containers.add(new DashboardPageContainer(page));
-				}
-			}
-			pages = containers.toArray(new DashboardPageContainer[containers.size()]);
-		}
-		return pages;
-	}
-	
+		
 	public void createPartControl(Composite _parent) {
 		folder = new CTabFolder(_parent, SWT.BOTTOM|SWT.FLAT);
 		CTabItem defaultSelection = null;
-		for (final DashboardPageContainer page : getPages()) {
-			CTabItem pageWidget = new CTabItem(folder, SWT.NONE);
-			if (defaultSelection==null) {
-				defaultSelection = pageWidget; //select the first
+		for (final IDashboardPage page : createPages()) {
+			if (shouldAdd(page)) {
+				CTabItem pageWidget = createPageWidget(page);
+				if (defaultSelection==null) {
+					defaultSelection = pageWidget; //select the first
+				}
 			}
-			pageWidget.setData(page);
-			pageWidget.setText(page.getName());
-			page.setWidget(pageWidget);
-			pageWidget.addDisposeListener(new DisposeListener() {
-				@Override
-				public void widgetDisposed(DisposeEvent e) {
-					page.dispose();
-				} 
-			});
 		}
 		folder.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -88,6 +74,38 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 		});
 		folder.setSelection(defaultSelection);
 		ensureSelectedTabInitialized();
+	}
+
+	
+	private boolean shouldAdd(IDashboardPage page) {
+		if (page instanceof IEnablableDashboardPart) {
+			return ((IEnablableDashboardPart) page).shouldAdd();
+		}
+		return true;
+	}
+
+	/**
+	 * Creates a CTabItem and adds it to the dashboard. The contents of
+	 * the page is provide by an IDashboardPage
+	 */
+	private CTabItem createPageWidget(final IDashboardPage _page) {
+		final DashboardPageContainer page = new DashboardPageContainer(_page);
+		int style = page.canClose() ? SWT.CLOSE : SWT.NONE;
+		CTabItem pageWidget = new CTabItem(folder, style);
+		pageWidget.setData(page);
+		String name = page.getName();
+		if (name==null) {
+			name = "no name";
+		}
+		pageWidget.setText(name);
+		page.setWidget(pageWidget);
+		pageWidget.addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				page.dispose();
+			} 
+		});
+		return pageWidget;
 	}
 	
 	private void ensureSelectedTabInitialized() {
@@ -104,24 +122,40 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 	
 
 	/**
-	 * Called when we need the pages. This will be called only once per
-	 * DashboardEditor instance. Clients should override. This implementation
-	 * is just so there's something here rather than nothing.
+	 * Called when we need the initial pages. This will be called only once per
+	 * DashboardEditor instance. Clients can override to create a different set
+	 * of initial pages.
 	 */
 	protected List<IDashboardPage> createPages() {
 		List<IDashboardPage> pages = new ArrayList<IDashboardPage>();
+		InputStream input = null;
 		try {
-			pages.add(new WelcomeDashboardPage(this));
+			WelcomeDashboardPage mainPage = new WelcomeDashboardPage(this);
+			pages.add(mainPage);
+			String mainUrl = mainPage.getHomeUrl();
+			if (mainUrl.endsWith(".html")) { //It should end with .html but check anyway
+				String propertiesUrl = mainUrl.substring(0, mainUrl.length()-5)+".properties";
+				input = new URL(propertiesUrl).openStream();
+				readCustomNames(input);
+			}
+			
 		} catch (Exception e) {
 			GettingStartedActivator.log(e);
+		} finally {
+			if (input!=null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+				}
+			}
 		}
 		addDashboardWebPages(pages);
 		
-		try {
-			pages.add(new GeneratedGuidesDashboardPage());
-		} catch (Exception e) {
-			GettingStartedActivator.log(e);
-		}
+//		try {
+//			pages.add(new GeneratedGuidesDashboardPage());
+//		} catch (Exception e) {
+//			GettingStartedActivator.log(e);
+//		}
 		
 		pages.add(new DashboardExtensionsPage());
 //		pages.add(new GuidesDashboardPageWithPreview());
@@ -129,6 +163,12 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 //			pages.add(new DemoDashboardPage("Demo "+i, "Contents for page "+i));
 //		}
 		return pages;
+	}
+
+	private void readCustomNames(InputStream input) throws IOException {
+		Properties props = new Properties();
+		props.load(input);
+		customNames = props;
 	}
 
 	private void addDashboardWebPages(List<IDashboardPage> pages) {
@@ -173,18 +213,69 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 
 	@Override
 	public boolean setActivePage(String pageId) {
+		DashboardPageContainer p = getPage(pageId);
+		if (p!=null) {
+			if (pageId.equals(p.getPageId())) {
+				setActivePage(p);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void setActivePage(DashboardPageContainer p) {
+		folder.setSelection(p.getWidget());
+		ensureSelectedTabInitialized();
+	}
+	
+	private DashboardPageContainer getPage(String pageId) {
 		for (CTabItem item : folder.getItems()) {
 			Object _p = item.getData();
 			if (_p instanceof DashboardPageContainer) {
 				DashboardPageContainer p = (DashboardPageContainer)_p;
 				if (pageId.equals(p.getPageId())) {
-					folder.setSelection(item);
-					ensureSelectedTabInitialized();
-					return true;
+					return p;
 				}
 			}
 		}
+		return null;
+	}
+
+	/**
+	 * Try to open a webpage in the dashboard. The url will be used as the 'page-id' for the
+	 * page. If a page with the given id already exists then it will be reused rather than
+	 * creating a new page. 
+	 * @return 
+	 */
+	public boolean openWebPage(String url) {
+		DashboardPageContainer p = getPage(url);
+		if (p!=null) {
+			IDashboardPage _wp = p.getPage();
+			if (_wp instanceof WebDashboardPage) {
+				WebDashboardPage wp = (WebDashboardPage) _wp;
+				wp.goHome();
+				setActivePage(p);
+				return true;
+			}
+		} else {
+			String customName = getCustomName(url);
+			WebDashboardPage page = new WebDashboardPage(customName, url);
+			CTabItem widget = createPageWidget(page);
+			setActivePage((DashboardPageContainer)widget.getData());
+			return true;
+		}
 		return false;
+	}
+
+	private String getCustomName(String url) {
+		try {
+			if (customNames!=null) {
+				return (String) customNames.get(url);
+			}
+		} catch (Exception e) {
+			GettingStartedActivator.log(e);
+		}
+		return null;
 	}
 
 }

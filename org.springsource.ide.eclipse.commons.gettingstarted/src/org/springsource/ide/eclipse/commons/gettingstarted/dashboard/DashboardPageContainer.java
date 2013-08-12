@@ -53,7 +53,7 @@ public class DashboardPageContainer {
 			//To see better where the composite is on the page:
 			//Color color = Display.getDefault().getSystemColor(SWT.COLOR_RED); 
 			//composite.setBackground(color);
-			page.createContents(site, composite);
+			page.createContents(site, this, composite);
 			widget.setControl(composite);
 		}
 	}
@@ -67,5 +67,17 @@ public class DashboardPageContainer {
 
 	public String getPageId() {
 		return page.getPageId();
+	}
+
+	public CTabItem getWidget() {
+		return widget;
+	}
+
+	public IDashboardPage getPage() {
+		return page;
+	}
+
+	public boolean canClose() {
+		return page.canClose();
 	}	
 }

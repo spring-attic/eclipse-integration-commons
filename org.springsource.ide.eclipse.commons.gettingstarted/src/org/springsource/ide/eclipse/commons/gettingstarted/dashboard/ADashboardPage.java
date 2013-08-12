@@ -23,10 +23,12 @@ import org.eclipse.ui.IWorkbenchPartSite;
 public abstract class ADashboardPage implements IDashboardPage {
 
 	private IWorkbenchPartSite site;
+	private DashboardPageContainer container;
 
 	@Override
-	public void createContents(IWorkbenchPartSite site, Composite parent) {
+	public void createContents(IWorkbenchPartSite site, DashboardPageContainer container, Composite parent) {
 		this.site = site;
+		this.container = container;
 		createControl(parent);
 	}
 
@@ -58,5 +60,9 @@ public abstract class ADashboardPage implements IDashboardPage {
 	public String getPageId() {
 		return null;
 	}
-
+	
+	public DashboardPageContainer getContainer() {
+		return container;
+	}
+	
 }

@@ -12,6 +12,9 @@ package org.springsource.ide.eclipse.commons.gettingstarted.dashboard;
 
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.browser.TitleEvent;
+import org.eclipse.swt.browser.TitleListener;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -34,11 +37,11 @@ import org.springsource.ide.eclipse.commons.gettingstarted.browser.STSBrowserVie
  */
 public class WebDashboardPage extends ADashboardPage /* implements IExecutableExtension*/ {
 
-	/**
-	 * Using this ID ensures we only open one 'slave' browser when opening links from within
-	 * a dashboard page.
-	 */
-	public static final String DASHBOARD_SLAVE_BROWSER_ID = WebDashboardPage.class.getName()+".SLAVE";
+//	/**
+//	 * Using this ID ensures we only open one 'slave' browser when opening links from within
+//	 * a dashboard page.
+//	 */
+//	public static final String DASHBOARD_SLAVE_BROWSER_ID = WebDashboardPage.class.getName()+".SLAVE";
 
 	/**
 	 * The URL that will be displayed in this Dashboard webpage.
@@ -49,6 +52,8 @@ public class WebDashboardPage extends ADashboardPage /* implements IExecutableEx
 
 	private Shell shell;
 
+	private STSBrowserViewer browserViewer;
+
 	/**
 	 * Constructor for when this class is used as n {@link IExecutableExtension}. In that case
 	 * setInitializationData method will be called with infos from plugin.xml to fill
@@ -57,6 +62,10 @@ public class WebDashboardPage extends ADashboardPage /* implements IExecutableEx
 	public WebDashboardPage() {
 	}
 	
+	/**
+	 * Name may by null, in that case the name will be set later when the page is loaded
+	 * in the browser (The title from the first page title event is used).
+	 */
 	public WebDashboardPage(String name, String homeUrl) {
 		this.name = name;
 		this.homeUrl = homeUrl;
@@ -80,8 +89,8 @@ public class WebDashboardPage extends ADashboardPage /* implements IExecutableEx
 	public void createControl(Composite parent) {
 		this.shell = parent.getShell();
 		parent.setLayout(new FillLayout());
-		STSBrowserViewer browserViewer = BrowserFactory.create(parent, hasToolbar());
-		Browser browser = browserViewer.getBrowser();
+		browserViewer = BrowserFactory.create(parent, hasToolbar());
+		final Browser browser = browserViewer.getBrowser();
 		if (homeUrl!=null) {
 			browserViewer.setHomeUrl(homeUrl);
 			browserViewer.setURL(homeUrl);
@@ -89,6 +98,17 @@ public class WebDashboardPage extends ADashboardPage /* implements IExecutableEx
 			browser.setText("<h1>URL not set</h1>" +
 					"<p>Url should be provided via the setInitializationData method</p>"
 			);
+		}
+		if (getName()==null) {
+			//Get name from the browser
+			final TitleListener l = new TitleListener() {
+				@Override
+				public void changed(TitleEvent event) {
+					setName(event.title);
+					browser.removeTitleListener(this);
+				}
+			};
+			browser.addTitleListener(l);
 		}
 		addBrowserHooks(browser);
 	}
@@ -112,8 +132,12 @@ public class WebDashboardPage extends ADashboardPage /* implements IExecutableEx
 	/**
 	 * The url of the landing page this dashboard page will show when it is opened.
 	 */
-	public String getUrl() {
+	public String getHomeUrl() {
 		return homeUrl;
+	}
+	
+	public String getPageId() {
+		return getHomeUrl();
 	}
 	
 	/**
@@ -128,15 +152,37 @@ public class WebDashboardPage extends ADashboardPage /* implements IExecutableEx
 		return name;
 	}
 	
-	public void setName(String string) {
-		this.name = string;
+	public void setName(String name) {
+		this.name = name;
+		DashboardPageContainer container = getContainer();
+		if (name!=null && container!=null) {
+			CTabItem widget = container.getWidget();
+			if (widget!=null && !widget.isDisposed()) {
+				widget.setText(name);
+			}
+		}
 	}
-
-
+	
+	@Override
+	public boolean canClose() {
+		return true;
+	}
 	
 	public Shell getShell() {
 		return shell;
 	}
-
+	
+	public void goHome() {
+		browserViewer.goHome();
+	}
+	
+	@Override
+	public void dispose() {
+		if (this.browserViewer!=null) {
+			this.browserViewer.dispose();
+			this.browserViewer = null;
+		}
+		super.dispose();
+	}
 }
  

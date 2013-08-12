@@ -22,8 +22,10 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationEvent;
 import org.eclipse.swt.browser.LocationListener;
+import org.eclipse.ui.internal.browser.WebBrowserPreference;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.gettingstarted.browser.BrowserContext;
+import org.springsource.ide.eclipse.commons.gettingstarted.wizard.GSImportWizard;
 import org.springsource.ide.eclipse.commons.ui.UiUtil;
 
 
@@ -42,6 +44,12 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 	
 	@Override
 	protected boolean hasToolbar() {
+		return false;
+	}
+	
+	@Override
+	public boolean canClose() {
+		//Shouldn't allow closing the main / welcome page.
 		return false;
 	}
 
@@ -65,10 +73,11 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 			// TODO Auto-generated method stub
 		}
 		
-		
+		@SuppressWarnings("restriction")
 		@Override
 		public void changing(LocationEvent event) {
 			System.out.println("Navigation: "+event.location);
+			event.doit = false; //all navigation in welcome page must be intercepted.
 			
 			
 			//Be careful...any  exception thrown out of here have a nasty tendency to deadlock Eclipse 
@@ -80,18 +89,23 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 //				Map<String, String> params = URIParams.parse(uri);
 				IPath path = new Path(uri.getPath());
 				String host = uri.getHost();
+				if (event.location.equals("http://dashboard/guides")) {
+					GSImportWizard.open(getShell(), null, false, true);
+					return;
+				}
 				if (host.equals("dashboard")) {
 					if (dashboard.setActivePage(getPageId(path))) {
-						event.doit = false;
 						return;
 					}
 				}
-				
-				if (!allowNavigation(event.location)) {
-					event.doit = false;
-					System.out.println("Navigation intercepted: "+event.location);
-					UiUtil.openUrl(event.location);
+				if (WebBrowserPreference.getBrowserChoice()==WebBrowserPreference.INTERNAL) {
+					if (dashboard.openWebPage(event.location)) {
+						return;
+					}
 				}
+
+				//Nothing else worked so far, try the most generic way to open a web browser.
+				UiUtil.openUrl(event.location);
 			} catch (Throwable e) {
 				GettingStartedActivator.log(e);
 			}
@@ -106,15 +120,11 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 			return pageId;
 		}
 
-		private boolean allowNavigation(String location) {
-			//any url not should open in a new browser.
-			return false;
-		}
 //
 //		@Override
 //		public void changed(LocationEvent event) {
 //		}
-//
+		
 	}
 		
 	

@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 import org.eclipse.core.net.proxy.IProxyData;
 import org.eclipse.core.net.proxy.IProxyService;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.gettingstarted.github.auth.BasicAuthCredentials;
@@ -156,7 +157,12 @@ public class GithubClient {
 	 * and parse the data into an object of a given type.
 	 */
 	public <T> T get(String url, Class<T> type, Object... vars) {
-		return client.getForObject(addHost(url), type, vars);
+		url = addHost(url);
+		try {
+			return client.getForObject(addHost(url), type, vars);
+		} catch (HttpServerErrorException e) {
+			throw new Error("Error reading: "+url);
+		}
 	}
 
 	protected static String getNormalisedProtocol(String protocol) {

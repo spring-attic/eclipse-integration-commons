@@ -25,8 +25,8 @@ public class GettingStartedPreferences {
 	private static final String DASH_WEB_PAGES = "dashboard_page_urls";
 	public static final URLBookmark[] DEFAULT_DASH_WEB_PAGES = {
 		//Temporary URLs. In future need mechanism to configure/contribute default urls per-product.
-		new URLBookmark("Google", "http://google.ca"),
-		new URLBookmark("News", "http://www.springsource.org/news-events")
+//		new URLBookmark("Google", "http://google.ca"),
+//		new URLBookmark("News", "http://www.springsource.org/news-events")
 	};
 	private IEclipsePreferences store;
 
