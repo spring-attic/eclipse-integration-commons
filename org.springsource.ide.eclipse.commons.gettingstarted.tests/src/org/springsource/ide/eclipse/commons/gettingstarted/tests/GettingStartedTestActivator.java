@@ -19,7 +19,7 @@ import org.osgi.framework.BundleContext;
 public class GettingStartedTestActivator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.springframework.ide.eclipse.gettingstarted.tests"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.springsource.ide.eclipse.commons.gettingstarted.tests"; //$NON-NLS-1$
 
 	// The shared instance
 	private static GettingStartedTestActivator plugin;

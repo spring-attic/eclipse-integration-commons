@@ -22,7 +22,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.springframework.ide.eclipse.gettingstarted"
+         id="org.springsource.ide.eclipse.commons.gettingstarted"
          download-size="0"
          install-size="0"
          version="0.0.0"

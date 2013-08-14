@@ -41,7 +41,7 @@ public class BrowserInitializer {
 	 * its in a plugin fragment. But we log errors in some STS plugin as the errors we are producing
 	 * here are not Eclipse errors and shouldn't look like they are. 
 	 */
-	private static final String PLUGIN_ID = "org.springframework.ide.eclipse.gettingstarted";
+	private static final String PLUGIN_ID = "org.springsource.ide.eclipse.commons.gettingstarted";
 	private static ILog log;
 	
 	/**
