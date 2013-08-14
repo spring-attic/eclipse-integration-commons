@@ -39,6 +39,10 @@ public class MavenStrategy extends ImportStrategy {
 	 * Implements the import by means of 'NewGradleProjectOperation'
 	 */
 	private static class MavenCodeSetImport implements IRunnableWithProgress {
+		
+		//TODO: This import startegy doesn't even read projectName. The name actually comes from the
+		//   maven pom file. Actually makes sense for inport to determine projectName from project
+		//   content. So maybe projectName should not be in an ImportConfig at all!
 
 		private String projectName;
 		private File location;
