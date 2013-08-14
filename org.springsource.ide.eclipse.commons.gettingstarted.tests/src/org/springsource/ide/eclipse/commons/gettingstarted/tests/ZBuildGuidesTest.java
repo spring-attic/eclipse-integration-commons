@@ -67,7 +67,7 @@ public class ZBuildGuidesTest extends GuidesTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		StsTestUtil.setAutoBuilding(false);
-		System.out.println(">>> Setting up "+getName());
+		//System.out.println(">>> Setting up "+getName());
 		//Clean stuff from previous test: Delete any projects and their contents.
 		// We need to do this because imported maven and gradle projects will have the same name.
 		// And this cause clashes / errors.
@@ -80,12 +80,12 @@ public class ZBuildGuidesTest extends GuidesTestCase {
 				}
 			}
 		});
-		System.out.println("<<< Setting up "+getName());
+		//System.out.println("<<< Setting up "+getName());
 	}
 	
 	@Override
 	protected void runTest() throws Throwable {
-		System.out.println(">>> Running "+getName());
+		//System.out.println(">>> Running "+getName());
 		
 		try {
 			System.out.println("=== codeset build test ===");
@@ -111,7 +111,7 @@ public class ZBuildGuidesTest extends GuidesTestCase {
 			//Shorter stacktrace for somewhat nicer looking test failures on bamboo
 			throw ExceptionUtil.getDeepestCause(e);
 		} finally {
-			System.out.println("<<< Running "+getName());
+			//System.out.println("<<< Running "+getName());
 		}
 	}
 	
