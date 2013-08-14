@@ -37,5 +37,6 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.springsource.ide.eclipse.commons.gettingstarted,
  org.springsource.ide.eclipse.commons.gettingstarted.content,
  org.springsource.ide.eclipse.commons.gettingstarted.importing,
- org.springsource.ide.eclipse.commons.gettingstarted.util
+ org.springsource.ide.eclipse.commons.gettingstarted.util,
+ org.springsource.ide.eclipse.commons.gettingstarted.wizard.url
 Eclipse-BundleShape: dir

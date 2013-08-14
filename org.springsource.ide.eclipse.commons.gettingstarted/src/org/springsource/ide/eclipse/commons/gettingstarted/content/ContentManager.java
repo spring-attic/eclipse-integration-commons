@@ -11,6 +11,7 @@
 package org.springsource.ide.eclipse.commons.gettingstarted.content;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,18 +39,22 @@ public class ContentManager {
 	private List<ContentType<?>> types = new ArrayList<ContentType<?>>();
 	
 	public <T extends GSContent> void register(Class<T> klass, String description, ContentProvider<T> provider) {
-		Assert.isLegal(!byClass.containsKey(klass), "A content provider for "+klass+" is already registered");
-		
-		ContentType<T> ctype = new ContentType<T>(klass, description);
-		types.add(ctype);
-		DownloadManager downloader = downloadManagerFor(klass);
-		byClass.put(klass, new TypedContentManager<T>(downloader, provider));
+		try {
+			Assert.isLegal(!byClass.containsKey(klass), "A content provider for "+klass+" is already registered");
+			
+			ContentType<T> ctype = new ContentType<T>(klass, description);
+			types.add(ctype);
+			DownloadManager downloader = downloadManagerFor(klass);
+			byClass.put(klass, new TypedContentManager<T>(downloader, provider));
+		} catch (Throwable e) {
+			GettingStartedActivator.log(e);
+		}
 	}
 	
 	/**
 	 * Factory method to create a DownloadManager for a given content type name
 	 */
-	public DownloadManager downloadManagerFor(Class<?> contentType) {
+	public DownloadManager downloadManagerFor(Class<?> contentType) throws IllegalStateException, IOException {
 		return new DownloadManager(new AuthenticatedDownloader(), 
 				new File(
 						GettingStartedActivator.getDefault().getStateLocation().toFile(),

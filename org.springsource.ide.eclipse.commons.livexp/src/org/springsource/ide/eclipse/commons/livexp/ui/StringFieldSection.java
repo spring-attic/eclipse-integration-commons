@@ -32,6 +32,7 @@ public class StringFieldSection extends WizardPageSection {
 	
 	/// options 
 	private String labelText; //what text to use for the label of the field
+	private String tooltip = null; // what text to use for tooltip
 	
 	/// model elements 
 	private final LiveVariable<String> variable;
@@ -39,6 +40,7 @@ public class StringFieldSection extends WizardPageSection {
 	
 	/// UI elements
 	private Text text;
+
 	
 	//////////////////////////////
 
@@ -97,5 +99,15 @@ public class StringFieldSection extends WizardPageSection {
 				}
 			}
 		});
+        
+        if (tooltip!=null) {
+        	label.setToolTipText(tooltip);
+        	text.setToolTipText(tooltip);
+        }
+	}
+
+	public StringFieldSection tooltip(String string) {
+		this.tooltip = string;
+		return this;
 	}
 }

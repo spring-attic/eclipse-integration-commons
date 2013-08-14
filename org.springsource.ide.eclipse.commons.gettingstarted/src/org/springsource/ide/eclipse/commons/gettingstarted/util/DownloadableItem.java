@@ -95,6 +95,7 @@ public class DownloadableItem {
 				MessageDigest sha1encoder = MessageDigest.getInstance("sha1");
 				byte[] bytes = sha1encoder.digest((""+getURL()).getBytes());
 				name = new String(Base64.encodeBase64(bytes));
+				name = name.replace('/', '_'); //slashes are trouble in file names.
 			} catch (NoSuchAlgorithmException e) {
 				//This should not be possible
 				throw new Error(e);

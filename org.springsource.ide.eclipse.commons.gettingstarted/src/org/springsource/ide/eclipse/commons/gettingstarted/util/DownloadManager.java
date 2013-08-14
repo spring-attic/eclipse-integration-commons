@@ -18,9 +18,11 @@ import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Display;
+import org.springsource.ide.eclipse.commons.core.FileUtil;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 
 /**
@@ -50,13 +52,33 @@ public class DownloadManager {
 
 	private final File cacheDirectory;
 	private DownloadService downloader;
+	private boolean deleteCacheOnDispose = false;
+	private boolean allowUIThread = false;
 
-	public DownloadManager(DownloadService downloader, File cacheDir) {
+	public DownloadManager(DownloadService downloader, File cacheDir) throws IOException {
+		if (cacheDir==null) {
+			cacheDir = FileUtil.createTempDirectory("downloadCache");
+		}
 		this.downloader = downloader;
 		this.cacheDirectory = cacheDir;
 		if (!cacheDir.isDirectory()) {
 			Assert.isTrue(cacheDir.mkdirs(), "Couldn't create cache directory at "+cacheDir);
 		}
+	}
+
+	/**
+	 * Create a Default downloadmanager. This downloadmanager does not use authentication and
+	 * simply uses standard JavaApi to fetch url content.
+	 * <p>
+	 * A new temp directory is created to use as the cache directory.
+	 * <p>
+	 * When this DownloadManager is disposed the cache directory is deleted (since the next
+	 * DownloadManager created in this way will use a different cache dir anyway there isn't
+	 * much use leaving it around).
+	 */
+	public DownloadManager() throws IOException {
+		this(new SimpleDownloadService(), null);
+		this.deleteCacheOnDispose = true;
 	}
 
 	/**
@@ -70,7 +92,7 @@ public class DownloadManager {
 			return target;
 		}
 		
-		if (Display.getCurrent()!=null) {
+		if (!allowUIThread && Display.getCurrent()!=null) {
 			throw new UIThreadDownloadDisallowed("Don't call download manager from the UI Thread unless the data is already cached.");
 		}
 //				
@@ -165,6 +187,25 @@ public class DownloadManager {
 			GettingStartedActivator.log(e);
 		}
 		return false;
+	}
+
+	/**
+	 * Dispose this download manager. Optionally delete its cache directory as well.
+	 */
+	public void dispose() {
+		if (deleteCacheOnDispose) {
+			FileUtils.deleteQuietly(cacheDirectory);
+			deleteCacheOnDispose = false;
+		}
+	}
+	
+	/**
+	 * If this is false, an exception will be thrown if download is attempted on 
+	 * the UI thread. The default value is false.
+	 */
+	public DownloadManager allowUIThread(boolean allow) {
+		allowUIThread = allow;
+		return this;
 	}
 
 }

@@ -11,6 +11,7 @@
 package org.springsource.ide.eclipse.commons.gettingstarted.content;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.gettingstarted.github.auth.AuthenticatedDownloader;
@@ -47,7 +48,7 @@ class TypedContentManager<T> {
 	/**
 	 * Factory method to create a DownloadManager for a given content type name
 	 */
-	public static DownloadManager downloadManagerFor(String contentTypeName) {
+	public static DownloadManager downloadManagerFor(String contentTypeName) throws IOException {
 		return new DownloadManager(new AuthenticatedDownloader(), 
 				new File(
 						GettingStartedActivator.getDefault().getStateLocation().toFile(),

@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp;
 
-import org.osgi.framework.BundleActivator;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-public class Activator implements BundleActivator {
+public class Activator extends AbstractUIPlugin {
 
+	private static Activator plugin = null;
 	private static BundleContext context;
 
 	static BundleContext getContext() {
@@ -27,6 +28,7 @@ public class Activator implements BundleActivator {
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
+		plugin = this;
 	}
 
 	/*
@@ -35,6 +37,11 @@ public class Activator implements BundleActivator {
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
 		Activator.context = null;
+		plugin = null;
+	}
+	
+	public static Activator getDefault() {
+		return plugin;
 	}
 
 }
