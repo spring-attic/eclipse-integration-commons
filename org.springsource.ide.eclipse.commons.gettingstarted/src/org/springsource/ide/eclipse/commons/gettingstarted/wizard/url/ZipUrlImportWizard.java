@@ -53,7 +53,7 @@ public class ZipUrlImportWizard extends Wizard implements INewWizard {
 	public class PageOne extends WizardPageWithSections {
 
 		protected PageOne() {
-			super("page1", "New Spring Initializer Project", null);
+			super("page1", "Import Spring Initializer Project", null);
 		}
 
 		@Override
