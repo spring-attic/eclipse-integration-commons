@@ -85,7 +85,6 @@ public class ChooseMultipleSection<T extends Ilabelable> extends WizardPageSecti
 		tv.setCheckedElements(chosen.getValues().toArray());
 		
 		tv.addCheckStateListener(new ICheckStateListener() {
-			@Override
 			public void checkStateChanged(CheckStateChangedEvent event) {
 				@SuppressWarnings("unchecked")
 				T e = (T) event.getElement();
@@ -100,7 +99,6 @@ public class ChooseMultipleSection<T extends Ilabelable> extends WizardPageSecti
 		
 		if (DEBUG) {
 			chosen.addListener(new ValueListener<Set<T>>() {
-				@Override
 				public void gotValue(LiveExpression<Set<T>> exp, Set<T> value) {
 					System.out.println(">>>> starters");
 					for (T e : value) {
@@ -114,13 +112,10 @@ public class ChooseMultipleSection<T extends Ilabelable> extends WizardPageSecti
 	}
 
 	class ContentProvider implements IStructuredContentProvider {
-		@Override
 		public void dispose() {
 		}
-		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		}
-		@Override
 		public Object[] getElements(Object inputElement) {
 			return validChoices;
 		}
@@ -128,30 +123,24 @@ public class ChooseMultipleSection<T extends Ilabelable> extends WizardPageSecti
 	
 	public class LabelProvider implements ILabelProvider {
 
-		@Override
 		public void addListener(ILabelProviderListener listener) {
 		}
 
-		@Override
 		public void dispose() {
 		}
 
-		@Override
 		public boolean isLabelProperty(Object element, String property) {
 			return false;
 		}
 
-		@Override
 		public void removeListener(ILabelProviderListener listener) {
 		}
 
-		@Override
 		public Image getImage(Object element) {
 			//no image
 			return null;
 		}
 
-		@Override
 		public String getText(Object element) {
 			if (element instanceof Ilabelable) {
 				return ((Ilabelable) element).getLabel();
