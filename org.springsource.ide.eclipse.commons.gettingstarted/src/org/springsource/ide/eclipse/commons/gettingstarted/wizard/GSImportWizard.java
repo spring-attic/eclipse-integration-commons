@@ -10,17 +10,13 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.gettingstarted.wizard;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -30,7 +26,6 @@ import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
 import org.springframework.ide.eclipse.wizard.WizardImages;
 import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
-import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.gettingstarted.content.ContentManager;
 import org.springsource.ide.eclipse.commons.gettingstarted.content.GSContent;
 import org.springsource.ide.eclipse.commons.gettingstarted.content.GSZipFileCodeSet;
@@ -53,7 +48,7 @@ public class GSImportWizard extends Wizard implements IImportWizard {
 	
 	public GSImportWizard() {
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(WizardImages.TEMPLATE_WIZARD_ICON);
+		setDefaultPageImageDescriptor(IMAGE);
 	}
 	
 	private static final ImageDescriptor IMAGE = WizardImages.TEMPLATE_WIZARD_ICON;
