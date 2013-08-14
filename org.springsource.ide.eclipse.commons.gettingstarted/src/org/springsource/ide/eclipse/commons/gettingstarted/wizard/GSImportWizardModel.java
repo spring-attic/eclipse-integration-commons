@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.gettingstarted.wizard;
 
+import static org.springsource.ide.eclipse.commons.ui.UiUtil.openUrl;
+
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.HashSet;
@@ -31,18 +33,15 @@ import org.springsource.ide.eclipse.commons.gettingstarted.content.Describable;
 import org.springsource.ide.eclipse.commons.gettingstarted.content.GSContent;
 import org.springsource.ide.eclipse.commons.gettingstarted.content.GettingStartedContent;
 import org.springsource.ide.eclipse.commons.gettingstarted.content.GettingStartedGuide;
-import org.springsource.ide.eclipse.commons.gettingstarted.content.GithubRepoContent;
-import org.springsource.ide.eclipse.commons.gettingstarted.dashboard.WebDashboardPage;
 import org.springsource.ide.eclipse.commons.gettingstarted.importing.ImportConfiguration;
 import org.springsource.ide.eclipse.commons.gettingstarted.importing.ImportStrategy;
 import org.springsource.ide.eclipse.commons.gettingstarted.importing.ImportUtils;
 import org.springsource.ide.eclipse.commons.gettingstarted.util.UIThreadDownloadDisallowed;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
+import org.springsource.ide.eclipse.commons.livexp.core.LiveSet;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.Validator;
-
-import static org.springsource.ide.eclipse.commons.ui.UiUtil.openUrl;
 
 /**
  * Core counterpart of GSImportWizard (essentially this is a 'model' for the wizard

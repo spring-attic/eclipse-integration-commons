@@ -11,6 +11,7 @@
 package org.springsource.ide.eclipse.commons.gettingstarted.wizard;
 
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
+import org.springsource.ide.eclipse.commons.livexp.core.LiveSet;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 
 /**
