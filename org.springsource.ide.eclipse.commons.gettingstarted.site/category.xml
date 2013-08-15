@@ -21,6 +21,12 @@
 		id="org.springsource.ide.eclipse.commons.gettingstarted.feature" version="3.4.0.qualifier">
 		<category name="Spring Getting Started Integration" />
 	</feature>
+
+	<!-- some api changes in livesp so need to bundle it up as well -->	
+	<bundle id="org.springsource.ide.eclipse.commons.livexp" version="0.0.0">
+	  <category name="Spring Getting Started Integration"/>
+	</bundle>
+	
 	
 	<!-- external dependencies -->
 	
@@ -30,6 +36,5 @@
 	<bundle id="org.apache.commons.io" version="0.0.0"/>
 	<bundle id="org.apache.httpcomponents.httpcore" version="0.0.0"/>
 	<bundle id="org.apache.httpcomponents.httpclient" version="0.0.0"/>
-	<bundle id="org.springsource.ide.eclipse.commons.livexp" version="0.0.0"/>
 
 </site>
