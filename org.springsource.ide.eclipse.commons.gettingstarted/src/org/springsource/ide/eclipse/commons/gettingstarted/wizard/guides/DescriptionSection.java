@@ -11,17 +11,21 @@
 package org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides;
 
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.Validator;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 import org.springsource.ide.eclipse.commons.livexp.ui.IPageWithSections;
+import org.springsource.ide.eclipse.commons.livexp.ui.UIConstants;
 import org.springsource.ide.eclipse.commons.livexp.ui.WizardPageSection;
 
 /**
@@ -30,6 +34,7 @@ import org.springsource.ide.eclipse.commons.livexp.ui.WizardPageSection;
 public class DescriptionSection extends WizardPageSection {
 
 	private LiveExpression<String> model;
+	private String label;
 
 	public DescriptionSection(IPageWithSections owner, LiveExpression<String> description) {
 		super(owner);
@@ -43,13 +48,23 @@ public class DescriptionSection extends WizardPageSection {
 
 	@Override
 	public void createContents(Composite page) {
-//		Composite field = new Composite(page, SWT.NONE);
-//		GridLayout layout = GridLayoutFactory.fillDefaults().numColumns(2).create();
-//		field.setLayout(layout);
-//		Label fieldNameLabel = new Label(field, SWT.NONE);
-//		fieldNameLabel.setText("Description");
+		Composite composite;
+		if (label!=null) {
+			composite = new Composite(page, SWT.NONE);
+			GridLayout layout = GridLayoutFactory.fillDefaults().numColumns(2).margins(0, 0).create();
+			composite.setLayout(layout);
+			Label fieldNameLabel = new Label(composite, SWT.NONE);
+			fieldNameLabel.setText(label);
+			GridDataFactory.fillDefaults()
+				.align(SWT.BEGINNING, SWT.BEGINNING)
+				.hint(UIConstants.FIELD_LABEL_WIDTH_HINT, SWT.DEFAULT)
+				.applyTo(fieldNameLabel);
+			GridDataFactory.fillDefaults().grab(true, false).applyTo(composite);
+		} else {
+			composite = page;
+		}
 		
-		final Text text = new Text(page, SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER | SWT.READ_ONLY);
+		final Text text = new Text(composite, SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER | SWT.READ_ONLY);
 		
 		//Determine vertical space so there's enough room for about 5 lines of text
 		GC gc = new GC(text);
@@ -76,6 +91,11 @@ public class DescriptionSection extends WizardPageSection {
 				text.setText(value);
 			}
 		});
+	}
+
+	public DescriptionSection label(String label) {
+		this.label = label;
+		return this;
 	}
 
 }

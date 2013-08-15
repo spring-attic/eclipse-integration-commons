@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.boot;
 
+import static org.springsource.ide.eclipse.commons.livexp.ui.ProjectLocationSection.getDefaultProjectLocation;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -23,21 +24,17 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.gettingstarted.content.BuildType;
 import org.springsource.ide.eclipse.commons.gettingstarted.content.CodeSet;
-import org.springsource.ide.eclipse.commons.gettingstarted.content.GSContent;
-import org.springsource.ide.eclipse.commons.gettingstarted.content.ZipFileCodeSet;
 import org.springsource.ide.eclipse.commons.gettingstarted.importing.ImportUtils;
 import org.springsource.ide.eclipse.commons.gettingstarted.util.DownloadManager;
 import org.springsource.ide.eclipse.commons.gettingstarted.util.DownloadableItem;
-import org.springsource.ide.eclipse.commons.gettingstarted.util.UIThreadDownloadDisallowed;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
+import org.springsource.ide.eclipse.commons.livexp.core.StringFieldModel;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
+import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 import org.springsource.ide.eclipse.commons.livexp.core.validators.NewProjectLocationValidator;
 import org.springsource.ide.eclipse.commons.livexp.core.validators.NewProjectNameValidator;
 import org.springsource.ide.eclipse.commons.livexp.core.validators.UrlValidator;
-
-import static org.springsource.ide.eclipse.commons.livexp.ui.ProjectLocationSection.getDefaultProjectLocation;
-import static org.springsource.ide.eclipse.commons.ui.UiUtil.openUrl;
 
 /**
  * A ZipUrlImportWizard is a simple wizard in which one can paste a url
@@ -46,25 +43,44 @@ import static org.springsource.ide.eclipse.commons.ui.UiUtil.openUrl;
  */
 public class NewSpringBootWizardModel {
 	
-	public final LiveVariable<String> url = new LiveVariable<String>("http://initializr.cfapps.io/starter.zip");
-	public final LiveExpression<ValidationResult> urlValidator = new UrlValidator("Zip Url", url);
+	private static final String DEFAULT_URL = "http://initializr.cfapps.io/starter.zip";
+	
+	public final LiveVariable<String> baseUrl = new LiveVariable<String>(DEFAULT_URL);
+	
+	public final LiveExpression<ValidationResult> baseUrlValidator = new UrlValidator("Base Url", baseUrl);
 	
 	//todo: maybe project name can be derived from the zip file contents (pom.xml <name> tag).
 	
-	public final LiveVariable<String> projectName = new LiveVariable<String>("initializer-demo");
-	public final NewProjectNameValidator projectNameValidator = new NewProjectNameValidator(projectName); 
+	public final StringFieldModel projectName = new StringFieldModel("name", "initializer-demo")
+		.label("Project Name");
+	{
+		projectName.validator(new NewProjectNameValidator(projectName.getVariable()));
+	}
 	
 	public final LiveVariable<String> location = new LiveVariable<String>(getDefaultProjectLocation(projectName.getValue()));
-	public final NewProjectLocationValidator locationValidator = new NewProjectLocationValidator("Location", location, projectName);
+	public final NewProjectLocationValidator locationValidator = new NewProjectLocationValidator("Location", location, projectName.getVariable());
+	
 	private boolean allowUIThread = false;
+
+	public final LiveVariable<String> downloadUrl = new LiveVariable<String>();
+	{ 
+		UrlMaker computedUrl = new UrlMaker(baseUrl).addField(projectName);
+		computedUrl.addListener(new ValueListener<String>() {
+			public void gotValue(LiveExpression<String> exp, String value) {
+				downloadUrl.setValue(value);
+			}
+		});
+	}
+		
+
 	
 	public void performFinish(IProgressMonitor mon) throws InvocationTargetException, InterruptedException {
-		mon.beginTask("Importing "+url, 1);
+		mon.beginTask("Importing "+baseUrl, 1);
 		DownloadManager downloader = null;
 		try {
 			downloader = new DownloadManager().allowUIThread(allowUIThread);
 			
-			DownloadableItem zip = new DownloadableItem(newURL(url.getValue()), downloader);
+			DownloadableItem zip = new DownloadableItem(newURL(downloadUrl .getValue()), downloader);
 			CodeSet cs = CodeSet.fromZip(projectName.getValue(), zip, new Path("/"));
 			
 			IRunnableWithProgress oper = BuildType.MAVEN.getImportStrategy().createOperation(ImportUtils.importConfig(

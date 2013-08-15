@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
+import static org.springsource.ide.eclipse.commons.livexp.ui.UIConstants.FIELD_LABEL_WIDTH_HINT;
+
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -21,10 +23,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
+import org.springsource.ide.eclipse.commons.livexp.core.StringFieldModel;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
-
-import static org.springsource.ide.eclipse.commons.livexp.ui.UIConstants.*;
 
 public class StringFieldSection extends WizardPageSection {
 
@@ -52,6 +53,10 @@ public class StringFieldSection extends WizardPageSection {
 		this.labelText = labelText;
 		this.variable = variable;
 		this.validator = validator;
+	}
+
+	public StringFieldSection(IPageWithSections owner, StringFieldModel field) {
+		this(owner, field.getLabel(), field.getVariable(), field.getValidator());
 	}
 
 	@Override
@@ -110,4 +115,5 @@ public class StringFieldSection extends WizardPageSection {
 		this.tooltip = string;
 		return this;
 	}
+	
 }

@@ -24,6 +24,8 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.springframework.ide.eclipse.wizard.WizardImages;
 import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
+import org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.DescriptionSection;
+import org.springsource.ide.eclipse.commons.livexp.core.Validator;
 import org.springsource.ide.eclipse.commons.livexp.ui.ProjectLocationSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.StringFieldSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.WizardPageSection;
@@ -59,11 +61,13 @@ public class NewSpringBootWizard extends Wizard implements INewWizard {
 		@Override
 		protected List<WizardPageSection> createSections() {
 			List<WizardPageSection> sections = new ArrayList<WizardPageSection>();
-			sections.add(new StringFieldSection(this, "Project Name", model.projectName, model.projectNameValidator));
-			sections.add(new ProjectLocationSection(this, model.location, model.projectName, model.locationValidator));
-			sections.add(new StringFieldSection(this, "Zip Url", model.url, model.urlValidator)
-				.tooltip("Paste a generated project Zip URL from http://initializr.cfapps.io/")
-			);
+			sections.add(new StringFieldSection(this, model.projectName));
+			sections.add(new ProjectLocationSection(this, model.location, model.projectName.getVariable(), model.locationValidator));
+			
+			sections.add(new StringFieldSection(this, "Base Url", model.baseUrl, model.baseUrlValidator));
+//				.tooltip("Paste a generated project Zip URL from http://initializr.cfapps.io/")
+//			);
+			sections.add(new StringFieldSection(this, "Download", model.downloadUrl, Validator.OK));
 			
 			return sections;
 		}
