@@ -15,12 +15,12 @@ import junit.framework.TestCase;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.springsource.ide.eclipse.commons.gettingstarted.wizard.url.ZipUrlImportWizardModel;
+import org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.boot.NewSpringBootWizardModel;
 
 public class ZipUrlImportWizardTest extends TestCase {
 	
 	public void testImportBasic() throws Exception {
-		ZipUrlImportWizardModel wizard = new ZipUrlImportWizardModel();
+		NewSpringBootWizardModel wizard = new NewSpringBootWizardModel();
 		wizard.allowUIThread(true);
 		wizard.performFinish(new NullProgressMonitor());
 		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(wizard.projectName.getValue());

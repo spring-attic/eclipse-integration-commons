@@ -1,3 +1,4 @@
+package org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides;
 ///*******************************************************************************
 // * Copyright (c) 2013 GoPivotal, Inc.
 // * All rights reserved. This program and the accompanying materials

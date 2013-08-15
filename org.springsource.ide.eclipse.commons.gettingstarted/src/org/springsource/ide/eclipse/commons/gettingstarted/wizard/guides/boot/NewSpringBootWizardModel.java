@@ -8,7 +8,7 @@
  * Contributors:
  *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.gettingstarted.wizard.url;
+package org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.boot;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -44,7 +44,7 @@ import static org.springsource.ide.eclipse.commons.ui.UiUtil.openUrl;
  * pointing to a zip file. The zip file is supposed to contain a maven (or gradle)
  * project in the root of the zip.
  */
-public class ZipUrlImportWizardModel {
+public class NewSpringBootWizardModel {
 	
 	public final LiveVariable<String> url = new LiveVariable<String>("http://initializr.cfapps.io/starter.zip");
 	public final LiveExpression<ValidationResult> urlValidator = new UrlValidator("Zip Url", url);

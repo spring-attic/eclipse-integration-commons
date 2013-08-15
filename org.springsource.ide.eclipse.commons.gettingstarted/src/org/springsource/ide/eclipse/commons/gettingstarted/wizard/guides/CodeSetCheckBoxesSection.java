@@ -8,7 +8,7 @@
  * Contributors:
  * VMWare, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.gettingstarted.wizard;
+package org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides;
 
 import java.util.HashSet;
 

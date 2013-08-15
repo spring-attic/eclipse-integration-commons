@@ -8,7 +8,7 @@
  * Contributors:
  *    GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.gettingstarted.wizard;
+package org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides;
 
 import org.eclipse.jface.viewers.LabelProvider;
 import org.springsource.ide.eclipse.commons.livexp.ui.IPageWithSections;

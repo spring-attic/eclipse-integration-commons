@@ -38,5 +38,5 @@ Export-Package: org.springsource.ide.eclipse.commons.gettingstarted,
  org.springsource.ide.eclipse.commons.gettingstarted.content,
  org.springsource.ide.eclipse.commons.gettingstarted.importing,
  org.springsource.ide.eclipse.commons.gettingstarted.util,
- org.springsource.ide.eclipse.commons.gettingstarted.wizard.url
+ org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.boot
 Eclipse-BundleShape: dir

@@ -20,7 +20,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.springsource.ide.eclipse.commons.gettingstarted.content.GettingStartedContent;
 import org.springsource.ide.eclipse.commons.gettingstarted.content.GettingStartedGuide;
-import org.springsource.ide.eclipse.commons.gettingstarted.wizard.GSImportWizard;
+import org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.GSImportWizard;
 
 public class BrowserCusomizer extends BrowserContext {
 

@@ -8,7 +8,7 @@
  * Contributors:
  *    GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.gettingstarted.wizard;
+package org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides;
 
 import java.util.ArrayList;
 import java.util.List;

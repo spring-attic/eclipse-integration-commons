@@ -16,7 +16,7 @@ import java.util.List;
 import org.springsource.ide.eclipse.commons.gettingstarted.util.DownloadManager;
 import org.springsource.ide.eclipse.commons.gettingstarted.util.DownloadableItem;
 import org.springsource.ide.eclipse.commons.gettingstarted.util.UIThreadDownloadDisallowed;
-import org.springsource.ide.eclipse.commons.gettingstarted.wizard.GSImportWizard;
+import org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.GSImportWizard;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 
 /**

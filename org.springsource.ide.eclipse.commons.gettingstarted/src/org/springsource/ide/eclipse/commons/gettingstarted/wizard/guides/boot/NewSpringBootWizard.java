@@ -8,7 +8,7 @@
  * Contributors:
  *    GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.gettingstarted.wizard.url;
+package org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.boot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +29,14 @@ import org.springsource.ide.eclipse.commons.livexp.ui.StringFieldSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.WizardPageSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.WizardPageWithSections;
 
-public class ZipUrlImportWizard extends Wizard implements INewWizard {
+public class NewSpringBootWizard extends Wizard implements INewWizard {
 	
 	private static final ImageDescriptor IMAGE = WizardImages.TEMPLATE_WIZARD_ICON;
 	   //TODO: Get our own icon for GSG wizard
 	
-	private ZipUrlImportWizardModel model = new ZipUrlImportWizardModel();
+	private NewSpringBootWizardModel model = new NewSpringBootWizardModel();
 	
-	public ZipUrlImportWizard() {
+	public NewSpringBootWizard() {
 		setDefaultPageImageDescriptor(IMAGE);
 	}
 	

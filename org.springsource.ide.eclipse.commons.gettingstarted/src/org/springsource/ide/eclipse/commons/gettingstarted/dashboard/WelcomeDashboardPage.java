@@ -25,7 +25,7 @@ import org.eclipse.swt.browser.LocationListener;
 import org.eclipse.ui.internal.browser.WebBrowserPreference;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.gettingstarted.browser.BrowserContext;
-import org.springsource.ide.eclipse.commons.gettingstarted.wizard.GSImportWizard;
+import org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.GSImportWizard;
 import org.springsource.ide.eclipse.commons.ui.UiUtil;
 
 

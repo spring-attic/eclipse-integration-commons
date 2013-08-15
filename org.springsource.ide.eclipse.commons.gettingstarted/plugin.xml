@@ -5,7 +5,7 @@
      point="org.eclipse.ui.importWizards"> 
       <wizard
             category="org.springsource.ide.eclipse.gettingstarted.wizards.import.category"
-            class="org.springsource.ide.eclipse.commons.gettingstarted.wizard.GSImportWizard"
+            class="org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.GSImportWizard"
             icon="resources/icons/guide-import.png"
             id="org.springsource.ide.eclipse.gettingstarted.wizards.import.generic"
             name="Getting Started Content"> 
@@ -17,7 +17,7 @@
       
       <wizard
             category="org.springsource.ide.eclipse.gettingstarted.wizards.import.category"
-            class="org.springsource.ide.eclipse.commons.gettingstarted.wizard.url.ZipUrlImportWizard"
+            class="org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.boot.NewSpringBootWizard"
             icon="resources/icons/initializer-import.png"
             id="org.springsource.ide.eclipse.gettingstarted.wizards.import.generic"
             name="Spring Initializer Zip"> 
