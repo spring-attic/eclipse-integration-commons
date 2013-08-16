@@ -8,7 +8,7 @@
  * Contributors:
  *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.boot;
+package org.springsource.ide.eclipse.commons.gettingstarted.wizard.boot;
 
 import java.lang.reflect.Array;
 import java.util.Collection;

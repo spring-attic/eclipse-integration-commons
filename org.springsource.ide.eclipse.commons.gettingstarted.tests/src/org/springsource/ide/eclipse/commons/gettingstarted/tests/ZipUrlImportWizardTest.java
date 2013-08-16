@@ -15,7 +15,7 @@ import junit.framework.TestCase;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.boot.NewSpringBootWizardModel;
+import org.springsource.ide.eclipse.commons.gettingstarted.wizard.boot.NewSpringBootWizardModel;
 
 public class ZipUrlImportWizardTest extends TestCase {
 	

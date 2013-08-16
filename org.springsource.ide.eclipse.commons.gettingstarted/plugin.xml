@@ -17,7 +17,7 @@
       
       <wizard
             category="org.springsource.ide.eclipse.gettingstarted.wizards.import.category"
-            class="org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.boot.NewSpringBootWizard"
+            class="org.springsource.ide.eclipse.commons.gettingstarted.wizard.boot.NewSpringBootWizard"
             icon="resources/icons/initializer-import.png"
             id="org.springsource.ide.eclipse.gettingstarted.wizards.import.generic"
             name="Spring Initializer Zip"> 
