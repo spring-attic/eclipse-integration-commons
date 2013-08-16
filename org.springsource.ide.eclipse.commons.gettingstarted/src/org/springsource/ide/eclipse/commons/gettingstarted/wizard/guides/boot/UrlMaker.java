@@ -18,7 +18,6 @@ import org.apache.http.client.utils.URIBuilder;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.livexp.core.FieldModel;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
-import org.springsource.ide.eclipse.commons.livexp.core.StringFieldModel;
 
 /** 
  * LiveExpression that computes a URL String based on a number of input fields.
