@@ -57,6 +57,5 @@ public abstract class FieldModel<T> {
 	public LiveVariable<T> getVariable() {
 		return variable;
 	}
-		
 
 }

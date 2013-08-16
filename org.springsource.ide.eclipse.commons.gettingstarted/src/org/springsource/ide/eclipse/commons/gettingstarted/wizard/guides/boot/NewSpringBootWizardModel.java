@@ -65,6 +65,14 @@ public class NewSpringBootWizardModel {
 			new StringFieldModel("packageName", "demo").label("Package")
 	);
 	
+	public final MultiSelectionFieldModel<String> style = new MultiSelectionFieldModel<String>(String.class, "style")
+		.label("Style")
+		.choice("Standard", "")
+		.choice("Web", "web")
+		.choice("Actuator", "actuator")
+		.choice("Batch", "batch")
+		.choice("JPS", "jpa");
+	
 	public final LiveVariable<String> location = new LiveVariable<String>(getDefaultProjectLocation(projectName.getValue()));
 	public final NewProjectLocationValidator locationValidator = new NewProjectLocationValidator("Location", location, projectName.getVariable());
 	
@@ -79,14 +87,13 @@ public class NewSpringBootWizardModel {
 		for (FieldModel<String> param : stringInputs) {
 			computedUrl.addField(param);
 		}
+		computedUrl.addField(style);
 		computedUrl.addListener(new ValueListener<String>() {
 			public void gotValue(LiveExpression<String> exp, String value) {
 				downloadUrl.setValue(value);
 			}
 		});
 	}
-		
-
 	
 	public void performFinish(IProgressMonitor mon) throws InvocationTargetException, InterruptedException {
 		mon.beginTask("Importing "+baseUrl, 1);

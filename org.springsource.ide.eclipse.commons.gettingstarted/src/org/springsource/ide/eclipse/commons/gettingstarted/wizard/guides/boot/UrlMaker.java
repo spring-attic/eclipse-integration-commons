@@ -26,6 +26,8 @@ import org.springsource.ide.eclipse.commons.livexp.core.StringFieldModel;
 public class UrlMaker extends LiveExpression<String> {
 
 	private List<FieldModel<String>> inputs = new ArrayList<FieldModel<String>>();
+	private List<MultiSelectionFieldModel<String>> multiInputs = new ArrayList<MultiSelectionFieldModel<String>>();
+	
 	private LiveExpression<String> baseUrl;
 	
 	public UrlMaker(String baseUrl) {
@@ -40,6 +42,12 @@ public class UrlMaker extends LiveExpression<String> {
 	public UrlMaker addField(FieldModel<String> param) {
 		inputs.add(param);
 		dependsOn(param.getVariable()); //Recompute my value when the input changes.
+		return this;
+	}
+
+	public UrlMaker addField(MultiSelectionFieldModel<String> param) {
+		multiInputs.add(param);
+		dependsOn(param.getSelecteds()); //Recompute my value when the input changes.
 		return this;
 	}
 	
@@ -59,6 +67,14 @@ public class UrlMaker extends LiveExpression<String> {
 					builder.addParameter(f.getName(), paramValue);
 				}
 			}
+			
+			for (MultiSelectionFieldModel<String> mf : multiInputs) {
+				String name = mf.getName();
+				for (String selectedValue : mf.getSelecteds().getValues()) {
+					builder.addParameter(name, selectedValue);
+				}
+			}
+			
 			return builder.toString();
 		} catch (URISyntaxException e) {
 			//most likely baseUrl is unparseable. Can't add params then.

@@ -26,8 +26,6 @@ import org.springframework.ide.eclipse.wizard.WizardImages;
 import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
 import org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.DescriptionSection;
 import org.springsource.ide.eclipse.commons.livexp.core.FieldModel;
-import org.springsource.ide.eclipse.commons.livexp.core.StringFieldModel;
-import org.springsource.ide.eclipse.commons.livexp.core.Validator;
 import org.springsource.ide.eclipse.commons.livexp.ui.GroupSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.ProjectLocationSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.StringFieldSection;
@@ -70,6 +68,11 @@ public class NewSpringBootWizard extends Wizard implements INewWizard {
 			for (FieldModel<String> f : model.stringInputs) {
 				sections.add(new StringFieldSection(this, f));
 			}
+			
+			sections.add(
+				new CheckBoxesSection<String>(this, model.style)
+					.columns(3)
+			);
 			
 			sections.add(new GroupSection(this, "Initializr Site Info",
 					new StringFieldSection(this, "Base Url", model.baseUrl, model.baseUrlValidator),
