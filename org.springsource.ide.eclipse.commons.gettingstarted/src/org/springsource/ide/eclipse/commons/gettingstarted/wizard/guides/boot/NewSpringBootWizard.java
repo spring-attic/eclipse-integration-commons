@@ -25,7 +25,10 @@ import org.eclipse.ui.IWorkbench;
 import org.springframework.ide.eclipse.wizard.WizardImages;
 import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
 import org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.DescriptionSection;
+import org.springsource.ide.eclipse.commons.livexp.core.FieldModel;
+import org.springsource.ide.eclipse.commons.livexp.core.StringFieldModel;
 import org.springsource.ide.eclipse.commons.livexp.core.Validator;
+import org.springsource.ide.eclipse.commons.livexp.ui.GroupSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.ProjectLocationSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.StringFieldSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.WizardPageSection;
@@ -64,10 +67,14 @@ public class NewSpringBootWizard extends Wizard implements INewWizard {
 			sections.add(new StringFieldSection(this, model.projectName));
 			sections.add(new ProjectLocationSection(this, model.location, model.projectName.getVariable(), model.locationValidator));
 			
-			sections.add(new StringFieldSection(this, "Base Url", model.baseUrl, model.baseUrlValidator));
-//				.tooltip("Paste a generated project Zip URL from http://initializr.cfapps.io/")
-//			);
-			sections.add(new StringFieldSection(this, "Download", model.downloadUrl, Validator.OK));
+			for (FieldModel<String> f : model.stringInputs) {
+				sections.add(new StringFieldSection(this, f));
+			}
+			
+			sections.add(new GroupSection(this, "Initializr Site Info",
+					new StringFieldSection(this, "Base Url", model.baseUrl, model.baseUrlValidator),
+					new DescriptionSection(this, model.downloadUrl).label("Full Url").readOnly(false)
+			));
 			
 			return sections;
 		}

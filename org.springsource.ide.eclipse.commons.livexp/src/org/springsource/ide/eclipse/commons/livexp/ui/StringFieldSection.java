@@ -21,15 +21,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.springsource.ide.eclipse.commons.livexp.core.FieldModel;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
-import org.springsource.ide.eclipse.commons.livexp.core.StringFieldModel;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 
 public class StringFieldSection extends WizardPageSection {
-
-	public static final int SIZING_TEXT_FIELD_WIDTH = 250;
 	
 	/// options 
 	private String labelText; //what text to use for the label of the field
@@ -55,8 +53,8 @@ public class StringFieldSection extends WizardPageSection {
 		this.validator = validator;
 	}
 
-	public StringFieldSection(IPageWithSections owner, StringFieldModel field) {
-		this(owner, field.getLabel(), field.getVariable(), field.getValidator());
+	public StringFieldSection(IPageWithSections owner, FieldModel<String> f) {
+		this(owner, f.getLabel(), f.getVariable(), f.getValidator());
 	}
 
 	@Override
@@ -87,7 +85,7 @@ public class StringFieldSection extends WizardPageSection {
         
         text = new Text(projectGroup, SWT.BORDER);
         GridData data = new GridData(GridData.FILL_HORIZONTAL);
-        data.widthHint = SIZING_TEXT_FIELD_WIDTH;
+        data.widthHint = UIConstants.FIELD_TEXT_AREA_WIDTH;
         text.setLayoutData(data);
         text.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {

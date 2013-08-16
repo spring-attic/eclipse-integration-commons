@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -27,6 +29,7 @@ import org.springsource.ide.eclipse.commons.gettingstarted.content.CodeSet;
 import org.springsource.ide.eclipse.commons.gettingstarted.importing.ImportUtils;
 import org.springsource.ide.eclipse.commons.gettingstarted.util.DownloadManager;
 import org.springsource.ide.eclipse.commons.gettingstarted.util.DownloadableItem;
+import org.springsource.ide.eclipse.commons.livexp.core.FieldModel;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.StringFieldModel;
@@ -45,26 +48,37 @@ public class NewSpringBootWizardModel {
 	
 	private static final String DEFAULT_URL = "http://initializr.cfapps.io/starter.zip";
 	
-	public final LiveVariable<String> baseUrl = new LiveVariable<String>(DEFAULT_URL);
-	
-	public final LiveExpression<ValidationResult> baseUrlValidator = new UrlValidator("Base Url", baseUrl);
-	
 	//todo: maybe project name can be derived from the zip file contents (pom.xml <name> tag).
 	
-	public final StringFieldModel projectName = new StringFieldModel("name", "initializer-demo")
-		.label("Project Name");
+	public final StringFieldModel projectName = new StringFieldModel("name", "initializer-demo");
 	{
-		projectName.validator(new NewProjectNameValidator(projectName.getVariable()));
+		projectName
+			.label("Project Name")
+			.validator(new NewProjectNameValidator(projectName.getVariable()));
 	}
+	
+	@SuppressWarnings("unchecked")
+	public final List<FieldModel<String>> stringInputs = Arrays.asList(
+			new StringFieldModel("groupId", "org.demo").label("Group Id"),
+			new StringFieldModel("artifactId", "demo").label("Artifact Id"),
+			new StringFieldModel("description", "Demo project").label("Description"),
+			new StringFieldModel("packageName", "demo").label("Package")
+	);
 	
 	public final LiveVariable<String> location = new LiveVariable<String>(getDefaultProjectLocation(projectName.getValue()));
 	public final NewProjectLocationValidator locationValidator = new NewProjectLocationValidator("Location", location, projectName.getVariable());
 	
 	private boolean allowUIThread = false;
 
+	public final LiveVariable<String> baseUrl = new LiveVariable<String>(DEFAULT_URL);
+	public final LiveExpression<ValidationResult> baseUrlValidator = new UrlValidator("Base Url", baseUrl);
+	
 	public final LiveVariable<String> downloadUrl = new LiveVariable<String>();
 	{ 
 		UrlMaker computedUrl = new UrlMaker(baseUrl).addField(projectName);
+		for (FieldModel<String> param : stringInputs) {
+			computedUrl.addField(param);
+		}
 		computedUrl.addListener(new ValueListener<String>() {
 			public void gotValue(LiveExpression<String> exp, String value) {
 				downloadUrl.setValue(value);

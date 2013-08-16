@@ -45,7 +45,6 @@ public class ProjectLocationSection extends WizardPageSection {
 	
 	//See org.eclipse.ui.internal.ide.dialogs.ProjectContentsLocationArea;
 	
-	private static final int SIZING_TEXT_FIELD_WIDTH = 250;
 	private static final String SAVED_LOCATION_ATTR = "OUTSIDE_LOCATION"; //$NON-NLS-1$
 
 	////////////////////////////////////
@@ -205,7 +204,7 @@ public class ProjectLocationSection extends WizardPageSection {
 		// project location entry field
 		locationPathField = new Text(composite, SWT.BORDER);
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
-		data.widthHint = SIZING_TEXT_FIELD_WIDTH;
+		data.widthHint = UIConstants.FIELD_TEXT_AREA_WIDTH;
 		data.horizontalSpan = 2;
 		locationPathField.setLayoutData(data);
 

@@ -20,5 +20,7 @@ public class UIConstants {
 	 * as input boxes for fields tend to line up nicely.
 	 */
 	public static final int FIELD_LABEL_WIDTH_HINT = 80;
+	
+	public static final int FIELD_TEXT_AREA_WIDTH = 250;
 
 }

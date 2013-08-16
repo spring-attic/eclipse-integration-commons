@@ -20,61 +20,12 @@ package org.springsource.ide.eclipse.commons.livexp.core;
  * 
  * @author Kris De Volder
  */
-public class StringFieldModel {
+public class StringFieldModel extends FieldModel<String> {
 	
-	private String label; // Label to display in forms
-	public String getLabel() {
-		return label;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	private String name; // used to submit value to some service that handles the form
-	private LiveVariable<String> variable;
-	private LiveExpression<ValidationResult> validator;
 	
 	public StringFieldModel(String name, String defaultValue) {
-		this.name  = name;
-		this.label = name;
-		this.variable = new LiveVariable<String>(defaultValue==null?"":defaultValue);
-		this.validator = Validator.OK;
+		super(String.class, name, defaultValue);
 	}
 	
-	/**
-	 * Specify label (used in forms). By default the name is used.
-	 * @return The receiver for easy chaining.
-	 */
-	public StringFieldModel label(String l) {
-		this.label = l;
-		return this;
-	}
-
-	/**
-	 * Specify different validator. The default validator is one that 
-	 * accepts any input as valid.
-	 * @return The receiver for easy chaining.
-	 */
-	public StringFieldModel validator(LiveExpression<ValidationResult> v) {
-		this.validator = v;
-		return this;
-	}
-
-	public void setValue(String v) {
-		this.variable.setValue(v);
-	}
-	
-	public String getValue() {
-		return variable.getValue();
-	}
-	
-	public LiveVariable<String> getVariable() {
-		return variable;
-	}
-	
-	public LiveExpression<ValidationResult> getValidator() {
-		return validator;
-	}
 	
 }

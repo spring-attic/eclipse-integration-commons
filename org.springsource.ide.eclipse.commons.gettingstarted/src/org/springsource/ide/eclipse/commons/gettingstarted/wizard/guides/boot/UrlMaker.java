@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
+import org.springsource.ide.eclipse.commons.livexp.core.FieldModel;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.StringFieldModel;
 
@@ -24,7 +25,7 @@ import org.springsource.ide.eclipse.commons.livexp.core.StringFieldModel;
  */
 public class UrlMaker extends LiveExpression<String> {
 
-	List<StringFieldModel> inputs = new ArrayList<StringFieldModel>();
+	private List<FieldModel<String>> inputs = new ArrayList<FieldModel<String>>();
 	private LiveExpression<String> baseUrl;
 	
 	public UrlMaker(String baseUrl) {
@@ -36,9 +37,9 @@ public class UrlMaker extends LiveExpression<String> {
 		dependsOn(baseUrl);
 	}
 
-	public UrlMaker addField(StringFieldModel field) {
-		inputs.add(field);
-		dependsOn(field.getVariable()); //Recompute my value when the input changes.
+	public UrlMaker addField(FieldModel<String> param) {
+		inputs.add(param);
+		dependsOn(param.getVariable()); //Recompute my value when the input changes.
 		return this;
 	}
 	
@@ -52,7 +53,7 @@ public class UrlMaker extends LiveExpression<String> {
 		}
 		try {
 			URIBuilder builder = new URIBuilder(baseUrl);
-			for (StringFieldModel f : inputs) {
+			for (FieldModel<String> f : inputs) {
 				String paramValue = f.getValue();
 				if (paramValue!=null) {
 					builder.addParameter(f.getName(), paramValue);
