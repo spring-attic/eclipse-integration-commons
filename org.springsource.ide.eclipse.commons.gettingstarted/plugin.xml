@@ -18,7 +18,6 @@
       <wizard
             category="org.springsource.ide.eclipse.gettingstarted.wizards.import.category"
             class="org.springsource.ide.eclipse.commons.gettingstarted.wizard.boot.NewSpringBootWizard"
-            icon="resources/icons/initializer-import.png"
             id="org.springsource.ide.eclipse.gettingstarted.wizards.import.generic"
             name="Spring Initializer Zip"> 
          <description> 
@@ -32,6 +31,21 @@
             name="Spring">
       </category> 
 </extension>
+
+<extension 
+     point="org.eclipse.ui.newWizards">
+   <wizard
+         category="org.springframework.ide.eclipse.beans.ui.wizards.category"
+         icon="resources/icons/new-spring-boot.png"
+         class="org.springsource.ide.eclipse.commons.gettingstarted.wizard.boot.NewSpringBootWizard"
+         hasPages="true"
+         id="org.springsource.ide.eclipse.commons.gettingstarted.wizard.boot.NewSpringBootWizard"
+         name="Spring Boot Starter"
+         project="true">
+       <description>Create new Spring Boot Project via the Spring Initializr Web Service</description>
+   </wizard>
+</extension>
+
  
  <!-- New dashboard -->
  

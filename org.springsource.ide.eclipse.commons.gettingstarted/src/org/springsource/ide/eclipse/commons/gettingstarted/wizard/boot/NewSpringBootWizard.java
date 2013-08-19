@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.springframework.ide.eclipse.wizard.WizardImages;
@@ -32,7 +33,7 @@ import org.springsource.ide.eclipse.commons.livexp.ui.StringFieldSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.WizardPageSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.WizardPageWithSections;
 
-public class NewSpringBootWizard extends Wizard implements INewWizard {
+public class NewSpringBootWizard extends Wizard implements INewWizard, IImportWizard {
 	
 	private static final ImageDescriptor IMAGE = WizardImages.TEMPLATE_WIZARD_ICON;
 	   //TODO: Get our own icon for GSG wizard
@@ -56,7 +57,7 @@ public class NewSpringBootWizard extends Wizard implements INewWizard {
 	public class PageOne extends WizardPageWithSections {
 
 		protected PageOne() {
-			super("page1", "Import Spring Initializer Project", null);
+			super("page1", "New Spring Boot Project", null);
 		}
 
 		@Override
