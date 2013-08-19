@@ -10,15 +10,18 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.gettingstarted.wizard.boot;
 
-import static org.springsource.ide.eclipse.commons.livexp.ui.ProjectLocationSection.getDefaultProjectLocation;
-
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
+import java.net.URLConnection;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubProgressMonitor;
@@ -38,6 +41,12 @@ import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 import org.springsource.ide.eclipse.commons.livexp.core.validators.NewProjectLocationValidator;
 import org.springsource.ide.eclipse.commons.livexp.core.validators.NewProjectNameValidator;
 import org.springsource.ide.eclipse.commons.livexp.core.validators.UrlValidator;
+import org.springsource.ide.eclipse.commons.livexp.ui.ProjectLocationSection;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * A ZipUrlImportWizard is a simple wizard in which one can paste a url
@@ -46,44 +55,29 @@ import org.springsource.ide.eclipse.commons.livexp.core.validators.UrlValidator;
  */
 public class NewSpringBootWizardModel {
 	
-	private static final String DEFAULT_URL = "http://initializr.cfapps.io/starter.zip";
+	private static final String FORM_URL = "http://initializr.cfapps.io/"; //TODO: make this configurable.
 	
-	//todo: maybe project name can be derived from the zip file contents (pom.xml <name> tag).
 	
-	public final StringFieldModel projectName = new StringFieldModel("name", "initializer-demo");
-	{
-		projectName
-			.label("Project Name")
-			.validator(new NewProjectNameValidator(projectName.getVariable()));
+	//private static final String FORM_URL = NewSpringBootWizardModel.class.getResource("initializr-form.html").toString();
+	private static final String DEFAULT_URL = "http://initializr.cfapps.io/starter.zip"; //TODO: discover from form submit button?
+	
+	
+	private URLConnectionFactory urlConnectionFactory;
+	
+	public NewSpringBootWizardModel() throws IOException, ParserConfigurationException, SAXException {
+		this(new URLConnectionFactory());
 	}
 	
-	@SuppressWarnings("unchecked")
-	public final List<FieldModel<String>> stringInputs = Arrays.asList(
-			new StringFieldModel("groupId", "org.demo").label("Group Id"),
-			new StringFieldModel("artifactId", "demo").label("Artifact Id"),
-			new StringFieldModel("description", "Demo project").label("Description"),
-			new StringFieldModel("packageName", "demo").label("Package")
-	);
-	
-	public final MultiSelectionFieldModel<String> style = new MultiSelectionFieldModel<String>(String.class, "style")
-		.label("Style")
-		.choice("Standard", "")
-		.choice("Web", "web")
-		.choice("Actuator", "actuator")
-		.choice("Batch", "batch")
-		.choice("JPS", "jpa");
-	
-	public final LiveVariable<String> location = new LiveVariable<String>(getDefaultProjectLocation(projectName.getValue()));
-	public final NewProjectLocationValidator locationValidator = new NewProjectLocationValidator("Location", location, projectName.getVariable());
-	
-	private boolean allowUIThread = false;
-
-	public final LiveVariable<String> baseUrl = new LiveVariable<String>(DEFAULT_URL);
-	public final LiveExpression<ValidationResult> baseUrlValidator = new UrlValidator("Base Url", baseUrl);
-	
-	public final LiveVariable<String> downloadUrl = new LiveVariable<String>();
-	{ 
-		UrlMaker computedUrl = new UrlMaker(baseUrl).addField(projectName);
+	public NewSpringBootWizardModel(URLConnectionFactory urlConnectionFactory) throws IOException, ParserConfigurationException, SAXException {
+		this.urlConnectionFactory = urlConnectionFactory;
+		discoverOptions(stringInputs, style);
+		projectName = stringInputs.getField("name");
+		projectName.validator(new NewProjectNameValidator(projectName.getVariable()));
+		location = new LiveVariable<String>(ProjectLocationSection.getDefaultProjectLocation(projectName.getValue()));
+		locationValidator = new NewProjectLocationValidator("Location", location, projectName.getVariable());
+		Assert.isNotNull(projectName, "The form at "+FORM_URL+" doesn't have a 'name' text input");
+		
+		UrlMaker computedUrl = new UrlMaker(baseUrl);
 		for (FieldModel<String> param : stringInputs) {
 			computedUrl.addField(param);
 		}
@@ -94,6 +88,25 @@ public class NewSpringBootWizardModel {
 			}
 		});
 	}
+
+	@SuppressWarnings("unchecked")
+	public final FieldArrayModel<String> stringInputs = new FieldArrayModel<String>(
+			//The fields need to be discovered by parsing web form.
+	);
+	
+	public final MultiSelectionFieldModel<String> style = new MultiSelectionFieldModel<String>(String.class, "style")
+			.label("Style");
+	
+	private FieldModel<String> projectName; //an alias for stringFields.getField("name");
+	private LiveVariable<String> location;
+	private NewProjectLocationValidator locationValidator;
+	
+	private boolean allowUIThread = false;
+
+	public final LiveVariable<String> baseUrl = new LiveVariable<String>(DEFAULT_URL);
+	public final LiveExpression<ValidationResult> baseUrlValidator = new UrlValidator("Base Url", baseUrl);
+	
+	public final LiveVariable<String> downloadUrl = new LiveVariable<String>();
 	
 	public void performFinish(IProgressMonitor mon) throws InvocationTargetException, InterruptedException {
 		mon.beginTask("Importing "+baseUrl, 1);
@@ -121,6 +134,168 @@ public class NewSpringBootWizardModel {
 		}
 	}
 
+	/**
+	 * Dynamically discover input fields and 'style' options by parsing initializr form.
+	 * @throws IOException 
+	 * @throws ParserConfigurationException 
+	 * @throws SAXException 
+	 */
+	private void discoverOptions(FieldArrayModel<String> fields, MultiSelectionFieldModel<String> style) throws IOException, ParserConfigurationException, SAXException {
+		URLConnection conn = null;
+		InputStream input = null;
+		try {
+			URL url = new URL(FORM_URL);
+			conn = urlConnectionFactory.createConnection(url);
+			conn.connect();
+			input = conn.getInputStream();
+			
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(input);
+			
+			NodeList inputs = doc.getElementsByTagName("input");
+			for (int i = 0; i < inputs.getLength(); i++) {
+				Node node = inputs.item(i);
+				if (isCheckbox(node)) { 
+					discoverCheckboxOption(style, node);
+				} else if (isStringInput(node)) {
+					discoverStringField(fields, node);
+				}
+			}
+		} finally {
+			if (input!=null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Tries to find a 'label text' associated with a given input node. May return null
+	 * if the node is not found in the expected place or if it contains no text.
+	 */
+	private String getInputLabel(Node input) {
+		Node labelNode = getParentLabel(input);
+		if (labelNode==null) {
+			labelNode = getSiblingsLabel(input);
+		}
+		if (labelNode!=null) {
+			NodeList children = labelNode.getChildNodes();
+			StringBuilder text = new StringBuilder();
+			for (int i = 0; i < children.getLength(); i++) {
+				Node sibling = children.item(i);
+				if (sibling.getNodeType()==Node.TEXT_NODE) {
+					text.append(sibling.getNodeValue().trim());
+				}
+			}
+			String result = text.toString();
+			while (result.endsWith(":")) {
+				result = result.substring(0, result.length()-1);
+			}
+			if (!"".equals(result)) {
+				//only return a String if we actually found some text.
+				return result;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Try to find a label node that is the parent of a given input node.
+	 */
+	private Node getParentLabel(Node input) {
+		Node labelNode = input.getParentNode();
+		if (labelNode!=null) {
+			if (isLabel(labelNode)) {
+				return labelNode;
+			}
+		}
+		return null;
+	}
+	
+
+	/**
+	 * Try to find a label node that is sibling preceding a given input node.
+	 */
+	private Node getSiblingsLabel(Node input) {
+		while (input!=null) {
+			if (isLabel(input)) {
+				return input;
+			}
+			input = input.getPreviousSibling();
+		}
+		return null;
+	}
+
+	private boolean isLabel(Node labelNode) {
+		if (labelNode.getNodeType()==Node.ELEMENT_NODE) {
+			String tagName = labelNode.getNodeName();
+			return "label".equals(tagName);
+		}
+		return false;
+	}
+
+	private void discoverCheckboxOption(MultiSelectionFieldModel<String> style, Node checkbox) {
+		//We have found a 'checkbox' input node. For example:
+		/* <label class="checkbox">
+		        <input type="checkbox" name="style" value="jpa"/>
+		        JPA
+		   </label>
+		 */
+		String name = getAttributeValue(checkbox, "name");
+		if (style.getName().equals(name)) {
+			String styleValue = getAttributeValue(checkbox, "value");
+			if (styleValue!=null) {
+				String styleLabel = getInputLabel(checkbox);
+				style.choice(styleLabel==null?styleValue:styleLabel, styleValue);
+			}
+		}
+	}
+
+	private void discoverStringField(FieldArrayModel<String> fields, Node node) {
+		//We have found a 'text' input node. For example:
+		/* <label for="name">Name:</label> <input id="name" type="text" value="demo" name="name"/>
+		 */
+		String name = getAttributeValue(node, "name");
+		if (name!=null) {
+			String defaultValue = getAttributeValue(node, "value");
+			StringFieldModel field = new StringFieldModel(name, defaultValue==null?"":defaultValue);
+			String label = getInputLabel(node);
+			if (label!=null) {
+				field.label(label);
+			}
+			fields.add(field);
+		}
+	}
+
+	
+	
+	private boolean isCheckbox(Node node) {
+		String type = getAttributeValue(node, "type");
+		return "checkbox".equals(type);
+	}
+	
+	private boolean isStringInput(Node node) {
+		String type = getAttributeValue(node, "type");
+		return "text".equals(type);
+	}
+
+	private static String getAttributeValue(Node node, String attribName ) {
+		NamedNodeMap attribs = node.getAttributes();
+		if (attribs!=null) {
+			Node value = attribs.getNamedItem(attribName);
+			if (value!=null) {
+				short nodeType = value.getNodeType();
+				if (nodeType==Node.ATTRIBUTE_NODE) {
+					return value.getNodeValue();
+				}
+			}
+		}
+		return null;
+	}
+
 	private URL newURL(String value) {
 		try {
 			return new URL(value);
@@ -137,6 +312,18 @@ public class NewSpringBootWizardModel {
 	 */
 	public void allowUIThread(boolean allow) {
 		this.allowUIThread = allow;
+	}
+
+	public LiveExpression<ValidationResult> getLocationValidator() {
+		return locationValidator;
+	}
+
+	public LiveVariable<String> getLocation() {
+		return location;
+	}
+
+	public FieldModel<String> getProjectName() {
+		return projectName;
 	}
 
 }

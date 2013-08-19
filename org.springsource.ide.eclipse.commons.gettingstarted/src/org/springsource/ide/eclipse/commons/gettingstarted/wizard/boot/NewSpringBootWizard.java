@@ -10,8 +10,11 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.gettingstarted.wizard.boot;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -25,6 +28,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.springframework.ide.eclipse.wizard.WizardImages;
 import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
+import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.DescriptionSection;
 import org.springsource.ide.eclipse.commons.livexp.core.FieldModel;
 import org.springsource.ide.eclipse.commons.livexp.ui.GroupSection;
@@ -32,20 +36,29 @@ import org.springsource.ide.eclipse.commons.livexp.ui.ProjectLocationSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.StringFieldSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.WizardPageSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.WizardPageWithSections;
+import org.xml.sax.SAXException;
 
 public class NewSpringBootWizard extends Wizard implements INewWizard, IImportWizard {
 	
 	private static final ImageDescriptor IMAGE = WizardImages.TEMPLATE_WIZARD_ICON;
 	   //TODO: Get our own icon for GSG wizard
 	
-	private NewSpringBootWizardModel model = new NewSpringBootWizardModel();
+	private NewSpringBootWizardModel model;
 	
-	public NewSpringBootWizard() {
+	public NewSpringBootWizard() throws Exception {
 		setDefaultPageImageDescriptor(IMAGE);
 	}
 	
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
+		try {
+			model = new NewSpringBootWizardModel();
+		} catch (Exception e) {
+			//Ensure exception is logged. (Eclipse UI may not log it!).
+			GettingStartedActivator.log(e);
+			//rethrow, attempts to proceed without model will just throw NPE anyhow.
+			throw new Error(e);
+		}
 	}
 	
 	public void addPages() {
@@ -63,11 +76,16 @@ public class NewSpringBootWizard extends Wizard implements INewWizard, IImportWi
 		@Override
 		protected List<WizardPageSection> createSections() {
 			List<WizardPageSection> sections = new ArrayList<WizardPageSection>();
-			sections.add(new StringFieldSection(this, model.projectName));
-			sections.add(new ProjectLocationSection(this, model.location, model.projectName.getVariable(), model.locationValidator));
+			
+			FieldModel<String> projectName = model.getProjectName();
+			sections.add(new StringFieldSection(this, projectName));
+			sections.add(new ProjectLocationSection(this, model.getLocation(), projectName.getVariable(), model.getLocationValidator()));
 			
 			for (FieldModel<String> f : model.stringInputs) {
-				sections.add(new StringFieldSection(this, f));
+				//caution! we already created the section for projectName because we want it at the top
+				if (projectName!=f) { 
+					sections.add(new StringFieldSection(this, f));
+				}
 			}
 			
 			sections.add(
@@ -82,6 +100,7 @@ public class NewSpringBootWizard extends Wizard implements INewWizard, IImportWi
 			
 			return sections;
 		}
+
 	}
 
 	@Override

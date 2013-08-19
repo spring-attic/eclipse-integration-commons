@@ -23,7 +23,7 @@ public class ZipUrlImportWizardTest extends TestCase {
 		NewSpringBootWizardModel wizard = new NewSpringBootWizardModel();
 		wizard.allowUIThread(true);
 		wizard.performFinish(new NullProgressMonitor());
-		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(wizard.projectName.getValue());
+		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject(wizard.getProjectName().getValue());
 		assertTrue(p.isAccessible());
 	}
 

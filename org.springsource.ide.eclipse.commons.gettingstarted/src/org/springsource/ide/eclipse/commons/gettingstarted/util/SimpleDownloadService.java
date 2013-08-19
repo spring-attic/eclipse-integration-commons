@@ -20,19 +20,27 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.springsource.ide.eclipse.commons.gettingstarted.util.DownloadManager.DownloadService;
+import org.springsource.ide.eclipse.commons.gettingstarted.wizard.boot.URLConnectionFactory;
 
 public class SimpleDownloadService implements DownloadService {
 
-	public int CONNECT_TIMEOUT = 3000;
+	private URLConnectionFactory connectionFactory;
 	private static final boolean DEBUG = false;
+	
+	public SimpleDownloadService() {
+		this(new URLConnectionFactory());
+	}
+	
+	public SimpleDownloadService(URLConnectionFactory urlConnectionFactory) {
+		this.connectionFactory = urlConnectionFactory;
+	}
 
 	@Override
 	public void fetch(URL url, OutputStream writeTo) throws IOException {
 		URLConnection conn = null;
 		InputStream input = null;
 		try {
-			conn = url.openConnection();
-			conn.setConnectTimeout(CONNECT_TIMEOUT);
+			conn = connectionFactory.createConnection(url);
 			conn.connect();
 			if (DEBUG) {
 				System.out.println(">>> "+url);

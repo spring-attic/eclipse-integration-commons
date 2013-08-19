@@ -195,7 +195,7 @@ public class ProjectLocationSection extends WizardPageSection {
 	private void createUserEntryArea(Composite composite, boolean defaultEnabled) {
 		// location label
 		locationLabel = new Label(composite, SWT.NONE);
-		locationLabel.setText("Location:");
+		locationLabel.setText("Location");
 		GridDataFactory.fillDefaults()
 			.align(SWT.BEGINNING, SWT.CENTER)
 			.hint(UIConstants.FIELD_LABEL_WIDTH_HINT, SWT.DEFAULT)
