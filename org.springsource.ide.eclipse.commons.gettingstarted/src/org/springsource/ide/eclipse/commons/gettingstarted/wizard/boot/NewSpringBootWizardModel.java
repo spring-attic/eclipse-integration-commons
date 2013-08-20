@@ -55,12 +55,8 @@ import org.xml.sax.SAXException;
  */
 public class NewSpringBootWizardModel {
 	
-	private static final String FORM_URL = "http://initializr.cfapps.io/"; //TODO: make this configurable.
-	
-	
-	//private static final String FORM_URL = NewSpringBootWizardModel.class.getResource("initializr-form.html").toString();
-	private static final String DEFAULT_URL = "http://initializr.cfapps.io/starter.zip"; //TODO: discover from form submit button?
-	
+	private static final String FORM_URL = System.getProperty("initializr.form.url", "http://initializr.cfapps.io");
+	private static final String DEFAULT_URL = System.getProperty("initializr.download.url", "http://initializr.cfapps.io/starter.zip");
 	
 	private URLConnectionFactory urlConnectionFactory;
 	
@@ -269,8 +265,6 @@ public class NewSpringBootWizardModel {
 			fields.add(field);
 		}
 	}
-
-	
 	
 	private boolean isCheckbox(Node node) {
 		String type = getAttributeValue(node, "type");

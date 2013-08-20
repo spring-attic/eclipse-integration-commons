@@ -10,11 +10,8 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.gettingstarted.wizard.boot;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -36,12 +33,10 @@ import org.springsource.ide.eclipse.commons.livexp.ui.ProjectLocationSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.StringFieldSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.WizardPageSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.WizardPageWithSections;
-import org.xml.sax.SAXException;
 
 public class NewSpringBootWizard extends Wizard implements INewWizard, IImportWizard {
 	
 	private static final ImageDescriptor IMAGE = WizardImages.TEMPLATE_WIZARD_ICON;
-	   //TODO: Get our own icon for GSG wizard
 	
 	private NewSpringBootWizardModel model;
 	
