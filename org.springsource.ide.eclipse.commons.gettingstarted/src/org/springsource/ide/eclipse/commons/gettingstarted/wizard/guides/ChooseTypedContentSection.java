@@ -249,6 +249,8 @@ public class ChooseTypedContentSection extends WizardPageSection {
 		field.setLayout(layout);
 		
 		searchBox = new Text(field, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
+		searchBox.setMessage("Type pattern to match");
+
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(searchBox);
 		
 		Label fieldNameLabel = null;
