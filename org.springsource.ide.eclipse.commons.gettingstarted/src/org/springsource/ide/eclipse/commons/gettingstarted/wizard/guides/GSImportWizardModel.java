@@ -42,6 +42,7 @@ import org.springsource.ide.eclipse.commons.livexp.core.LiveSet;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.Validator;
+import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 
 /**
  * Core counterpart of GSImportWizard (essentially this is a 'model' for the wizard
@@ -181,46 +182,50 @@ public class GSImportWizardModel {
 	private LiveExpression<ValidationResult> buildTypeValidator = new Validator() {
 		@Override
 		protected ValidationResult compute() {
-			try {
-				GSContent g = guide.getValue();
-				if (g!=null) {
-					try {
-						BuildType bt = buildType.getValue();
-						if (bt==null) {
-							return ValidationResult.error("No build type selected");
-						} else {
-							List<String> codesetNames = codesets.getValues();
-							if (codesetNames!=null) {
-								for (String csname : codesetNames) {
-									CodeSet cs = g.getCodeSet(csname);
-									if (cs!=null) {
-										ValidationResult result = cs.validateBuildType(bt);
-										if (!result.isOk()) {
-											return result.withMessage("CodeSet '"+csname+"': "+result.msg);
-										}
-										ImportStrategy importStrategy = bt.getImportStrategy();
-										if (!importStrategy.isSupported()) {
-											//This means some required STS component like m2e or gradle tooling is not installed
-											return ValidationResult.error(bt.getNotInstalledMessage());
-										}
+			GSContent g = guide.getValue();
+			BuildType bt = buildType.getValue();
+			return validateBuildType(g, bt);
+		}
+	};
+	
+	private ValidationResult validateBuildType(GSContent g, BuildType bt) {
+		try {
+			if (g!=null) {
+				try {
+					if (bt==null) {
+						return ValidationResult.error("No build type selected");
+					} else {
+						List<String> codesetNames = codesets.getValues();
+						if (codesetNames!=null) {
+							for (String csname : codesetNames) {
+								CodeSet cs = g.getCodeSet(csname);
+								if (cs!=null) {
+									ValidationResult result = cs.validateBuildType(bt);
+									if (!result.isOk()) {
+										return result.withMessage("CodeSet '"+csname+"': "+result.msg);
+									}
+									ImportStrategy importStrategy = bt.getImportStrategy();
+									if (!importStrategy.isSupported()) {
+										//This means some required STS component like m2e or gradle tooling is not installed
+										return ValidationResult.error(bt.getNotInstalledMessage());
 									}
 								}
 							}
 						}
-					} catch (UIThreadDownloadDisallowed e) {
-						//Careful... check some of the validation will trigger downloads. This is not allowed in UI thread.
-						scheduleDownloadJob();
-						return isDownloadingMessage(g);
 					}
+				} catch (UIThreadDownloadDisallowed e) {
+					//Careful... check some of the validation will trigger downloads. This is not allowed in UI thread.
+					scheduleDownloadJob();
+					return isDownloadingMessage(g);
 				}
-				return ValidationResult.OK;
-			} catch (Throwable e) {
-				GettingStartedActivator.log(e);
-				return ValidationResult.error(ExceptionUtil.getMessage(e));
 			}
+			return ValidationResult.OK;
+		} catch (Throwable e) {
+			GettingStartedActivator.log(e);
+			return ValidationResult.error(ExceptionUtil.getMessage(e));
 		}
-
-	};
+	}
+	
 	
 	public final LiveExpression<Boolean> isDownloaded = new LiveExpression<Boolean>(false) {
 		@Override
@@ -229,7 +234,42 @@ public class GSImportWizardModel {
 			return g == null || g.isDownloaded(); 
 		}
 	};
-
+	
+	/**
+	 * Tries to select a valid build type when a guide is selected. 
+	 * The tricky bit is that validity of build types can not be determined until guide
+	 * content has been downloaded locally. At this point if user clicks around rapidly
+	 * another guide may already have been selected. Thus, this code should be run
+	 * any time the guide selection changes as well as any time the download 
+	 * status changes.
+	 */
+	private LiveExpression<Void> autoSelectBuildType = new LiveExpression<Void>() {
+		protected Void compute() {
+			GSContent g = guide.getValue();
+			if (g!=null) {
+				if (g.isDownloaded()) {
+					//Yes, we depend on the value of buildType but shouldn't respond to changes on it.
+					// We do not want to autoselect a buildType when a user selects one. That would be
+					// mighty annoying.
+					BuildType bt = buildType.getValue();
+					if (!validateBuildType(g, bt).isOk()) {
+						for (BuildType other : BuildType.values()) {
+							if (other!=bt) {
+								if (validateBuildType(g,other).isOk()) {
+									buildType.setValue(other);
+								}
+							}
+						}
+					}
+				}
+			}
+			return null;
+		};
+	}
+	.dependsOn(isDownloaded)
+	.dependsOn(guide);
+	
+	
 	public final LiveExpression<ValidationResult> downloadStatus = new Validator() {
 		@Override
 		protected ValidationResult compute() {

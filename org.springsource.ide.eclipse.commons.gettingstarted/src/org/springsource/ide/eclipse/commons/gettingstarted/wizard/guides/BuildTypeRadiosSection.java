@@ -20,8 +20,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.springsource.ide.eclipse.commons.gettingstarted.content.BuildType;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
+import org.springsource.ide.eclipse.commons.livexp.core.UIValueListener;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.Validator;
+import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 import org.springsource.ide.eclipse.commons.livexp.ui.GroupSection;
 import org.springsource.ide.eclipse.commons.livexp.ui.IPageWithSections;
 import org.springsource.ide.eclipse.commons.livexp.ui.WizardPageSection;
@@ -56,7 +58,11 @@ public class BuildTypeRadiosSection extends GroupSection {
 			final Button button = new Button(page, SWT.RADIO);
 			button.setText(type.displayName());
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(button);
-			button.setSelection(selection.getValue()==type);
+			selection.addListener(new UIValueListener<BuildType>() {
+				protected void uiGotValue(LiveExpression<BuildType> exp, BuildType value) {
+					button.setSelection(value==type);
+				}
+			});
 			button.addSelectionListener(new SelectionListener() {
 				
 				@Override
