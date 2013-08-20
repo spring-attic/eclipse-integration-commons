@@ -93,7 +93,7 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 					GSImportWizard.open(getShell(), null, false, true);
 					return;
 				}
-				if (host.equals("dashboard")) {
+				if ("dashboard".equals(host)) {
 					if (dashboard.setActivePage(getPageId(path))) {
 						return;
 					}
