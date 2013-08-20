@@ -19,15 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.regex.Pattern;
 
-import org.eclipse.core.net.proxy.IProxyData;
-import org.eclipse.core.net.proxy.IProxyService;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.gettingstarted.github.auth.BasicAuthCredentials;
 import org.springsource.ide.eclipse.commons.gettingstarted.github.auth.Credentials;
 import org.springsource.ide.eclipse.commons.gettingstarted.github.auth.NullCredentials;
@@ -49,6 +49,7 @@ public class GithubClient {
 	private static final int CONNECT_TIMEOUT = 3000;
 
 	private static final boolean DEBUG = false;
+	private static final boolean LOG_GITHUB_RATE_LIMIT = false;
 	
 	private Credentials credentials;
 	private RestTemplate client;
@@ -73,25 +74,6 @@ public class GithubClient {
 		String password = System.getProperty("github.user.password");
 		if (username!=null && password!=null) {
 			return new BasicAuthCredentials(GITHUB_HOST, username, password);
-		}
-		//Try properties file..
-		InputStream stream = GithubClient.class.getResourceAsStream("user.properties");
-		if (stream!=null) {
-			try {
-				Properties props = new Properties();
-				props.load(stream);
-				username = props.getProperty("name");
-				password = props.getProperty("passwd");
-				return new BasicAuthCredentials(GITHUB_HOST, username, password);
-			} catch (Throwable e) {
-				GettingStartedActivator.log(e);
-			} finally {
-				try {
-					stream.close();
-				} catch (IOException e) {
-					//throw new Error(e);
-				}
-			}
 		}
 		//No credentials found. Try proceeding without credentials.
 		return new NullCredentials();
@@ -189,46 +171,34 @@ public class GithubClient {
 		List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
 		messageConverters.add(new Spring3MappingJacksonHttpMessageConverter());
 
-// The code below doesn't work because by the time we get to use the inputstream RestTemplate will
-// have closed it already. A message converter must read the input it is interested in before
-// returning... Too bad :-(
-		
-//		//Add capability to get raw data as an InputStream
-//		messageConverters.add(new HttpMessageConverter<InputStream>() {
-//
-//			@Override
-//			public boolean canRead(Class<?> klass, MediaType mt) {
-//				return InputStream.class.isAssignableFrom(klass);
-//			}
-//
-//			@Override
-//			public boolean canWrite(Class<?> arg0, MediaType mt) {
-//				//This message converter is only for getting data not sending.
-//				return false;
-//			}
-//
-//			@Override
-//			public List<MediaType> getSupportedMediaTypes() {
-//				return Arrays.asList(MediaType.ALL);
-//			}
-//
-//			@Override
-//			public InputStream read(Class<? extends InputStream> arg0,
-//					HttpInputMessage response) throws IOException,
-//					HttpMessageNotReadableException {
-//				return response.getBody();
-//			}
-//
-//			@Override
-//			public void write(InputStream arg0, MediaType arg1,
-//					HttpOutputMessage arg2) throws IOException,
-//					HttpMessageNotWritableException {
-//				throw new HttpMessageNotWritableException("This message converter is only for reading");
-//			}
-//			
-//		});
 		rest.setMessageConverters(messageConverters); 
 
+		//Add rate limit logging
+		if (LOG_GITHUB_RATE_LIMIT) {
+	        rest.getInterceptors().add(new ClientHttpRequestInterceptor() {
+
+				@Override
+				public ClientHttpResponse intercept(HttpRequest request,
+						byte[] body, ClientHttpRequestExecution execution)
+						throws IOException {
+					ClientHttpResponse res = execution.execute(request, body);
+					System.out.println("==== Github: "+request.getURI()+ "  =========");
+					for (Entry<String, List<String>> header : res.getHeaders().entrySet()) {
+						if (header.getKey().contains("RateLimit")) {
+							System.out.print(header.getKey()+":");
+							for (String value : header.getValue()) {
+								System.out.print(" "+value);
+							}
+							System.out.println();
+						}
+					}
+					System.out.println("======================= ");
+					return res;
+				}
+			});
+
+		}
+		
 		return rest;
 	}
 
@@ -248,18 +218,6 @@ public class GithubClient {
 //		System.out.println(github.getRateLimit());
 //	}
 
-	/**
-	 * Retrieve info on remaining API rate limit quota for this client.
-	 */
-	public RateLimit getRateLimit() {
-		//TODO: this implementation makes a request to get the rate limit remaining.
-		// but github attaches this info to every response in the response headers.
-		// So we could cache it from the last request made through this client instead
-		// of making another request to fetch it.
-		return get("/rate_limit", RateLimit.class);
-	}
-
-	
     /**
      * Download content from a url and save to an outputstream. Use same credentials as
      * other operations in this client. May need to use this to download stuff like

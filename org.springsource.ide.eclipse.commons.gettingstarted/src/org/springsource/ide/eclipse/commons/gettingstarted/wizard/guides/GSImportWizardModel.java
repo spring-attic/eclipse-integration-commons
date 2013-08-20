@@ -252,7 +252,7 @@ public class GSImportWizardModel {
 			if (g!=null && g instanceof Describable) {
 				return ((Describable) g).getDescription();
 			}
-			return "<no gs content selected>";
+			return "Select Getting Started Content to see its Description";
 		}
 	};
 	
