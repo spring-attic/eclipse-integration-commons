@@ -48,7 +48,7 @@ public class GithubClient {
 	
 	private static final int CONNECT_TIMEOUT = 3000;
 
-	private static final boolean DEBUG = true;
+	private static final boolean DEBUG = false;
 	
 	private Credentials credentials;
 	private RestTemplate client;
