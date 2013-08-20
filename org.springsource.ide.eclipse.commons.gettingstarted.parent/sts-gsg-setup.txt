@@ -31,6 +31,8 @@ Notes:
    appear underneath the 'Donwload Zip' button.
    Click the button should open a Wizard to import GSG content
    with the correct guide preselected.
+ - The GSG import wizard now also opens if you click on the 
+   'Spring Framework Guides' button on the main dashboard page.
  - If clicking link does not open the wizard. It means the
    particular content was not found. The most likely cause of
    this is incorrect github credentials. 
