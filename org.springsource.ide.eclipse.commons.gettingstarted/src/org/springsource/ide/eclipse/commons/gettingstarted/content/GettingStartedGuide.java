@@ -176,7 +176,7 @@ public class GettingStartedGuide extends GithubRepoContent {
 			String gsGuideName = getName();
 			if (gsGuideName.startsWith("gs-")) {
 				String guideName = gsGuideName.substring(3);
-				return new URL("http://sagan.cfapps.io/guides/gs/"+guideName);
+				return new URL("http://sagan-staging.cfapps.io/guides/gs/"+guideName);
 			}
 		} catch (MalformedURLException e) {
 			GettingStartedActivator.log(e);
