@@ -19,11 +19,9 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.springsource.ide.eclipse.commons.gettingstarted.content.CodeSet.Processor;
 import org.springsource.ide.eclipse.commons.gettingstarted.util.DownloadableItem;
 import org.springsource.ide.eclipse.commons.gettingstarted.util.IOUtil;
 import org.springsource.ide.eclipse.commons.gettingstarted.util.UIThreadDownloadDisallowed;
-import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 
 /**

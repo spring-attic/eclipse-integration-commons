@@ -42,10 +42,9 @@ import org.springsource.ide.eclipse.commons.livexp.core.LiveSet;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.Validator;
-import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 
 /**
- * Core counterpart of GSImportWizard (essentially this is a 'model' for the wizard
+ * Core counterpart of <b>GSImportWizard</b> (essentially this is a 'model' for the wizard
  * UI.
  * 
  * @author Kris De Volder
@@ -139,7 +138,7 @@ public class GSImportWizardModel {
 	 */
 	private LiveSet<String> codesets = new LiveSet<String>(new HashSet<String>());
 	{
-		codesets.addAll(GettingStartedGuide.defaultCodesetNames); //Select both codesets by default.
+		codesets.addAll(GettingStartedGuide.defaultCodesetNames()); //Select all codesets by default.
 	}
 	
 	/**
@@ -168,7 +167,7 @@ public class GSImportWizardModel {
 			} catch (Throwable e) {
 				GettingStartedActivator.log(e);
 			}
-			return GettingStartedGuide.defaultCodesetNames;
+			return GettingStartedGuide.defaultCodesetNames();
 		}
 	};
 	

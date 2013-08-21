@@ -14,7 +14,9 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -42,7 +44,7 @@ public class GettingStartedGuide extends GithubRepoContent {
 	public static final String GUIDE_DESCRIPTION_TEXT = 
 			"A guide is a short focussed tutorial "
 			+ "on how to use Spring to accomplish a specific task. " 
-			+ "It has a 'start' code set, a 'complete' code" 
+			+ "It has an 'initial' code set, a 'complete' code" 
 			+ "set and a readme file explaining how you get from "
 			+ "one to the other.";
 
@@ -50,16 +52,36 @@ public class GettingStartedGuide extends GithubRepoContent {
 	 * All getting started guides are supposed to have the same codesets names. This constant defines those
 	 * names.
 	 */
-	public static final String[] defaultCodesetNames = {
-		"initial", "complete"
+	public static final CodeSetMetaData[] defaultCodesets = {
+		new CodeSetMetaData("initial").desciption(
+				"Import this if you want to work " +
+				"through the bulk of the guide, but skip basic project setup"
+		), 
+		new CodeSetMetaData("complete").desciption(
+				"A project representing the code in its 'complete' state, at " +
+				"the end of the guide."
+		)
 	};
-
+	
 	/**
 	 * Relative path from the 'root' codeset to where the optional
 	 * metadata file is that describes codeset layout for projects
 	 * that don't follow the default layout.
 	 */
 	private static final String CODE_SET_METADATA = ".codesets.json";
+	
+	private static String[] _defaultCodesetNames;
+	public static String[] defaultCodesetNames() {
+		if (_defaultCodesetNames==null) {
+			String[] defaultCodesetNames = new String[defaultCodesets.length];
+			for (int i = 0; i < defaultCodesets.length; i++) {
+				defaultCodesetNames[i] = defaultCodesets[i].name;
+			}
+			_defaultCodesetNames = defaultCodesetNames;
+		}
+		return _defaultCodesetNames;
+	}
+
 	
 	public GettingStartedGuide(Repo repo, DownloadManager dl) {
 		super(dl);
@@ -115,9 +137,9 @@ public class GettingStartedGuide extends GithubRepoContent {
 			//We get here if either
 			//   - there's no .codeset.json 
 			//   - .codeset.json is broken.
-			CodeSet[] array = new CodeSet[defaultCodesetNames.length];
+			CodeSet[] array = new CodeSet[defaultCodesetNames().length];
 			for (int i = 0; i < array.length; i++) {
-				array[i] = CodeSet.fromZip(defaultCodesetNames[i], getZip(), getRootPath().append(defaultCodesetNames[i]));
+				array[i] = CodeSet.fromZip(defaultCodesetNames()[i], getZip(), getRootPath().append(defaultCodesetNames()[i]));
 			}
 			codesets = Arrays.asList(array);
 		}
@@ -203,9 +225,23 @@ public class GettingStartedGuide extends GithubRepoContent {
 		@JsonProperty
 		public String dir;
 		
+		@JsonProperty 
+		public String description;
+		
+		public CodeSetMetaData(String name) {
+			this.name = name;
+			this.dir = dir;
+		}
+		
+		public CodeSetMetaData desciption(String d) {
+			description = d;
+			return this;
+		}
+
 		public String toString() {
 			return "CodeSetMD(name = "+name+", dir = "+dir+")";
 		}
 	}
+
 	
 }
