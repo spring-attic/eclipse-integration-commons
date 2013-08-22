@@ -118,7 +118,7 @@ public class GettingStartedGuide extends GithubRepoContent {
 					for (int i = 0; i < array.length; i++) {
 						String name = metadata[i].name;
 						String dir = metadata[i].dir;
-						Assert.isLegal(dir!=null||name!=null, ".codesets.json objects must specify either a 'dir' or a 'name' or both.");
+						Assert.isLegal(name!=null, ".codesets.json objects must specify at least a 'name'.");
 						if (dir==null) {
 							dir = name; //Use the name as the default. The convention is that a codeset is in a sudirectory with the same name as
 							            // the codeset name.
@@ -236,7 +236,7 @@ public class GettingStartedGuide extends GithubRepoContent {
 		
 		public CodeSetMetaData(String name) {
 			this.name = name;
-			this.dir = dir;
+			this.dir = name;
 		}
 		
 		public CodeSetMetaData desciption(String d) {
