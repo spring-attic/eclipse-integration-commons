@@ -32,6 +32,7 @@ import org.springsource.ide.eclipse.commons.gettingstarted.content.CodeSet;
 import org.springsource.ide.eclipse.commons.gettingstarted.importing.ImportUtils;
 import org.springsource.ide.eclipse.commons.gettingstarted.util.DownloadManager;
 import org.springsource.ide.eclipse.commons.gettingstarted.util.DownloadableItem;
+import org.springsource.ide.eclipse.commons.gettingstarted.util.XmlUtils;
 import org.springsource.ide.eclipse.commons.livexp.core.FieldModel;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
@@ -226,11 +227,8 @@ public class NewSpringBootWizardModel {
 	}
 
 	private boolean isLabel(Node labelNode) {
-		if (labelNode.getNodeType()==Node.ELEMENT_NODE) {
-			String tagName = labelNode.getNodeName();
-			return "label".equals(tagName);
-		}
-		return false;
+		String tagName = XmlUtils.getTagName(labelNode);
+		return "label".equals(tagName);
 	}
 
 	private void discoverCheckboxOption(MultiSelectionFieldModel<String> style, Node checkbox) {

@@ -32,7 +32,10 @@ Require-Bundle: org.eclipse.ui,
  org.springsource.ide.eclipse.commons.configurator,
  org.eclipse.core.net,
  org.eclipse.debug.ui,
- org.apache.httpcomponents.httpclient;bundle-version="4.2.5"
+ org.apache.httpcomponents.httpclient;bundle-version="4.2.5",
+ org.eclipse.jdt.core,
+ org.eclipse.core.expressions,
+ org.eclipse.jdt.debug.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.springsource.ide.eclipse.commons.gettingstarted,
