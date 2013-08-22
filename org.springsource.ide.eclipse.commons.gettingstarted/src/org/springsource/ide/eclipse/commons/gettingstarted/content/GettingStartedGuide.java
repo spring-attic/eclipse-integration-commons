@@ -227,6 +227,12 @@ public class GettingStartedGuide extends GithubRepoContent {
 		
 		@JsonProperty 
 		public String description;
+
+		/**
+		 * No args constructor (needed for Jackson mapper).
+		 */
+		public CodeSetMetaData() {
+		}
 		
 		public CodeSetMetaData(String name) {
 			this.name = name;
