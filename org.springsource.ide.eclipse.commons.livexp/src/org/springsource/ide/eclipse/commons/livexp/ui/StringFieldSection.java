@@ -98,7 +98,10 @@ public class StringFieldSection extends WizardPageSection {
 					if (value==null) {
 						value = "";
 					}
-					text.setText(value);
+					String oldText = text.getText();
+					if (!oldText.equals(value)) {
+						text.setText(value);
+					}
 				}
 			}
 		});
