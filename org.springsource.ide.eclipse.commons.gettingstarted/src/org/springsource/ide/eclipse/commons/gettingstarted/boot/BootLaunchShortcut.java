@@ -11,12 +11,15 @@
 package org.springsource.ide.eclipse.commons.gettingstarted.boot;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaApplicationLaunchShortcut;
 import org.eclipse.jface.operation.IRunnableContext;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
 
 public class BootLaunchShortcut extends JavaApplicationLaunchShortcut {
@@ -29,6 +32,12 @@ public class BootLaunchShortcut extends JavaApplicationLaunchShortcut {
 		//For spring boot app, instead of searching for a main type in the entire project and all its
 		// libraries... try to look inside the project's pom for the corresponding property.
 		for (Object e : elements) {
+			if (e instanceof IProject) {
+				try {
+					e = JavaCore.create((IProject)e);
+				} catch (Throwable ignore) {
+				}
+			}
 			if (e instanceof IJavaElement) {
 				IJavaProject p = ((IJavaElement)e).getJavaProject();
 				IFile pomFile = p.getProject().getFile("pom.xml");
@@ -48,6 +57,12 @@ public class BootLaunchShortcut extends JavaApplicationLaunchShortcut {
 		//This isn't the best thing to to do as it searches also in all the library jars for main types. But it is
 		// only a fallback option if the above code failed. (Or should we rather signal an error instead?)
 		return super.findTypes(elements, context);
+	}
+
+	public static void launch(IProject project, String mode) {
+		BootLaunchShortcut shortcut = new BootLaunchShortcut();
+		StructuredSelection selection = new StructuredSelection(new Object[] {project});
+		shortcut.launch(selection, mode);
 	}
 
 }

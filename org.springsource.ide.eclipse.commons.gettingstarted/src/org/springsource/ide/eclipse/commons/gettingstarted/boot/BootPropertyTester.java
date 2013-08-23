@@ -32,8 +32,10 @@ public class BootPropertyTester extends PropertyTester {
 		return false;
 	}
 
-	private boolean isBootProject(IProject project) {
-		System.out.println(">>> isBootProject");
+	public static boolean isBootProject(IProject project) {
+		if (project==null || ! project.isAccessible()) {
+			return false;
+		}
 		try {
 			if (project.hasNature(JavaCore.NATURE_ID)) {
 				IJavaProject jp = JavaCore.create(project);
@@ -47,13 +49,11 @@ public class BootPropertyTester extends PropertyTester {
 			}
 		} catch (Exception e) {
 			GettingStartedActivator.log(e);
-		} finally {
-			System.out.println("<<< isBootProject");
 		}
 		return false;
 	}
 
-	private boolean isBootJar(IClasspathEntry e) {
+	private static boolean isBootJar(IClasspathEntry e) {
 		if (e.getEntryKind()==IClasspathEntry.CPE_LIBRARY) {
 			IPath path = e.getPath();
 			String name = path.lastSegment();

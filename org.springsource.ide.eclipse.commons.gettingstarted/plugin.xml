@@ -90,6 +90,41 @@
           type="org.eclipse.core.resources.IProject">
     </propertyTester>
  </extension>
+ <extension
+       point="org.eclipse.ui.commands">
+    <command
+          defaultHandler="org.springsource.ide.eclipse.commons.gettingstarted.boot.BootLaunchCommand"
+          description="Launch Spring Boot App"
+          id="org.springsource.ide.eclipse.boot.launch.command"
+          name="Launch">
+    </command>
+    <command
+          defaultHandler="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ShowDashboardCommand"
+          description="Show Dashboard"
+          id="org.springsource.ide.eclipse.dashboard.command"
+          name="Dashboard">
+    </command>
+ </extension>
+ <extension
+       point="org.eclipse.ui.menus">
+    <menuContribution
+          allPopups="false"
+          locationURI="toolbar:org.eclipse.ui.main.toolbar">
+       <toolbar
+             id="org.springsource.ide.eclipse.spring.toolbar"
+             label="Spring Toolbar">
+          <command
+                commandId="org.springsource.ide.eclipse.dashboard.command"
+                icon="resources/icons/springsource.png"
+                style="push"/>
+          <command
+                commandId="org.springsource.ide.eclipse.boot.launch.command"
+                icon="resources/icons/lrun_obj.gif"
+                style="push">
+          </command>
+       </toolbar>
+    </menuContribution>
+ </extension>
  
   <!-- Preference page
  
