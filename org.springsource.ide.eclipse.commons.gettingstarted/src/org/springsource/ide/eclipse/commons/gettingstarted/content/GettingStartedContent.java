@@ -50,7 +50,7 @@ public class GettingStartedContent extends ContentManager {
 					addGuidesFrom(github.getMyRepos(), guides, downloader);
 				}
 				if (ADD_REAL) {
-					addGuidesFrom(github.getOrgRepos("springframework-meta"), guides, downloader);
+					addGuidesFrom(github.getOrgRepos("spring-guides"), guides, downloader);
 				}
 				return guides.values().toArray(new GettingStartedGuide[guides.size()]);
 			}
