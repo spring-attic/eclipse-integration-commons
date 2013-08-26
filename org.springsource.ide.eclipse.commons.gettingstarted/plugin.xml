@@ -109,7 +109,7 @@
        point="org.eclipse.ui.menus">
     <menuContribution
           allPopups="false"
-          locationURI="toolbar:org.eclipse.ui.main.toolbar">
+          locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
        <toolbar
              id="org.springsource.ide.eclipse.spring.toolbar"
              label="Spring Toolbar">
@@ -119,10 +119,23 @@
                 style="push"/>
           <command
                 commandId="org.springsource.ide.eclipse.boot.launch.command"
+                id="org.springsource.ide.eclipse.boot.launch.command.menu"
                 icon="resources/icons/lrun_obj.gif"
-                style="push">
+                style="pulldown">
           </command>
        </toolbar>
+    </menuContribution>
+    <menuContribution
+          locationURI="menu:org.springsource.ide.eclipse.boot.launch.command.menu">
+      <command
+            commandId="org.springsource.ide.eclipse.dashboard.command"
+            icon="resources/icons/springsource.png"
+            label="Test"
+            style="push"/>
+       <dynamic
+             class="org.springsource.ide.eclipse.commons.gettingstarted.boot.RelaunchMenuProvider"
+             id="org.springsource.ide.eclipse.commons.gettingstarted.dynamic1">
+       </dynamic>
     </menuContribution>
  </extension>
  

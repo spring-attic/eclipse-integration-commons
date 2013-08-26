@@ -12,16 +12,27 @@ package org.springsource.ide.eclipse.commons.gettingstarted.boot;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.debug.ui.launchConfigurations.JavaApplicationLaunchShortcut;
+import org.eclipse.jdt.internal.debug.ui.JDIDebugUIPlugin;
+import org.eclipse.jdt.internal.debug.ui.launcher.LauncherMessages;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
 
+@SuppressWarnings("restriction")
 public class BootLaunchShortcut extends JavaApplicationLaunchShortcut {
 	
 	private static final String MAIN_CLASS_PROP = "start-class";
@@ -59,6 +70,37 @@ public class BootLaunchShortcut extends JavaApplicationLaunchShortcut {
 		return super.findTypes(elements, context);
 	}
 
+	/**
+	 * Overridden, copied and changed to alter the generated launch configuration name.
+	 */
+	@Override
+	protected ILaunchConfiguration createConfiguration(IType type) {
+		ILaunchConfiguration config = null;
+		ILaunchConfigurationWorkingCopy wc = null;
+		try {
+			ILaunchConfigurationType configType = getConfigurationType();
+			String projectName = type.getJavaProject().getElementName();
+			wc = configType.newInstance(null, projectName+" - "+getLaunchManager().generateLaunchConfigurationName(
+					type.getTypeQualifiedName('.')));
+			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, type.getFullyQualifiedName());
+			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
+			wc.setMappedResources(new IResource[] {type.getUnderlyingResource()});
+			config = wc.doSave();
+		} catch (CoreException exception) {
+			MessageDialog.openError(JDIDebugUIPlugin.getActiveWorkbenchShell(), LauncherMessages.JavaLaunchShortcut_3, exception.getStatus().getMessage());	
+		} 
+		return config;
+	}
+	
+	/**
+	 * Returns the singleton launch manager.
+	 * 
+	 * @return launch manager
+	 */
+	private ILaunchManager getLaunchManager() {
+		return DebugPlugin.getDefault().getLaunchManager();
+	}
+	
 	public static void launch(IProject project, String mode) {
 		BootLaunchShortcut shortcut = new BootLaunchShortcut();
 		StructuredSelection selection = new StructuredSelection(new Object[] {project});

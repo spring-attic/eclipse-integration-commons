@@ -47,17 +47,26 @@ import org.springsource.ide.eclipse.commons.frameworks.ui.internal.utils.Selecti
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 
 /**
- * Default handler for Spring boot launch command.
+ * Default handler for Spring boot launch command toolbar button.
  */
-@SuppressWarnings("restriction")
 public class BootLaunchCommand extends AbstractHandler implements IElementUpdater {
 	
+	public static final ImageDescriptor RUN_ICON = ImageDescriptor.createFromURL(iconUrl("lrun_obj.gif"));
+	public static final ImageDescriptor RESTART_ICON = ImageDescriptor.createFromURL(iconUrl("term_restart.gif"));
+	
+	private static URL iconUrl(String name) {
+		try {
+			URL baseUrl = GettingStartedActivator.getDefault().getBundle().getEntry("resources/icons");
+			return new URL(baseUrl, name);
+		} catch (MalformedURLException e) {
+			GettingStartedActivator.log(e);
+		}
+		return null;
+	}
+	
 	private static final String RUN_MODE = "run";
-
 	public static final String COMMAND_ID = "org.springsource.ide.eclipse.boot.launch.command";
 	
-	ImageDescriptor RUN_ICON = ImageDescriptor.createFromURL(iconUrl("lrun_obj.gif"));
-	ImageDescriptor RESTART_ICON = ImageDescriptor.createFromURL(iconUrl("term_restart.gif"));
 	
 	ICommandService comandService = null;
 	
@@ -108,16 +117,6 @@ public class BootLaunchCommand extends AbstractHandler implements IElementUpdate
 		return null;
 	}
 	
-	private URL iconUrl(String name) {
-		try {
-			URL baseUrl = GettingStartedActivator.getDefault().getBundle().getEntry("resources/icons");
-			return new URL(baseUrl, name);
-		} catch (MalformedURLException e) {
-			GettingStartedActivator.log(e);
-		}
-		return null;
-	}
-
 	private IProject currentProject = null;
 	private ILaunch currentLaunch = null;
 	private IProcess currentProcess = null;
