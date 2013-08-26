@@ -76,7 +76,6 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 		@SuppressWarnings("restriction")
 		@Override
 		public void changing(LocationEvent event) {
-			System.out.println("Navigation: "+event.location);
 			event.doit = false; //all navigation in welcome page must be intercepted.
 			
 			

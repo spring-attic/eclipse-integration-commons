@@ -76,7 +76,6 @@ public class BootLaunchCommand extends AbstractHandler implements IElementUpdate
 	public BootLaunchCommand() {
 		instances++;
 		Assert.isTrue(instances==1);
-		System.out.println("Registerin launch listener");
 		
 		DebugPlugin.getDefault().addDebugEventListener(debugListener = new IDebugEventSetListener() {
 			@Override
