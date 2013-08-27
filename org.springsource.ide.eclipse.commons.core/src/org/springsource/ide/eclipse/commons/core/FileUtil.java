@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.channels.FileChannel;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -167,6 +168,42 @@ public class FileUtil {
 
 	public static File createTempDirectory() throws IOException {
 		return createTempDirectory("temp");
+	}
+
+
+	private static String[] BINARY_EXTENSIONS = new String[] { "jar", "gif", "jpg", "jpeg", ".class", "png" };
+
+	public static void copy(File source, File target) throws IOException {
+		FileInputStream sourceOutStream = new FileInputStream(source);
+		FileOutputStream targetOutStream = new FileOutputStream(target);
+		FileChannel sourceChannel = sourceOutStream.getChannel();
+		FileChannel targetChannel = targetOutStream.getChannel();
+		sourceChannel.transferTo(0, sourceChannel.size(), targetChannel);
+		sourceChannel.close();
+		targetChannel.close();
+		sourceOutStream.close();
+		targetOutStream.close();
+	}
+
+	public static boolean isBinaryFile(File file) {
+		String extension = FileUtil.getExtension(file);
+		if (extension != null) {
+			for (String binaryExtension : BINARY_EXTENSIONS) {
+				if (binaryExtension.equals(extension)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static String getExtension(File file) {
+		String fileName = file.getName();
+		int extensionIndex = fileName.lastIndexOf('.');
+		if (extensionIndex == -1) {
+			return null;
+		}
+		return fileName.substring(extensionIndex + 1);
 	}
 
 }
