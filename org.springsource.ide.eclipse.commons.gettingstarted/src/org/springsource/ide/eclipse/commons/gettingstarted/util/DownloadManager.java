@@ -65,6 +65,11 @@ public class DownloadManager {
 			Assert.isTrue(cacheDir.mkdirs(), "Couldn't create cache directory at "+cacheDir);
 		}
 	}
+	
+	public void clearCache() {
+		FileUtils.deleteQuietly(cacheDirectory);
+		cacheDirectory.mkdirs();
+	}
 
 	/**
 	 * Create a Default downloadmanager. This downloadmanager does not use authentication and

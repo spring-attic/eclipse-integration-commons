@@ -10,9 +10,10 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.dashboard.ui.actions;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorPart;
@@ -23,6 +24,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.intro.IIntroManager;
 import org.eclipse.ui.intro.IIntroPart;
+import org.eclipse.ui.progress.UIJob;
+import org.springsource.ide.eclipse.commons.core.preferences.StsProperties;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardEditorInput;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.MultiPageDashboardEditor;
@@ -38,17 +41,9 @@ public class ShowDashboardPageAction implements IWorkbenchWindowActionDelegate {
 	
 //	private static final boolean useNewDashboard = isActivatedNow();
 
-	private static boolean useNewDashboard() {
-//TODO: Turn on conditionally after SpingOne Date
-//		Date now = new Date();
-//		return now.after(new Date(** insert Spring One Data**));
-//		String newDashProp = System.getProperty("sts.newdash");
-//		if (newDashProp!=null && !"false".equals(newDashProp)) {
-//			return true;
-//		}
-//		return Boolean.getBoolean("sts.newdash");
-//		return false;
-		return Platform.getBundle("org.springsource.ide.eclipse.commons.gettingstarted")!=null;
+	private boolean useNewDashboard(IProgressMonitor mon) {
+		StsProperties props = StsProperties.getInstance(mon);
+		return props.get("sts.new.dashboard.enabled", false);
 	}
 
 	private IWorkbenchWindow window;
@@ -67,37 +62,50 @@ public class ShowDashboardPageAction implements IWorkbenchWindowActionDelegate {
 	}
 
 	public void run(IAction action) {
-		IIntroManager introMgr = window.getWorkbench().getIntroManager();
-		IIntroPart intro = introMgr.getIntro();
-		if (intro != null) {
-			introMgr.closeIntro(intro);
-		}
-		IWorkbenchPage page = window.getActivePage();
-		try {
-			try {
-				if (useNewDashboard()) {
-					// MessageDialog.openInformation(window.getShell(),
-					// "New Dashboard should open",
-					// "But it is not implemented yet. Try again on next release");
-					IEditorPart editor = page.openEditor(DashboardEditorInput.INSTANCE, MultiPageDashboardEditor.NEW_EDITOR_ID);
-					if (editor instanceof IDashboardWithPages) {
-						IDashboardWithPages dashboard = (IDashboardWithPages) editor;
-						dashboard.setActivePage(pageId);
+		UIJob job = new UIJob("Show Dashboard") {
+			@Override
+			public IStatus runInUIThread(IProgressMonitor mon) {
+				mon.beginTask("Show Dashboard", 2);
+				try {
+					IIntroManager introMgr = window.getWorkbench().getIntroManager();
+					IIntroPart intro = introMgr.getIntro();
+					if (intro != null) {
+						introMgr.closeIntro(intro);
 					}
-					return;
+					IWorkbenchPage page = window.getActivePage();
+					try {
+						try {
+							if (useNewDashboard(new SubProgressMonitor(mon, 1))) {
+								// MessageDialog.openInformation(window.getShell(),
+								// "New Dashboard should open",
+								// "But it is not implemented yet. Try again on next release");
+								IEditorPart editor = page.openEditor(DashboardEditorInput.INSTANCE, MultiPageDashboardEditor.NEW_EDITOR_ID);
+								if (editor instanceof IDashboardWithPages) {
+									IDashboardWithPages dashboard = (IDashboardWithPages) editor;
+									dashboard.setActivePage(pageId);
+								}
+								return Status.OK_STATUS;
+							}
+						}
+						catch (Throwable e) {
+							IdeUiPlugin.log(e);
+						}
+						// Using new dashboard is disabled or failed... use the old one
+						FormEditor editor = (FormEditor) page.openEditor(DashboardEditorInput.INSTANCE,
+								MultiPageDashboardEditor.EDITOR_ID);
+						editor.setActivePage(pageId);
+					}
+					catch (PartInitException e) {
+						IdeUiPlugin.log(new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID, "Could not open dashboard", e));
+					}
+				} finally {
+					mon.done();
 				}
+				
+				return Status.OK_STATUS;
 			}
-			catch (Throwable e) {
-				IdeUiPlugin.log(e);
-			}
-			// Using new dashboard is disabled or failed... use the old one
-			FormEditor editor = (FormEditor) page.openEditor(DashboardEditorInput.INSTANCE,
-					MultiPageDashboardEditor.EDITOR_ID);
-			editor.setActivePage(pageId);
-		}
-		catch (PartInitException e) {
-			IdeUiPlugin.log(new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID, "Could not open dashboard", e));
-		}
+		};
+		job.schedule();
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {

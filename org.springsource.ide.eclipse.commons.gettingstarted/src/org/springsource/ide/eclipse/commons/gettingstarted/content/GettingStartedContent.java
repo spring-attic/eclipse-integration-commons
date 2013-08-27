@@ -12,6 +12,8 @@ package org.springsource.ide.eclipse.commons.gettingstarted.content;
 
 import java.util.LinkedHashMap;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.springsource.ide.eclipse.commons.core.preferences.StsProperties;
 import org.springsource.ide.eclipse.commons.gettingstarted.github.GithubClient;
 import org.springsource.ide.eclipse.commons.gettingstarted.github.Repo;
 import org.springsource.ide.eclipse.commons.gettingstarted.util.DownloadManager;
@@ -31,15 +33,17 @@ public class GettingStartedContent extends ContentManager {
 	private final static boolean ADD_MOCKS = true;// (""+Platform.getLocation()).contains("kdvolder");
 	
 	public static GettingStartedContent getInstance() {
+		//TODO: propagate progress monitor. Make sure this isn't called in UIThread. It may
+		// hang downloading properties if user has no or poor internet access.
 		if (INSTANCE == null) {
-			INSTANCE = new GettingStartedContent();
+			INSTANCE = new GettingStartedContent(StsProperties.getInstance(new NullProgressMonitor()));
 		}
 		return INSTANCE;
 	}
 	
 	private GithubClient github = new GithubClient(); 
 	
-	private GettingStartedContent() {
+	private GettingStartedContent(final StsProperties stsProps) {
 		//Guides: are discoverable because they are all repos in org on github
 		register(GettingStartedGuide.class, GettingStartedGuide.GUIDE_DESCRIPTION_TEXT,
 			new ContentProvider<GettingStartedGuide>() {
@@ -60,7 +64,7 @@ public class GettingStartedContent extends ContentManager {
 					String name = repo.getName();
 //					System.out.println("repo : "+name + " "+repo.getUrl());
 					if (name.startsWith("gs-") && !guides.containsKey(name)) {
-						guides.put(name, new GettingStartedGuide(repo, downloader));
+						guides.put(name, new GettingStartedGuide(stsProps, repo, downloader));
 					}
 				}
 				return guides;

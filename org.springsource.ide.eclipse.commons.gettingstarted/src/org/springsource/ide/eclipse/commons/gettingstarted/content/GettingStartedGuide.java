@@ -14,15 +14,14 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IPath;
+import org.springsource.ide.eclipse.commons.core.preferences.StsProperties;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.gettingstarted.content.CodeSet.CodeSetEntry;
 import org.springsource.ide.eclipse.commons.gettingstarted.github.Repo;
@@ -40,6 +39,8 @@ public class GettingStartedGuide extends GithubRepoContent {
 	protected Repo repo;
 
 	private List<CodeSet> codesets;
+
+	private String springSiteUrl;
 
 	public static final String GUIDE_DESCRIPTION_TEXT = 
 			"A guide is a short focussed tutorial "
@@ -83,8 +84,9 @@ public class GettingStartedGuide extends GithubRepoContent {
 	}
 
 	
-	public GettingStartedGuide(Repo repo, DownloadManager dl) {
+	public GettingStartedGuide(StsProperties props, Repo repo, DownloadManager dl) {
 		super(dl);
+		this.springSiteUrl = props.get("spring.site.url");
 		this.repo = repo;
 	}
 	
@@ -193,12 +195,12 @@ public class GettingStartedGuide extends GithubRepoContent {
 	@Override
 	public URL getHomePage() {
 		//Looks like this now:
-		//http://sagan.cfapps.io/guides/gs/spring-boot/
+		//http://${spring.site.url}/guides/gs/spring-boot/
 		try {
 			String gsGuideName = getName();
 			if (gsGuideName.startsWith("gs-")) {
 				String guideName = gsGuideName.substring(3);
-				return new URL("http://sagan-staging.cfapps.io/guides/gs/"+guideName);
+				return new URL(springSiteUrl+"/guides/gs/"+guideName);
 			}
 		} catch (MalformedURLException e) {
 			GettingStartedActivator.log(e);

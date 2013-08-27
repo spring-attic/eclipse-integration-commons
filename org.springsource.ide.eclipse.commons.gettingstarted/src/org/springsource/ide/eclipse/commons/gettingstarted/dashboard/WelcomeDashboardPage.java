@@ -18,6 +18,7 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationEvent;
@@ -29,6 +30,7 @@ import org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.GSImpor
 import org.springsource.ide.eclipse.commons.ui.UiUtil;
 
 
+@SuppressWarnings("restriction")
 public class WelcomeDashboardPage extends WebDashboardPage {
 
 	private File welcomeHtml;
@@ -36,8 +38,10 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 
 	public WelcomeDashboardPage(DashboardEditor dashboard) throws URISyntaxException, IOException {
 		this.dashboard = dashboard;
-		URL entry = GettingStartedActivator.getDefault().getBundle().getEntry("resources/welcome/index.html");
-		welcomeHtml = new File(FileLocator.toFileURL(entry).toURI());
+		URL contentUrl = GettingStartedActivator.getDefault().getBundle().getEntry("resources/welcome");
+		//TODO: THe rest of this method needs to be made asychronous.
+		File contentInstance = DashboardCopier.getCopy(new File(FileLocator.toFileURL(contentUrl).toURI()), "resources/welcome", new NullProgressMonitor());
+		welcomeHtml = new File(contentInstance, "index.html");
 		setName("Welcome");
 		setHomeUrl(welcomeHtml.toURI().toString());
 	}
