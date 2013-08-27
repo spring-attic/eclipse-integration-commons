@@ -45,7 +45,7 @@ public class StsProperties {
 	/**
 	 * External url where properties are read from.
 	 */
-	public static final String PROPERTIES_URL = System.getProperty("sts.url.properties.url",
+	public static final String PROPERTIES_URL = System.getProperty("sts.properties.url",
 			"http://dist.springsource.com/release/STS/discovery/sts.properties");
 
 	/**
