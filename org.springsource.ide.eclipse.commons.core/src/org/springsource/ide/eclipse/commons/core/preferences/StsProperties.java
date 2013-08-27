@@ -12,6 +12,8 @@ package org.springsource.ide.eclipse.commons.core.preferences;
 
 import java.io.InputStream;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -74,7 +76,7 @@ public class StsProperties {
 			}
 		}
 		catch (Throwable e) {
-			//Catch and log all exceptions. This should never fail to initialize *something* useable.
+			//Catch and log all exceptions. This should never fail to initialise *something* usable.
 			CorePlugin.log(e);
 		}
 	}
@@ -84,10 +86,55 @@ public class StsProperties {
 
 		// Default properties (guarantees certain properties have a value no
 		// matter what).
+
+		//Sites from which STS wizards generate some other urls.
 		props.put("spring.site.url", "http://bogus.springsource.com");
 		props.put("spring.initialzr.site.url", "http://initializr.cfapps.io");
 
+		//Urls used in the dashboard. For each XXX.url=... property, if
+		//  - XXX.url.label is defined that label will be used for the corresponding
+		//     dashboard tab instead of the html page title (title tends to be too long).
+		//  - XXX.url.external is defined that url will always be openened in an external browser.
+
+		//Forum:
+		props.put("sts.forum.url", "http://forum.springsource.org/forumdisplay.php?32-SpringSource-Tool-Suite");
+		props.put("sts.forum.url.label", "Forum");
+		props.put("sts.forum.url.external", "true");
+
+		//Tracker:
+		props.put("sts.tracker.url", "https://issuetracker.springsource.com/browse/STS");
+		props.put("sts.tracker.url.label", "Issues");
+
+		//Docs
+		props.put("spring.docs.url", "http://www.springsource.org/documentation");
+		props.put("spring.docs.url.label", "Spring Docs");
+
+		//Blog
+		props.put("spring.blog.url", "http://blog.springsource.org");
+		props.put("spring.blog.url.label", "Blog");
+
+		//Guides
+		props.put("spring.guides.url", "http://www.springsource.org/get-started");
+			//future value: "${spring.site.url}/guides"
+
+		//New and Noteworthy
+		props.put("sts.nan.url", "http://static.springsource.org/sts/nan/latest/NewAndNoteworthy.html");
 		return props;
+	}
+
+	/**
+	 * Procudes names of properties that have explicitly been set, either from properties file
+	 * or by the explicitly provided defaults.  More precisely this does not return
+	 * properties simply inherited from Java system properties.
+	 */
+	public Collection<String> getExplicitProperties() {
+		ArrayList<String> keys = new ArrayList<String>();
+		for (Object string : props.keySet()) {
+			if (string instanceof String) {
+				keys.add((String) string);
+			}
+		}
+		return keys;
 	}
 
 	public String get(String key) {

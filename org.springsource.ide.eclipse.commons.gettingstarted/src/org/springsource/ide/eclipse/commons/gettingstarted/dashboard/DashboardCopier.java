@@ -35,15 +35,6 @@ public class DashboardCopier {
 	private static DashboardCopier instance = null;
 	
 	/**
-	 * List of properties that need to be substitute in dashboard content. Other properties will
-	 * be ignored.
-	 */
-	private static String[] DASHBOARD_PROPERTIES = {
-			"spring.site.url"
-	};
-	
-	
-	/**
 	 * Cache of processed content. This cache only retains content per Eclipse session.
 	 * So restarting STS should begin with a clear cache.
 	 */
@@ -56,7 +47,7 @@ public class DashboardCopier {
 		FileUtils.deleteQuietly(workdir);
 	}
 	
-	public static DashboardCopier getInstance() {
+	public static synchronized DashboardCopier getInstance() {
 		if (instance == null) {
 			instance = new DashboardCopier();
 		}
@@ -66,16 +57,17 @@ public class DashboardCopier {
 	/**
 	 * Copy directory contens from some source directory to some working directory
 	 */
-	public static File getCopy(File from, String pathKey, IProgressMonitor mon) throws IOException {
-		return getInstance()._getCopy(from, pathKey, mon);
+	public static File getCopy(File from, IProgressMonitor mon) throws IOException {
+		return getInstance()._getCopy(from, mon);
 	}
 
-	private File _getCopy(File from, String pathKey, IProgressMonitor mon) throws IOException {
-		File cached = copied.get(pathKey);
-		if (cached!=null) {
+	private File _getCopy(File from, IProgressMonitor mon) throws IOException {
+		String key = from.getCanonicalPath();
+		File cached = copied.get(key);
+		if (cached!=null && cached.exists()) {
 			return cached;
 		}
-		File to = new File(workdir, pathKey);
+		File to = new File(workdir, generateFileName());
 		if (!to.mkdirs()) {
 			throw new IOException("Couldn't create dir "+to);
 		}
@@ -83,7 +75,7 @@ public class DashboardCopier {
 		try {
 			StsProperties props = StsProperties.getInstance(new SubProgressMonitor(mon, 1));
 			Map<String, String> replacementContext = new HashMap<String, String>();
-			for (String propName : DASHBOARD_PROPERTIES) {
+			for (String propName : props.getExplicitProperties()) {
 				String value = props.get(propName);
 				if (value!=null) {
 					replacementContext.put("${"+propName+"}", value);
@@ -91,10 +83,16 @@ public class DashboardCopier {
 			}
 			TemplateProcessor processor = new TemplateProcessor(replacementContext);
 			processor.process(from, to);
+			copied.put(key, to);
 			return to;
 		} finally {
 			mon.done();
 		}
+	}
+
+	long count = System.currentTimeMillis();
+	private String generateFileName() {
+		return ""+(count++);
 	}
 	
 	

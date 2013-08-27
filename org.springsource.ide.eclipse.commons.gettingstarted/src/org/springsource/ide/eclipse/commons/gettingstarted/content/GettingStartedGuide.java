@@ -40,7 +40,7 @@ public class GettingStartedGuide extends GithubRepoContent {
 
 	private List<CodeSet> codesets;
 
-	private String springSiteUrl;
+	private String springGuidesUrl;
 
 	public static final String GUIDE_DESCRIPTION_TEXT = 
 			"A guide is a short focussed tutorial "
@@ -86,7 +86,7 @@ public class GettingStartedGuide extends GithubRepoContent {
 	
 	public GettingStartedGuide(StsProperties props, Repo repo, DownloadManager dl) {
 		super(dl);
-		this.springSiteUrl = props.get("spring.site.url");
+		this.springGuidesUrl = props.get("spring.guides.url");
 		this.repo = repo;
 	}
 	
@@ -195,12 +195,12 @@ public class GettingStartedGuide extends GithubRepoContent {
 	@Override
 	public URL getHomePage() {
 		//Looks like this now:
-		//http://${spring.site.url}/guides/gs/spring-boot/
+		//http://${spring.guides.url}/gs/spring-boot/
 		try {
 			String gsGuideName = getName();
 			if (gsGuideName.startsWith("gs-")) {
 				String guideName = gsGuideName.substring(3);
-				return new URL(springSiteUrl+"/guides/gs/"+guideName);
+				return new URL(springGuidesUrl+"/gs/"+guideName);
 			}
 		} catch (MalformedURLException e) {
 			GettingStartedActivator.log(e);

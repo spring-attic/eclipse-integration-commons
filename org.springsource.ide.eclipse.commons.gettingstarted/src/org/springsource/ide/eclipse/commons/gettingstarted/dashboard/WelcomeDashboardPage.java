@@ -40,7 +40,7 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 		this.dashboard = dashboard;
 		URL contentUrl = GettingStartedActivator.getDefault().getBundle().getEntry("resources/welcome");
 		//TODO: THe rest of this method needs to be made asychronous.
-		File contentInstance = DashboardCopier.getCopy(new File(FileLocator.toFileURL(contentUrl).toURI()), "resources/welcome", new NullProgressMonitor());
+		File contentInstance = DashboardCopier.getCopy(new File(FileLocator.toFileURL(contentUrl).toURI()), new NullProgressMonitor());
 		welcomeHtml = new File(contentInstance, "index.html");
 		setName("Welcome");
 		setHomeUrl(welcomeHtml.toURI().toString());
@@ -77,7 +77,6 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 			// TODO Auto-generated method stub
 		}
 		
-		@SuppressWarnings("restriction")
 		@Override
 		public void changing(LocationEvent event) {
 			event.doit = false; //all navigation in welcome page must be intercepted.

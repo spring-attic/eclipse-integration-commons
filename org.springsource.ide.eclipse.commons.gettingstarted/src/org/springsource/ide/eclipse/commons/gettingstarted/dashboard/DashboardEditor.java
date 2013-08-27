@@ -14,11 +14,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -29,7 +32,10 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.part.EditorPart;
+import org.springsource.ide.eclipse.commons.core.preferences.StsProperties;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.dashboard.ui.actions.IDashboardWithPages;
 
@@ -48,7 +54,12 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 	 * This is because the web page titles aren't allways good enough (too long,
 	 * not clear in context etc.).
 	 */
-	private Map<Object, Object> customNames = null;
+	private Map<String, String> customNames = null;
+	
+	/**
+	 * Urls contained in this set should always be opened in an external browser.
+	 */
+	private Set<String> openExternal = null;
 	
 	public DashboardEditor() {
 	}
@@ -131,11 +142,7 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 			WelcomeDashboardPage mainPage = new WelcomeDashboardPage(this);
 			pages.add(mainPage);
 			String mainUrl = mainPage.getHomeUrl();
-			if (mainUrl.endsWith(".html")) { //It should end with .html but check anyway
-				String propertiesUrl = mainUrl.substring(0, mainUrl.length()-5)+".properties";
-				input = new URL(propertiesUrl).openStream();
-				readCustomNames(input);
-			}
+			customizeUrlBehavior(StsProperties.getInstance(new NullProgressMonitor()));
 			
 		} catch (Exception e) {
 			GettingStartedActivator.log(e);
@@ -163,11 +170,30 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 		return pages;
 	}
 
-	private void readCustomNames(InputStream input) throws IOException {
-		Properties props = new Properties();
-		props.load(input);
-		customNames = props;
+	private void customizeUrlBehavior(StsProperties props) {
+		customNames = new HashMap<String, String>();
+		openExternal = new HashSet<String>();
+		for (String propName : props.getExplicitProperties()) {
+			if (propName.endsWith(".url")) {
+				String url = props.get(propName);
+				String customLabel = props.get(propName+".label");
+				if (customLabel!=null) {
+					customNames.put(url, customLabel);
+				}
+				
+				boolean external = props.get(propName+".external", false);
+				if (external) {
+					openExternal.add(url);
+				}
+			}
+		}
 	}
+	
+//	private void readCustomNames(InputStream input) throws IOException {
+//		Properties props = new Properties();
+//		props.load(input);
+//		customNames = props;
+//	}
 
 //	private void addDashboardWebPages(List<IDashboardPage> pages) {
 //		URLBookmark[] bookmarks = GettingStartedActivator.getDefault().getPreferences().getDashboardWebPages();
@@ -239,6 +265,18 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 		return null;
 	}
 
+	private static void openUrlInExternalBrowser(String url) {
+		try {
+			IWorkbenchBrowserSupport support = PlatformUI.getWorkbench()
+					.getBrowserSupport();
+			support.getExternalBrowser().openURL(new URL(url));
+		}
+		catch (Exception e) {
+			GettingStartedActivator.log(e);
+		}
+	}
+	
+	
 	/**
 	 * Try to open a webpage in the dashboard. The url will be used as the 'page-id' for the
 	 * page. If a page with the given id already exists then it will be reused rather than
@@ -246,21 +284,26 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 	 * @return 
 	 */
 	public boolean openWebPage(String url) {
-		DashboardPageContainer p = getPage(url);
-		if (p!=null) {
-			IDashboardPage _wp = p.getPage();
-			if (_wp instanceof WebDashboardPage) {
-				WebDashboardPage wp = (WebDashboardPage) _wp;
-				wp.goHome();
-				setActivePage(p);
+		if (openExternal.contains(url)) {
+			openUrlInExternalBrowser(url);
+			return true;
+		} else {
+			DashboardPageContainer p = getPage(url);
+			if (p!=null) {
+				IDashboardPage _wp = p.getPage();
+				if (_wp instanceof WebDashboardPage) {
+					WebDashboardPage wp = (WebDashboardPage) _wp;
+					wp.goHome();
+					setActivePage(p);
+					return true;
+				}
+			} else {
+				String customName = getCustomName(url);
+				WebDashboardPage page = new WebDashboardPage(customName, url);
+				CTabItem widget = createPageWidget(page);
+				setActivePage((DashboardPageContainer)widget.getData());
 				return true;
 			}
-		} else {
-			String customName = getCustomName(url);
-			WebDashboardPage page = new WebDashboardPage(customName, url);
-			CTabItem widget = createPageWidget(page);
-			setActivePage((DashboardPageContainer)widget.getData());
-			return true;
 		}
 		return false;
 	}
