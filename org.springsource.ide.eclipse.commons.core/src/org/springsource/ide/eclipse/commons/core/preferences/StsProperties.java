@@ -89,7 +89,8 @@ public class StsProperties {
 
 		//Sites from which STS wizards generate some other urls.
 		props.put("spring.site.url", "http://bogus.springsource.com");
-		props.put("spring.initialzr.site.url", "http://initializr.cfapps.io");
+		props.put("spring.initializr.form.url", "http://initializr.cfapps.io");
+		props.put("spring.initializr.download.url", "http://initializr.cfapps.io/starter.zip");
 
 		//Urls used in the dashboard. For each XXX.url=... property, if
 		//  - XXX.url.label is defined that label will be used for the corresponding

@@ -23,9 +23,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.springsource.ide.eclipse.commons.core.preferences.StsProperties;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.gettingstarted.content.BuildType;
 import org.springsource.ide.eclipse.commons.gettingstarted.content.CodeSet;
@@ -55,25 +57,30 @@ import org.xml.sax.SAXException;
  * project in the root of the zip.
  */
 public class NewSpringBootWizardModel {
-	
-	private static final String FORM_URL = System.getProperty("initializr.form.url", "http://initializr.cfapps.io");
-	private static final String DEFAULT_URL = System.getProperty("initializr.download.url", "http://initializr.cfapps.io/starter.zip");
-	
+		
 	private URLConnectionFactory urlConnectionFactory;
+	private final String FORM_URL;
+	private final String DOWNLOAD_URL;
 	
 	public NewSpringBootWizardModel() throws IOException, ParserConfigurationException, SAXException {
-		this(new URLConnectionFactory());
+		this(new URLConnectionFactory(), StsProperties.getInstance(new NullProgressMonitor()));
 	}
 	
-	public NewSpringBootWizardModel(URLConnectionFactory urlConnectionFactory) throws IOException, ParserConfigurationException, SAXException {
+	public NewSpringBootWizardModel(URLConnectionFactory urlConnectionFactory, StsProperties stsProps) throws IOException, ParserConfigurationException, SAXException {
 		this.urlConnectionFactory = urlConnectionFactory;
+		this.FORM_URL = stsProps.get("spring.initializr.form.url");
+		this.DOWNLOAD_URL = stsProps.get("spring.initializr.download.url");
 		discoverOptions(stringInputs, style);
+		
 		projectName = stringInputs.getField("name");
 		projectName.validator(new NewProjectNameValidator(projectName.getVariable()));
 		location = new LiveVariable<String>(ProjectLocationSection.getDefaultProjectLocation(projectName.getValue()));
 		locationValidator = new NewProjectLocationValidator("Location", location, projectName.getVariable());
 		Assert.isNotNull(projectName, "The form at "+FORM_URL+" doesn't have a 'name' text input");
 		
+		baseUrl = new LiveVariable<String>(DOWNLOAD_URL);
+		baseUrlValidator = new UrlValidator("Base Url", baseUrl);
+				
 		UrlMaker computedUrl = new UrlMaker(baseUrl);
 		for (FieldModel<String> param : stringInputs) {
 			computedUrl.addField(param);
@@ -100,8 +107,8 @@ public class NewSpringBootWizardModel {
 	
 	private boolean allowUIThread = false;
 
-	public final LiveVariable<String> baseUrl = new LiveVariable<String>(DEFAULT_URL);
-	public final LiveExpression<ValidationResult> baseUrlValidator = new UrlValidator("Base Url", baseUrl);
+	public final LiveVariable<String> baseUrl;
+	public final LiveExpression<ValidationResult> baseUrlValidator;
 	
 	public final LiveVariable<String> downloadUrl = new LiveVariable<String>();
 	
