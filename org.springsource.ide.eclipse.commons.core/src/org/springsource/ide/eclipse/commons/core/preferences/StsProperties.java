@@ -41,6 +41,16 @@ import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
  */
 public class StsProperties {
 
+	/**
+	 * The properties url is normally defined via the 'com.springsource.sts.core.resources' extension point in
+	 * the product plugin i.e. 'org.springsource.sts' and 'org.springsource.ggts' for toolsuite-distribution repo.
+	 * <p>
+	 * If STS or GGTS is installed from update site then neither plugin may be present. In that case
+	 * the 'no_product.properties url will be used.
+	 */
+	private static final String NO_PRODUCT_PROPERTIES = "http://dist.springsource.com/release/STS/discovery/no_product.properties";
+
+
 	//Note: there is also a class called 'ResourceProvider'.. which reads various properties
 	// from eclipse extension points. This is different because the STSProperties themselves
 	// are read from an external url.
@@ -93,6 +103,9 @@ public class StsProperties {
 			} catch (Exception e) {
 				//thrown when property not defined
 			}
+		}
+		if (url==null) {
+			url = NO_PRODUCT_PROPERTIES;
 		}
 		return url;
 	}
