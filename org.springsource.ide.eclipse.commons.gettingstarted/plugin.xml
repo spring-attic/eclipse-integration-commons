@@ -64,12 +64,12 @@
           id="org.springsource.ide.eclipse.boot.launch.command"
           name="Launch">
     </command>
-    <command
+<!--    <command
           defaultHandler="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ShowDashboardCommand"
           description="Show Dashboard"
           id="org.springsource.ide.eclipse.dashboard.command"
           name="Dashboard">
-    </command>
+    </command> -->
  </extension>
  <extension
        point="org.eclipse.ui.menus">
@@ -79,10 +79,10 @@
        <toolbar
              id="org.springsource.ide.eclipse.spring.toolbar"
              label="Spring Toolbar">
-          <command
+<!--          <command
                 commandId="org.springsource.ide.eclipse.dashboard.command"
                 icon="resources/icons/springsource.png"
-                style="push"/>
+                style="push"/> -->
           <command
                 commandId="org.springsource.ide.eclipse.boot.launch.command"
                 id="org.springsource.ide.eclipse.boot.launch.command.menu"
@@ -93,11 +93,6 @@
     </menuContribution>
     <menuContribution
           locationURI="menu:org.springsource.ide.eclipse.boot.launch.command.menu">
-      <command
-            commandId="org.springsource.ide.eclipse.dashboard.command"
-            icon="resources/icons/springsource.png"
-            label="Test"
-            style="push"/>
        <dynamic
              class="org.springsource.ide.eclipse.commons.gettingstarted.boot.RelaunchMenuProvider"
              id="org.springsource.ide.eclipse.commons.gettingstarted.dynamic1">
