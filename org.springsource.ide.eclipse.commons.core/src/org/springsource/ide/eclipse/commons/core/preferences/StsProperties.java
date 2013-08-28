@@ -18,21 +18,20 @@ import java.util.Properties;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.springsource.ide.eclipse.commons.core.HttpUtil;
+import org.springsource.ide.eclipse.commons.core.ResourceProvider;
 import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
 
 /**
  * An instance of this class provides a mechanism to retrieve String properties.
  * This is similar to a Java system properties. However it has support for reading these
- * properties from a fixed url. This allows us to change the properties
- * across all released versions of STS (from 3.4 onward) without requiring a new
- * release of STS.
+ * properties from a fixed url. This allows us to change the properties after release.
  * <p>
  * Properties in this class can come from 3 different sources, listed here in
  * decreasing order of priority:
  *
  *   1) Java System properties (set via -Dmy.prop.name=value) in STS.ini
  *      (properties set this way override anything else).
- *   2) via the fixed url
+ *   2) loaded from fixed url
  *   3) default values hard-coded in this class.
  *      (used only if property was not set via either 1 or 2).
  *
@@ -42,11 +41,11 @@ import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
  */
 public class StsProperties {
 
-	/**
-	 * External url where properties are read from.
-	 */
-	public static final String PROPERTIES_URL = System.getProperty("sts.properties.url",
-			"http://dist.springsource.com/release/STS/discovery/sts.properties");
+	//Note: there is also a class called 'ResourceProvider'.. which reads various properties
+	// from eclipse extension points. This is different because the STSProperties themselves
+	// are read from an external url.
+	//The ResourceProvider only allows properties to defined by extensions contained in plugins
+	// installed into the Ecliple platform.
 
 	/**
 	 * This class is a singleton. This holds the instance once created.
@@ -55,7 +54,7 @@ public class StsProperties {
 
 	public static StsProperties getInstance(IProgressMonitor mon) {
 		if (instance==null) {
-			StsProperties newInstance = new StsProperties(mon);
+			StsProperties newInstance = new StsProperties(determineUrl(), mon);
 			instance = newInstance;
 		}
 		return instance;
@@ -63,22 +62,39 @@ public class StsProperties {
 
 	private final Properties props;
 
-	private StsProperties(IProgressMonitor mon) {
+	private StsProperties(String url, IProgressMonitor mon) {
 		props = createProperties();
-		try {
-			InputStream content = HttpUtil.stream(new URI(PROPERTIES_URL), mon);
-			if (content != null) {
-				try {
-					props.load(content);
-				} finally {
-					content.close();
+		if (url!=null) {
+			try {
+				InputStream content = HttpUtil.stream(new URI(url), mon);
+				if (content != null) {
+					try {
+						props.load(content);
+					} finally {
+						content.close();
+					}
 				}
+			} catch (Throwable e) {
+				//Catch and log all exceptions. This should never fail to initialise *something* usable.
+				CorePlugin.log(e);
 			}
 		}
-		catch (Throwable e) {
-			//Catch and log all exceptions. This should never fail to initialise *something* usable.
-			CorePlugin.log(e);
+	}
+
+	/**
+	 * Determines the URL from where the properties file shall be read.
+	 */
+	private static String determineUrl() {
+		//Allow easy overriding by setting a system property:
+		String url = System.getProperty("sts.properties.url");
+		if (url==null) {
+			try {
+				url = ResourceProvider.getUrl("sts.properties.url");
+			} catch (Exception e) {
+				//thrown when property not defined
+			}
 		}
+		return url;
 	}
 
 	protected Properties createProperties() {
@@ -89,13 +105,18 @@ public class StsProperties {
 
 		//Sites from which STS wizards generate some other urls.
 		props.put("spring.site.url", "http://bogus.springsource.com");
-		props.put("spring.initializr.form.url", "http://initializr.cfapps.io");
-		props.put("spring.initializr.download.url", "http://initializr.cfapps.io/starter.zip");
+
+
+		props.put("spring.initializr.form.url", "http://start.springframework.io/");
+		props.put("spring.initializr.download.url", "http://start.springframework.io/starter.zip");
 
 		//Urls used in the dashboard. For each XXX.url=... property, if
 		//  - XXX.url.label is defined that label will be used for the corresponding
 		//     dashboard tab instead of the html page title (title tends to be too long).
 		//  - XXX.url.external is defined that url will always be openened in an external browser.
+
+		//Switch to enable new dash
+		props.put("sts.new.dashboard.enabled", "true");
 
 		//Forum:
 		props.put("sts.forum.url", "http://forum.springsource.org/forumdisplay.php?32-SpringSource-Tool-Suite");
@@ -105,17 +126,22 @@ public class StsProperties {
 		//Tracker:
 		props.put("sts.tracker.url", "https://issuetracker.springsource.com/browse/STS");
 		props.put("sts.tracker.url.label", "Issues");
+		props.put("sts.tracker.url.external", "true");
 
 		//Docs
 		props.put("spring.docs.url", "http://www.springsource.org/documentation");
 		props.put("spring.docs.url.label", "Spring Docs");
+		props.put("spring.docs.url.external", "true");
 
 		//Blog
 		props.put("spring.blog.url", "http://blog.springsource.org");
 		props.put("spring.blog.url.label", "Blog");
+		props.put("spring.blog.url.external", "true");
 
 		//Guides
 		props.put("spring.guides.url", "http://www.springsource.org/get-started");
+		props.put("spring.guides.url.label", "Guides");
+		props.put("spring.guides.url.external", "true");
 			//future value: "${spring.site.url}/guides"
 
 		//New and Noteworthy
