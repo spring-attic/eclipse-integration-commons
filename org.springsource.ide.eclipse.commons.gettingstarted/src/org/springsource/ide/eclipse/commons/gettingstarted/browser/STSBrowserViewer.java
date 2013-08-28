@@ -65,6 +65,7 @@ import org.eclipse.ui.internal.browser.ToolbarLayout;
 import org.eclipse.ui.internal.browser.WebBrowserPreference;
 import org.eclipse.ui.internal.browser.WebBrowserUtil;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
+import org.springsource.ide.eclipse.commons.gettingstarted.Images;
 
 /**
  * A Web browser widget. It extends the Eclipse SWT Browser widget by adding an

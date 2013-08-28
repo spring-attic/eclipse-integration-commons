@@ -8,12 +8,11 @@
  * Contributors:
  *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.gettingstarted.util;
+package org.springsource.ide.eclipse.commons.core.util;
 
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-/** 
+/**
  * Helper methods to access pieces of XMLData in a parsed Document.
  */
 public class XmlUtils {

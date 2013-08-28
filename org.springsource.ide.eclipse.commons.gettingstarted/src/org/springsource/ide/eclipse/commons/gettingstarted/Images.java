@@ -8,7 +8,7 @@
  *  Contributors:
  *      GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.gettingstarted.browser;
+package org.springsource.ide.eclipse.commons.gettingstarted;
 
 import java.net.URL;
 
@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
-import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 
 public class Images {
 
@@ -30,6 +29,11 @@ public class Images {
 		return imageRegistry.get(key);
 	}
 
+	public static ImageDescriptor getDescriptor(String key) {
+		init();
+		return imageRegistry.getDescriptor(key);
+	}
+	
 	private synchronized static void init() {
 		if (imageRegistry==null) {
 			imageRegistry = new ImageRegistry();

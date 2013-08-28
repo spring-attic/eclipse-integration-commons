@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Guides
+Bundle-Name: Getting Started With Spring Integration
 Bundle-SymbolicName: org.springsource.ide.eclipse.commons.gettingstarted;singleton:=true
 Bundle-Version: 3.4.0.qualifier
 Bundle-Activator: org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator
@@ -16,13 +16,11 @@ Require-Bundle: org.eclipse.ui,
  org.codehaus.jackson.core,
  org.codehaus.jackson.mapper,
  org.eclipse.ui.ide,
- org.springframework.ide.eclipse.maven,
  org.eclipse.core.resources,
  org.apache.commons.io,
  org.springsource.ide.eclipse.gradle.core;resolution:=optional,
  org.apache.commons.logging,
  org.springsource.ide.eclipse.commons.livexp;bundle-version="3.4.0",
- org.springframework.ide.eclipse.wizard,
  org.springsource.ide.eclipse.commons.core;bundle-version="3.4.0",
  org.eclipse.ui.browser,
  org.eclipse.mylyn.commons.core,
@@ -41,8 +39,5 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.springsource.ide.eclipse.commons.gettingstarted,
- org.springsource.ide.eclipse.commons.gettingstarted.content,
- org.springsource.ide.eclipse.commons.gettingstarted.importing,
- org.springsource.ide.eclipse.commons.gettingstarted.util,
- org.springsource.ide.eclipse.commons.gettingstarted.wizard.boot
+ org.springsource.ide.eclipse.commons.gettingstarted.util
 Eclipse-BundleShape: dir

@@ -30,4 +30,22 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="org.springsource.ide.eclipse.commons.gettingstarted"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+<!-- Doesn't do anything at the moment. May need this in the future to try and
+     workaround issues with SWT browser widget on Linux systems
+ 
+   <plugin
+         id="org.springsource.ide.eclipse.commons.gettingstarted.browserinit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+  -->
+  
 </feature>

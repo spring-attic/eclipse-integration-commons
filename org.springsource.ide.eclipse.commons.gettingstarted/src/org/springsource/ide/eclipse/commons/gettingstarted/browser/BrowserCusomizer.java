@@ -13,14 +13,10 @@ package org.springsource.ide.eclipse.commons.gettingstarted.browser;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.eclipse.core.runtime.Path;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.springsource.ide.eclipse.commons.gettingstarted.content.GettingStartedContent;
-import org.springsource.ide.eclipse.commons.gettingstarted.content.GettingStartedGuide;
-import org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.GSImportWizard;
 
 public class BrowserCusomizer extends BrowserContext {
 
@@ -55,20 +51,21 @@ public class BrowserCusomizer extends BrowserContext {
 	}
 
 	private boolean importGuideUrl(URI uri) {
-		String host = uri.getHost();
-		if ("github.com".equals(host)) {
-			Path path = new Path(uri.getPath());
-			//String org = path.segment(0); Curently ignore the org.
-			String guideName = path.segment(1);
-			if (guideName !=null && guideName.startsWith("gs-")) {
-				//GuideImportWizard.open(getSite().getShell(), GettingStartedContent.getInstance().getGuide(guideName));
-				GettingStartedGuide guide = GettingStartedContent.getInstance().getGuide(guideName);
-				if (guide!=null) {
-					GSImportWizard.open(getShell(), guide);
-					return true;
-				}
-			}
-		}
+//TODO: disabled for now. Code can't compile here. It needs access to the guides wizard.
+//		String host = uri.getHost();
+//		if ("github.com".equals(host)) {
+//			Path path = new Path(uri.getPath());
+//			//String org = path.segment(0); Curently ignore the org.
+//			String guideName = path.segment(1);
+//			if (guideName !=null && guideName.startsWith("gs-")) {
+//				//GuideImportWizard.open(getSite().getShell(), GettingStartedContent.getInstance().getGuide(guideName));
+//				GettingStartedGuide guide = GettingStartedContent.getInstance().getGuide(guideName);
+//				if (guide!=null) {
+//					GSImportWizard.open(getShell(), guide);
+//					return true;
+//				}
+//			}
+//		}
 		return false;
 	}
 	
@@ -82,17 +79,19 @@ public class BrowserCusomizer extends BrowserContext {
 	protected void addBrowserHooks(Browser browser) {
 //		browser.addLocationListener(new UrlInterceptor(browser));
 
-		importFun = new ImportJSFunction(browser);
+//TODO: find a way to enable this again.		
 		
-		browser.addDisposeListener(new DisposeListener() {
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-				if (importFun!=null) {
-					importFun.dispose();
-					importFun = null;
-				}
-			}
-		});
+//		importFun = new ImportJSFunction(browser);
+//		
+//		browser.addDisposeListener(new DisposeListener() {
+//			@Override
+//			public void widgetDisposed(DisposeEvent e) {
+//				if (importFun!=null) {
+//					importFun.dispose();
+//					importFun = null;
+//				}
+//			}
+//		});
 	}
 	
 //	/**

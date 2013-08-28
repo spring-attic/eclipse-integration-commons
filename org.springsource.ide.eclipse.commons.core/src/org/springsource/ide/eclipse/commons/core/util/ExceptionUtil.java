@@ -19,7 +19,7 @@ import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
 /**
  * Utility methods to convert exceptions into other types of exceptions, status
  * objects etc.
- * 
+ *
  * @author Kris De Volder
  */
 public class ExceptionUtil {

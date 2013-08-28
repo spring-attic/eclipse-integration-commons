@@ -16,17 +16,23 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationEvent;
 import org.eclipse.swt.browser.LocationListener;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchWizard;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.browser.WebBrowserPreference;
+import org.eclipse.ui.wizards.IWizardDescriptor;
+import org.eclipse.ui.wizards.IWizardRegistry;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.gettingstarted.browser.BrowserContext;
-import org.springsource.ide.eclipse.commons.gettingstarted.wizard.guides.GSImportWizard;
 import org.springsource.ide.eclipse.commons.ui.UiUtil;
 
 
@@ -92,7 +98,7 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 				IPath path = new Path(uri.getPath());
 				String host = uri.getHost();
 				if (event.location.equals("http://dashboard/guides")) {
-					GSImportWizard.open(getShell(), null, false, true);
+					openImportWizard();
 					return;
 				}
 				if ("dashboard".equals(host)) {
@@ -126,6 +132,30 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 //		@Override
 //		public void changed(LocationEvent event) {
 //		}
+		
+		private boolean openImportWizard() {
+			Shell shell = getShell();
+			if (shell!=null) {
+				try {
+					IWizardRegistry registry = PlatformUI.getWorkbench().getImportWizardRegistry();
+					IWizardDescriptor descriptor = registry.findWizard("org.springsource.ide.eclipse.gettingstarted.wizards.import.generic");
+					if (descriptor!=null) {
+						IWorkbenchWizard wiz = descriptor.createWizard();
+						
+			//			wiz.setEnableOpenHomePage(enableOpenHomepage);
+			//			wiz.setItem(guide);
+						WizardDialog dialog = new WizardDialog(shell, wiz);
+						dialog.setBlockOnOpen(false);
+						dialog.open();
+						return true;
+					}
+				} catch (CoreException e) {
+					GettingStartedActivator.log(e);
+				}
+			}
+			return false;
+		}
+		
 		
 	}
 		
