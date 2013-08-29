@@ -44,13 +44,6 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.search.IJavaSearchConstants;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
-import org.eclipse.jdt.core.search.SearchEngine;
-import org.eclipse.jdt.core.search.SearchMatch;
-import org.eclipse.jdt.core.search.SearchParticipant;
-import org.eclipse.jdt.core.search.SearchPattern;
-import org.eclipse.jdt.core.search.SearchRequestor;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
 
@@ -947,51 +940,5 @@ public class JdtUtils {
 	// parentClassLoader);
 	// }
 	// }
-
-	public static Set<IType> searchForJavaConfigs(IJavaSearchScope scope) {
-		final Set<IType> annotatedTypes = new HashSet<IType>();
-		SearchPattern configurationPattern = SearchPattern.createPattern("org.springframework.context.annotation.Configuration",
-				IJavaSearchConstants.ANNOTATION_TYPE, IJavaSearchConstants.ANNOTATION_TYPE_REFERENCE,
-				SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE);
-		SearchPattern componentPattern = SearchPattern.createPattern( "org.springframework.stereotype.Component",
-				IJavaSearchConstants.ANNOTATION_TYPE, IJavaSearchConstants.ANNOTATION_TYPE_REFERENCE,
-				SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE);
-		SearchPattern beanPattern = SearchPattern.createPattern("org.springframework.context.annotation.Bean",
-				IJavaSearchConstants.ANNOTATION_TYPE, IJavaSearchConstants.ANNOTATION_TYPE_REFERENCE,
-				SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE);
-		SearchPattern importPattern = SearchPattern.createPattern("org.springframework.context.annotation.Import",
-				IJavaSearchConstants.ANNOTATION_TYPE, IJavaSearchConstants.ANNOTATION_TYPE_REFERENCE,
-				SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE);
-
-		SearchPattern pattern = SearchPattern.createOrPattern(configurationPattern, componentPattern);
-		pattern = SearchPattern.createOrPattern(pattern, beanPattern);
-		pattern = SearchPattern.createOrPattern(pattern, importPattern);
-
-		SearchRequestor requestor = new SearchRequestor() {
-			@Override
-			public void acceptSearchMatch(SearchMatch match) throws CoreException {
-				if (match.getAccuracy() == SearchMatch.A_ACCURATE && !match.isInsideDocComment()) {
-					Object element = match.getElement();
-					if (element instanceof IType) {
-						annotatedTypes.add((IType) element);
-					} else if (element instanceof IMethod) {
-						IType type = ((IMethod) element).getDeclaringType();
-						if (type != null) {
-							annotatedTypes.add(type);
-						}
-					}
-				}
-			}
-		};
-
-		try {
-			new SearchEngine().search(pattern, new SearchParticipant[] { SearchEngine.getDefaultSearchParticipant() },
-					scope, requestor, null);
-		} catch (CoreException e) {
-			StatusHandler.log(new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID,
-					"An error occurred while searching for Java config files.", e));
-		}
-		return annotatedTypes;
-	}
 
 }
