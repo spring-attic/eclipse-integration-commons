@@ -49,8 +49,8 @@ public class StsProperties {
 	 * The properties url is normally defined as a property on the active product {@link IProduct}).
 	 * See the product plugin i.e. 'org.springsource.sts' and 'org.springsource.ggts' for toolsuite-distribution repo.
 	 * <p>
-	 * If STS or GGTS is installed from update site then product may not be STS or GGTS. In that case
-	 * the 'no_product.properties url will be used.
+	 * If STS or GGTS is installed from update site then product may actually be STS or GGTS. In that case
+	 * the 'no_product.properties' url will be used.
 	 */
 	private static final String NO_PRODUCT_PROPERTIES = "http://dist.springsource.com/release/STS/discovery/no_product.properties";
 
@@ -162,6 +162,7 @@ public class StsProperties {
 
 		//New and Noteworthy
 		props.put("sts.nan.url", "http://static.springsource.org/sts/nan/latest/NewAndNoteworthy.html");
+		props.put("spring.guides.url.external", "true");
 		return props;
 	}
 

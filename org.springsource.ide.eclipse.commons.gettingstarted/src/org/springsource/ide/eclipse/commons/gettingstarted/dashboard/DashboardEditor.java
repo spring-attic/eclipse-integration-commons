@@ -59,7 +59,7 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 	/**
 	 * Urls contained in this set should always be opened in an external browser.
 	 */
-	private Set<String> openExternal = null;
+	private String[] openExternal = null;
 	
 	public DashboardEditor() {
 	}
@@ -172,7 +172,7 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 
 	private void customizeUrlBehavior(StsProperties props) {
 		customNames = new HashMap<String, String>();
-		openExternal = new HashSet<String>();
+		ArrayList<String> openExternal = new ArrayList<String>();
 		for (String propName : props.getExplicitProperties()) {
 			if (propName.endsWith(".url")) {
 				String url = props.get(propName);
@@ -187,6 +187,7 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 				}
 			}
 		}
+		this.openExternal = openExternal.toArray(new String[openExternal.size()]);
 	}
 	
 //	private void readCustomNames(InputStream input) throws IOException {
@@ -284,7 +285,7 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 	 * @return 
 	 */
 	public boolean openWebPage(String url) {
-		if (openExternal.contains(url)) {
+		if (openExternal(url)) {
 			openUrlInExternalBrowser(url);
 			return true;
 		} else {
@@ -302,6 +303,15 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 				WebDashboardPage page = new WebDashboardPage(customName, url);
 				CTabItem widget = createPageWidget(page);
 				setActivePage((DashboardPageContainer)widget.getData());
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean openExternal(String url) {
+		for (String prefix : openExternal) {
+			if (url.startsWith(prefix)) {
 				return true;
 			}
 		}
