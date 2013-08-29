@@ -76,9 +76,6 @@ public class ShowDashboardPageAction implements IWorkbenchWindowActionDelegate {
 					try {
 						try {
 							if (useNewDashboard(new SubProgressMonitor(mon, 1))) {
-								// MessageDialog.openInformation(window.getShell(),
-								// "New Dashboard should open",
-								// "But it is not implemented yet. Try again on next release");
 								IEditorPart editor = page.openEditor(DashboardEditorInput.INSTANCE, MultiPageDashboardEditor.NEW_EDITOR_ID);
 								if (editor instanceof IDashboardWithPages) {
 									IDashboardWithPages dashboard = (IDashboardWithPages) editor;

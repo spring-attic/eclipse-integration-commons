@@ -129,7 +129,7 @@ public class StsProperties {
 		//  - XXX.url.external is defined that url will always be openened in an external browser.
 
 		//Switch to enable new dash
-		props.put("sts.new.dashboard.enabled", "true");
+		props.put("sts.new.dashboard.enabled", "false");
 
 		//Forum:
 		props.put("sts.forum.url", "http://forum.springsource.org/forumdisplay.php?32-SpringSource-Tool-Suite");
