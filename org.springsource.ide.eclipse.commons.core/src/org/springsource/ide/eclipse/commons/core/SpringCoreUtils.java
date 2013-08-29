@@ -123,7 +123,7 @@ public final class SpringCoreUtils {
 
 	private static final String MARKER_ID = "org.springframework.ide.eclipse.core.problemmarker";
 
-	private static final String NATURE_ID = "org.springframework.ide.eclipse.core.springnature";
+	public static final String NATURE_ID = "org.springframework.ide.eclipse.core.springnature";
 
 	static {
 		try {
