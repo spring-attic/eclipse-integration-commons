@@ -11,6 +11,7 @@
 package org.springsource.ide.eclipse.commons.gettingstarted.launch;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
@@ -44,6 +45,12 @@ public class RelaunchMenuProvider extends CompoundContributionItem {
 			return false;
 		}
 	}
+
+	private ProcessTracker processes;
+	
+	public RelaunchMenuProvider(ProcessTracker processes) {
+		this.processes = processes;
+	}
 	
 	private static class RelaunchAction extends Action {
 		private ILaunch launch;
@@ -64,23 +71,16 @@ public class RelaunchMenuProvider extends CompoundContributionItem {
 		
 	}
 
-
-	public RelaunchMenuProvider() {
-	}
-
-	public RelaunchMenuProvider(String id) {
-		super(id);
-	}
-
 	@Override
 	protected IContributionItem[] getContributionItems() {
+		return createContributionItems();
+	}
+
+	private IContributionItem[] createContributionItems() {
 		ArrayList<IContributionItem> items = new ArrayList<IContributionItem>();
-		ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();
-		ILaunch[] launches = lm.getLaunches();
+		Collection<ILaunch> launches = processes.getLaunches();
 		for (ILaunch launch : launches) {
-			if (!launch.isTerminated() && launch.canTerminate()) {
-				items.add(new ActionContributionItem(new RelaunchAction(launch)));
-			}
+			items.add(new ActionContributionItem(new RelaunchAction(launch)));
 		}
 		if (items.isEmpty()) {
 			items.add(EMPTY_ITEM);

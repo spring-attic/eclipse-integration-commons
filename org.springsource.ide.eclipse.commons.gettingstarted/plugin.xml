@@ -64,13 +64,8 @@
           id="org.springsource.ide.eclipse.boot.launch.command"
           name="Relaunch">
     </command>
-<!--    <command
-          defaultHandler="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ShowDashboardCommand"
-          description="Show Dashboard"
-          id="org.springsource.ide.eclipse.dashboard.command"
-          name="Dashboard">
-    </command> -->
  </extension>
+ <!--
  <extension
        point="org.eclipse.ui.menus">
     <menuContribution
@@ -79,10 +74,6 @@
        <toolbar
              id="org.springsource.ide.eclipse.spring.toolbar"
              label="Spring Toolbar">
-<!--          <command
-                commandId="org.springsource.ide.eclipse.dashboard.command"
-                icon="resources/icons/springsource.png"
-                style="push"/> -->
           <command
                 commandId="org.springsource.ide.eclipse.boot.launch.command"
                 id="org.springsource.ide.eclipse.boot.launch.command.menu"
@@ -98,6 +89,24 @@
              id="org.springsource.ide.eclipse.commons.gettingstarted.dynamic1">
        </dynamic>
     </menuContribution>
+ </extension>
+ -->
+ <extension
+       point="org.eclipse.ui.actionSets">
+    <actionSet
+          description="Launch"
+          id="org.springsource.ide.eclipse.commons.launch.actionSet"
+          label="Launch"
+          visible="true">
+       <action
+             class="org.springsource.ide.eclipse.commons.gettingstarted.launch.ReLaunchActionDelegate"
+             icon="resources/icons/term_restart.gif"
+             id="org.springsource.ide.eclipse.commons.launch.relaunch.action"
+             label="Relaunch"
+             style="pulldown"
+             toolbarPath="org.eclipse.debug.ui.launchActionSet/debug">
+       </action>
+    </actionSet>
  </extension>
  
   <!-- Preference page
