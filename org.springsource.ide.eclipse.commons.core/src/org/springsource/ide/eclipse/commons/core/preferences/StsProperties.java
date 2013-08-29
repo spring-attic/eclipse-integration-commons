@@ -16,9 +16,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
 
+import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.springsource.ide.eclipse.commons.core.HttpUtil;
-import org.springsource.ide.eclipse.commons.core.ResourceProvider;
 import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
 
 /**
@@ -41,11 +42,14 @@ import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
  */
 public class StsProperties {
 
+	private static final String PROPERTIES_URL_PROPERTY = "sts.properties.url";
+
+
 	/**
-	 * The properties url is normally defined via the 'com.springsource.sts.core.resources' extension point in
-	 * the product plugin i.e. 'org.springsource.sts' and 'org.springsource.ggts' for toolsuite-distribution repo.
+	 * The properties url is normally defined as a property on the active product {@link IProduct}).
+	 * See the product plugin i.e. 'org.springsource.sts' and 'org.springsource.ggts' for toolsuite-distribution repo.
 	 * <p>
-	 * If STS or GGTS is installed from update site then neither plugin may be present. In that case
+	 * If STS or GGTS is installed from update site then product may not be STS or GGTS. In that case
 	 * the 'no_product.properties url will be used.
 	 */
 	private static final String NO_PRODUCT_PROPERTIES = "http://dist.springsource.com/release/STS/discovery/no_product.properties";
@@ -86,7 +90,7 @@ public class StsProperties {
 				}
 			} catch (Throwable e) {
 				//Catch and log all exceptions. This should never fail to initialise *something* usable.
-				CorePlugin.log(e);
+				CorePlugin.warn("Couldn't read sts properties from '"+url+"' internal default values will be used");
 			}
 		}
 	}
@@ -96,12 +100,11 @@ public class StsProperties {
 	 */
 	private static String determineUrl() {
 		//Allow easy overriding by setting a system property:
-		String url = System.getProperty("sts.properties.url");
+		String url = System.getProperty(PROPERTIES_URL_PROPERTY);
 		if (url==null) {
-			try {
-				url = ResourceProvider.getUrl("sts.properties.url");
-			} catch (Exception e) {
-				//thrown when property not defined
+			IProduct product = Platform.getProduct();
+			if (product!=null) {
+				url = product.getProperty(PROPERTIES_URL_PROPERTY);
 			}
 		}
 		if (url==null) {

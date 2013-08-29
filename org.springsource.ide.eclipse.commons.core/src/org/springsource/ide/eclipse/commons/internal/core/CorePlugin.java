@@ -93,4 +93,8 @@ public class CorePlugin extends Plugin {
 		super.stop(context);
 		savePluginPreferences();
 	}
+
+	public static void warn(String msg) {
+		log(new Status(IStatus.WARNING, PLUGIN_ID, msg));
+	}
 }
