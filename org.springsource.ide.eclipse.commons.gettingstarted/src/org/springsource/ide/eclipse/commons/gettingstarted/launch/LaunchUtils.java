@@ -8,7 +8,7 @@
  * Contributors:
  *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.gettingstarted.boot;
+package org.springsource.ide.eclipse.commons.gettingstarted.launch;
 
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
@@ -37,7 +37,8 @@ public class LaunchUtils {
 
 	/**
 	 * Execute some code as soon as a given launch is terminated. If the launch is already terminated
-	 * then the code is executed synchronously, otherwise it
+	 * then the code is executed synchronously, otherwise it is executed asynchronously when 
+	 * a termination event is received.
 	 */
 	public static void whenTerminated(ILaunch launch, Runnable runnable) {
 		new WhenTerminated(launch, runnable);

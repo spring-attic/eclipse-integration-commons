@@ -8,7 +8,7 @@
  * Contributors:
  *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.gettingstarted.boot;
+package org.springsource.ide.eclipse.commons.gettingstarted.launch;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;

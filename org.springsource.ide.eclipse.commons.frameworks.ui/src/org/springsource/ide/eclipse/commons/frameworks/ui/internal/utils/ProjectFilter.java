@@ -11,6 +11,8 @@
 package org.springsource.ide.eclipse.commons.frameworks.ui.internal.utils;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.JavaCore;
 
 /**
  * @author Kris De Volder
@@ -26,6 +28,17 @@ public abstract class ProjectFilter {
 		@Override
 		public boolean isAcceptable(IProject project) {
 			return project!=null;
+		}
+	};
+	public static final ProjectFilter isJavaProject = new ProjectFilter() {
+		
+		@Override
+		public boolean isAcceptable(IProject project) {
+			try {
+				return project!=null && project.isAccessible() && project.hasNature(JavaCore.NATURE_ID);
+			} catch (CoreException e) {
+			}
+			return false;
 		}
 	};
 

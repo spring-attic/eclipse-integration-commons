@@ -15,7 +15,7 @@
  <extension
        point="org.eclipse.debug.ui.launchShortcuts">
     <shortcut
-          class="org.springsource.ide.eclipse.commons.gettingstarted.boot.BootLaunchShortcut"
+          class="org.springsource.ide.eclipse.commons.gettingstarted.launch.BootLaunchShortcut"
           description="Run or Debug as a Standalone Spring Boot Application"
           id="org.springsource.ide.eclipse.boot.BootLaunchShortcut"
           label="Spring Boot App"
@@ -49,7 +49,7 @@
  <extension
        point="org.eclipse.core.expressions.propertyTesters">
     <propertyTester
-          class="org.springsource.ide.eclipse.commons.gettingstarted.boot.BootPropertyTester"
+          class="org.springsource.ide.eclipse.commons.gettingstarted.launch.BootPropertyTester"
           id="org.springsource.ide.eclipse.commons.gettingstarted.boot.BootPropertyTester"
           namespace="org.springsource.ide.eclipse.boot"
           properties="isBootProject"
@@ -59,10 +59,10 @@
  <extension
        point="org.eclipse.ui.commands">
     <command
-          defaultHandler="org.springsource.ide.eclipse.commons.gettingstarted.boot.BootLaunchCommand"
+          defaultHandler="org.springsource.ide.eclipse.commons.gettingstarted.launch.ReLaunchCommand"
           description="Launch Spring Boot App"
           id="org.springsource.ide.eclipse.boot.launch.command"
-          name="Launch">
+          name="Relaunch">
     </command>
 <!--    <command
           defaultHandler="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ShowDashboardCommand"
@@ -86,7 +86,7 @@
           <command
                 commandId="org.springsource.ide.eclipse.boot.launch.command"
                 id="org.springsource.ide.eclipse.boot.launch.command.menu"
-                icon="resources/icons/lrun_obj.gif"
+                icon="resources/icons/term_restart.gif"
                 style="pulldown">
           </command>
        </toolbar>
@@ -94,7 +94,7 @@
     <menuContribution
           locationURI="menu:org.springsource.ide.eclipse.boot.launch.command.menu">
        <dynamic
-             class="org.springsource.ide.eclipse.commons.gettingstarted.boot.RelaunchMenuProvider"
+             class="org.springsource.ide.eclipse.commons.gettingstarted.launch.RelaunchMenuProvider"
              id="org.springsource.ide.eclipse.commons.gettingstarted.dynamic1">
        </dynamic>
     </menuContribution>
