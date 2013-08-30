@@ -46,8 +46,8 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 		GridDataFactory.fillDefaults().grab(true,true).applyTo(parent);
 		Composite page = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout(1, false);
-        layout.marginHeight = 1;
-        layout.marginWidth = 1;
+        layout.marginHeight = 12;
+        layout.marginWidth = 12;
         page.setLayout(layout);
         validator = new CompositeValidator();
         for (PageSection section : getSections()) {
