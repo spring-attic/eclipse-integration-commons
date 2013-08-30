@@ -100,8 +100,16 @@
           label="Launch"
           visible="true">
        <action
-             class="org.springsource.ide.eclipse.commons.gettingstarted.launch.ReLaunchActionDelegate"
+             class="org.springsource.ide.eclipse.commons.gettingstarted.launch.RelaunchProcessPullDownToolbarDelegate"
              icon="resources/icons/term_restart.gif"
+             id="org.springsource.ide.eclipse.commons.launch.relaunch.action"
+             label="Relaunch"
+             style="pulldown"
+             toolbarPath="org.eclipse.debug.ui.launchActionSet/debug">
+       </action>
+       <action
+             class="org.springsource.ide.eclipse.commons.gettingstarted.launch.StopProcessPullDownToolbarDelegate"
+             icon="resources/icons/stop.gif"
              id="org.springsource.ide.eclipse.commons.launch.relaunch.action"
              label="Relaunch"
              style="pulldown"

@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
@@ -30,10 +31,28 @@ import org.eclipse.debug.core.model.IProcess;
  */
 public class ProcessTracker {
 	
+	public interface Listener {
+		void changed();
+	}
+
+	private static ProcessTracker instance;
 	private LinkedList<IProcess> processes = new LinkedList<IProcess>();
 	private IDebugEventSetListener debugListener;
 	
-	public ProcessTracker() {
+	private ListenerList listeners = new ListenerList();
+	
+	/**
+	 * Gets an instance of process tracker that may be shared. (There's no need to create multiple instances 
+	 * since they are all just tracking the same set of active processes).
+	 */
+	public synchronized static ProcessTracker getInstance() {
+		if (instance==null) {
+			instance = new ProcessTracker();
+		}
+		return instance;
+	}
+	
+	private ProcessTracker() {
 		//Pick up any processes already running
 		DebugPlugin.getDefault().addDebugEventListener(debugListener = new IDebugEventSetListener() {
 			@Override
@@ -57,12 +76,12 @@ public class ProcessTracker {
 		}
 	}
 	
-	public void dispose() {
-		if (debugListener!=null) {
-			DebugPlugin.getDefault().removeDebugEventListener(debugListener);
-			debugListener = null;
-		}
-	}
+//	private void dispose() {
+//		if (debugListener!=null) {
+//			DebugPlugin.getDefault().removeDebugEventListener(debugListener);
+//			debugListener = null;
+//		}
+//	}
 	
 	
 	protected void handleDebugEvent(DebugEvent debugEvent) {
@@ -107,6 +126,12 @@ public class ProcessTracker {
 		}
 	}
 	
+	private void changed() {
+		for (Object l : listeners.getListeners()) {
+			((Listener)l).changed();
+		}
+	}
+
 	public synchronized IProcess getLast() {
 		if (!processes.isEmpty()) {
 			return processes.getLast();
@@ -114,15 +139,21 @@ public class ProcessTracker {
 		return null;
 	}
 	
-	protected void changed() {
-	}
-
 	public synchronized Collection<ILaunch> getLaunches() {
 		LinkedHashSet<ILaunch> launches = new LinkedHashSet<ILaunch>();
 		for (IProcess p : processes) {
 			launches.add(p.getLaunch());
 		}
 		return launches;
+	}
+
+	public ProcessTracker addListener(Listener listener) {
+		listeners.add(listener);
+		return this;
+	}
+	
+	public void removeListener(Listener listener) {
+		listeners.remove(listener);
 	}
 	
 
