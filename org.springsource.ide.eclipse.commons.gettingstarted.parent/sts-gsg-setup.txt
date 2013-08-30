@@ -11,26 +11,36 @@ in flux, changing all the time. We know at the moment it looks a bit crappy.
 
 -Dgithub.user.name=XXXXXXX
 -Dgithub.user.password=XXXXXXX
+-Dsts.new.dashboard.enabled=true
+-Dspring.site.url=http://XXXXXXXXXXXXXXX
+-Dspring.guides.url=http://XXXXXXXXXXXX/guides
 
-Use a username and password for a github user that
-is a *member* of *springsource.meta* org.
+In place of XXXX the following info must be added:
+  - Use a username and password for a github user that
+    is a *member* of *spring-guides* org.
+  - The new spring website url (or its current temporary location)
+  - A url pointing to the 'guides' page on the new spring website.
 
-3. Install New Dashboard from update site:
+3. Install New STS Features from nightly update site
 
-http://dist.springframework.org/snapshot/GSG_INTEGRATION/nightly/
+http://dist.springframework.org/snapshot/IDE/nightly/
 
-Install everything under 'Spring Getting Started Integration'.
+Select all of 'Core / Spring IDE' and install.
+
+4. If using Gradle. Install lates from nightly
+
+http://dist.springsource.com/snapshot/TOOLS/gradle/nightly
 
 4. Restart STS
-5. Close and reopen Dashboard (if the old dashboard is still open).
+5. To get the new dashboard: close and reopen Dashboard 
+   (if the old dashboard is still open).
 
 Notes:
- - New Dahsboard URLs can be configured via 
- Window >> Preferences >> SpringSource >> Dashboard (New)
  - Browsing GSG content in the dashboard an extra link should
-   appear underneath the 'Donwload Zip' button.
-   Click the button should open a Wizard to import GSG content
-   with the correct guide preselected.
+   appear underneath the 'Donwload Zip' button. 
+   (Update: not currently working, open the import wizard from
+   the main page (Import Guide button) or via the route
+   'File >> Import >> Spring >> Getting Started Content'
  - The GSG import wizard now also opens if you click on the 
    'Spring Framework Guides' button on the main dashboard page.
  - If clicking link does not open the wizard. It means the
@@ -42,7 +52,7 @@ Notes:
  - 'Import' links only appear in Dashboard not the standard
    Eclipse 'Internal Web Browser'.
  - github credentials will not be needed anymore when the
-   springsource.meta project become publically accessible.
+   springsource.meta project become public accessible.
 
 Linux Users only
 ================
@@ -57,14 +67,20 @@ Symptoms include
   - New Dahsboard not working
   - JVM Crashes (when using internal web browser)
   
-To rememedy do the following:
+To rememedy do the following (works on Ubuntu 12.04 doesn't seem to work on 13.04)
   - Download XULRunner 10.0.2 (http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/10.0.2/runtimes/) and unpack
   - Add the following arguments to STS.ini
 
 -Dorg.eclipse.swt.browser.XULRunnerPath=<path-to-unpack-location>/xulrunner-10.0.2
 -Dorg.eclipse.swt.browser.DefaultType=mozilla
 
-Downloading xulrunner and setting XULRunnerPath may not be necessary on all flavors of
-Linux. It may be sufficient just to set browser.DefaultType.
-However downloading and setting XULRunner path is a surefire way of ensuring a Eclipse compatible
-XULRunner.
+On Ubuntu 13.04 the best solution we found so far is to install the webkit-1.0 library explicitly
+
+  sudo apt-get install libwebkitgtk-1.0-0
+  
+  This works to a degree. Most notably users who also installed googletalk plugin (what you get when
+  you install google hangout support) have experienced frequent JVM crashes... but it seems to
+  work well as long as the google talk support is not installed.
+
+
+
