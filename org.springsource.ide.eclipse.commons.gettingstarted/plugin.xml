@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="org.springsource.ide.eclipse.commons.dashboard.browser.customization" name="Dashboard Browser Customization" schema="schema/org.springsource.ide.eclipse.commons.dashboard.browser.customization.exsd"/>
  
  <!-- New dashboard -->
  
@@ -108,6 +109,14 @@
        </action>
     </actionSet>
  </extension>
+ <!-- Sample: shows how to use the extension point. Don't turn on for real
+ <extension
+       point="org.springsource.ide.eclipse.commons.dashboard.browser.customization">
+    <customization
+          class="org.springsource.ide.eclipse.commons.gettingstarted.browser.sample.SampleBrowserCustomization">
+    </customization>
+ </extension>
+ --> 
  
   <!-- Preference page
  

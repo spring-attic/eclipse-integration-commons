@@ -161,7 +161,7 @@ public class BrowserFactory {
 	 */
 	public static void customizeBrowser(Browser browser) {
 		//Not platform-specific browser customizations added here.
-		new BrowserCusomizer(browser);
+		new BrowserCustomizer(browser);
 	}
 
 	private static BrowserFactoryImplementation implementation() {

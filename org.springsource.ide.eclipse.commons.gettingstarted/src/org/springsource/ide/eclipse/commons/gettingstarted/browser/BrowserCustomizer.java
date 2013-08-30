@@ -15,14 +15,14 @@ import java.net.URISyntaxException;
 
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 
-public class BrowserCusomizer extends BrowserContext {
+public class BrowserCustomizer extends BrowserContext {
 
 	private ImportJSFunction importFun;
 	private Browser browser;
 
+	private IBrowserCustomization[] customizations = BrowserCustomizationReader.get();
+	
 	/**
 	 * Provides a js function that can be called by webpage inside the dash to
 	 * open the STS import wizard to import a guide.
@@ -71,12 +71,18 @@ public class BrowserCusomizer extends BrowserContext {
 	
 
 	
-	public BrowserCusomizer(Browser browser) {
+	public BrowserCustomizer(Browser browser) {
 		super(browser);
 		addBrowserHooks(browser);
 	}
 	
-	protected void addBrowserHooks(Browser browser) {
+	protected void addBrowserHooks(final Browser browser) {
+		if (customizations!=null) {
+			for (IBrowserCustomization customization : customizations) {
+				customization.apply(browser);
+			}
+		}
+		
 //		browser.addLocationListener(new UrlInterceptor(browser));
 
 //TODO: find a way to enable this again.		
