@@ -31,10 +31,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.browser.WebBrowserPreference;
 import org.eclipse.ui.wizards.IWizardDescriptor;
 import org.eclipse.ui.wizards.IWizardRegistry;
+import org.springsource.ide.eclipse.commons.core.preferences.StsProperties;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.gettingstarted.browser.BrowserContext;
 import org.springsource.ide.eclipse.commons.ui.UiUtil;
-
 
 @SuppressWarnings("restriction")
 public class WelcomeDashboardPage extends WebDashboardPage {
@@ -43,13 +43,21 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 	private DashboardEditor dashboard;
 
 	public WelcomeDashboardPage(DashboardEditor dashboard) throws URISyntaxException, IOException {
+		StsProperties props = StsProperties.getInstance(new NullProgressMonitor());
 		this.dashboard = dashboard;
-		URL contentUrl = GettingStartedActivator.getDefault().getBundle().getEntry("resources/welcome");
-		//TODO: THe rest of this method needs to be made asychronous.
-		File contentInstance = DashboardCopier.getCopy(new File(FileLocator.toFileURL(contentUrl).toURI()), new NullProgressMonitor());
-		welcomeHtml = new File(contentInstance, "index.html");
-		setName("Welcome");
-		setHomeUrl(welcomeHtml.toURI().toString());
+		String contentUrl = props.get("dashboard.welcome.url");
+		if (contentUrl==null) {
+			//shouldn't happen, but do something with this anyhow, better than a blank page or an error.
+			setHomeUrl("http://springsource.org");
+		} else if (contentUrl.startsWith("platform:")) {
+			//platform url assumed to point to a bundled directory of 'templated' content that needs StsProperties replaced.
+			File contentInstance = DashboardCopier.getCopy(new File(FileLocator.toFileURL(new URL(contentUrl)).toURI()), new NullProgressMonitor());
+			welcomeHtml = new File(contentInstance, "index.html");
+//			setName("Welcome");
+			setHomeUrl(welcomeHtml.toURI().toString());
+		} else {
+			setHomeUrl(contentUrl);
+		}
 	}
 	
 	@Override

@@ -44,7 +44,6 @@ public class StsProperties {
 
 	private static final String PROPERTIES_URL_PROPERTY = "sts.properties.url";
 
-
 	/**
 	 * The properties url is normally defined as a property on the active product {@link IProduct}).
 	 * See the product plugin i.e. 'org.springsource.sts' and 'org.springsource.ggts' for toolsuite-distribution repo.
@@ -119,10 +118,7 @@ public class StsProperties {
 		// Default properties (guarantees certain properties have a value no
 		// matter what).
 
-		//Sites from which STS wizards generate some other urls.
-		props.put("spring.site.url", "http://bogus.springsource.com");
-
-
+		props.put("spring.site.url", "http://springsource.org");
 		props.put("spring.initializr.form.url", "http://start.springframework.io/");
 		props.put("spring.initializr.download.url", "http://start.springframework.io/starter.zip");
 
@@ -133,6 +129,12 @@ public class StsProperties {
 
 		//Switch to enable new dash
 		props.put("sts.new.dashboard.enabled", "false");
+
+		//Points to where the content for the dash is. If a platform url it will be interpreted as a directory to be
+		// copied and 'instantiated' by substituting StsProperties. If a non-platform url then it will
+		// passed directly to the browser without further processing.
+		// This default value points to a bundled STS dashboard welcome page.
+		props.put("dashboard.welcome.url", "platform:/plugin/org.springsource.ide.eclipse.commons.gettingstarted/resources/welcome");
 
 		//Forum:
 		props.put("sts.forum.url", "http://forum.springsource.org/forumdisplay.php?32-SpringSource-Tool-Suite");
