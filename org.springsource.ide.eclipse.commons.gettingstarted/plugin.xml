@@ -100,7 +100,9 @@
           label="Launch"
           visible="true">
        <action
+             allowLabelUpdate="true"
              class="org.springsource.ide.eclipse.commons.gettingstarted.launch.RelaunchProcessPullDownToolbarDelegate"
+             disabledIcon="resources/icons/term_restart_disabled.gif"
              icon="resources/icons/term_restart.gif"
              id="org.springsource.ide.eclipse.commons.launch.relaunch.action"
              label="Relaunch"
@@ -109,9 +111,10 @@
        </action>
        <action
              class="org.springsource.ide.eclipse.commons.gettingstarted.launch.StopProcessPullDownToolbarDelegate"
+             disabledIcon="resources/icons/stop_disabled.gif"
              icon="resources/icons/stop.gif"
              id="org.springsource.ide.eclipse.commons.launch.relaunch.action"
-             label="Relaunch"
+             label="Terminate"
              style="pulldown"
              toolbarPath="org.eclipse.debug.ui.launchActionSet/debug">
        </action>

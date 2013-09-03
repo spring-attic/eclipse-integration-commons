@@ -87,13 +87,16 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 	}
 
 	private void update() {
-		IProcess p = processes.getLast();
-		String label = getOperationName();
-		if (p!=null) {
-			label = label + " " + p.getLaunch().getLaunchConfiguration().getName();
+		if (action!=null) {
+			IProcess p = processes.getLast();
+			String label = getOperationName();
+			if (p!=null) {
+				label = label + " " + p.getLaunch().getLaunchConfiguration().getName();
+			}
+			action.setText(label);
+			action.setToolTipText(label);
+			action.setEnabled(p!=null);
 		}
-		action.setText(label);
-		action.setToolTipText(label);
 	}
 
 	@Override
@@ -111,6 +114,7 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 	@Override
 	public void init(IWorkbenchWindow window) {
 		this.window = window;
+		update();
 	}
 
 	@Override
