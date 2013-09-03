@@ -12,22 +12,36 @@ package org.springsource.ide.eclipse.commons.gettingstarted.launch;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 
 public class BootPropertyTester extends PropertyTester {
+	
+	private static final boolean DEBUG = (""+Platform.getLocation()).contains("kdvolder");
+
+	private static void debug(String string) {
+		if (DEBUG) {
+			System.out.println(string);
+		}
+	}
+	
 
 	public BootPropertyTester() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public boolean test(Object project, String property, Object[] args, Object expectedValue) {
-		if (project instanceof IProject && "isBootProject".equals(property)) {
-			return expectedValue.equals(isBootProject((IProject)project));
+	public boolean test(Object rsrc, String property, Object[] args, Object expectedValue) {
+		if (rsrc instanceof IProject && "isBootProject".equals(property)) {
+			return expectedValue.equals(isBootProject((IProject)rsrc));
+		}
+		if (rsrc instanceof IResource && "isBootResource".equals(property)) {
+			return expectedValue.equals(isBootResource((IResource) rsrc));
 		}
 		return false;
 	}
@@ -52,6 +66,21 @@ public class BootPropertyTester extends PropertyTester {
 		}
 		return false;
 	}
+	
+	/**
+	 * @return whether given resource is either Spring Boot IProject or nested inside one.
+	 */
+	public static boolean isBootResource(IResource rsrc) {
+		debug("isBootResource: "+rsrc.getName());
+		if (rsrc==null || ! rsrc.isAccessible()) {
+			debug("isBootResource => false");
+			return false;
+		}
+		boolean result = isBootProject(rsrc.getProject());
+		debug("isBootResource => "+result);
+		return result;
+	}
+
 
 	private static boolean isBootJar(IClasspathEntry e) {
 		if (e.getEntryKind()==IClasspathEntry.CPE_LIBRARY) {

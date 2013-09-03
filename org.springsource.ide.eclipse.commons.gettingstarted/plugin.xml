@@ -25,9 +25,9 @@
            <enablement>
              <count value="1"/>
              <iterate>
-           	   <adapt type="org.eclipse.core.resources.IProject">
+           	   <adapt type="org.eclipse.core.resources.IResource">
            	      <test
-                        property="org.springsource.ide.eclipse.boot.isBootProject"
+                        property="org.springsource.ide.eclipse.boot.isBootResource"
                         value="true">
            	      </test>
            	   </adapt>
@@ -53,8 +53,8 @@
           class="org.springsource.ide.eclipse.commons.gettingstarted.launch.BootPropertyTester"
           id="org.springsource.ide.eclipse.commons.gettingstarted.boot.BootPropertyTester"
           namespace="org.springsource.ide.eclipse.boot"
-          properties="isBootProject"
-          type="org.eclipse.core.resources.IProject">
+          properties="isBootProject,isBootResource"
+          type="org.eclipse.core.resources.IResource">
     </propertyTester>
  </extension>
  <extension
