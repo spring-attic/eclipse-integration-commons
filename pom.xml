@@ -242,12 +242,6 @@
 	  <url>http://download.eclipse.org/tools/orbit/downloads/drops/I20130827062727/repository/</url>
 	</repository>
 
-	<repository>
-	  <id>gradle-tooling</id>
-	  <layout>p2</layout>
-	  <url>http://dist.springsource.com/snapshot/TOOLS/gradle/nightly</url>
-	</repository>
-
     <!-- required for Maven and Ant AWS dependency -->
     <repository>
       <id>springsource-maven-release</id>
