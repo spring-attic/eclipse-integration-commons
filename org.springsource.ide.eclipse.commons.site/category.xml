@@ -36,6 +36,12 @@
 	</feature>
 	
 	<feature
+		url="org.springsource.ide.eclipse.commons.gettingstarted.feature_3.4.0.qualifier.jar"
+		id="org.springsource.ide.eclipse.commons.gettingstarted.feature" version="3.4.0.qualifier">
+		<category name="Core / Eclipse Integration Commons" />
+	</feature>
+
+	<feature
 		url="org.springsource.ide.eclipse.dashboard_3.4.0.qualifier.jar"
 		id="org.springsource.ide.eclipse.dashboard" version="3.4.0.qualifier">
 		<category name="Core / Eclipse Integration Commons" />
@@ -55,33 +61,44 @@
 	</feature>
 	
 	<!-- third-party dependencies -->
+	<bundle id="com.springsource.util.common" version="0.0.0"/>
+	<bundle id="com.springsource.util.common.source" version="0.0.0"/>
+
+	<bundle id="edu.emory.mathcs.backport" version="0.0.0"/>
+	<bundle id="edu.emory.mathcs.backport.source" version="0.0.0"/>
+
+	<bundle id="com.google.protobuf" version="0.0.0"/>
+	<bundle id="com.google.protobuf.source" version="0.0.0"/>
+
 	<bundle id="javax.el" version="0.0.0"/>
 	<bundle id="javax.el.source" version="0.0.0"/>
 	<bundle id="javax.jms" version="0.0.0"/>
 	<bundle id="javax.jms.source" version="0.0.0"/>
-	<bundle id="org.apache.commons.codec" version="0.0.0"/>
-	<bundle id="org.apache.commons.codec.source" version="0.0.0"/>
-	<bundle id="org.apache.httpcomponents.httpclient" version="0.0.0"/>
-	<bundle id="org.apache.httpcomponents.httpclient.source" version="0.0.0"/>
-	<bundle id="org.apache.httpcomponents.httpcore" version="0.0.0"/>
-	<bundle id="org.apache.httpcomponents.httpcore.source" version="0.0.0"/>
-	<bundle id="com.springsource.util.common" version="0.0.0"/>
-	<bundle id="com.springsource.util.common.source" version="0.0.0"/>
-	<bundle id="edu.emory.mathcs.backport" version="0.0.0"/>
-	<bundle id="edu.emory.mathcs.backport.source" version="0.0.0"/>
 	<bundle id="javax.activation" version="0.0.0"/>
 	<bundle id="javax.annotation" version="0.0.0"/>
 	<bundle id="javax.annotation.source" version="0.0.0"/>
 	<bundle id="javax.mail" version="0.0.0"/>
 	<bundle id="javax.xml.stream" version="0.0.0"/>
 	<bundle id="javax.xml.ws" version="0.0.0"/>
+
 	<bundle id="org.aopalliance" version="0.0.0"/>
+
+	<bundle id="org.apache.httpcomponents.httpclient" version="0.0.0"/>
+	<bundle id="org.apache.httpcomponents.httpclient.source" version="0.0.0"/>
+	<bundle id="org.apache.httpcomponents.httpcore" version="0.0.0"/>
+	<bundle id="org.apache.httpcomponents.httpcore.source" version="0.0.0"/>
+	<bundle id="org.apache.commons.codec" version="0.0.0"/>
+	<bundle id="org.apache.commons.codec.source" version="0.0.0"/>
 	<bundle id="org.apache.commons.collections" version="0.0.0"/>
 	<bundle id="org.apache.commons.collections.source" version="0.0.0"/>
 	<bundle id="org.apache.commons.io" version="0.0.0"/>
 	<bundle id="org.apache.commons.io.source" version="0.0.0"/>
 	<bundle id="org.apache.commons.logging" version="0.0.0"/>
 	<bundle id="org.apache.commons.logging.source" version="0.0.0"/>
+
+	<bundle id="org.codehaus.jackson.core" version="0.0.0"/>
+	<bundle id="org.codehaus.jackson.mapper" version="0.0.0"/>
+
 	<bundle id="org.springframework.aop" version="0.0.0"/>
 	<bundle id="org.springframework.aop.source" version="0.0.0"/>
 	<bundle id="org.springframework.beans" version="0.0.0"/>
@@ -115,7 +132,5 @@
 	<bundle id="org.springframework.roo.wrapping.bcpg-jdk15" version="0.0.0"/>
 	<bundle id="org.springframework.roo.wrapping.bcprov-jdk15" version="0.0.0"/>
 	<bundle id="org.springframework.roo.wrapping.json-simple" version="0.0.0"/>
-	<bundle id="com.google.protobuf" version="0.0.0"/>
-	<bundle id="com.google.protobuf.source" version="0.0.0"/>
 
 </site>

@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-	<groupId>org.springsource.ide.eclipse.commons</groupId>
-	<artifactId>org.springsource.ide.eclipse.commons.gettingstarted.parent</artifactId>
-	<version>3.4.0-SNAPSHOT</version>
-	<relativePath>../org.springsource.ide.eclipse.commons.gettingstarted.parent/pom.xml</relativePath> 
-  </parent>
-  <artifactId>org.springsource.ide.eclipse.commons.gettingstarted.tests</artifactId>
-  <packaging>eclipse-test-plugin</packaging>
-  <name>org.springsource.ide.eclipse.commons.gettingstarted.tests</name>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springsource.ide.eclipse.commons</groupId>
+		<artifactId>org.springsource.ide.eclipse.commons.parent</artifactId>
+		<version>3.4.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>org.springsource.ide.eclipse.commons.gettingstarted.tests</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
+	<name>org.springsource.ide.eclipse.commons.gettingstarted.tests</name>
 
 	<build>
 		<plugins>
@@ -28,7 +27,7 @@
 					<argLine>-Dgithub.user.name=${github.user.name} -Dgithub.user.password=${github.user.password} -Xmx1024m -XX:MaxPermSize=256m</argLine>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-compiler-plugin</artifactId>
@@ -65,7 +64,7 @@
 				</executions>
 			</plugin>
 
-    	</plugins>
-  	</build>
+		</plugins>
+	</build>
 
 </project>

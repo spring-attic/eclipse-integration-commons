@@ -30,7 +30,11 @@
 	<module>org.springsource.ide.eclipse.commons.quicksearch</module>
 	<module>org.springsource.ide.eclipse.commons.quicksearch.test</module>
 	
+    <!-- getting started -->
 	<module>org.springsource.ide.eclipse.commons.gettingstarted</module>
+	<module>org.springsource.ide.eclipse.commons.gettingstarted.browserinit</module>
+<!--	<module>org.springsource.ide.eclipse.commons.gettingstarted.tests</module> -->
+	<module>org.springsource.ide.eclipse.commons.gettingstarted.feature</module>
 
 	<module>org.springsource.ide.eclipse.commons.content.core</module>
 	<module>org.springsource.ide.eclipse.commons.core</module>
@@ -112,8 +116,8 @@
 
     <maven.test.error.ignore>true</maven.test.error.ignore>
     <maven.test.failure.ignore>true</maven.test.failure.ignore>
-    <maven.compiler.source>1.5</maven.compiler.source>
-    <maven.compiler.target>1.5</maven.compiler.target>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
     <encoding>UTF-8</encoding>
   </properties>
 
@@ -233,9 +237,15 @@
 	  <id>orbit</id>
 	  <layout>p2</layout>
 	  <!-- More recent needed for HttpComponents. Use of api URIBuilder (used only by new SpringBoot wizard) If we can replace with something else
-	      we can keep on using this older orbit site 
+	      we can keep on using this older orbit site
 	    <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</url> -->
-	  <url>http://download.eclipse.org/tools/orbit/downloads/drops/I20130724151342/repository/</url>
+	  <url>http://download.eclipse.org/tools/orbit/downloads/drops/I20130827062727/repository/</url>
+	</repository>
+
+	<repository>
+	  <id>gradle-tooling</id>
+	  <layout>p2</layout>
+	  <url>http://dist.springsource.com/snapshot/TOOLS/gradle/nightly</url>
 	</repository>
 
     <!-- required for Maven and Ant AWS dependency -->
