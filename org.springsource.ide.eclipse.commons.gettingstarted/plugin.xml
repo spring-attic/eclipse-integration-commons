@@ -19,6 +19,7 @@
           class="org.springsource.ide.eclipse.commons.gettingstarted.launch.BootLaunchShortcut"
           description="Run or Debug as a Standalone Spring Boot Application"
           id="org.springsource.ide.eclipse.boot.BootLaunchShortcut"
+          icon="resources/icons/springsource.png"
           label="Spring Boot App"
           modes="run, debug">
         <contextualLaunch>
