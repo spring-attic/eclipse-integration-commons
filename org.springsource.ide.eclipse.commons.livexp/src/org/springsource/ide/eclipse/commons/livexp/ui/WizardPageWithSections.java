@@ -95,7 +95,7 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 	protected abstract List<WizardPageSection> createSections();
 	
 	public void gotValue(LiveExpression<ValidationResult> exp, final ValidationResult status) {
-		setPageComplete(status.isOk()); //Don't delay this, never allow clicking finish button if state not consistent.
+//		setPageComplete(status.isOk()); //Don't delay this, never allow clicking finish button if state not consistent.
 		scheduleUpdateJob();
 	}
 	
