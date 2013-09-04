@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: SpringSource Tool Suite IDE Tests
 Bundle-SymbolicName: org.springsource.ide.eclipse.commons.tests;singleton:=true
 Bundle-Version: 3.4.0.qualifier
-Bundle-Vendor: SpringSource
+Bundle-Vendor: GoPivotal, Inc.
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.junit;bundle-version="4.8.0",
