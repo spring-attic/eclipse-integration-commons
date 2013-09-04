@@ -93,6 +93,10 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 		
 		@Override
 		public void changing(LocationEvent event) {
+			System.out.println("Welcome page navigation: "+event.location);
+			if (sameUrl(event.location, getHomeUrl())) {
+				return;
+			}
 			event.doit = false; //all navigation in welcome page must be intercepted.
 			
 			
@@ -127,6 +131,23 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 			}
 		}
 
+
+		/**
+		 * Compare two url strings, allow for trailing slashes to be or not be there.
+		 */
+		private boolean sameUrl(String a, String b) {
+			return noSlash(a).equals(noSlash(b));
+		}
+
+		private String noSlash(String s) {
+			if (s==null) {
+				return "";
+			}
+			while (s.endsWith("/")) {
+				s = s.substring(0, s.length()-1);
+			}
+			return s;
+		}
 
 		private String getPageId(IPath path) {
 			String pageId = path.toString();
