@@ -105,19 +105,24 @@ public class UiUtil {
 	}
 
 	public static void openUrl(final String location) {
-		// If not running in UI thread... results in NPE. So ...
-		openUrl(location, WebBrowserPreference.getBrowserChoice());
-	}
-
-	public static void openUrl(final String location, final int browserChoice) {
-		// If not running in UI thread... NPE ensues... so...
+		// Must be running in the UI thread to open a browser and *surprisingly*
+		// also to call getBrowserChoice. Otherwise a invalid thread access
+		// exception may
+		// ensue on windows and mac os and then internal browser is permanently
+		// disabled.
+		// This only happens sometimes.
+		// maybe it depends on if the preferences have been initialized before.
+		// In any case we need the asyncExec here!!!
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
-				uiThreadOpenUrl(location, browserChoice);
+				uiThreadOpenUrl(location, WebBrowserPreference.getBrowserChoice());
 			}
 		});
 	}
 
+	/**
+	 * Don't call this method unless you are in the UI thread!
+	 */
 	private static void uiThreadOpenUrl(String location, int browserChoice) {
 		try {
 			URL url = null;
