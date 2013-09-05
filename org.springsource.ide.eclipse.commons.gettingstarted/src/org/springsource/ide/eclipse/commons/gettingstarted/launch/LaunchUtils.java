@@ -72,8 +72,10 @@ public class LaunchUtils {
 
 		private void checkAndRun() {
 			Runnable runit = check();
-			debugPlugin.removeDebugEventListener(this);
-			runit.run();
+			if (runit!=null) {
+				debugPlugin.removeDebugEventListener(this);
+				runit.run();
+			}
 		}
 
 		/**
