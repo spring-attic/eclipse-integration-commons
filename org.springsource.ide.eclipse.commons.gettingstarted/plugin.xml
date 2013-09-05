@@ -58,15 +58,6 @@
           type="org.eclipse.core.resources.IResource">
     </propertyTester>
  </extension>
- <extension
-       point="org.eclipse.ui.commands">
-    <command
-          defaultHandler="org.springsource.ide.eclipse.commons.gettingstarted.launch.ReLaunchCommand"
-          description="Launch Spring Boot App"
-          id="org.springsource.ide.eclipse.boot.launch.command"
-          name="Relaunch">
-    </command>
- </extension>
  <!--
  <extension
        point="org.eclipse.ui.menus">
