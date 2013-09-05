@@ -53,7 +53,8 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 			//platform url assumed to point to a bundled directory of 'templated' content that needs StsProperties replaced.
 			File contentInstance = DashboardCopier.getCopy(new File(FileLocator.toFileURL(new URL(contentUrl)).toURI()), new NullProgressMonitor());
 			welcomeHtml = new File(contentInstance, "index.html");
-//			setName("Welcome");
+			setName("Welcome"); //Although this is the title in the html page, windows browser doesn't seem to give a title event for it. So we must
+								// provide a name ourselves.
 			setHomeUrl(welcomeHtml.toURI().toString());
 		} else {
 			setHomeUrl(contentUrl);
@@ -93,8 +94,9 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 		
 		@Override
 		public void changing(LocationEvent event) {
-			System.out.println("Welcome page navigation: "+event.location);
+//			System.out.println("Welcome page navigation: "+event.location);
 			if (sameUrl(event.location, getHomeUrl())) {
+				//Avoid stray navigation for windows.
 				return;
 			}
 			event.doit = false; //all navigation in welcome page must be intercepted.
@@ -136,17 +138,28 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 		 * Compare two url strings, allow for trailing slashes to be or not be there.
 		 */
 		private boolean sameUrl(String a, String b) {
-			return noSlash(a).equals(noSlash(b));
+			try {
+				return normalize(a).equals(normalize(b));
+			} catch (URISyntaxException e) {
+				//bad uris... just compare as strings then. Be careful for NPE.
+				if (a==null) {
+					a="";
+				} 
+				if (b==null) {
+					b="";
+				}
+				return a.equals(b);
+			}
 		}
 
-		private String noSlash(String s) {
+		private URI normalize(String s) throws URISyntaxException {
 			if (s==null) {
-				return "";
+				return new URI("http://nowhere.nohost.nothing");
 			}
 			while (s.endsWith("/")) {
 				s = s.substring(0, s.length()-1);
 			}
-			return s;
+			return new URI(s);
 		}
 
 		private String getPageId(IPath path) {
