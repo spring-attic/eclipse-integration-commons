@@ -112,6 +112,35 @@
        </action>
     </actionSet>
  </extension>
+ 
+   <extension point="org.eclipse.ui.commands">
+<!-- launch shortcuts -->
+      <command
+            name="Debug Spring Boot App"
+            description="Debug Spring Boot App"
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="org.springsource.ide.eclipse.boot.BootLaunchShortcut.debug">
+      </command>
+      <command
+            name="Run Spring Boot App"
+            description="Run Spring Boot App"
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="org.springsource.ide.eclipse.boot.BootLaunchShortcut.run">
+      </command>
+   </extension>
+   <extension point="org.eclipse.ui.bindings">
+       <key
+            sequence="M2+M3+X B"
+            commandId="org.springsource.ide.eclipse.boot.BootLaunchShortcut.run"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+   </extension>
+   <extension point="org.eclipse.ui.bindings">
+       <key
+            sequence="M2+M3+D B"
+            commandId="org.springsource.ide.eclipse.boot.BootLaunchShortcut.debug"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+   </extension>
+ 
  <!-- Sample: shows how to use the extension point. Don't turn on for real
  <extension
        point="org.springsource.ide.eclipse.commons.dashboard.browser.customization">
