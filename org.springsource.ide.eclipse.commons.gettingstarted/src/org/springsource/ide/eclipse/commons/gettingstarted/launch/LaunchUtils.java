@@ -64,7 +64,9 @@ public class LaunchUtils {
 		@Override
 		public void handleDebugEvents(DebugEvent[] events) {
 			for (DebugEvent e : events) {
-				if (e.getKind()==DebugEvent.TERMINATE && e.getSource()==launch) {
+				//Don't ckeck source==launch because we don't get termination events for launches
+				// only for processes in a launch.
+				if (e.getKind()==DebugEvent.TERMINATE) {
 					checkAndRun();
 				}
 			}
