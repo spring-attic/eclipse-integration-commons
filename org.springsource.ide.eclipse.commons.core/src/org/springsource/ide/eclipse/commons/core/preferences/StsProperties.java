@@ -164,7 +164,7 @@ public class StsProperties {
 
 		//New and Noteworthy
 		props.put("sts.nan.url", "http://static.springsource.org/sts/nan/latest/NewAndNoteworthy.html");
-		props.put("spring.guides.url.external", "true");
+		//props.put("sts.nan.url.external", "true");
 		return props;
 	}
 
