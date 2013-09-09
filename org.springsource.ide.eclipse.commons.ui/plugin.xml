@@ -54,5 +54,108 @@
           label="global curator preferences curated spring tool">
     </keyword>
  </extension>
+ 
+ <extension
+       point="org.eclipse.core.expressions.propertyTesters">
+    <propertyTester
+          class="org.springsource.ide.eclipse.commons.ui.launch.BootPropertyTester"
+          id="org.springsource.ide.eclipse.commons.gettingstarted.boot.BootPropertyTester"
+          namespace="org.springsource.ide.eclipse.boot"
+          properties="isBootProject,isBootResource"
+          type="org.eclipse.core.resources.IResource">
+    </propertyTester>
+ </extension>
 
+ <extension
+       point="org.eclipse.debug.ui.launchShortcuts">
+    <shortcut
+          class="org.springsource.ide.eclipse.commons.ui.launch.BootLaunchShortcut"
+          description="Run or Debug as a Standalone Spring Boot Application"
+          id="org.springsource.ide.eclipse.boot.BootLaunchShortcut"
+          icon="icons/rss/springsource.png"
+          label="Spring Boot App"
+          modes="run, debug">
+        <contextualLaunch>
+           <enablement>
+             <count value="1"/>
+             <iterate>
+           	   <adapt type="org.eclipse.core.resources.IResource">
+           	      <test
+                        property="org.springsource.ide.eclipse.boot.isBootResource"
+                        value="true">
+           	      </test>
+           	   </adapt>
+             </iterate>
+           </enablement>
+        </contextualLaunch>
+        <configurationType
+               id="org.eclipse.jdt.launching.localJavaApplication">
+         </configurationType>
+        <description
+               description="Run as Spring Boot App"
+               mode="run">
+         </description>
+         <description
+               description="Debug as Spring Boot App"
+               mode="debug">
+         </description>
+    </shortcut>
+ </extension>
+ 
+   <extension point="org.eclipse.ui.commands">
+      <command
+            name="Debug Spring Boot App"
+            description="Debug Spring Boot App"
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="org.springsource.ide.eclipse.boot.BootLaunchShortcut.debug">
+      </command>
+      <command
+            name="Run Spring Boot App"
+            description="Run Spring Boot App"
+            categoryId="org.eclipse.debug.ui.category.run"
+            id="org.springsource.ide.eclipse.boot.BootLaunchShortcut.run">
+      </command>
+   </extension>
+   <extension point="org.eclipse.ui.bindings">
+       <key
+            sequence="M2+M3+X B"
+            commandId="org.springsource.ide.eclipse.boot.BootLaunchShortcut.run"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+   </extension>
+   <extension point="org.eclipse.ui.bindings">
+       <key
+            sequence="M2+M3+D B"
+            commandId="org.springsource.ide.eclipse.boot.BootLaunchShortcut.debug"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+   </extension>
+
+ <extension
+       point="org.eclipse.ui.actionSets">
+    <actionSet
+          description="Launch"
+          id="org.springsource.ide.eclipse.commons.launch.actionSet"
+          label="Launch"
+          visible="true">
+       <action
+             allowLabelUpdate="true"
+             class="org.springsource.ide.eclipse.commons.ui.launch.RelaunchProcessPullDownToolbarDelegate"
+             disabledIcon="icons/launch/term_restart_disabled.gif"
+             icon="icons/launch/term_restart.gif"
+             id="org.springsource.ide.eclipse.commons.launch.relaunch.action"
+             label="Relaunch"
+             style="pulldown"
+             toolbarPath="org.eclipse.debug.ui.launchActionSet/debug">
+       </action>
+       <action
+             class="org.springsource.ide.eclipse.commons.ui.launch.StopProcessPullDownToolbarDelegate"
+             disabledIcon="icons/launch/stop_disabled.gif"
+             icon="icons/launch/stop.gif"
+             id="org.springsource.ide.eclipse.commons.launch.relaunch.action"
+             label="Terminate"
+             style="pulldown"
+             toolbarPath="org.eclipse.debug.ui.launchActionSet/debug">
+       </action>
+    </actionSet>
+ </extension>
+ 
 </plugin>

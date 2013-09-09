@@ -8,7 +8,7 @@
  *  Contributors:
  *      GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.gettingstarted.launch;
+package org.springsource.ide.eclipse.commons.ui.launch;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,13 +28,13 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowPulldownDelegate;
 import org.eclipse.ui.actions.CompoundContributionItem;
 import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
-import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
-import org.springsource.ide.eclipse.commons.gettingstarted.launch.ProcessTracker.Listener;
+import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
+import org.springsource.ide.eclipse.commons.ui.launch.ProcessTracker.Listener;
 
 /**
  * Abstract superclass for an launch toolbar button with pulldown
  * that applies some operation to a an active launch.
- * 
+ *
  * @author Kris De Volder
  */
 public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowPulldownDelegate {
@@ -64,13 +64,13 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 			try {
 				performOperation(p.getLaunch());
 			} catch (DebugException e) {
-				GettingStartedActivator.log(e);
-				MessageDialog.openError(window.getShell(), "Error relaunching", 
+				CorePlugin.log(e);
+				MessageDialog.openError(window.getShell(), "Error relaunching",
 						ExceptionUtil.getMessage(e)
 				);
 			}
 		} else {
-			MessageDialog.openError(window.getShell(), "No Processes Found", 
+			MessageDialog.openError(window.getShell(), "No Processes Found",
 					"Couldn't "+getOperationName()+": no active processes"
 			);
 		}
@@ -132,9 +132,9 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 	}
 
 	private static final IContributionItem EMPTY_ITEM = new ActionContributionItem(new EmptyAction("No active processes"));
-	
+
 	/**
-	 * An action that is disabled and does nothing. Its only purpose is to 
+	 * An action that is disabled and does nothing. Its only purpose is to
 	 * show text when there is nothing else to show in an otherwise empty menu.
 	 */
 	private static class EmptyAction extends Action {
@@ -146,35 +146,35 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Dynamically creates menus to relaunch currently active launches.
 	 */
 	private class SubMenuProvider extends CompoundContributionItem {
 
-		private ProcessTracker processes;
-		
+		private final ProcessTracker processes;
+
 		public SubMenuProvider(ProcessTracker processes) {
 			this.processes = processes;
 		}
-		
+
 		private class RelaunchAction extends Action {
-			private ILaunch launch;
+			private final ILaunch launch;
 
 			public RelaunchAction(ILaunch launch) {
 				this.launch = launch;
 				this.setText(launch.getLaunchConfiguration().getName());
 			}
-			
+
 			@Override
 			public void run() {
 				try {
 					performOperation(launch);
 				} catch (DebugException e) {
-					GettingStartedActivator.log(e);
+					CorePlugin.log(e);
 				}
 			}
-			
+
 		}
 
 		@Override
@@ -196,5 +196,5 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 
 	}
 
-	
+
 }

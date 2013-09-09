@@ -8,7 +8,7 @@
  * Contributors:
  *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.gettingstarted.util;
+package org.springsource.ide.eclipse.commons.ui.launch;
 
 import org.eclipse.swt.widgets.Display;
 
@@ -16,18 +16,18 @@ import org.eclipse.swt.widgets.Display;
  * Abstract subclass of Runable that executes its code in the UiThread.
  */
 public abstract class UiRunnable implements Runnable {
-	
+
 	/**
-	 * This method is final. Implement 'uiGotValue' instead.
+	 * This method is final. Implement 'uiRun' instead.
 	 */
 	public final void run() {
 		getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				uiRun();				
+				uiRun();
 			}
 		});
 	}
-	
+
 	protected abstract void uiRun();
 
 	protected Display getDisplay() {

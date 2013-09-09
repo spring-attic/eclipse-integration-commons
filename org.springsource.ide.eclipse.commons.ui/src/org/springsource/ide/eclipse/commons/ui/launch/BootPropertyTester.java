@@ -8,7 +8,7 @@
  *  Contributors:
  *      GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.gettingstarted.launch;
+package org.springsource.ide.eclipse.commons.ui.launch;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.resources.IProject;
@@ -18,10 +18,10 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
+import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
 
 public class BootPropertyTester extends PropertyTester {
-	
+
 	private static final boolean DEBUG = (""+Platform.getLocation()).contains("kdvolder");
 
 	private static void debug(String string) {
@@ -29,13 +29,13 @@ public class BootPropertyTester extends PropertyTester {
 			System.out.println(string);
 		}
 	}
-	
+
 
 	public BootPropertyTester() {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
+	//@Override
 	public boolean test(Object rsrc, String property, Object[] args, Object expectedValue) {
 		if (rsrc instanceof IProject && "isBootProject".equals(property)) {
 			return expectedValue.equals(isBootProject((IProject)rsrc));
@@ -62,11 +62,11 @@ public class BootPropertyTester extends PropertyTester {
 				}
 			}
 		} catch (Exception e) {
-			GettingStartedActivator.log(e);
+			CorePlugin.log(e);
 		}
 		return false;
 	}
-	
+
 	/**
 	 * @return whether given resource is either Spring Boot IProject or nested inside one.
 	 */

@@ -8,7 +8,7 @@
  *  Contributors:
  *      GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.gettingstarted.launch;
+package org.springsource.ide.eclipse.commons.ui.launch;
 
 import static org.eclipse.debug.core.DebugEvent.CREATE;
 import static org.eclipse.debug.core.DebugEvent.TERMINATE;

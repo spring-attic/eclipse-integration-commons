@@ -8,7 +8,7 @@
  * Contributors:
  *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.gettingstarted.launch;
+package org.springsource.ide.eclipse.commons.ui.launch;
 
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
@@ -16,7 +16,6 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.ui.DebugUITools;
-import org.springsource.ide.eclipse.commons.gettingstarted.util.UiRunnable;
 
 public class LaunchUtils {
 
@@ -28,6 +27,7 @@ public class LaunchUtils {
 			launch.terminate();
 		}
 		whenTerminated(launch, new UiRunnable() {
+			@Override
 			public void uiRun() {
 				//must run in UI thread since it may popup dialogs in some cases.
 				DebugUITools.launch(launch.getLaunchConfiguration(), launch.getLaunchMode());
@@ -37,7 +37,7 @@ public class LaunchUtils {
 
 	/**
 	 * Execute some code as soon as a given launch is terminated. If the launch is already terminated
-	 * then the code is executed synchronously, otherwise it is executed asynchronously when 
+	 * then the code is executed synchronously, otherwise it is executed asynchronously when
 	 * a termination event is received.
 	 */
 	public static void whenTerminated(ILaunch launch, Runnable runnable) {
@@ -45,16 +45,16 @@ public class LaunchUtils {
 	}
 	private static class WhenTerminated implements IDebugEventSetListener {
 
-		private ILaunch launch;
+		private final ILaunch launch;
 		private Runnable runnable;
-		private DebugPlugin debugPlugin;
+		private final DebugPlugin debugPlugin;
 
 		public WhenTerminated(ILaunch launch, Runnable runnable) {
 			this.launch = launch;
 			this.runnable = runnable;
 			this.debugPlugin = DebugPlugin.getDefault();
 			debugPlugin.addDebugEventListener(this);
-			
+
 			//Careful... what if the launch has terminated since we last checked it...
 			// in that case we might not get a termination event! So start off with
 			// an initial check now.
