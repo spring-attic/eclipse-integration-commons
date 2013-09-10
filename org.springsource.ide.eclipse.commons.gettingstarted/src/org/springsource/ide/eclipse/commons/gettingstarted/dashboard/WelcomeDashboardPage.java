@@ -46,6 +46,8 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 		StsProperties props = StsProperties.getInstance(new NullProgressMonitor());
 		this.dashboard = dashboard;
 		String contentUrl = props.get("dashboard.welcome.url");
+		setName("Welcome"); //Although this is the title in the html page, windows browser doesn't seem to reliably give a title event for it. So we must
+							// provide a name ourselves.
 		if (contentUrl==null) {
 			//shouldn't happen, but do something with this anyhow, better than a blank page or an error.
 			setHomeUrl("http://springsource.org");
@@ -53,8 +55,6 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 			//platform url assumed to point to a bundled directory of 'templated' content that needs StsProperties replaced.
 			File contentInstance = DashboardCopier.getCopy(new File(FileLocator.toFileURL(new URL(contentUrl)).toURI()), new NullProgressMonitor());
 			welcomeHtml = new File(contentInstance, "index.html");
-			setName("Welcome"); //Although this is the title in the html page, windows browser doesn't seem to give a title event for it. So we must
-								// provide a name ourselves.
 			setHomeUrl(welcomeHtml.toURI().toString());
 		} else {
 			setHomeUrl(contentUrl);
