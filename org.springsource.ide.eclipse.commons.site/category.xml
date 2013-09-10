@@ -35,11 +35,11 @@
 		<category name="Core / Eclipse Integration Commons" />
 	</feature>
 	
-	<feature
+<!-- 	<feature
 		url="org.springsource.ide.eclipse.commons.gettingstarted.feature_3.4.0.qualifier.jar"
 		id="org.springsource.ide.eclipse.commons.gettingstarted.feature" version="3.4.0.qualifier">
 		<category name="Core / Eclipse Integration Commons" />
-	</feature>
+	</feature> -->
 
 	<feature
 		url="org.springsource.ide.eclipse.dashboard_3.4.0.qualifier.jar"
