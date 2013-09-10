@@ -32,9 +32,6 @@
 	
     <!-- getting started -->
 	<module>org.springsource.ide.eclipse.commons.gettingstarted</module>
-	<module>org.springsource.ide.eclipse.commons.gettingstarted.browserinit</module>
-<!--	<module>org.springsource.ide.eclipse.commons.gettingstarted.tests</module> -->
-	<module>org.springsource.ide.eclipse.commons.gettingstarted.feature</module>
 
 	<module>org.springsource.ide.eclipse.commons.content.core</module>
 	<module>org.springsource.ide.eclipse.commons.core</module>
