@@ -15,6 +15,7 @@ import java.util.Collection;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
@@ -91,7 +92,13 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 			IProcess p = processes.getLast();
 			String label = getOperationName();
 			if (p!=null) {
-				label = label + " " + p.getLaunch().getLaunchConfiguration().getName();
+				ILaunch launch = p.getLaunch();
+				if (launch!=null) {
+					ILaunchConfiguration conf = launch.getLaunchConfiguration();
+					if (conf!=null) {
+						label = label + " " + conf.getName();
+					}
+				}
 			}
 			action.setText(label);
 			action.setToolTipText(label);
