@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012 - 2013 GoPivotal, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
  *  http://www.eclipse.org/legal/epl-v10.html
  *
  *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ *      GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.dashboard.internal.ui.editors;
 
@@ -208,7 +208,15 @@ public class AggregateFeedJob extends Job {
 		List<SyndEntry> sortedEntries = new ArrayList<SyndEntry>(entries);
 		Collections.sort(sortedEntries, new Comparator<SyndEntry>() {
 			public int compare(SyndEntry o1, SyndEntry o2) {
-				return o2.getPublishedDate().compareTo(o1.getPublishedDate());
+				if (o1.getPublishedDate() == null && o2.getPublishedDate() == null) {
+					return 0;
+				} else if (o1.getPublishedDate() == null) {
+					return -1;
+				} else if (o2.getPublishedDate() == null) {
+					return 1;
+				} else {
+					return o2.getPublishedDate().compareTo(o1.getPublishedDate());
+				}
 			}
 		});
 
