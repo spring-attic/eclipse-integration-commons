@@ -13,12 +13,18 @@ package org.springsource.ide.eclipse.commons.core.preferences;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Properties;
 
-import org.eclipse.core.runtime.IProduct;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.SubProgressMonitor;
 import org.springsource.ide.eclipse.commons.core.HttpUtil;
 import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
 
@@ -42,16 +48,59 @@ import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
  */
 public class StsProperties {
 
-	private static final String PROPERTIES_URL_PROPERTY = "sts.properties.url";
+	public static class AscendingPriority implements Comparator<FromUrl> {
 
-	/**
-	 * The properties url is normally defined as a property on the active product {@link IProduct}).
-	 * See the product plugin i.e. 'org.springsource.sts' and 'org.springsource.ggts' for toolsuite-distribution repo.
-	 * <p>
-	 * If STS or GGTS is installed from update site then product may actually be STS or GGTS. In that case
-	 * the 'no_product.properties' url will be used.
-	 */
-	private static final String NO_PRODUCT_PROPERTIES = "http://dist.springsource.com/release/STS/discovery/no_product.properties";
+		public int compare(FromUrl o1, FromUrl o2) {
+			return o1.priority - o2.priority;
+		}
+
+	}
+
+	private static class FromUrl {
+
+		public final String url;
+		public final int priority;
+
+		public FromUrl(IConfigurationElement element) {
+			this.url = element.getAttribute("url");
+			this.priority = Integer.parseInt(element.getAttribute("priority"));
+		}
+
+		@Override
+		public String toString() {
+			return "("+priority+", "+url+")";
+		}
+
+	}
+
+	private static final String EXTENSION_ID = "org.springsource.ide.commons.core.properties";
+
+	private FromUrl[] readExtensionPoints() {
+		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		IExtensionPoint extensionPoint = registry
+				.getExtensionPoint(EXTENSION_ID);
+		IExtension[] extensions = extensionPoint.getExtensions();
+
+		ArrayList<FromUrl> sources = new ArrayList<FromUrl>();
+
+		// read property definitions
+		for (IExtension extension : extensions) {
+			IConfigurationElement[] elements = extension
+					.getConfigurationElements();
+			for (IConfigurationElement element : elements) {
+				String name = element.getName();
+				if ("fromUrl".equals(name)) {
+					sources.add(new FromUrl(element));
+				}
+			}
+		}
+
+		FromUrl[] sourcesArray = sources.toArray(new FromUrl[sources.size()]);
+		Arrays.sort(sourcesArray, new AscendingPriority());
+		return sourcesArray;
+	}
+
+	private static final String PROPERTIES_URL_PROPERTY = "sts.properties.url";
 
 
 	//Note: there is also a class called 'ResourceProvider'.. which reads various properties
@@ -67,7 +116,7 @@ public class StsProperties {
 
 	public static StsProperties getInstance(IProgressMonitor mon) {
 		if (instance==null) {
-			StsProperties newInstance = new StsProperties(determineUrl(), mon);
+			StsProperties newInstance = new StsProperties(mon);
 			instance = newInstance;
 		}
 		return instance;
@@ -75,8 +124,24 @@ public class StsProperties {
 
 	private final Properties props;
 
-	private StsProperties(String url, IProgressMonitor mon) {
+	private StsProperties(IProgressMonitor mon) {
 		props = createProperties();
+		FromUrl[] sources = readExtensionPoints();
+		mon.beginTask("Read Sts Properties", sources.length+1);
+		try {
+			for (FromUrl source : sources) {
+				readProperties(source.url, new SubProgressMonitor(mon, 1));
+			}
+			String url = System.getProperty(PROPERTIES_URL_PROPERTY);
+			if (url!=null) {
+				readProperties(url, new SubProgressMonitor(mon, 1));
+			}
+		} finally {
+			mon.done();
+		}
+	}
+
+	private void readProperties(String url, IProgressMonitor mon) {
 		if (url!=null) {
 			try {
 				InputStream content = HttpUtil.stream(new URI(url), mon);
@@ -92,24 +157,6 @@ public class StsProperties {
 				CorePlugin.warn("Couldn't read sts properties from '"+url+"' internal default values will be used");
 			}
 		}
-	}
-
-	/**
-	 * Determines the URL from where the properties file shall be read.
-	 */
-	private static String determineUrl() {
-		//Allow easy overriding by setting a system property:
-		String url = System.getProperty(PROPERTIES_URL_PROPERTY);
-		if (url==null) {
-			IProduct product = Platform.getProduct();
-			if (product!=null) {
-				url = product.getProperty(PROPERTIES_URL_PROPERTY);
-			}
-		}
-		if (url==null) {
-			url = NO_PRODUCT_PROPERTIES;
-		}
-		return url;
 	}
 
 	protected Properties createProperties() {
