@@ -4,9 +4,7 @@
    <extension-point id="com.springsource.sts.core.resources" name="External STS Resources" schema="schema/resources.exsd"/>
    <extension-point id="org.springsource.ide.commons.core.properties" name="Contribute Sources to read StsProperties from." schema="schema/sts.properties.exsd"/>
     <extension point="org.springsource.ide.commons.core.properties">
-       <fromUrl
-             priority="0"
-             url="http://dist.springsource.com/release/STS/discovery/no_product.properties">
+       <fromUrl priority="0" url="http://dist.springsource.com/release/STS/discovery/no_product.properties">
        </fromUrl>
     </extension>
 </plugin>
