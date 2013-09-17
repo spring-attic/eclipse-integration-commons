@@ -17,9 +17,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -28,6 +30,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.osgi.util.NLS;
+import org.springsource.ide.eclipse.commons.core.util.IOUtil;
 import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
 import org.springsource.ide.eclipse.commons.internal.core.net.HttpClientTransportService;
 import org.springsource.ide.eclipse.commons.internal.core.net.ITransportService;
@@ -160,6 +163,13 @@ public class HttpUtil {
 
 	public static InputStream stream(URI uri, IProgressMonitor monitor) throws CoreException {
 		return getTransport().stream(uri, monitor);
+	}
+
+	public static void ping(URI uri) throws MalformedURLException, IOException, CoreException {
+		URLConnection connection = uri.toURL().openConnection();
+		connection.setConnectTimeout(500);
+		InputStream input = connection.getInputStream();
+		IOUtil.consume(input);
 	}
 
 }
