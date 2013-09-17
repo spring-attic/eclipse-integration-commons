@@ -147,6 +147,7 @@
              toolbarPath="org.eclipse.debug.ui.launchActionSet/debug">
        </action>
        <action
+             allowLabelUpdate="true"
              class="org.springsource.ide.eclipse.commons.ui.launch.StopProcessPullDownToolbarDelegate"
              disabledIcon="icons/launch/stop_disabled.gif"
              icon="icons/launch/stop.gif"

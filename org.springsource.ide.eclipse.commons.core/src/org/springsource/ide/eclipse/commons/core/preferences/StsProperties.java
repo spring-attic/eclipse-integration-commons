@@ -175,13 +175,13 @@ public class StsProperties {
 		//  - XXX.url.external is defined that url will always be openened in an external browser.
 
 		//Switch to enable new dash
-		props.put("sts.new.dashboard.enabled", "false");
+		props.put("sts.new.dashboard.enabled", "true");
 
 		//Points to where the content for the dash is. If a platform url it will be interpreted as a directory to be
 		// copied and 'instantiated' by substituting StsProperties. If a non-platform url then it will
 		// passed directly to the browser without further processing.
 		// This default value points to a bundled STS dashboard welcome page.
-		props.put("dashboard.welcome.url", "platform:/plugin/org.springsource.ide.eclipse.commons.gettingstarted/resources/welcome");
+		props.put("dashboard.welcome.url", "platform:/plugin/org.springsource.ide.eclipse.commons.gettingstarted/resources/welcome_no_product");
 
 		//Forum:
 		props.put("sts.forum.url", "http://forum.springsource.org/forumdisplay.php?32-SpringSource-Tool-Suite");
