@@ -165,7 +165,7 @@ public class StsProperties {
 		// Default properties (guarantees certain properties have a value no
 		// matter what).
 
-		props.put("spring.site.url", "http://springsource.org");
+		props.put("spring.site.url", "http://spring.io");
 		props.put("spring.initializr.form.url", "http://start.springframework.io/");
 		props.put("spring.initializr.download.url", "http://start.springframework.io/starter.zip");
 
