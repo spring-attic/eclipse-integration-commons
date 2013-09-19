@@ -10,47 +10,55 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.ui.launch;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.DebugUITools;
 
 public class LaunchUtils {
 
-	/**
-	 * Terminate a given launch (if it is running) then relaunch it.
-	 */
-	public static void terminateAndRelaunch(final ILaunch launch) throws DebugException {
-		if (!launch.isTerminated()) {
-			launch.terminate();
-		}
-		whenTerminated(launch, new UiRunnable() {
-			@Override
-			public void uiRun() {
-				//must run in UI thread since it may popup dialogs in some cases.
-				DebugUITools.launch(launch.getLaunchConfiguration(), launch.getLaunchMode());
-			}
-		});
-	}
+//	/**
+//	 * Terminate a given launch (if it is running) then relaunch it.
+//	 */
+//	public static void terminateAndRelaunch(final ILaunch launch) throws DebugException {
+//		if (!launch.isTerminated()) {
+//			launch.terminate();
+//		}
+//		whenTerminated(launch, new UiRunnable() {
+//			@Override
+//			public void uiRun() {
+//				//must run in UI thread since it may popup dialogs in some cases.
+//				DebugUITools.launch(launch.getLaunchConfiguration(), launch.getLaunchMode());
+//			}
+//		});
+//	}
 
 	/**
-	 * Execute some code as soon as a given launch is terminated. If the launch is already terminated
-	 * then the code is executed synchronously, otherwise it is executed asynchronously when
+	 * Execute some code as soon as a given list of launches are all terminated. If the launches are
+	 * already terminated then the code is executed synchronously, otherwise it is executed asynchronously when
 	 * a termination event is received.
+	 *
+	 * WARNING: the collection is destroyed in the process (elements are removed when they are terminated).
 	 */
-	public static void whenTerminated(ILaunch launch, Runnable runnable) {
-		new WhenTerminated(launch, runnable);
+	public static void whenTerminated(List<ILaunch> launches, Runnable runnable) {
+		new WhenTerminated(launches, runnable);
 	}
+
 	private static class WhenTerminated implements IDebugEventSetListener {
 
-		private final ILaunch launch;
+		private final List<ILaunch> launches;
 		private Runnable runnable;
 		private final DebugPlugin debugPlugin;
 
-		public WhenTerminated(ILaunch launch, Runnable runnable) {
-			this.launch = launch;
+		public WhenTerminated(List<ILaunch> launches, Runnable runnable) {
+			this.launches = launches;
 			this.runnable = runnable;
 			this.debugPlugin = DebugPlugin.getDefault();
 			debugPlugin.addDebugEventListener(this);
@@ -91,7 +99,14 @@ public class LaunchUtils {
 		 */
 		private synchronized Runnable check() {
 			if (runnable!=null) {
-				if (launch.isTerminated()) {
+				Iterator<ILaunch> iter = launches.iterator();
+				while (iter.hasNext()) {
+					ILaunch l = iter.next();
+					if (l.isTerminated()) {
+						iter.remove();
+					}
+				}
+				if (launches.isEmpty()) {
 					//bingo!
 					Runnable it = runnable;
 					runnable = null;
@@ -100,7 +115,55 @@ public class LaunchUtils {
 			}
 			return null;
 		}
+	}
 
+	public static void terminateAndRelaunch(final ILaunchConfiguration launchConf) throws DebugException {
+		List<ILaunch> launches = getLaunches(launchConf);
+		terminate(launches);
+		if (!launches.isEmpty()) {
+			final String mode = launches.get(0).getLaunchMode();
+			whenTerminated(launches, new UiRunnable() {
+				@Override
+				protected void uiRun() {
+					//must run in UI thread since it may popup dialogs in some cases.
+					DebugUITools.launch(launchConf, mode);
+				}
+			});
+		}
+	}
+
+	/**
+	 * Terminate all launches in a list.
+	 * This operation may be asynchronous. The caller can not rely
+	 * on the launches being terminated before the method returns.
+	 */
+	public static void terminate(List<ILaunch> launches) throws DebugException {
+		for (ILaunch l : launches) {
+			if (!l.isTerminated()) {
+				l.terminate();
+			}
+		}
+	}
+
+	private static List<ILaunch> getLaunches(ILaunchConfiguration launchConf) {
+		ILaunch[] all = DebugPlugin.getDefault().getLaunchManager().getLaunches();
+		ArrayList<ILaunch> selected = new ArrayList<ILaunch>();
+		for (ILaunch l : all) {
+			ILaunchConfiguration lConf = l.getLaunchConfiguration();
+			if (lConf!=null && lConf.equals(launchConf)) {
+				selected.add(l);
+			}
+		}
+		return selected;
+	}
+
+	/**
+	 * Terminates all launches associated with given launch config.
+	 * This operation may be asynchronous. The caller can not rely
+	 * on the launches being terminated before the method returns.
+	 */
+	public static void terminate(ILaunchConfiguration conf) throws DebugException {
+		terminate(getLaunches(conf));
 	}
 
 

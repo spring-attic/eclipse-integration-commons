@@ -11,12 +11,9 @@
 package org.springsource.ide.eclipse.commons.ui.launch;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
@@ -24,17 +21,19 @@ import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowPulldownDelegate;
 import org.eclipse.ui.actions.CompoundContributionItem;
 import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
 import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
-import org.springsource.ide.eclipse.commons.ui.launch.ProcessTracker.Listener;
 
 /**
  * Abstract superclass for an launch toolbar button with pulldown
- * that applies some operation to a an active launch.
+ * that applies some operation to launchConfiguration from some historic list of
+ * launch configs.
  *
  * @author Kris De Volder
  */
@@ -42,28 +41,40 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 
 	private IWorkbenchWindow window;
 	private Menu menu;
-	private Listener processListener;
-	private ProcessTracker processes = ProcessTracker.getInstance().addListener(processListener = new ProcessTracker.Listener() {
-			public void changed() {
-				if (action!=null) {
+	private LaunchList.Listener launchListener;
+	private LaunchList launches = createList().addListener(launchListener = new LaunchList.Listener() {
+		public void changed() {
+			if (action!=null && window!=null) {
+				Shell shell = window.getShell();
+				if (shell!=null) {
 					//We may not be in the UIThread here. So take care before futzing with the widgets!
-					window.getShell().getDisplay().asyncExec(new Runnable() {
-						public void run() {
-							update();
-						}
-					});
+					Display display = shell.getDisplay();
+					if (display!=null) {
+						display.asyncExec(new Runnable() {
+							public void run() {
+								update();
+							}
+						});
+					}
 				}
 			}
-		});
+		}
+	});
 	private IAction action;
+
+	/**
+	 * FActory method to create or obtain an instance that keeps track of the launches to be
+	 * shown in the pulldown menu.
+	 */
+	protected abstract LaunchList createList();
 
 	@Override
 	public void run(IAction action) {
 		this.action = action;
-		IProcess p = processes.getLast();
-		if (p!=null) {
+		ILaunchConfiguration l = launches.getLast();
+		if (l!=null) {
 			try {
-				performOperation(p.getLaunch());
+				performOperation(l);
 			} catch (DebugException e) {
 				CorePlugin.log(e);
 				MessageDialog.openError(window.getShell(), "Error relaunching",
@@ -79,7 +90,7 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 
 	protected abstract String getOperationName();
 
-	protected abstract void performOperation(ILaunch launch) throws DebugException;
+	protected abstract void performOperation(ILaunchConfiguration l) throws DebugException;
 
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
@@ -89,20 +100,14 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 
 	private void update() {
 		if (action!=null) {
-			IProcess p = processes.getLast();
+			ILaunchConfiguration launch = launches.getLast();
 			String label = getOperationName();
-			if (p!=null) {
-				ILaunch launch = p.getLaunch();
-				if (launch!=null) {
-					ILaunchConfiguration conf = launch.getLaunchConfiguration();
-					if (conf!=null) {
-						label = label + " " + conf.getName();
-					}
-				}
+			if (launch!=null) {
+				label = label + " " + launch.getName();
 			}
 			action.setText(label);
 			action.setToolTipText(label);
-			action.setEnabled(p!=null);
+			action.setEnabled(launch!=null);
 		}
 	}
 
@@ -112,9 +117,9 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 			menu.dispose();
 			menu = null;
 		}
-		if (processes!=null && processListener!=null) {
-			processes.removeListener(processListener);
-			processes = null;
+		if (launches!=null && launchListener!=null) {
+			launches.removeListener(launchListener);
+			launches = null;
 		}
 	}
 
@@ -135,7 +140,7 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 	}
 
 	private void fillMenu() {
-		new SubMenuProvider(processes).fill(menu, -1);
+		new SubMenuProvider(launches).fill(menu, -1);
 	}
 
 	private static final IContributionItem EMPTY_ITEM = new ActionContributionItem(new EmptyAction("No active processes"));
@@ -159,18 +164,18 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 	 */
 	private class SubMenuProvider extends CompoundContributionItem {
 
-		private final ProcessTracker processes;
+		private final LaunchList launches;
 
-		public SubMenuProvider(ProcessTracker processes) {
-			this.processes = processes;
+		public SubMenuProvider(LaunchList launches) {
+			this.launches = launches;
 		}
 
 		private class RelaunchAction extends Action {
-			private final ILaunch launch;
+			private final ILaunchConfiguration launch;
 
-			public RelaunchAction(ILaunch launch) {
+			public RelaunchAction(ILaunchConfiguration launch) {
 				this.launch = launch;
-				this.setText(launch.getLaunchConfiguration().getName());
+				this.setText(launch.getName());
 			}
 
 			@Override
@@ -191,14 +196,18 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 
 		private IContributionItem[] createContributionItems() {
 			ArrayList<IContributionItem> items = new ArrayList<IContributionItem>();
-			Collection<ILaunch> launches = processes.getLaunches();
-			for (ILaunch launch : launches) {
+			for (ILaunchConfiguration launch : launches.getLaunches()) {
 				items.add(new ActionContributionItem(new RelaunchAction(launch)));
 			}
 			if (items.isEmpty()) {
 				items.add(EMPTY_ITEM);
 			}
-			return items.toArray(new IContributionItem[items.size()]);
+			// Return item in reverse order (so older item at the bottom of the menu).
+			IContributionItem[] array = new IContributionItem[items.size()];
+			for (int i = 0; i < array.length; i++) {
+				array[array.length-i-1] = items.get(i);
+			}
+			return array;
 		}
 
 	}

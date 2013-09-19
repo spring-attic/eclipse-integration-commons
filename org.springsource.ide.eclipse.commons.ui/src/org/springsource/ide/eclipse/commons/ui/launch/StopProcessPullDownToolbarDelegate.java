@@ -11,7 +11,7 @@
 package org.springsource.ide.eclipse.commons.ui.launch;
 
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 
 /**
  * @author Kris De Volder
@@ -19,13 +19,20 @@ import org.eclipse.debug.core.ILaunch;
 public class StopProcessPullDownToolbarDelegate extends AbstractLaunchToolbarPulldown {
 
 	@Override
-	protected void performOperation(ILaunch launch) throws DebugException {
-		launch.terminate();
+	protected void performOperation(ILaunchConfiguration launch) throws DebugException {
+		LaunchUtils.terminate(launch);
 	}
 
 	@Override
 	protected String getOperationName() {
 		return "Stop";
+	}
+
+	@Override
+	protected LaunchList createList() {
+		// TODO Replace with something that retains launchconfigs even after its processes are
+		//   terminated.
+		return LiveProcessTracker.getInstance();
 	}
 
 }

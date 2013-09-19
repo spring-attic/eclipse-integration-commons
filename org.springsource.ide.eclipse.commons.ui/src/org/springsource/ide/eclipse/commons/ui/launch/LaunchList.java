@@ -14,45 +14,28 @@ import static org.eclipse.debug.core.DebugEvent.CREATE;
 import static org.eclipse.debug.core.DebugEvent.TERMINATE;
 
 import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
 
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
 
 /**
- * An instance of this class tracks running processes by attaching to the eclipse debugger.
- * 
  * @author Kris De Volder
  */
-public class ProcessTracker {
-	
+public abstract class LaunchList {
+
 	public interface Listener {
 		void changed();
 	}
 
-	private static ProcessTracker instance;
-	private LinkedList<IProcess> processes = new LinkedList<IProcess>();
 	private IDebugEventSetListener debugListener;
-	
-	private ListenerList listeners = new ListenerList();
-	
-	/**
-	 * Gets an instance of process tracker that may be shared. (There's no need to create multiple instances 
-	 * since they are all just tracking the same set of active processes).
-	 */
-	public synchronized static ProcessTracker getInstance() {
-		if (instance==null) {
-			instance = new ProcessTracker();
-		}
-		return instance;
-	}
-	
-	private ProcessTracker() {
+	private final ListenerList listeners = new ListenerList();
+
+	protected LaunchList() {
 		//Pick up any processes already running
 		DebugPlugin.getDefault().addDebugEventListener(debugListener = new IDebugEventSetListener() {
 			@Override
@@ -64,7 +47,7 @@ public class ProcessTracker {
 				}
 			};
 		});
-		
+
 		//What if processes got started before we attached the listener?
 		ILaunch[] launches = DebugPlugin.getDefault().getLaunchManager().getLaunches();
 		if (launches!=null) {
@@ -75,16 +58,8 @@ public class ProcessTracker {
 			}
 		}
 	}
-	
-//	private void dispose() {
-//		if (debugListener!=null) {
-//			DebugPlugin.getDefault().removeDebugEventListener(debugListener);
-//			debugListener = null;
-//		}
-//	}
-	
-	
-	protected void handleDebugEvent(DebugEvent debugEvent) {
+
+	protected final void handleDebugEvent(DebugEvent debugEvent) {
 		int kind = debugEvent.getKind();
 		switch (kind) {
 		case CREATE:
@@ -102,59 +77,34 @@ public class ProcessTracker {
 			break;
 		}
 	}
-	
-	protected void processTerminated(IProcess process) {
-		boolean changed;
-		synchronized (this) {
-			changed = processes.remove(process);
-		}
-		if (changed) {
-			changed();
-		}
+
+	protected abstract void processTerminated(IProcess process);
+	protected abstract void processCreated(IProcess process);
+
+	public final LaunchList addListener(Listener listener) {
+		listeners.add(listener);
+		return this;
 	}
 
-	protected void processCreated(IProcess process) {
-		boolean changed = false;
-		synchronized (this) {
-			if (!processes.contains(process)) {
-				processes.add(process);
-				changed = true;
-			}
-		}
-		if (changed) {
-			changed();
-		}
+	public final void removeListener(Listener listener) {
+		listeners.remove(listener);
 	}
-	
-	private void changed() {
+
+	protected void fireChangeEvent() {
 		for (Object l : listeners.getListeners()) {
 			((Listener)l).changed();
 		}
 	}
 
-	public synchronized IProcess getLast() {
-		if (!processes.isEmpty()) {
-			return processes.getLast();
-		}
-		return null;
-	}
-	
-	public synchronized Collection<ILaunch> getLaunches() {
-		LinkedHashSet<ILaunch> launches = new LinkedHashSet<ILaunch>();
-		for (IProcess p : processes) {
-			launches.add(p.getLaunch());
-		}
-		return launches;
+	/**
+	 * Call to free up or deregister stuff if we don't need it any more. (e.g disconnect debug event listeners)
+	 */
+	public void dispose() {
+		DebugPlugin.getDefault().removeDebugEventListener(debugListener);
 	}
 
-	public ProcessTracker addListener(Listener listener) {
-		listeners.add(listener);
-		return this;
-	}
-	
-	public void removeListener(Listener listener) {
-		listeners.remove(listener);
-	}
-	
+	public abstract ILaunchConfiguration getLast();
+
+	public abstract Collection<ILaunchConfiguration> getLaunches();
 
 }

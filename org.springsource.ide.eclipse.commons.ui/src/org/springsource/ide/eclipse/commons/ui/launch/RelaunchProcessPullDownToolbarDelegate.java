@@ -11,12 +11,12 @@
 package org.springsource.ide.eclipse.commons.ui.launch;
 
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
 
 public class RelaunchProcessPullDownToolbarDelegate extends AbstractLaunchToolbarPulldown {
 
 	@Override
-	protected void performOperation(ILaunch launch) throws DebugException {
+	protected void performOperation(ILaunchConfiguration launch) throws DebugException {
 		LaunchUtils.terminateAndRelaunch(launch);
 	}
 
@@ -24,6 +24,10 @@ public class RelaunchProcessPullDownToolbarDelegate extends AbstractLaunchToolba
 	protected String getOperationName() {
 		return "Relaunch";
 	}
-	
+
+	@Override
+	protected LaunchList createList() {
+		return LiveAndDeadProcessTracker.getInstance();
+	}
 
 }
