@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.ui.internal.utils;
 
@@ -43,8 +43,8 @@ public class SelectionUtils {
 	 * Determine a List of project based on selection. If selection is a "IStructuredSelection" (typicallly, from
 	 * a tree viewer). Then all selected elements will be adapted to IResources and their associated projects determined.
 	 * These projects will be added to the list unless:
-	 *    - project is already in the list
-	 *    - project doesn't match the ProjectFilter.
+	 *   - project is already in the list
+	 *   - project doesn't match the ProjectFilter.
 	 * <p>
 	 * If the selection is not an IStructuredSelection, then we will attempt to determine a single project 
 	 * based on the active text editor. (This is to support action enablement while editing).

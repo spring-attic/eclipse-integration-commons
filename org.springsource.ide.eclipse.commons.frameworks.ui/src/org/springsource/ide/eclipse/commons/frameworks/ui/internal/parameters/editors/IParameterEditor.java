@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.ui.internal.parameters.editors;
 
@@ -42,7 +42,7 @@ public interface IParameterEditor {
 	 * the values set by the editor.
 	 * 
 	 * @return command parameter instance used by the editor. Should not be
-	 *         null.
+	 *        null.
 	 */
 	public ICommandParameter getParameter();
 
@@ -55,7 +55,7 @@ public interface IParameterEditor {
 	 * </p>
 	 * 
 	 * @param parent
-	 *            for the editor controls
+	 *           for the editor controls
 	 * @return Composite containing editor controls, or null if nothing created
 	 */
 	public Composite createControls(Composite parent);
@@ -67,7 +67,7 @@ public interface IParameterEditor {
 	 * parameter name labels.
 	 * 
 	 * @return true if the parameter name should be included as a label control.
-	 *         False otherwise.
+	 *        False otherwise.
 	 */
 	public boolean requiresParameterNameLabel();
 

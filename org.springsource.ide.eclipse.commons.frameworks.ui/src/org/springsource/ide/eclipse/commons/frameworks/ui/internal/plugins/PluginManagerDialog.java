@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.ui.internal.plugins;
 
@@ -275,8 +275,8 @@ public abstract class PluginManagerDialog extends CommandDialog {
 	 * description. True if it matches, false otherwise
 	 * 
 	 * @param version
-	 *            plugin model element whose data needs to be compared against a
-	 *            pattern
+	 *           plugin model element whose data needs to be compared against a
+	 *           pattern
 	 * @param pattern
 	 * @return true if plugin model element data matches the given pattern.
 	 */
@@ -678,11 +678,11 @@ public abstract class PluginManagerDialog extends CommandDialog {
 	 * returned.
 	 * 
 	 * @param button
-	 *            to change state, IF it is a selection-based operation button
+	 *           to change state, IF it is a selection-based operation button
 	 * @param element
-	 *            to test if button enable state needs to change
+	 *           to test if button enable state needs to change
 	 * @return new enable state of the button, or the original state if the
-	 *         button state is not changed
+	 *        button state is not changed
 	 */
 	protected boolean enableOperationButtonState(Button button,
 			ITreeElement element) {
@@ -979,7 +979,7 @@ public abstract class PluginManagerDialog extends CommandDialog {
 	 * version and its corresponding root with an Uninstall state.
 	 * 
 	 * @param selectedVersionElement
-	 *            which needs to be set to "Uninstall" along with its root.
+	 *           which needs to be set to "Uninstall" along with its root.
 	 */
 	protected void uninstallVersion(VersionTreeElement selectedVersionElement) {
 		if (selectedVersionElement == null) {
@@ -1119,10 +1119,10 @@ public abstract class PluginManagerDialog extends CommandDialog {
 	 * </p>
 	 * 
 	 * @param version
-	 *            whose plugin should be checked if it is installed or not.
+	 *           whose plugin should be checked if it is installed or not.
 	 * @return state of the plugin in the project (installed or update
-	 *         available), or null if it is not installed or install state
-	 *         cannot be determined.
+	 *        available), or null if it is not installed or install state
+	 *        cannot be determined.
 	 */
 	protected PluginState getOriginalStateOfRootPlugin(PluginVersion version) {
 		if (version == null) {
@@ -1182,10 +1182,10 @@ public abstract class PluginManagerDialog extends CommandDialog {
 	 * tomcat).
 	 * 
 	 * @param version
-	 *            to check if a newer version exists
+	 *           to check if a newer version exists
 	 * @return true if a newer version exists, although in some cases with
-	 *         preinstalled plugins false is returned even if newer versions
-	 *         exist
+	 *        preinstalled plugins false is returned even if newer versions
+	 *        exist
 	 * 
 	 */
 	protected boolean hasUpdate(PluginVersion version) {
@@ -1231,8 +1231,8 @@ public abstract class PluginManagerDialog extends CommandDialog {
 	 * Resets the input in the plugins list viewer and clears all selections.
 	 * 
 	 * @param pluginList
-	 *            new input to reset. if viewer is disposed nothing happens. If
-	 *            list is null, all entries in the tree are cleared.
+	 *           new input to reset. if viewer is disposed nothing happens. If
+	 *           list is null, all entries in the tree are cleared.
 	 */
 	protected void setViewerInput() {
 		clearAllPluginChanges();
@@ -1261,7 +1261,7 @@ public abstract class PluginManagerDialog extends CommandDialog {
 	 * not reset the input
 	 * 
 	 * @param updateLabel
-	 *            if all labels and icons should be regenerated. false otherwise
+	 *           if all labels and icons should be regenerated. false otherwise
 	 */
 	protected void refreshViewer(boolean updateLabel) {
 		if (!isViewerDisposed()) {
@@ -1574,7 +1574,7 @@ public abstract class PluginManagerDialog extends CommandDialog {
 		 * </p>
 		 * 
 		 * @param version
-		 *            must not be null.
+		 *           must not be null.
 		 */
 		public RootTreeElement(PluginVersion version) {
 			super(version);
@@ -1640,7 +1640,7 @@ public abstract class PluginManagerDialog extends CommandDialog {
 		 * (non-Javadoc)
 		 * 
 		 * @see org.springsource.ide.eclipse.commons.frameworks.ui.internal.plugins.AbstractTreeElement
-		 *      #getVersionModel()
+		 *     #getVersionModel()
 		 */
 		public PluginVersion getVersionModel() {
 			return getSelectedVersionTreeElement() != null ? getSelectedVersionTreeElement()

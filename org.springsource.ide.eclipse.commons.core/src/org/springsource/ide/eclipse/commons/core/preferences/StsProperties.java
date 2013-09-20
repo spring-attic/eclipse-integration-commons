@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 - 2013 GoPivotal, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 - 2013 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      GoPivotal, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.core.preferences;
 
@@ -36,11 +36,11 @@ import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
  * Properties in this class can come from 3 different sources, listed here in
  * decreasing order of priority:
  *
- *   1) Java System properties (set via -Dmy.prop.name=value) in STS.ini
- *      (properties set this way override anything else).
- *   2) loaded from fixed url
- *   3) default values hard-coded in this class.
- *      (used only if property was not set via either 1 or 2).
+ *  1) Java System properties (set via -Dmy.prop.name=value) in STS.ini
+ *     (properties set this way override anything else).
+ *  2) loaded from fixed url
+ *  3) default values hard-coded in this class.
+ *     (used only if property was not set via either 1 or 2).
  *
  * @since 3.4.M1
  *

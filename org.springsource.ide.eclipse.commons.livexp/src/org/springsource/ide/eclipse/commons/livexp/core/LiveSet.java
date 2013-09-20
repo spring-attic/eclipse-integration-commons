@@ -26,7 +26,7 @@ import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
  * just knowing about individual elements getting added / removed.
  * This is not yet supported.
  * 
- *  TODO: moved to commons. Remove this one and use the one in commons instead.
+ * TODO: moved to commons. Remove this one and use the one in commons instead.
  */
 public class LiveSet<T> extends LiveExpression<Set<T>> {
 	

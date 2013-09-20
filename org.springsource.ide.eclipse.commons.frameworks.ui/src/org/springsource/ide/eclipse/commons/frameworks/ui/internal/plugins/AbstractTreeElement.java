@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.ui.internal.plugins;
 
@@ -85,9 +85,9 @@ public abstract class AbstractTreeElement implements ITreeElement {
 	 * otherwise
 	 * 
 	 * @param state
-	 *            current state of the tree element
+	 *           current state of the tree element
 	 * @return true if it can be installed based on the current state. False
-	 *         otherwise
+	 *        otherwise
 	 */
 	abstract protected boolean canHandleInstall(PluginState state);
 
@@ -97,9 +97,9 @@ public abstract class AbstractTreeElement implements ITreeElement {
 	 * otherwise
 	 * 
 	 * @param state
-	 *            current state of the tree element
+	 *           current state of the tree element
 	 * @return true if it can be uninstalled based on the current state. False
-	 *         otherwise
+	 *        otherwise
 	 */
 	abstract protected boolean canHandleUninstall(PluginState state);
 
@@ -109,9 +109,9 @@ public abstract class AbstractTreeElement implements ITreeElement {
 	 * otherwise
 	 * 
 	 * @param state
-	 *            current state of the tree element
+	 *           current state of the tree element
 	 * @return true if it can be updated based on the current state. False
-	 *         otherwise
+	 *        otherwise
 	 */
 	abstract protected boolean canHandleUpdate(PluginState state);
 
@@ -120,7 +120,7 @@ public abstract class AbstractTreeElement implements ITreeElement {
 	 * if the corresponding canHandleInstall method returns true.
 	 * 
 	 * @param state
-	 *            current state of the tree element
+	 *           current state of the tree element
 	 */
 	abstract protected void handleInstall(PluginState state);
 
@@ -129,7 +129,7 @@ public abstract class AbstractTreeElement implements ITreeElement {
 	 * invoked if the corresponding canHandleUninstall method returns true.
 	 * 
 	 * @param state
-	 *            current state of the tree element
+	 *           current state of the tree element
 	 */
 	abstract protected void handleUninstall(PluginState state);
 
@@ -138,7 +138,7 @@ public abstract class AbstractTreeElement implements ITreeElement {
 	 * if the corresponding canHandleUpdate method returns true
 	 * 
 	 * @param state
-	 *            current state of the tree element
+	 *           current state of the tree element
 	 */
 	abstract protected void handleUpdate(PluginState state);
 }

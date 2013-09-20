@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.ui.internal.swt;
 
@@ -35,16 +35,16 @@ public class ProjectSelectorFactory {
 	/**
 	 * 
 	 * @param shell
-	 *            for the project selector, in case the project selector has
-	 *            dialogues
+	 *           for the project selector, in case the project selector has
+	 *           dialogues
 	 * @param parent
-	 *            composite for the project selector area containing project
-	 *            selection UI
+	 *           composite for the project selector area containing project
+	 *           selection UI
 	 * @param projects
-	 *            list of projects to display in the project selector
+	 *           list of projects to display in the project selector
 	 * @param handler
-	 *            optional handler that gets invoked when a project selection
-	 *            change occurs
+	 *           optional handler that gets invoked when a project selection
+	 *           change occurs
 	 */
 	public ProjectSelectorFactory(Shell shell, Composite parent,
 			Collection<IProject> projects, IProjectSelectionHandler handler) {
@@ -61,7 +61,7 @@ public class ProjectSelectorFactory {
 	 * invoked.
 	 * 
 	 * @return new instance of a project selector, or null if project list is
-	 *         null or empty
+	 *        null or empty
 	 */
 	public IProjectSelector getProjectSelector() {
 		if (canCreate()) {

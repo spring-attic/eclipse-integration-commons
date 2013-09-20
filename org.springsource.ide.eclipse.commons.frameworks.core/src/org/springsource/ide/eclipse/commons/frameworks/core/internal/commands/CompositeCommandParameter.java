@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.core.internal.commands;
 
@@ -74,7 +74,7 @@ public class CompositeCommandParameter extends CommandParameter {
 	 * than one is encountered, the first one is returned.
 	 * 
 	 * @return first command parameter with value set that is found, or null if
-	 *         none of the child parameters have value.
+	 *        none of the child parameters have value.
 	 */
 	public ICommandParameter getSetChildCommandParameter() {
 		if (parameters == null || parameters.isEmpty()) {

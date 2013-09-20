@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.ui.internal.wizard;
 
@@ -205,7 +205,7 @@ public class GenericWizardCommandParametersPage extends
 	 * order of the parameters in the command itself is unchanged.
 	 * 
 	 * @return true if group mandatory parameters. False if parameter order is
-	 *         to be preserved.
+	 *        to be preserved.
 	 */
 	protected boolean groupRequiredParameters() {
 		return getGenericCommandWizard().groupRequiredParameters();
@@ -218,9 +218,9 @@ public class GenericWizardCommandParametersPage extends
 	 * returned and no shortcuts are enabled for that control
 	 * 
 	 * @param label
-	 *            to convert into shortcut-enabled version
+	 *           to convert into shortcut-enabled version
 	 * @return shortcut-enabled version if a letter is found that can be used as
-	 *         a shortcut, or the same label if no shortcut letters are found
+	 *        a shortcut, or the same label if no shortcut letters are found
 	 */
 	protected String getControlLabelWithKeyboardShortcut(String label) {
 		if (label == null || label.length() == 0) {
@@ -273,10 +273,10 @@ public class GenericWizardCommandParametersPage extends
 	 * added to the specified Composite parent.
 	 * 
 	 * @param parent
-	 *            parent composite containing the editor controls
+	 *           parent composite containing the editor controls
 	 * @param parameters
-	 *            list of parameters whose editors should be added to the parent
-	 *            composite
+	 *           list of parameters whose editors should be added to the parent
+	 *           composite
 	 */
 	protected void createEditors(Composite parent,
 			List<ICommandParameter> parameters) {
@@ -323,16 +323,16 @@ public class GenericWizardCommandParametersPage extends
 	 * </p>
 	 * 
 	 * @param kind
-	 *            type of parameter editor to create
+	 *           type of parameter editor to create
 	 * @param parent
-	 *            Composite parent for the editor
+	 *           Composite parent for the editor
 	 * @param parameters
-	 *            list of parameter instances
+	 *           list of parameter instances
 	 * @param currentIndex
-	 *            index of the parameter instance that needs to be passed into
-	 *            the editor
+	 *           index of the parameter instance that needs to be passed into
+	 *           the editor
 	 * @param showLabel
-	 *            whether label controls should be shown for the editor.
+	 *           whether label controls should be shown for the editor.
 	 * @return index of the last editor that was created
 	 */
 	protected int createEditor(Composite parent,
@@ -777,8 +777,8 @@ public class GenericWizardCommandParametersPage extends
 	/**
 	 * 
 	 * @return optional font type to use (bold, italic, etc..) used for to
-	 *         highlight required parameters. Return null to use the default
-	 *         dialog font.
+	 *        highlight required parameters. Return null to use the default
+	 *        dialog font.
 	 */
 	protected Font getRequiredParameterFont() {
 		return JFaceResources.getFontRegistry().getBold(
@@ -806,7 +806,7 @@ public class GenericWizardCommandParametersPage extends
 	/**
 	 * 
 	 * @return height margin between the editor controls and the parent
-	 *         composite edge
+	 *        composite edge
 	 */
 	protected int getEditorAreaHeightMargin() {
 		return 10;

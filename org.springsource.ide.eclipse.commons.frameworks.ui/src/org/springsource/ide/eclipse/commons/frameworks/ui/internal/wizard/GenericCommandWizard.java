@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.ui.internal.wizard;
 
@@ -162,8 +162,8 @@ public abstract class GenericCommandWizard extends Wizard implements ICommandLis
 	 * @param imageLocation
 	 * @param projects
 	 * @param orderRequiredParameters
-	 *            true if required paramters should appear grouped together and
-	 *            appear first. Default is false
+	 *           true if required paramters should appear grouped together and
+	 *           appear first. Default is false
 	 */
 	public GenericCommandWizard(IFrameworkCommand command, String title,
 			String description, String imageLocation,
@@ -252,7 +252,7 @@ public abstract class GenericCommandWizard extends Wizard implements ICommandLis
 	 * editor controls with a pre-filled version of a command instance.
 	 * 
 	 * @param command
-	 *            instance to edit in the parameters page
+	 *           instance to edit in the parameters page
 	 * @return parameter page or null if unable to create.
 	 */
 	protected GenericWizardCommandParametersPage createParameterPage(
@@ -329,8 +329,8 @@ public abstract class GenericCommandWizard extends Wizard implements ICommandLis
 	 * </p>
 	 * 
 	 * @param descriptor
-	 *            create and set CommandInstance for the given descriptor, if
-	 *            one does not already exist for the given descriptor.
+	 *           create and set CommandInstance for the given descriptor, if
+	 *           one does not already exist for the given descriptor.
 	 * @return true if new command instance set. False otherwise
 	 */
 	public boolean setCommandInstance(IFrameworkCommandDescriptor descriptor) {
@@ -348,7 +348,7 @@ public abstract class GenericCommandWizard extends Wizard implements ICommandLis
 	 * configure the created command.
 	 * 
 	 * @param descriptor
-	 *            to create a command instance
+	 *           to create a command instance
 	 * @return Command instance. If null, parameter page is disabled.
 	 */
 	protected IFrameworkCommand createCommand(
@@ -416,9 +416,9 @@ public abstract class GenericCommandWizard extends Wizard implements ICommandLis
 	 * UI controls for the parameter.
 	 * 
 	 * @param parameter
-	 *            Java parameter requiring content assist and Java type browsing
+	 *           Java parameter requiring content assist and Java type browsing
 	 * @return content assist adapter. If null, no content assist support is
-	 *         added to editor controls
+	 *        added to editor controls
 	 */
 	public JavaContentAssistUIAdapter getJavaContentAssistUIAdapter(
 			JavaParameterDescriptor parameter) {
@@ -436,7 +436,7 @@ public abstract class GenericCommandWizard extends Wizard implements ICommandLis
 	 * </p>
 	 * 
 	 * @return true if group mandatory parameters. False if parameter order is
-	 *         to be preserved.
+	 *        to be preserved.
 	 */
 	protected boolean groupRequiredParameters() {
 		return orderRequiredParameters;

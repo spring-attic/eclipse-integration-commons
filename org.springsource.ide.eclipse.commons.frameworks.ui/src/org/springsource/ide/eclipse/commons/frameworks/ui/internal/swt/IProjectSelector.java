@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.ui.internal.swt;
 
@@ -23,7 +23,7 @@ public interface IProjectSelector {
 	/**
 	 * 
 	 * @return currently selected project, or null if nothing selected or
-	 *         available for selection
+	 *        available for selection
 	 */
 	public IProject getSelectedProject();
 
@@ -32,9 +32,9 @@ public interface IProjectSelector {
 	 * happen if the project is not currently present in the list.
 	 * 
 	 * @param project
-	 *            to set in a list of projects.
+	 *           to set in a list of projects.
 	 * @return true if project exists in list and successfully selected. False
-	 *         otherwise
+	 *        otherwise
 	 */
 	public boolean setProject(IProject project);
 

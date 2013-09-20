@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.test.util;
 
@@ -125,12 +125,12 @@ public class SWTBotUtils {
 	 * exists.
 	 * 
 	 * @param pathToResource
-	 *            Path starting from workspace root. For example
-	 *            "kris/src/Foo.java" would refer to file "Foo.java" in the
-	 *            "src" directory of project "kris". Path's ending with trailing
-	 *            "/" will be considered to point to "IFolder" path without
-	 *            trailing "/" will be treated as "IFile" references. Paths with
-	 *            no "/" at all will be treated as references to a project.
+	 *           Path starting from workspace root. For example
+	 *           "kris/src/Foo.java" would refer to file "Foo.java" in the
+	 *           "src" directory of project "kris". Path's ending with trailing
+	 *           "/" will be considered to point to "IFolder" path without
+	 *           trailing "/" will be treated as "IFile" references. Paths with
+	 *           no "/" at all will be treated as references to a project.
 	 * @return
 	 */
 	public static ResourceExists resourceExists(String pathToResource) {
@@ -141,12 +141,12 @@ public class SWTBotUtils {
 	 * Wait for resource to be created.
 	 * 
 	 * @param pathToResource
-	 *            Path starting from workspace root. For example
-	 *            "kris/src/Foo.java" would refer to file "Foo.java" in the
-	 *            "src" directory of project "kris". Path's ending with trailing
-	 *            "/" will be considered to point to "IFolder" path without
-	 *            trailing "/" will be treated as "IFile" references. Paths with
-	 *            on "/" at all will be treated as references to a project.
+	 *           Path starting from workspace root. For example
+	 *           "kris/src/Foo.java" would refer to file "Foo.java" in the
+	 *           "src" directory of project "kris". Path's ending with trailing
+	 *           "/" will be considered to point to "IFolder" path without
+	 *           trailing "/" will be treated as "IFile" references. Paths with
+	 *           on "/" at all will be treated as references to a project.
 	 */
 	public static void waitResourceCreated(SWTBot bot, String pathToResource,
 			long timeOut) {
@@ -157,12 +157,12 @@ public class SWTBotUtils {
 	 * Wait for resource to be created.
 	 * 
 	 * @param pathToResource
-	 *            Path starting from workspace root. For example
-	 *            "kris/src/Foo.java" would refer to file "Foo.java" in the
-	 *            "src" directory of project "kris". Path's ending with trailing
-	 *            "/" will be considered to point to "IFolder" path without
-	 *            trailing "/" will be treated as "IFile" references. Paths with
-	 *            on "/" at all will be treated as references to a project.
+	 *           Path starting from workspace root. For example
+	 *           "kris/src/Foo.java" would refer to file "Foo.java" in the
+	 *           "src" directory of project "kris". Path's ending with trailing
+	 *           "/" will be considered to point to "IFolder" path without
+	 *           trailing "/" will be treated as "IFile" references. Paths with
+	 *           on "/" at all will be treated as references to a project.
 	 */
 	public static void waitResourceCreated(SWTBot bot, String pathToResource) {
 		waitResourceCreated(bot, pathToResource, SWTBotPreferences.TIMEOUT);
@@ -171,7 +171,7 @@ public class SWTBotUtils {
 	/**
 	 * @return a List of {@link Shell} under a parent.
 	 * @param parent
-	 *            the parent under which a shell will be found.
+	 *           the parent under which a shell will be found.
 	 */
 	public static List<Shell> shells(SWTBotShell parent) {
 		Matcher<Shell> anyShell = widgetOfType(Shell.class);
@@ -193,7 +193,7 @@ public class SWTBotUtils {
 	/**
 	 * @return the first shell that is present or appears under a given parent.
 	 * @param parent
-	 *            the parent under which the shell will be found.
+	 *           the parent under which the shell will be found.
 	 */
 	public static SWTBotShell shell(SWTBotShell parentShell) {
 		return new SWTBotShell(shells(parentShell).get(0));
@@ -240,13 +240,13 @@ public class SWTBotUtils {
 	 * node contained within a parent.
 	 * 
 	 * @param bot
-	 *            containing shell with a tree
+	 *           containing shell with a tree
 	 * @param shellName
-	 *            of the shell containing tree
+	 *           of the shell containing tree
 	 * @param parentName
-	 *            parent containing the node to be selected
+	 *           parent containing the node to be selected
 	 * @param childName
-	 *            node to be selected
+	 *           node to be selected
 	 * @return the selected node
 	 */
 	public static SWTBotTreeItem selectChildTreeElement(SWTBot bot,

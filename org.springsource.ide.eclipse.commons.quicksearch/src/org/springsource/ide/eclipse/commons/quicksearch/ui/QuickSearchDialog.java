@@ -6,14 +6,14 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *  IBM Corporation - initial API and implementation
- *  Willian Mitsuda <wmitsuda@gmail.com>
- *     - Fix for bug 196553 - [Dialogs] Support IColorProvider/IFontProvider in FilteredItemsSelectionDialog
- *  Peter Friese <peter.friese@gentleware.com>
- *     - Fix for bug 208602 - [Dialogs] Open Type dialog needs accessible labels
- *  Simon Muschel <smuschel@gmx.de> - bug 258493
- *  Kris De Volder Copied and modified from org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog
- *                 to create QuickSearchDialog
+ * IBM Corporation - initial API and implementation
+ * Willian Mitsuda <wmitsuda@gmail.com>
+ *    - Fix for bug 196553 - [Dialogs] Support IColorProvider/IFontProvider in FilteredItemsSelectionDialog
+ * Peter Friese <peter.friese@gentleware.com>
+ *    - Fix for bug 208602 - [Dialogs] Open Type dialog needs accessible labels
+ * Simon Muschel <smuschel@gmx.de> - bug 258493
+ * Kris De Volder Copied and modified from org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog
+ *                to create QuickSearchDialog
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.quicksearch.ui;
 
@@ -359,10 +359,10 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * Creates a new instance of the class.
 	 * 
 	 * @param window.getShell()
-	 *            shell to parent the dialog on
+	 *           shell to parent the dialog on
 	 * @param multi
-	 *            indicates whether dialog allows to select more than one
-	 *            position in its list of items
+	 *           indicates whether dialog allows to select more than one
+	 *           position in its list of items
 	 */
 	public QuickSearchDialog(IWorkbenchWindow window) {
 		super(window.getShell());
@@ -386,7 +386,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 //	 * Sets the label decorator for selected items in the list.
 //	 * 
 //	 * @param listSelectionLabelDecorator
-//	 *            the label decorator for selected items in the list
+//	 *           the label decorator for selected items in the list
 //	 */
 //	public void setListSelectionLabelDecorator(
 //			ILabelDecorator listSelectionLabelDecorator) {
@@ -517,7 +517,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * Stores dialog settings.
 	 * 
 	 * @param settings
-	 *            settings used to store dialog
+	 *           settings used to store dialog
 	 */
 	protected void storeDialog(IDialogSettings settings) {
 		String currentSearch = pattern.getText();
@@ -667,7 +667,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * Fills the menu of the dialog.
 	 * 
 	 * @param menuManager
-	 *            the menu manager
+	 *           the menu manager
 	 */
 	protected void fillViewMenu(IMenuManager menuManager) {
 		toggleCaseSensitiveAction = new ToggleCaseSensitiveAction(getDialogSettings());
@@ -733,7 +733,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 //	 * Creates an extra content area, which will be located above the details.
 //	 * 
 //	 * @param parent
-//	 *            parent to create the dialog widgets in
+//	 *           parent to create the dialog widgets in
 //	 * @return an extra content area
 //	 */
 //	protected abstract Control createExtendedContentArea(Composite parent);
@@ -1073,7 +1073,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * unselected items and refresh the details field using the selection.
 	 * 
 	 * @param selection
-	 *            the new selection
+	 *           the new selection
 	 */
 	protected void handleSelected(StructuredSelection selection) {
 		IStatus status = new Status(IStatus.OK, PlatformUI.PLUGIN_ID,
@@ -1206,7 +1206,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * input field.
 	 * 
 	 * @param text
-	 *            initial pattern for the filter
+	 *           initial pattern for the filter
 	 * @see QuickSearchDialog#FULL_SELECTION
 	 */
 	public void setInitialPattern(String text) {
@@ -1219,11 +1219,11 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * to choose selection type for the input field.
 	 * 
 	 * @param text
-	 *            initial pattern for the filter
+	 *           initial pattern for the filter
 	 * @param selectionMode
-	 *            one of: {@link QuickSearchDialog#NONE},
-	 *            {@link QuickSearchDialog#CARET_BEGINNING},
-	 *            {@link QuickSearchDialog#FULL_SELECTION}
+	 *           one of: {@link QuickSearchDialog#NONE},
+	 *           {@link QuickSearchDialog#CARET_BEGINNING},
+	 *           {@link QuickSearchDialog#FULL_SELECTION}
 	 */
 	public void setInitialPattern(String text, int selectionMode) {
 		this.initialPatternText = text;
@@ -1234,7 +1234,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * Gets initial pattern.
 	 * 
 	 * @return initial pattern, or <code>null</code> if initial pattern is not
-	 *         set
+	 *        set
 	 */
 	protected String getInitialPattern() {
 		return this.initialPatternText;
@@ -1261,7 +1261,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * depends on all validations.
 	 * 
 	 * @param item
-	 *            an item to be checked
+	 *           an item to be checked
 	 * @return status of the dialog to be set
 	 */
 	protected IStatus validateItem(Object item) {
@@ -1272,8 +1272,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * Creates an instance of a filter.
 	 * 
 	 * @return a filter for items on the items list. Can be <code>null</code>,
-	 *         no filtering will be applied then, causing no item to be shown in
-	 *         the list.
+	 *        no filtering will be applied then, causing no item to be shown in
+	 *        the list.
 	 */
 	protected QuickTextQuery createFilter() {
 		return new QuickTextQuery(pattern.getText(), toggleCaseSensitiveAction.isChecked());
@@ -1327,11 +1327,11 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * Returns name for then given object.
 	 * 
 	 * @param item
-	 *            an object from the content provider. Subclasses should pay
-	 *            attention to the passed argument. They should either only pass
-	 *            objects of a known type (one used in content provider) or make
-	 *            sure that passed parameter is the expected one (by type
-	 *            checking like <code>instanceof</code> inside the method).
+	 *           an object from the content provider. Subclasses should pay
+	 *           attention to the passed argument. They should either only pass
+	 *           objects of a known type (one used in content provider) or make
+	 *           sure that passed parameter is the expected one (by type
+	 *           checking like <code>instanceof</code> inside the method).
 	 * @return name of the given item
 	 */
 	public String getElementName(Object item) {
@@ -1399,7 +1399,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 //		 * Removes items from history and refreshes the view.
 //		 * 
 //		 * @param item
-//		 *            to remove
+//		 *           to remove
 //		 * 
 //		 * @return removed item
 //		 */
@@ -1422,7 +1422,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 //		 * Adds item to history and refresh view.
 //		 * 
 //		 * @param item
-//		 *            to add
+//		 *           to add
 //		 */
 //		public void addHistoryElement(Object item) {
 //			if (this.selectionHistory != null)
@@ -1442,10 +1442,10 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 //		 * Sets/unsets given item as duplicate.
 //		 * 
 //		 * @param item
-//		 *            item to change
+//		 *           item to change
 //		 * 
 //		 * @param isDuplicate
-//		 *            duplicate flag
+//		 *           duplicate flag
 //		 */
 //		public void setDuplicateElement(Object item, boolean isDuplicate) {
 //			if (this.items.contains(item)) {
@@ -1460,7 +1460,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 //		 * Indicates whether given item is a duplicate.
 //		 * 
 //		 * @param item
-//		 *            item to check
+//		 *           item to check
 //		 * @return <code>true</code> if item is duplicate
 //		 */
 //		public boolean isDuplicateElement(Object item) {
@@ -1492,7 +1492,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		 * (non-Javadoc)
 		 * 
 		 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
-		 *      java.lang.Object, java.lang.Object)
+		 *     java.lang.Object, java.lang.Object)
 		 */
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		}
@@ -1519,7 +1519,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * filtering such as custom traversal.
 	 * 
 	 * @return Control or <code>null</code> if the pattern control has not
-	 *         been created.
+	 *        been created.
 	 */
 	public Control getPatternControl() {
 		return pattern;
