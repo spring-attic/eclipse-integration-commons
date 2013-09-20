@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 GoPivotal, Inc.
+ * Copyright (c) 2012 - 2013 GoPivotal, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -84,7 +85,14 @@ public class UiPlugin extends AbstractUIPlugin {
 	}
 
 	public static IWorkbenchWindow getActiveWorkbenchWindow() {
-		return getDefault().getWorkbench().getActiveWorkbenchWindow();
+		final IWorkbenchWindow[] activeWindow = new IWorkbenchWindow[1];
+		Display.getDefault().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				activeWindow[0] = getDefault().getWorkbench().getActiveWorkbenchWindow();
+			}
+		});
+		return activeWindow[0];
 	}
 
 	public static Shell getActiveWorkbenchShell() {
