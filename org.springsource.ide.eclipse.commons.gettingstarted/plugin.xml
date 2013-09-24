@@ -8,7 +8,7 @@
 	<extension point="org.eclipse.ui.editors">
 		<editor
 			class="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.DashboardEditor"
-			icon="resources/icons/dashboard_16.png"
+			icon="resources/icons/spring.png"
 			id="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.DashboardEditor"
 			name="Dashboard">
 		</editor>
