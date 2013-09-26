@@ -37,6 +37,7 @@ import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.ui.part.EditorPart;
 import org.springsource.ide.eclipse.commons.core.preferences.StsProperties;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
+import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardReopener;
 import org.springsource.ide.eclipse.dashboard.ui.actions.IDashboardWithPages;
 
 /**
@@ -62,6 +63,7 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 	private String[] openExternal = null;
 	
 	public DashboardEditor() {
+		DashboardReopener.ensure();
 	}
 		
 	public void createPartControl(Composite _parent) {

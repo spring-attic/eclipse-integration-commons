@@ -98,6 +98,7 @@ public class IdeUiPlugin extends AbstractUIPlugin {
 	@Override
 	protected void initializeDefaultPreferences(IPreferenceStore store) {
 		store.setDefault(IIdeUiConstants.PREF_OPEN_DASHBOARD_STARTUP, IIdeUiConstants.DEFAULT_OPEN_DASHBOARD_STARTUP);
+		store.setDefault(IIdeUiConstants.PREF_USE_OLD_DASHOARD, IIdeUiConstants.DEFAULT_PREF_USE_OLD_DASHOARD);
 	}
 
 	public static IdeUiPlugin getDefault() {

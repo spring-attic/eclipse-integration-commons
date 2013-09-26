@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.springsource.ide.eclipse.commons.core.HttpUtil;
@@ -244,6 +245,10 @@ public class StsProperties {
 			return Boolean.valueOf(value);
 		}
 		return deflt;
+	}
+
+	public static StsProperties getInstance() {
+		return getInstance(new NullProgressMonitor());
 	}
 
 }

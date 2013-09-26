@@ -28,6 +28,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.springsource.ide.eclipse.commons.core.ResourceProvider;
 import org.springsource.ide.eclipse.commons.core.ResourceProvider.Property;
+import org.springsource.ide.eclipse.commons.core.preferences.StsProperties;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IIdeUiConstants;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 
@@ -93,12 +94,16 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 
 	private Button showOnStartupButton;
 
+	private Button useNewDashboardButton;
+
 	@Override
 	protected Control createContents(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
 
 		createShowOnStartupButton(composite);
+		
+		createUseOldDasboardButton(composite);
 
 		for (PropertyEditor editor : editors) {
 			Label label = editor.createLabel(composite);
@@ -118,6 +123,26 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 		}
 
 		return composite;
+	}
+	
+	private void createUseOldDasboardButton(Composite composite) {
+		useNewDashboardButton = new Button(composite, SWT.CHECK);
+		useNewDashboardButton.setText("Use Old Dashboard");
+		GridDataFactory.fillDefaults().span(2, 1).applyTo(useNewDashboardButton);
+		useNewDashboardButton.setSelection(getUseOldDashboard());
+	}
+
+	private boolean getUseOldDashboard() {
+		String value = getPreferenceStore().getString(IIdeUiConstants.PREF_USE_OLD_DASHOARD);
+		if (value==null) {
+			return getDefaultUseOldDashboard();
+		}
+		return Boolean.valueOf(value);
+	}
+	
+	private boolean getDefaultUseOldDashboard() {
+		boolean useNew = StsProperties.getInstance().get("sts.new.dashboard.enabled", false);
+		return !useNew;
 	}
 
 	private void createShowOnStartupButton(Composite composite) {
@@ -158,7 +183,21 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 		for (PropertyEditor editor : editors) {
 			editor.performOk();
 		}
+		setBoolean(getPreferenceStore(), IIdeUiConstants.PREF_USE_OLD_DASHOARD, useNewDashboardButton.getSelection());
 		return super.performOk();
+	}
+
+	/**
+	 * Set boolean preference, taking care to only actually set it if it differs from the default value (so that if
+	 * default value changes at a later time...)
+	 */
+	private void setBoolean(IPreferenceStore preferenceStore, String propName, boolean value) {
+		boolean defaultValue = preferenceStore.getDefaultBoolean(propName);
+		if (value==defaultValue) {
+			preferenceStore.setToDefault(propName);	
+		} else {
+			preferenceStore.setValue(propName, value);
+		}
 	}
 
 }

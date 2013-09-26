@@ -765,7 +765,7 @@ public class StsTestUtil {
         return sourceFolder.createPackageFragment(name, false, null);
     }
 
-    public static void buildProject(IJavaProject javaProject) throws CoreException {
+    public static void buildProject(IJavaProject javaProject) throws Throwable {
         javaProject.getProject().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
         assertNoErrors(javaProject.getProject());
         performDummySearch(javaProject);
@@ -827,7 +827,7 @@ public class StsTestUtil {
         return root;
     }
 
-    public static ICompilationUnit[] createUnits(String[] packages, String[] cuNames, String[] cuContents, IJavaProject project) throws CoreException {
+    public static ICompilationUnit[] createUnits(String[] packages, String[] cuNames, String[] cuContents, IJavaProject project) throws Throwable {
         boolean oldAutoBuilding = isAutoBuilding();
         setAutoBuilding(false);
 

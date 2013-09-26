@@ -23,6 +23,8 @@ import org.springsource.ide.eclipse.dashboard.ui.actions.IDashboardWithPages;
 
 public class ShowDashboardCommand extends AbstractHandler {
 
+	//TODO: this class is not used? Remove? (using action sets in old dashboard.ui plugin)
+	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {

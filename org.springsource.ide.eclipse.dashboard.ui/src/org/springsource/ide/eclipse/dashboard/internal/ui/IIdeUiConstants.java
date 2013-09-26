@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.dashboard.internal.ui;
 
+import org.springsource.ide.eclipse.commons.core.preferences.StsProperties;
+
 /**
  * @author Steffen Pingel
  * @author Wesley Coelho
@@ -20,6 +22,7 @@ package org.springsource.ide.eclipse.dashboard.internal.ui;
 public interface IIdeUiConstants {
 
 	public static final boolean DEFAULT_OPEN_DASHBOARD_STARTUP = true;
+	public static final boolean DEFAULT_PREF_USE_OLD_DASHOARD = !StsProperties.getInstance().get("sts.new.dashboard.enabled", false);
 
 	public static final String LABEL_SPRINGSOURCE_ANALYSES = "My Runtime Error Analyses";
 
@@ -28,6 +31,8 @@ public interface IIdeUiConstants {
 	public static final String PREF_FEED_ENTRY_READ_STATE = IdeUiPlugin.PLUGIN_ID + "dashboard.feed.item.state";
 
 	public static final String PREF_OPEN_DASHBOARD_STARTUP = IdeUiPlugin.PLUGIN_ID + "dashboard.startup";
+	public static final String PREF_USE_OLD_DASHOARD = IdeUiPlugin.PLUGIN_ID + "dashboard.use.old";
+
 
 	// public static final String PREF_LAST_READ_NEW_NOTEWORTHY_SIZE =
 	// "com.springsource.sts.ide.ui.dashboard.lastReadNewAndNoteworthySize";
@@ -76,5 +81,7 @@ public interface IIdeUiConstants {
 	public static final int SECTION_COLLAPSED = 1;
 
 	public static final int SECTION_EXPANDED = 2;
+
+
 
 }

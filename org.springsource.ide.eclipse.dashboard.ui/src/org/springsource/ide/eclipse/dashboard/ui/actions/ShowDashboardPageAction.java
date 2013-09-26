@@ -25,9 +25,10 @@ import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.intro.IIntroManager;
 import org.eclipse.ui.intro.IIntroPart;
 import org.eclipse.ui.progress.UIJob;
-import org.springsource.ide.eclipse.commons.core.preferences.StsProperties;
+import org.springsource.ide.eclipse.dashboard.internal.ui.IIdeUiConstants;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardEditorInput;
+import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardMainPage;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.MultiPageDashboardEditor;
 
 /**
@@ -41,9 +42,8 @@ public class ShowDashboardPageAction implements IWorkbenchWindowActionDelegate {
 	
 //	private static final boolean useNewDashboard = isActivatedNow();
 
-	private boolean useNewDashboard(IProgressMonitor mon) {
-		StsProperties props = StsProperties.getInstance(mon);
-		return props.get("sts.new.dashboard.enabled", false);
+	private static boolean useNewDashboard(IProgressMonitor mon) {
+		return !IdeUiPlugin.getDefault().getPreferenceStore().getBoolean(IIdeUiConstants.PREF_USE_OLD_DASHOARD);
 	}
 
 	private IWorkbenchWindow window;
@@ -62,6 +62,11 @@ public class ShowDashboardPageAction implements IWorkbenchWindowActionDelegate {
 	}
 
 	public void run(IAction action) {
+		run(this.window, pageId);
+	}
+
+	public static void run(final IWorkbenchWindow window, final String _pageId) {
+		final String pageId = _pageId==null ? DashboardMainPage.PAGE_ID : _pageId;
 		UIJob job = new UIJob("Show Dashboard") {
 			@Override
 			public IStatus runInUIThread(IProgressMonitor mon) {

@@ -230,6 +230,7 @@ public class MultiPageDashboardEditor extends SharedHeaderFormEditor {
 	private DashboardMainPage mainPage;
 
 	public MultiPageDashboardEditor() {
+		DashboardReopener.ensure();
 	}
 
 	@Override
