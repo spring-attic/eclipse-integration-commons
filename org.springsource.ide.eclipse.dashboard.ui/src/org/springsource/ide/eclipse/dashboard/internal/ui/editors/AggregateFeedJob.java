@@ -16,6 +16,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -208,14 +209,16 @@ public class AggregateFeedJob extends Job {
 		List<SyndEntry> sortedEntries = new ArrayList<SyndEntry>(entries);
 		Collections.sort(sortedEntries, new Comparator<SyndEntry>() {
 			public int compare(SyndEntry o1, SyndEntry o2) {
-				if (o1.getPublishedDate() == null && o2.getPublishedDate() == null) {
+				Date o1Date = o1.getPublishedDate() != null ? o1.getPublishedDate() : o1.getUpdatedDate();
+				Date o2Date = o2.getPublishedDate() != null ? o2.getPublishedDate() : o2.getUpdatedDate();
+				if (o1Date == null && o2Date == null) {
 					return 0;
-				} else if (o1.getPublishedDate() == null) {
+				} else if (o1Date == null) {
 					return -1;
-				} else if (o2.getPublishedDate() == null) {
+				} else if (o2Date == null) {
 					return 1;
 				} else {
-					return o2.getPublishedDate().compareTo(o1.getPublishedDate());
+					return o2Date.compareTo(o1Date);
 				}
 			}
 		});
