@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.core.internal.commands;
 
@@ -39,14 +39,14 @@ public interface ICommandParameterDescriptor {
 	/**
 	 * 
 	 * @return optional description of the parameter that may include
-	 *         information on what it does, and what values may be acceptable
+	 *        information on what it does, and what values may be acceptable
 	 */
 	public String getDescription();
 
 	/**
 	 * 
 	 * @return true if it requires a set value, false if it is an optional
-	 *         parameter
+	 *        parameter
 	 */
 	public boolean isMandatory();
 
@@ -64,8 +64,8 @@ public interface ICommandParameterDescriptor {
 	 * throughout the life of the parameter, unlike the actual value.
 	 * 
 	 * @return a default value, or null if it has no default value. Empty
-	 *         strings are considered default values, so only use null to
-	 *         indicate no default value
+	 *        strings are considered default values, so only use null to
+	 *        indicate no default value
 	 */
 	public Object getDefaultValue();
 
@@ -81,7 +81,7 @@ public interface ICommandParameterDescriptor {
 
 	/**
 	 * @return true if the parameter name forms part of the executable String,
-	 *         or false if it should be omitted.
+	 *        or false if it should be omitted.
 	 */
 	public boolean requiresParameterNameInCommand();
 

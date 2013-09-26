@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.ui.internal.actions;
 
@@ -103,9 +103,9 @@ public abstract class AbstractCommandActionDelegate extends
 	 * </p>
 	 * 
 	 * @param selectedProject
-	 *            project currently selected by context menu action
+	 *           project currently selected by context menu action
 	 * @return list of OTHER projects that are also valid selections. Can be
-	 *         null or empty.
+	 *        null or empty.
 	 */
 	protected Collection<IProject> getSelectionProjects(IProject selectedProject) {
 		return null;
@@ -118,9 +118,9 @@ public abstract class AbstractCommandActionDelegate extends
 	 * prepopulated values specific to the action or selection. Can be null.
 	 * 
 	 * @param action
-	 *            currently selected action
+	 *           currently selected action
 	 * @param selection
-	 *            selection in workbench
+	 *           selection in workbench
 	 * @return a pre-filled command instance, or null if not required.
 	 */
 	protected IFrameworkCommand getSelectedCommand(IAction action,

@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.ui.internal.wizard;
 
@@ -103,7 +103,7 @@ public class GenericWizardCommandListPage extends AbstractGenericWizardPage {
 	 * if the command was not added (either it is null or it already exists)
 	 * 
 	 * @param command
-	 *            descriptor to add
+	 *           descriptor to add
 	 * @return returns command if successfully added, null otherwise
 	 */
 	public synchronized IFrameworkCommandDescriptor addCommandDescriptor(
@@ -137,8 +137,8 @@ public class GenericWizardCommandListPage extends AbstractGenericWizardPage {
 	 * <p/>
 	 * 
 	 * @param command
-	 *            to select. True if selected or selection cleared, false if no
-	 *            selection
+	 *           to select. True if selected or selection cleared, false if no
+	 *           selection
 	 */
 	public synchronized boolean selectCommandInViewer(
 			IFrameworkCommandDescriptor command) {
@@ -160,8 +160,8 @@ public class GenericWizardCommandListPage extends AbstractGenericWizardPage {
 	 * property of the command
 	 * 
 	 * @param command
-	 *            to select. True if selected or selection cleared, false if no
-	 *            selection
+	 *           to select. True if selected or selection cleared, false if no
+	 *           selection
 	 */
 	private boolean selectCommand(IFrameworkCommandDescriptor command) {
 		// dont do anything if not contained in the list

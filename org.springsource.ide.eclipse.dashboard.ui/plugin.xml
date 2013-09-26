@@ -9,7 +9,7 @@
 			label="SpringSource Tool Suite" visible="true">
 			<action
 				class="org.springsource.ide.eclipse.dashboard.ui.actions.ShowDashboardAction"
-				icon="icons/view16/springsource.png" id="com.springsource.sts.ide.ui.action.dashboard"
+				icon="icons/view16/spring.png" id="com.springsource.sts.ide.ui.action.dashboard"
 				label="Dashboard" menubarPath="help/group.intro" style="push"
 				toolbarPath="com.springsource.sts/main">
 			</action>
@@ -20,7 +20,7 @@
 		<editor
 			class="org.springsource.ide.eclipse.dashboard.internal.ui.editors.MultiPageDashboardEditor"
 			contributorClass="org.springsource.ide.eclipse.dashboard.internal.ui.editors.StsTaskEditorActionContributor"
-			icon="icons/view16/springsource.png"
+			icon="icons/view16/spring.png"
 			id="com.springsource.sts.internal.ide.ui.editors.MultiPageDashboardEditor"
 			name="Dashboard">
 		</editor>
@@ -65,7 +65,7 @@
 			weight="500">
 		</category>
 		<provider categoryId="org.eclipse.mylyn.tasks.bugs.commercial"
-			description="Support for SpringSource Tool Suite" icon="icons/prod/springsource_32.png"
+			description="Support for Spring Tool Suite" icon="icons/prod/spring_32.png"
 			id="com.springsource" name="SpringSource" url="http://www.springsource.com/services">
 		</provider>
 		<product featureId="org.springsource.sts" id="org.springsource.sts"

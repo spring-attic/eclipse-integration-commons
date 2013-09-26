@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012, 2013 GoPivotal, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012, 2013 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.dashboard.internal.ui.editors;
 
@@ -119,6 +119,7 @@ import com.sun.syndication.io.FeedException;
  * @author Terry Denney
  * @author Christian Dupuis
  * @author Steffen Pingel
+ * @author Leo Dos Santos
  */
 public class DashboardMainPage extends AbstractDashboardPage implements PropertyChangeListener {
 
@@ -378,12 +379,14 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 				feedsScrolled.setSize(section.getSize().x - 40, form.getSize().y - 50);
 
 				for (Control feedControl : feedControls) {
-					((TableWrapData) feedControl.getLayoutData()).maxWidth = section.getSize().x
-							- FEEDS_TEXT_WRAP_INDENT;
-					// Point size = feedControl.computeSize(data.widthHint,
-					// 400);
-					// feedControl.setSize(size);
-					// feedControl.pack(true);
+					if (!feedControl.isDisposed()) {
+						((TableWrapData) feedControl.getLayoutData()).maxWidth = section.getSize().x
+								- FEEDS_TEXT_WRAP_INDENT;
+						// Point size = feedControl.computeSize(data.widthHint,
+						// 400);
+						// feedControl.setSize(size);
+						// feedControl.pack(true);
+					}
 				}
 
 				feedsComposite.pack();
@@ -1015,9 +1018,18 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 		// make sure the entries are sorted correctly
 		List<SyndEntry> sortedEntries = new ArrayList<SyndEntry>(entries);
 		Collections.sort(sortedEntries, new Comparator<SyndEntry>() {
-
 			public int compare(SyndEntry o1, SyndEntry o2) {
-				return o2.getPublishedDate().compareTo(o1.getPublishedDate());
+				Date o1Date = o1.getPublishedDate() != null ? o1.getPublishedDate() : o1.getUpdatedDate();
+				Date o2Date = o2.getPublishedDate() != null ? o2.getPublishedDate() : o2.getUpdatedDate();
+				if (o1Date == null && o2Date == null) {
+					return 0;
+				} else if (o1Date == null) {
+					return -1;
+				} else if (o2Date == null) {
+					return 1;
+				} else {
+					return o2Date.compareTo(o1Date);
+				}
 			}
 		});
 

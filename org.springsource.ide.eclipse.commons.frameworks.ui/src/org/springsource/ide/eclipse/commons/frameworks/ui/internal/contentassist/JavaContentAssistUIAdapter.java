@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.ui.internal.contentassist;
 
@@ -94,7 +94,7 @@ public class JavaContentAssistUIAdapter implements
 	 * 
 	 * 
 	 * @param javaParameter
-	 *            must not be null
+	 *           must not be null
 	 */
 	public JavaContentAssistUIAdapter(JavaParameterDescriptor javaParameter) {
 		Assert.isLegal(javaParameter != null);
@@ -211,7 +211,7 @@ public class JavaContentAssistUIAdapter implements
 	/**
 	 * 
 	 * @return for content assist support, this must not be null. Otherwise no
-	 *         content assist support is added to the handler's text control
+	 *        content assist support is added to the handler's text control
 	 */
 	protected IContentAssistProcessor createContentAssistProcessor() {
 		if (javaParameter == null) {

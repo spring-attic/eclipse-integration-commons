@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.ui.internal.contentassist;
 
@@ -31,7 +31,7 @@ public interface IJavaContentAssistHandler {
 	 * Clicking the browse button triggers a Java qualified name event.
 	 * 
 	 * @return browse button to adapt, or null if no browse functionality is
-	 *         needed
+	 *        needed
 	 */
 	public Button getBrowseButtonControl();
 
@@ -48,7 +48,7 @@ public interface IJavaContentAssistHandler {
 	 * control. Must not be null.
 	 * 
 	 * @return shell to use for browse button and content assist. Cannot be
-	 *         null.
+	 *        null.
 	 */
 	public Shell getShell();
 

@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2012 VMWare, Inc.
+ * Copyright (c) 2012 GoPivotal, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     VMWare, Inc. - initial API and implementation
+ *    GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.core;
 
@@ -59,8 +59,8 @@ public abstract class LiveExpression<V> {
 	}
 
 	/** 
-	 *  Declare that this liveExpression depends on some other live expression. This ensures
-	 *  that this expression will be refreshed if the value of the other expression changes.
+	 * Declare that this liveExpression depends on some other live expression. This ensures
+	 * that this expression will be refreshed if the value of the other expression changes.
 	 */
 	public <O> LiveExpression<V> dependsOn(LiveExpression<O> other) {
 		other.addListener(new ValueListener<O>() {

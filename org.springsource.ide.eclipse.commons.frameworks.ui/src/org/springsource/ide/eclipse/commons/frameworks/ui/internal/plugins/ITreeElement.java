@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.ui.internal.plugins;
 
@@ -45,7 +45,7 @@ public interface ITreeElement {
 	/**
 	 * 
 	 * @return the current state of the element. Can be null. If null, it has no
-	 *         state. 
+	 *        state. 
 	 */
 	public PluginState getPluginState();
 
@@ -54,7 +54,7 @@ public interface ITreeElement {
 	 * the element's current state.
 	 * 
 	 * @param type
-	 *            operation type
+	 *           operation type
 	 * @return true if the operation is valid for the element's current state.
 	 */
 	public boolean isValidOperation(PluginOperation type);

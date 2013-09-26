@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.core.internal.plugins;
 
@@ -74,9 +74,9 @@ public class Plugin {
 	 * version that was added.
 	 * 
 	 * @return all versions of this plugin, including new milestones. List is
-	 *         ordered, with the most recent entry being the last entry. Its
-	 *         never null, and should not be empty as a plugin has at least one
-	 *         version
+	 *        ordered, with the most recent entry being the last entry. Its
+	 *        never null, and should not be empty as a plugin has at least one
+	 *        version
 	 */
 	public List<PluginVersion> getVersions() {
 		return new ArrayList<PluginVersion>(versions);
@@ -92,8 +92,8 @@ public class Plugin {
 	 * </p>
 	 * 
 	 * @param version
-	 *            to add to the end of the list. The version must correspond to
-	 *            the same plugin (i.e must have the same plugin name)
+	 *           to add to the end of the list. The version must correspond to
+	 *           the same plugin (i.e must have the same plugin name)
 	 * @return true if successfully added. False otherwise
 	 */
 	public boolean addVersion(PluginVersion version) {
@@ -140,7 +140,7 @@ public class Plugin {
 	 * Set to true ONLY if this plugin has not been published.
 	 * 
 	 * @param isInplace
-	 *            true if it is in-place, false if it is published
+	 *           true if it is in-place, false if it is published
 	 */
 	public void setIsInPlace(boolean isInplace) {
 		this.isInplace = isInplace;
@@ -169,7 +169,7 @@ public class Plugin {
 	 * </p>
 	 * 
 	 * @param latestVersion
-	 *            latest released version
+	 *           latest released version
 	 * @return true if successfully set, false otherwise
 	 */
 	public boolean setLatestReleasedVersion(PluginVersion latestVersion) {
@@ -189,7 +189,7 @@ public class Plugin {
 	 * This may be different and more recent thatn the lastest released version
 	 * 
 	 * @return the most recent version of the plugin that is available. This may
-	 *         OR may not be the same as the latest version available.
+	 *        OR may not be the same as the latest version available.
 	 */
 	public PluginVersion getMostRecentVersionAdded() {
 		List<PluginVersion> children = getVersions();
@@ -260,8 +260,8 @@ public class Plugin {
 	 * </p>
 	 * 
 	 * @return true if and only if the plugin is installed and a newer released
-	 *         version exists. If the plugin is not installed or it is installed
-	 *         with the latest released version, this returns false.
+	 *        version exists. If the plugin is not installed or it is installed
+	 *        with the latest released version, this returns false.
 	 */
 	public boolean hasUpdate() {
 		// Should never be null

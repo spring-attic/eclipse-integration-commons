@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * VMWare, Inc. - initial API and implementation
+ * GoPivotal, Inc. - initial API and implementation
  * GoPivotal, Inc. - moved to commons for reuse across projects.
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.core.validators;

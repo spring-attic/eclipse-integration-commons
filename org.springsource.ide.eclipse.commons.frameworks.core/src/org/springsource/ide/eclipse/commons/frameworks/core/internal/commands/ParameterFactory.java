@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.core.internal.commands;
 
@@ -58,25 +58,25 @@ public class ParameterFactory implements IParameterFactory {
 	 * always has just one value, just like any other parameter.
 	 * 
 	 * @param name
-	 *            of the command exactly as it should appear when executed.
-	 *            Cannot be null or empty.
+	 *           of the command exactly as it should appear when executed.
+	 *           Cannot be null or empty.
 	 * @param description
-	 *            optional description
+	 *           optional description
 	 * @param isMandatory
-	 *            true if it is required. False otherwise
+	 *           true if it is required. False otherwise
 	 * @param defaultValue
-	 *            optional. If not required, use null.
+	 *           optional. If not required, use null.
 	 * @param requiresName
-	 *            true if the name of the parameter should appear in the Command
-	 *            string
+	 *           true if the name of the parameter should appear in the Command
+	 *           string
 	 * @param prefix
-	 *            non-null if a prefix like "--" should be prepended to the
-	 *            parameter name. Null otherwise
+	 *           non-null if a prefix like "--" should be prepended to the
+	 *           parameter name. Null otherwise
 	 * @param valueSeparator
-	 *            non-null if the value of the parameter requires a value
-	 *            separator like "=". Null otherwise
+	 *           non-null if the value of the parameter requires a value
+	 *           separator like "=". Null otherwise
 	 * @param descriptors
-	 *            list of descriptors that define this composite.
+	 *           list of descriptors that define this composite.
 	 * @return
 	 */
 	public static ICommandParameterDescriptor createCompositeParameterDescriptor(
@@ -101,23 +101,23 @@ public class ParameterFactory implements IParameterFactory {
 	 * Boolean parameters ALWAYS have a default value (true or false)
 	 * 
 	 * @param name
-	 *            of the command exactly as it should appear when executed.
-	 *            Cannot be null or empty.
+	 *           of the command exactly as it should appear when executed.
+	 *           Cannot be null or empty.
 	 * @param description
-	 *            optional description
+	 *           optional description
 	 * @param isMandatory
-	 *            true if it is required. False otherwise
+	 *           true if it is required. False otherwise
 	 * @param defaultValue
-	 *            . True or false
+	 *           . True or false
 	 * @param requiresName
-	 *            true if the name of the parameter should appear in the Command
-	 *            string
+	 *           true if the name of the parameter should appear in the Command
+	 *           string
 	 * @param prefix
-	 *            non-null if a prefix like "--" should be prepended to the
-	 *            parameter name. Null otherwise
+	 *           non-null if a prefix like "--" should be prepended to the
+	 *           parameter name. Null otherwise
 	 * @param valueSeparator
-	 *            non-null if the value of the parameter requires a value
-	 *            separator like "=". Null otherwise
+	 *           non-null if the value of the parameter requires a value
+	 *           separator like "=". Null otherwise
 	 */
 	public static ICommandParameterDescriptor createBooleanParameterDescriptor(
 			String name, String description, boolean isMandatory,
@@ -142,17 +142,17 @@ public class ParameterFactory implements IParameterFactory {
 	 * Boolean parameters ALWAYS have a default value (true or false)
 	 * 
 	 * @param name
-	 *            of the command exactly as it should appear when executed.
-	 *            Cannot be null or empty.
+	 *           of the command exactly as it should appear when executed.
+	 *           Cannot be null or empty.
 	 * @param description
-	 *            optional description
+	 *           optional description
 	 * @param isMandatory
-	 *            true if it is required. False otherwise
+	 *           true if it is required. False otherwise
 	 * @param defaultValue
-	 *            . True or false
+	 *           . True or false
 	 * @param prefix
-	 *            non-null if a prefix like "--" should be prepended to the
-	 *            parameter name. Null otherwise
+	 *           non-null if a prefix like "--" should be prepended to the
+	 *           parameter name. Null otherwise
 	 */
 	public static ICommandParameterDescriptor createBooleanParameterDescriptor(
 			String name, String description, boolean isMandatory,
@@ -165,23 +165,23 @@ public class ParameterFactory implements IParameterFactory {
 	 * Basic text-based parameter.
 	 * 
 	 * @param name
-	 *            of the command exactly as it should appear when executed.
-	 *            Cannot be null or empty.
+	 *           of the command exactly as it should appear when executed.
+	 *           Cannot be null or empty.
 	 * @param description
-	 *            optional description
+	 *           optional description
 	 * @param isMandatory
-	 *            true if it is required. False otherwise
+	 *           true if it is required. False otherwise
 	 * @param defaultValue
-	 *            . Null if it has no default value
+	 *           . Null if it has no default value
 	 * @param requiresName
-	 *            true if the name of the parameter should appear in the Command
-	 *            string
+	 *           true if the name of the parameter should appear in the Command
+	 *           string
 	 * @param prefix
-	 *            non-null if a prefix like "--" should be prepended to the
-	 *            parameter name. Null otherwise
+	 *           non-null if a prefix like "--" should be prepended to the
+	 *           parameter name. Null otherwise
 	 * @param valueSeparator
-	 *            non-null if the value of the parameter requires a value
-	 *            separator like "=". Null otherwise
+	 *           non-null if the value of the parameter requires a value
+	 *           separator like "=". Null otherwise
 	 * @return
 	 */
 	public static ICommandParameterDescriptor createBaseParameterDescriptor(
@@ -199,27 +199,27 @@ public class ParameterFactory implements IParameterFactory {
 	 * type browsing and filtering
 	 * 
 	 * @param name
-	 *            of the command exactly as it should appear when executed.
-	 *            Cannot be null or empty.
+	 *           of the command exactly as it should appear when executed.
+	 *           Cannot be null or empty.
 	 * @param description
-	 *            optional description
+	 *           optional description
 	 * @param isMandatory
-	 *            true if it is required. False otherwise
+	 *           true if it is required. False otherwise
 	 * @param defaultValue
-	 *            . Null if it has no default value
+	 *           . Null if it has no default value
 	 * @param requiresName
-	 *            true if the name of the parameter should appear in the Command
-	 *            string
+	 *           true if the name of the parameter should appear in the Command
+	 *           string
 	 * @param prefix
-	 *            non-null if a prefix like "--" should be prepended to the
-	 *            parameter name. Null otherwise
+	 *           non-null if a prefix like "--" should be prepended to the
+	 *           parameter name. Null otherwise
 	 * @param valueSeparator
-	 *            non-null if the value of the parameter requires a value
-	 *            separator like "=". Null otherwise
+	 *           non-null if the value of the parameter requires a value
+	 *           separator like "=". Null otherwise
 	 * @param type
-	 *            must be a valid Java type that this parameter corresponds to.
-	 *            This may be used for content assist and Java type browsing.
-	 *            See valid values: {@link JavaParameterDescriptor}
+	 *           must be a valid Java type that this parameter corresponds to.
+	 *           This may be used for content assist and Java type browsing.
+	 *           See valid values: {@link JavaParameterDescriptor}
 	 * @return
 	 */
 	public static ICommandParameterDescriptor createJavaParameterDescriptor(
@@ -235,26 +235,26 @@ public class ParameterFactory implements IParameterFactory {
 	 * Creates a combo descriptor for the given set of values.
 	 * 
 	 * @param name
-	 *            of the command exactly as it should appear when executed.
-	 *            Cannot be null or empty.
+	 *           of the command exactly as it should appear when executed.
+	 *           Cannot be null or empty.
 	 * @param description
-	 *            optional description
+	 *           optional description
 	 * @param isMandatory
-	 *            true if it is required. False otherwise
+	 *           true if it is required. False otherwise
 	 * @param defaultValue
-	 *            . Null if it has no default value
+	 *           . Null if it has no default value
 	 * @param requiresName
-	 *            true if the name of the parameter should appear in the Command
-	 *            string
+	 *           true if the name of the parameter should appear in the Command
+	 *           string
 	 * @param prefix
-	 *            non-null if a prefix like "--" should be prepended to the
-	 *            parameter name. Null otherwise
+	 *           non-null if a prefix like "--" should be prepended to the
+	 *           parameter name. Null otherwise
 	 * @param valueSeparator
-	 *            non-null if the value of the parameter requires a value
-	 *            separator like "=". Null otherwise
+	 *           non-null if the value of the parameter requires a value
+	 *           separator like "=". Null otherwise
 	 * @param values
-	 *            list of values that appear in the Combo. Cannot be null or
-	 *            empty.
+	 *           list of values that appear in the Combo. Cannot be null or
+	 *           empty.
 	 * @return
 	 */
 	public static ICommandParameterDescriptor createComboParameterDescriptor(
@@ -275,14 +275,14 @@ public class ParameterFactory implements IParameterFactory {
 	 * </p>
 	 * 
 	 * @param name
-	 *            of the command exactly as it should appear when executed.
-	 *            Cannot be null or empty.
+	 *           of the command exactly as it should appear when executed.
+	 *           Cannot be null or empty.
 	 * @param description
-	 *            optional description
+	 *           optional description
 	 * @param isMandatory
-	 *            true if it is required. False otherwise
+	 *           true if it is required. False otherwise
 	 * @param defaultValue
-	 *            . Null if it has no default value
+	 *           . Null if it has no default value
 	 * @return new Command descriptor for the given arguments.
 	 */
 	public static ICommandParameterDescriptor createBasePrefixedParameterDescriptor(
@@ -298,7 +298,7 @@ public class ParameterFactory implements IParameterFactory {
 	 * 
 	 * @param descriptor
 	 * @return new parameter instance for the given parameter descriptor, or
-	 *         null if it couldn't be created
+	 *        null if it couldn't be created
 	 */
 	public static ICommandParameter getParameterInstance(
 			ICommandParameterDescriptor descriptor) {

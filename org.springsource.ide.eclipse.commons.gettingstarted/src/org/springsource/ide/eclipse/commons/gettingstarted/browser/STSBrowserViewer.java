@@ -6,10 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    IBM Corporation - Initial API and implementation
- *    Jacek Pospychala - jacek.pospychala@pl.ibm.com - fix for bug 224887
- *    Kris De Volder - Renamed to 'STSBrowserViewer and 
- *                     modified to use as browser for STS dashboard.
+ *   IBM Corporation - Initial API and implementation
+ *   Jacek Pospychala - jacek.pospychala@pl.ibm.com - fix for bug 224887
+ *   Kris De Volder - Renamed to 'STSBrowserViewer and 
+ *                    modified to use as browser for STS dashboard.
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.gettingstarted.browser;
 
@@ -177,10 +177,10 @@ public class STSBrowserViewer extends Composite {
      * </p>
      * 
      * @param parent
-     *            a composite control which will be the parent of the new
-     *            instance (cannot be null)
+     *           a composite control which will be the parent of the new
+     *           instance (cannot be null)
      * @param style
-     *            the style of control to construct
+     *           the style of control to construct
      */
     public STSBrowserViewer(Composite parent, int style) {
         super(parent, SWT.NONE);
@@ -302,19 +302,19 @@ public class STSBrowserViewer extends Composite {
      * Loads a URL.
      * 
      * @param url
-     *            the URL to be loaded
+     *           the URL to be loaded
      * @return true if the operation was successful and false otherwise.
      * @exception IllegalArgumentException
-     *                <ul>
-     *                <li>ERROR_NULL_ARGUMENT - if the url is null</li>
-     *                </ul>
+     *               <ul>
+     *               <li>ERROR_NULL_ARGUMENT - if the url is null</li>
+     *               </ul>
      * @exception SWTException
-     *                <ul>
-     *                <li>ERROR_THREAD_INVALID_ACCESS when called from the
-     *                wrong thread</li>
-     *                <li>ERROR_WIDGET_DISPOSED when the widget has been
-     *                disposed</li>
-     *                </ul>
+     *               <ul>
+     *               <li>ERROR_THREAD_INVALID_ACCESS when called from the
+     *               wrong thread</li>
+     *               <li>ERROR_WIDGET_DISPOSED when the widget has been
+     *               disposed</li>
+     *               </ul>
      * @see #getURL()
      */
     public void setURL(String url) {
@@ -550,14 +550,14 @@ public class STSBrowserViewer extends Composite {
      * the underlying SWT browser.
      * 
      * @return <code>true</code> if the operation was successful and
-     *         <code>false</code> otherwise
+     *        <code>false</code> otherwise
      * @exception SWTException
-     *                <ul>
-     *                <li>ERROR_THREAD_INVALID_ACCESS when called from the
-     *                wrong thread</li>
-     *                <li>ERROR_WIDGET_DISPOSED when the widget has been
-     *                disposed</li>
-     *                </ul>
+     *               <ul>
+     *               <li>ERROR_THREAD_INVALID_ACCESS when called from the
+     *               wrong thread</li>
+     *               <li>ERROR_WIDGET_DISPOSED when the widget has been
+     *               disposed</li>
+     *               </ul>
      * @see #back
      */
     public boolean forward() {
@@ -571,14 +571,14 @@ public class STSBrowserViewer extends Composite {
      * calls the underlying SWT browser.
      * 
      * @return <code>true</code> if the operation was successful and
-     *         <code>false</code> otherwise
+     *        <code>false</code> otherwise
      * @exception SWTException
-     *                <ul>
-     *                <li>ERROR_THREAD_INVALID_ACCESS when called from the
-     *                wrong thread</li>
-     *                <li>ERROR_WIDGET_DISPOSED when the widget has been
-     *                disposed</li>
-     *                </ul>
+     *               <ul>
+     *               <li>ERROR_THREAD_INVALID_ACCESS when called from the
+     *               wrong thread</li>
+     *               <li>ERROR_WIDGET_DISPOSED when the widget has been
+     *               disposed</li>
+     *               </ul>
      * @see #forward
      */
     public boolean back() {
@@ -594,12 +594,12 @@ public class STSBrowserViewer extends Composite {
      * 
      * @return the receiver's back command enabled state
      * @exception SWTException
-     *                <ul>
-     *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-     *                disposed</li>
-     *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-     *                thread that created the receiver</li>
-     *                </ul>
+     *               <ul>
+     *               <li>ERROR_WIDGET_DISPOSED - if the receiver has been
+     *               disposed</li>
+     *               <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
+     *               thread that created the receiver</li>
+     *               </ul>
      * @see #back
      */
     public boolean isBackEnabled() {
@@ -615,12 +615,12 @@ public class STSBrowserViewer extends Composite {
      * 
      * @return the receiver's forward command enabled state
      * @exception SWTException
-     *                <ul>
-     *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-     *                disposed</li>
-     *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-     *                thread that created the receiver</li>
-     *                </ul>
+     *               <ul>
+     *               <li>ERROR_WIDGET_DISPOSED - if the receiver has been
+     *               disposed</li>
+     *               <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
+     *               thread that created the receiver</li>
+     *               </ul>
      * @see #forward
      */
     public boolean isForwardEnabled() {
@@ -634,12 +634,12 @@ public class STSBrowserViewer extends Composite {
      * the underlying SWT browser.
      * 
      * @exception SWTException
-     *                <ul>
-     *                <li>ERROR_THREAD_INVALID_ACCESS when called from the
-     *                wrong thread</li>
-     *                <li>ERROR_WIDGET_DISPOSED when the widget has been
-     *                disposed</li>
-     *                </ul>
+     *               <ul>
+     *               <li>ERROR_THREAD_INVALID_ACCESS when called from the
+     *               wrong thread</li>
+     *               <li>ERROR_WIDGET_DISPOSED when the widget has been
+     *               disposed</li>
+     *               </ul>
      */
     public void stop() {
         if (browser!=null)
@@ -665,12 +665,12 @@ public class STSBrowserViewer extends Composite {
      * SWT browser.
      * 
      * @exception SWTException
-     *                <ul>
-     *                <li>ERROR_THREAD_INVALID_ACCESS when called from the
-     *                wrong thread</li>
-     *                <li>ERROR_WIDGET_DISPOSED when the widget has been
-     *                disposed</li>
-     *                </ul>
+     *               <ul>
+     *               <li>ERROR_THREAD_INVALID_ACCESS when called from the
+     *               wrong thread</li>
+     *               <li>ERROR_WIDGET_DISPOSED when the widget has been
+     *               disposed</li>
+     *               </ul>
      */
     public void refresh() {
         if (browser!=null)
@@ -866,14 +866,14 @@ public class STSBrowserViewer extends Composite {
      * browser.
      * 
      * @return the current URL or an empty <code>String</code> if there is no
-     *         current URL
+     *        current URL
      * @exception SWTException
-     *                <ul>
-     *                <li>ERROR_THREAD_INVALID_ACCESS when called from the
-     *                wrong thread</li>
-     *                <li>ERROR_WIDGET_DISPOSED when the widget has been
-     *                disposed</li>
-     *                </ul>
+     *               <ul>
+     *               <li>ERROR_THREAD_INVALID_ACCESS when called from the
+     *               wrong thread</li>
+     *               <li>ERROR_WIDGET_DISPOSED when the widget has been
+     *               disposed</li>
+     *               </ul>
      * @see #setURL(String)
      */
     public String getURL() {

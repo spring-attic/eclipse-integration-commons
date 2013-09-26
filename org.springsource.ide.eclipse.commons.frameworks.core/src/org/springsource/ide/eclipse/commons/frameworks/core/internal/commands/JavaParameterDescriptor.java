@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
- *  All rights reserved. This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2012 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.core.internal.commands;
 
@@ -35,15 +35,15 @@ public class JavaParameterDescriptor extends ParameterDescriptor {
 	/**
 	 * 
 	 * @param name
-	 *            of the parameter. required
+	 *           of the parameter. required
 	 * @param description
-	 *            description is optional.
+	 *           description is optional.
 	 * @param isMandatory
-	 *            if value is needed, set to true, false otherwise
+	 *           if value is needed, set to true, false otherwise
 	 * @param defaultValue
 	 * @param type
-	 *            a IJavaElement type identifier, that indicates whether
-	 *            possible content assist should be for packages, types, etc..
+	 *           a IJavaElement type identifier, that indicates whether
+	 *           possible content assist should be for packages, types, etc..
 	 */
 	public JavaParameterDescriptor(String name, String description,
 			boolean isMandatory, Object defaultValue, ParameterKind kind,
