@@ -1217,6 +1217,15 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 	private String getDescription(SyndEntry entry) {
 		SyndContent content = entry.getDescription();
 		if (content == null) {
+			List nestedContent = entry.getContents();
+			if (!nestedContent.isEmpty()) {
+				Object obj = nestedContent.get(0);
+				if (obj instanceof SyndContent) {
+					content = (SyndContent) obj;
+				}
+			}
+		}
+		if (content == null) {
 			return "";
 		}
 

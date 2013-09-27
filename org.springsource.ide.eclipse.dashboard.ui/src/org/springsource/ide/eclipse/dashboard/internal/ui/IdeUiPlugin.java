@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 GoPivotal, Inc.
+ * Copyright (c) 2012 - 2013 GoPivotal, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.UIJob;
 import org.osgi.framework.BundleContext;
+import org.springsource.ide.eclipse.commons.core.ResourceProvider;
+import org.springsource.ide.eclipse.commons.core.ResourceProvider.Property;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardEditorInputFactory;
+import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardMainPage;
 import org.springsource.ide.eclipse.dashboard.ui.actions.ShowDashboardAction;
 
 /**
@@ -49,6 +52,8 @@ public class IdeUiPlugin extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		migrateBlogFeeds();
+		
 		// avoid cyclic startup dependency on org.eclipse.mylyn.tasks.ui
 		Job startupJob = new UIJob("SpringSource Tool Suite Initialization") {
 			@Override
@@ -99,6 +104,7 @@ public class IdeUiPlugin extends AbstractUIPlugin {
 	protected void initializeDefaultPreferences(IPreferenceStore store) {
 		store.setDefault(IIdeUiConstants.PREF_OPEN_DASHBOARD_STARTUP, IIdeUiConstants.DEFAULT_OPEN_DASHBOARD_STARTUP);
 		store.setDefault(IIdeUiConstants.PREF_USE_OLD_DASHOARD, IIdeUiConstants.DEFAULT_PREF_USE_OLD_DASHOARD);
+		store.setDefault(IIdeUiConstants.PREF_IO_BLOGFEED_MIGRATION, false);
 	}
 
 	public static IdeUiPlugin getDefault() {
@@ -155,6 +161,29 @@ public class IdeUiPlugin extends AbstractUIPlugin {
 
 	public static void log(Throwable e) {
 		getDefault().getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, "Unexpected exception", e));
+	}
+	
+	private void migrateBlogFeeds() {
+		IPreferenceStore prefStore = getPreferenceStore();
+		if (!prefStore.getBoolean(IIdeUiConstants.PREF_IO_BLOGFEED_MIGRATION)) {
+			ResourceProvider provider = ResourceProvider.getInstance();
+			Property feedsProp = provider.getProperty(DashboardMainPage.RESOURCE_DASHBOARD_FEEDS_BLOGS);
+			if (feedsProp != null) {
+				String value = feedsProp.getValue();
+				if (value.contains("http://www.springframework.org/node/feed/")) {
+					value = value.replace("http://www.springframework.org/node/feed/", " ");
+				}
+				if (value.contains("http://blog.springsource.com/main/feed/")) {
+					value = value.replace("http://blog.springsource.com/main/feed/", " ");
+				}
+				if (!value.contains("https://spring.io/blog.atom")) {
+					value = value.concat("\nhttps://spring.io/blog.atom");
+				}
+				value = value.trim();
+				feedsProp.setValue(value);
+			}
+			prefStore.setValue(IIdeUiConstants.PREF_IO_BLOGFEED_MIGRATION, true);
+		}
 	}
 
 }

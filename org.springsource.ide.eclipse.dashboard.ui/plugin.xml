@@ -111,9 +111,12 @@
 		<propertyDefinition id="dashboard.bug.tracker"
 			defaultValue="https://issuetracker.springsource.com/browse/STS">
 		</propertyDefinition>
-		<propertyDefinition defaultValue="%dashboard.feeds.blogs.defaultValue"
-			id="dashboard.feeds.blogs" label="%dashboard.feeds.blogs.label"
-			multiValue="true">
+		<propertyDefinition
+        defaultValue="%dashboard.feeds.blogs.defaultValue"
+        id="dashboard.feeds.blogs"
+        label="%dashboard.feeds.blogs.label"
+        multiValue="true"
+        userConfigurable="true">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.feeds.update"
 			defaultValue="http://dist.springsource.com/release/STS/doc/updates.xml">

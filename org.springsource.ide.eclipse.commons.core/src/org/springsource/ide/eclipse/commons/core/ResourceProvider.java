@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 GoPivotal, Inc.
+ * Copyright (c) 2012 - 2013 GoPivotal, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,7 +39,7 @@ import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
 /**
  * Provides access to externalized resources such as urls. Resources are
  * specified through an extension point.
- * 
+ *
  * @author Steffen Pingel
  * @author Christian Dupuis
  */
@@ -284,6 +284,10 @@ public class ResourceProvider {
 
 	public Collection<Property> getProperties() {
 		return Collections.unmodifiableCollection(propertyById.values());
+	}
+
+	public Property getProperty(String id) {
+		return propertyById.get(id);
 	}
 
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
