@@ -117,19 +117,16 @@ public class LaunchUtils {
 		}
 	}
 
-	public static void terminateAndRelaunch(final ILaunchConfiguration launchConf) throws DebugException {
+	public static void terminateAndRelaunch(final ILaunchConfiguration launchConf, final String mode) throws DebugException {
 		List<ILaunch> launches = getLaunches(launchConf);
 		terminate(launches);
-		if (!launches.isEmpty()) {
-			final String mode = launches.get(0).getLaunchMode();
-			whenTerminated(launches, new UiRunnable() {
-				@Override
-				protected void uiRun() {
-					//must run in UI thread since it may popup dialogs in some cases.
-					DebugUITools.launch(launchConf, mode);
-				}
-			});
-		}
+		whenTerminated(launches, new UiRunnable() {
+			@Override
+			protected void uiRun() {
+				//must run in UI thread since it may popup dialogs in some cases.
+				DebugUITools.launch(launchConf, mode);
+			}
+		});
 	}
 
 	/**

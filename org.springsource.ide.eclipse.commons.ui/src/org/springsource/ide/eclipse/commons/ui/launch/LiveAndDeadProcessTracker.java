@@ -12,8 +12,7 @@ package org.springsource.ide.eclipse.commons.ui.launch;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
+import java.util.LinkedHashMap;
 
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -36,8 +35,8 @@ public class LiveAndDeadProcessTracker extends LaunchList {
 		return instance;
 	}
 
-	private final LinkedHashSet<ILaunchConfiguration> configs = new LinkedHashSet<ILaunchConfiguration>();
-	private ILaunchConfiguration last = null;
+	private final LinkedHashMap<String, Item> configs = new LinkedHashMap<String, LaunchList.Item>();
+	private Item last = null;
 
 	@Override
 	protected void processTerminated(IProcess process) {
@@ -51,9 +50,9 @@ public class LiveAndDeadProcessTracker extends LaunchList {
 			if (l!=null) {
 				ILaunchConfiguration c = l.getLaunchConfiguration();
 				if (c!=null) {
-					last = c;
-					configs.remove(c); //so the element moves to the end being now the 'most' recent.
-					configs.add(c);
+					last = new LaunchList.Item(c, l.getLaunchMode());
+					configs.remove(last.getName()); //so the element moves to the end being now the 'most' recent.
+					configs.put(last.getName(), last);
 				}
 			}
 		}
@@ -61,15 +60,13 @@ public class LiveAndDeadProcessTracker extends LaunchList {
 	}
 
 	@Override
-	public synchronized ILaunchConfiguration getLast() {
+	public synchronized Item getLast() {
 		return last;
 	}
 
 	@Override
-	public synchronized Collection<ILaunchConfiguration> getLaunches() {
-		//clean out invalid (i.e. deleted launch configs).
-		Iterator<ILaunchConfiguration> iter = configs.iterator();
-		return new ArrayList<ILaunchConfiguration>(configs);
+	public synchronized Collection<Item> getLaunches() {
+		return new ArrayList<Item>(configs.values());
 	}
 
 }

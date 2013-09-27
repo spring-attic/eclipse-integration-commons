@@ -11,7 +11,6 @@
 package org.springsource.ide.eclipse.commons.ui.launch;
 
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.ILaunchConfiguration;
 
 /**
  * @author Kris De Volder
@@ -19,8 +18,8 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 public class StopProcessPullDownToolbarDelegate extends AbstractLaunchToolbarPulldown {
 
 	@Override
-	protected void performOperation(ILaunchConfiguration launch) throws DebugException {
-		LaunchUtils.terminate(launch);
+	protected void performOperation(LaunchList.Item launch) throws DebugException {
+		LaunchUtils.terminate(launch.conf);
 	}
 
 	@Override

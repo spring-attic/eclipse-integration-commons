@@ -28,6 +28,24 @@ import org.eclipse.debug.core.model.IProcess;
  */
 public abstract class LaunchList {
 
+	public static class Item {
+		public final ILaunchConfiguration conf;
+		public final String mode;
+		public Item(ILaunchConfiguration conf, String mode) {
+			this.conf = conf;
+			this.mode = mode;
+		}
+
+		@Override
+		public String toString() {
+			return "LaunchItem("+conf.getName()+", "+mode+")";
+		}
+
+		public String getName() {
+			return conf.getName();
+		}
+	}
+
 	public interface Listener {
 		void changed();
 	}
@@ -103,8 +121,8 @@ public abstract class LaunchList {
 		DebugPlugin.getDefault().removeDebugEventListener(debugListener);
 	}
 
-	public abstract ILaunchConfiguration getLast();
+	public abstract Item getLast();
 
-	public abstract Collection<ILaunchConfiguration> getLaunches();
+	public abstract Collection<Item> getLaunches();
 
 }

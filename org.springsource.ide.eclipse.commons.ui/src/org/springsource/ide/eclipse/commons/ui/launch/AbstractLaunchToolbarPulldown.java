@@ -13,7 +13,6 @@ package org.springsource.ide.eclipse.commons.ui.launch;
 import java.util.ArrayList;
 
 import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
@@ -29,6 +28,7 @@ import org.eclipse.ui.IWorkbenchWindowPulldownDelegate;
 import org.eclipse.ui.actions.CompoundContributionItem;
 import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
 import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
+import org.springsource.ide.eclipse.commons.ui.launch.LaunchList.Item;
 
 /**
  * Abstract superclass for an launch toolbar button with pulldown
@@ -71,7 +71,7 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 	@Override
 	public void run(IAction action) {
 		this.action = action;
-		ILaunchConfiguration l = launches.getLast();
+		LaunchList.Item l = launches.getLast();
 		if (l!=null) {
 			try {
 				performOperation(l);
@@ -90,7 +90,7 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 
 	protected abstract String getOperationName();
 
-	protected abstract void performOperation(ILaunchConfiguration l) throws DebugException;
+	protected abstract void performOperation(LaunchList.Item l) throws DebugException;
 
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
@@ -100,7 +100,7 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 
 	private void update() {
 		if (action!=null) {
-			ILaunchConfiguration launch = launches.getLast();
+			Item launch = launches.getLast();
 			String label = getOperationName();
 			if (launch!=null) {
 				label = label + " " + launch.getName();
@@ -171,9 +171,9 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 		}
 
 		private class RelaunchAction extends Action {
-			private final ILaunchConfiguration launch;
+			private final Item launch;
 
-			public RelaunchAction(ILaunchConfiguration launch) {
+			public RelaunchAction(LaunchList.Item launch) {
 				this.launch = launch;
 				this.setText(launch.getName());
 			}
@@ -196,7 +196,7 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 
 		private IContributionItem[] createContributionItems() {
 			ArrayList<IContributionItem> items = new ArrayList<IContributionItem>();
-			for (ILaunchConfiguration launch : launches.getLaunches()) {
+			for (Item launch : launches.getLaunches()) {
 				items.add(new ActionContributionItem(new RelaunchAction(launch)));
 			}
 			if (items.isEmpty()) {

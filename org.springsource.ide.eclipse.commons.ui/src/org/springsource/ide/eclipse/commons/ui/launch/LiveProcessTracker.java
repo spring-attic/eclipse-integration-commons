@@ -11,7 +11,7 @@
 package org.springsource.ide.eclipse.commons.ui.launch;
 
 import java.util.Collection;
-import java.util.LinkedHashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 import org.eclipse.debug.core.ILaunch;
@@ -83,29 +83,30 @@ public class LiveProcessTracker extends LaunchList {
 	}
 
 	@Override
-	public synchronized ILaunchConfiguration getLast() {
+	public synchronized Item getLast() {
 		if (!processes.isEmpty()) {
 			ILaunch l = processes.getLast().getLaunch();
-			if (l!=null) {
-				return l.getLaunchConfiguration();
+			ILaunchConfiguration c = l.getLaunchConfiguration();
+			if (l!=null && c!=null) {
+				return new Item(c, l.getLaunchMode());
 			}
 		}
 		return null;
 	}
 
 	@Override
-	public synchronized Collection<ILaunchConfiguration> getLaunches() {
-		LinkedHashSet<ILaunchConfiguration> launches = new LinkedHashSet<ILaunchConfiguration>();
+	public synchronized Collection<Item> getLaunches() {
+		LinkedHashMap<String, Item> launches = new LinkedHashMap<String, LaunchList.Item>();
 		for (IProcess p : processes) {
 			ILaunch l = p.getLaunch();
 			if (l!=null) {
 				ILaunchConfiguration c = l.getLaunchConfiguration();
 				if (c!=null) {
-					launches.add(c);
+					launches.put(c.getName(), new Item(c, l.getLaunchMode()));
 				}
 			}
 		}
-		return launches;
+		return launches.values();
 	}
 
 }
