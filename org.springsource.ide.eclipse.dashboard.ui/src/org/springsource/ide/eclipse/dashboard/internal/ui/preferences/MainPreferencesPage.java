@@ -94,7 +94,7 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 
 	private Button showOnStartupButton;
 
-	private Button useNewDashboardButton;
+	private Button useOldDashboardButton;
 
 	@Override
 	protected Control createContents(Composite parent) {
@@ -126,10 +126,10 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 	}
 	
 	private void createUseOldDasboardButton(Composite composite) {
-		useNewDashboardButton = new Button(composite, SWT.CHECK);
-		useNewDashboardButton.setText("Use Old Dashboard");
-		GridDataFactory.fillDefaults().span(2, 1).applyTo(useNewDashboardButton);
-		useNewDashboardButton.setSelection(getUseOldDashboard());
+		useOldDashboardButton = new Button(composite, SWT.CHECK);
+		useOldDashboardButton.setText("Use Old Dashboard");
+		GridDataFactory.fillDefaults().span(2, 1).applyTo(useOldDashboardButton);
+		useOldDashboardButton.setSelection(getUseOldDashboard());
 	}
 
 	private boolean getUseOldDashboard() {
@@ -171,6 +171,7 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 	protected void performDefaults() {
 		showOnStartupButton.setSelection(getPreferenceStore().getDefaultBoolean(
 				IIdeUiConstants.PREF_OPEN_DASHBOARD_STARTUP));
+		useOldDashboardButton.setSelection(getPreferenceStore().getDefaultBoolean(IIdeUiConstants.PREF_USE_OLD_DASHOARD));
 		for (PropertyEditor editor : editors) {
 			editor.performDefaults();
 		}
@@ -183,7 +184,7 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 		for (PropertyEditor editor : editors) {
 			editor.performOk();
 		}
-		setBoolean(getPreferenceStore(), IIdeUiConstants.PREF_USE_OLD_DASHOARD, useNewDashboardButton.getSelection());
+		setBoolean(getPreferenceStore(), IIdeUiConstants.PREF_USE_OLD_DASHOARD, useOldDashboardButton.getSelection());
 		return super.performOk();
 	}
 
