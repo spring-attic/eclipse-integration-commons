@@ -11,13 +11,17 @@
 package org.springsource.ide.eclipse.commons.gettingstarted.dashboard;
 
 import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTError;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.TitleEvent;
 import org.eclipse.swt.browser.TitleListener;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.internal.browser.WebBrowserUtil;
 import org.springsource.ide.eclipse.commons.gettingstarted.browser.BrowserFactory;
 import org.springsource.ide.eclipse.commons.gettingstarted.browser.STSBrowserViewer;
 
@@ -54,6 +58,8 @@ public class WebDashboardPage extends ADashboardPage /* implements IExecutableEx
 
 	private STSBrowserViewer browserViewer;
 
+	private ADashboardPage errorPage;
+
 	/**
 	 * Constructor for when this class is used as n {@link IExecutableExtension}. In that case
 	 * setInitializationData method will be called with infos from plugin.xml to fill
@@ -85,33 +91,40 @@ public class WebDashboardPage extends ADashboardPage /* implements IExecutableEx
 //		Assert.isNotNull(this.homeUrl, "A url must be provided as initialization data for WebDashboardPage");
 //	}
 	
+	@SuppressWarnings("restriction")
 	@Override
 	public void createControl(Composite parent) {
-		this.shell = parent.getShell();
-		parent.setLayout(new FillLayout());
-		browserViewer = BrowserFactory.create(parent, hasToolbar());
-		final Browser browser = browserViewer.getBrowser();
-		if (homeUrl!=null) {
-			browserViewer.setHomeUrl(homeUrl);
-			browserViewer.setURL(homeUrl);
+		if (WebBrowserUtil.canUseInternalWebBrowser()) {
+			this.shell = parent.getShell();
+			parent.setLayout(new FillLayout());
+			browserViewer = BrowserFactory.create(parent, hasToolbar());
+			final Browser browser = browserViewer.getBrowser();
+			if (homeUrl!=null) {
+				browserViewer.setHomeUrl(homeUrl);
+				browserViewer.setURL(homeUrl);
+			} else {
+				browser.setText("<h1>URL not set</h1>" +
+						"<p>Url should be provided via the setInitializationData method</p>"
+				);
+			}
+			if (getName()==null) {
+				//Get name from the browser
+				final TitleListener l = new TitleListener() {
+					@Override
+					public void changed(TitleEvent event) {
+						setName(event.title);
+						browser.removeTitleListener(this);
+					}
+				};
+				browser.addTitleListener(l);
+			}
+			addBrowserHooks(browser);
 		} else {
-			browser.setText("<h1>URL not set</h1>" +
-					"<p>Url should be provided via the setInitializationData method</p>"
-			);
+			errorPage = new BrowserErrorPage();
+			errorPage.createControl(parent);
 		}
-		if (getName()==null) {
-			//Get name from the browser
-			final TitleListener l = new TitleListener() {
-				@Override
-				public void changed(TitleEvent event) {
-					setName(event.title);
-					browser.removeTitleListener(this);
-				}
-			};
-			browser.addTitleListener(l);
-		}
-		addBrowserHooks(browser);
 	}
+
 
 	/**
 	 * Subclasses may override if they don't want the url and buttons toolbar.
@@ -178,6 +191,9 @@ public class WebDashboardPage extends ADashboardPage /* implements IExecutableEx
 	
 	@Override
 	public void dispose() {
+		if (errorPage!=null) {
+			errorPage.dispose();
+		}
 		if (this.browserViewer!=null) {
 			this.browserViewer.dispose();
 			this.browserViewer = null;
