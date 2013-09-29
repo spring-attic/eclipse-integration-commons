@@ -154,7 +154,7 @@ public class StsTaskPage extends AbstractTaskEditorPage {
 			@Override
 			public AbstractTaskEditorPart createPart() {
 				return new HeaderPart(
-						"Please use this form to provide feedback on the SpringSource Tool Suite, or report a bug.");
+						"Please use this form to provide feedback on the Spring Tool Suite, or report a bug.");
 			}
 		}.setPath(PATH_HEADER));
 		descriptors.add(new TaskEditorPartDescriptor(ID_PART_ATTRIBUTES) {
