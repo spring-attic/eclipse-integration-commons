@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -53,11 +55,23 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 			setHomeUrl("http://springsource.org");
 		} else if (contentUrl.startsWith("platform:")) {
 			//platform url assumed to point to a bundled directory of 'templated' content that needs StsProperties replaced.
-			File contentInstance = DashboardCopier.getCopy(new File(FileLocator.toFileURL(new URL(contentUrl)).toURI()), new NullProgressMonitor());
+			URL fileURL = FileLocator.toFileURL(new URL(contentUrl));
+			File contentInstance = DashboardCopier.getCopy(urlToFile(fileURL), new NullProgressMonitor());
 			welcomeHtml = new File(contentInstance, "index.html");
 			setHomeUrl(welcomeHtml.toURI().toString());
 		} else {
 			setHomeUrl(contentUrl);
+		}
+	}
+
+	private File urlToFile(URL fileURL) {
+		try {
+			//proper way to conver url to file:
+			return new File(fileURL.toURI());
+		} catch (URISyntaxException e) {
+			//Deal with broken file urls (may contain spaces in unescaped form, thanks Eclipse FileLocator!).
+			// We will assume that if some chars are not escaped none of them are escaped.
+			return new File(fileURL.getFile());
 		}
 	}
 	
