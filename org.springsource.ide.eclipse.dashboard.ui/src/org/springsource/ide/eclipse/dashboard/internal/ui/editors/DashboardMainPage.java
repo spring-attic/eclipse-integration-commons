@@ -541,7 +541,7 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 			}
 		});
 
-		toolBarManager.add(new Action("SpringSource", IdeUiPlugin.getImageDescriptor(LOGO_SPRINGSOURCE)) {
+		toolBarManager.add(new Action("Spring", IdeUiPlugin.getImageDescriptor(LOGO_SPRINGSOURCE)) {
 			@Override
 			public void run() {
 				TasksUiUtil.openUrl(ResourceProvider.getUrl(RESOURCE_DASHBOARD_LOGO));
@@ -760,7 +760,7 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 
 	private void createSearchBox(Composite composite) {
 		TextSearchControl searchControl = new TextSearchControl(composite, false, null);
-		searchControl.getTextControl().setMessage("Search springsource.org");
+		searchControl.getTextControl().setMessage("Search spring.io");
 		GridDataFactory.fillDefaults().grab(false, true).align(SWT.FILL, SWT.CENTER).hint(200, SWT.DEFAULT)
 				.applyTo(searchControl);
 		searchBox = searchControl.getTextControl();

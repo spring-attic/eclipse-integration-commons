@@ -184,7 +184,7 @@ public class MultiPageDashboardEditor extends SharedHeaderFormEditor {
 
 	private static final int VERTICAL_TOOLBAR_PADDING = 11;
 
-	private static final String TITLE = "SpringSource Dashboard";
+	private static final String TITLE = "Spring Dashboard";
 
 	public static String EDITOR_ID = "com.springsource.sts.internal.ide.ui.editors.MultiPageDashboardEditor";
 
@@ -323,7 +323,7 @@ public class MultiPageDashboardEditor extends SharedHeaderFormEditor {
 			titleLabel = new Label(titleRegion, SWT.NONE);
 			titleLabel.setForeground(heading.getForeground());
 			titleLabel.setFont(heading.getFont());
-			titleLabel.setText("SpringSource Tool Suite");
+			titleLabel.setText("Spring Tool Suite");
 			titleLabel.setVisible(true);
 
 			getBusyLabel();

@@ -122,25 +122,25 @@
 			defaultValue="http://dist.springsource.com/release/STS/doc/updates.xml">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.logo"
-			defaultValue="http://www.springsource.org">
+			defaultValue="http://spring.io">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.subscribe"
-			defaultValue="http://www.springsource.org/newsletter-subscription">
+			defaultValue="https://spring.io/#newsletter">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.new.and.noteworthy"
-			defaultValue="http://static.springsource.org/sts/nan/v310/NewAndNoteworthy.html">
+			defaultValue="http://static.springsource.org/sts/nan/latest/NewAndNoteworthy.html">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.product.page"
-			defaultValue="http://www.springsource.org/sts">
+			defaultValue="https://spring.io/tools/">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.search"
-			defaultValue="http://www.springsource.org/search/google?query=">
+			defaultValue="https://spring.io/search?q=">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.support.commercial"
 			defaultValue="http://www.springsource.com/support/springsupport">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.support.community"
-			defaultValue="http://forum.springsource.org/forumdisplay.php?f=32">
+			defaultValue="http://forum.spring.io/forum/spring-projects/springsource-tool-suite">
 		</propertyDefinition>
 		<propertyDefinition id="knowledge.base.help.regexp"
 			defaultValue="http://java.sun.com/j2se/1.5.0/docs/api/java/util/regex/Pattern.html">

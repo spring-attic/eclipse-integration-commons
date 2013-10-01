@@ -55,7 +55,7 @@ public class IdeUiPlugin extends AbstractUIPlugin {
 		migrateBlogFeeds();
 		
 		// avoid cyclic startup dependency on org.eclipse.mylyn.tasks.ui
-		Job startupJob = new UIJob("SpringSource Tool Suite Initialization") {
+		Job startupJob = new UIJob("Spring Tool Suite Initialization") {
 			@Override
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				Display.getDefault().asyncExec(new Runnable() {
