@@ -26,6 +26,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubProgressMonitor;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 import org.springsource.ide.eclipse.commons.core.HttpUtil;
 import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
 
@@ -128,9 +130,18 @@ public class StsProperties {
 	private StsProperties(IProgressMonitor mon) {
 		props = createProperties();
 		FromUrl[] sources = readExtensionPoints();
+
+		boolean eclipse37 = isEclipse37();
 		mon.beginTask("Read Sts Properties", sources.length+1);
 		try {
 			for (FromUrl source : sources) {
+				if (eclipse37 && source.url.startsWith("http")) {
+					//Bug on Eclipse 3.7: https://issuetracker.springsource.com/browse/STS-3581
+					// reading external urls via HttpUtils will hang eclipse during startup.
+					//So eclipse 3.7 users will have to make do with built-in default values.
+					// no props read from external urls.
+					continue;
+				}
 				readProperties(source.url, new SubProgressMonitor(mon, 1));
 			}
 			String url = System.getProperty(PROPERTIES_URL_PROPERTY);
@@ -140,6 +151,18 @@ public class StsProperties {
 		} finally {
 			mon.done();
 		}
+	}
+
+	private boolean isEclipse37() {
+		try {
+			Bundle platformBundle = Platform.getBundle("org.eclipse.core.runtime");
+			System.err.println("org.eclipse.core.runtime bundle: " + platformBundle);
+			Version version = platformBundle.getVersion();
+			return version.getMajor()==3 && version.getMinor()==7;
+		} catch (Throwable e) {
+			CorePlugin.log(e);
+		}
+		return false;
 	}
 
 	private void readProperties(String url, IProgressMonitor mon) {
@@ -195,23 +218,23 @@ public class StsProperties {
 		props.put("sts.tracker.url.external", "true");
 
 		//Docs
-		props.put("spring.docs.url", "http://www.springsource.org/documentation");
+		props.put("spring.docs.url", "https://spring.io/docs");
 		props.put("spring.docs.url.label", "Spring Docs");
 		props.put("spring.docs.url.external", "true");
 
 		//Blog
-		props.put("spring.blog.url", "http://blog.springsource.org");
+		props.put("spring.blog.url", "https://spring.io/blog");
 		props.put("spring.blog.url.label", "Blog");
 		props.put("spring.blog.url.external", "true");
 
 		//Guides
-		props.put("spring.guides.url", "http://www.springsource.org/get-started");
+		props.put("spring.guides.url", "https://spring.io/guides");
 		props.put("spring.guides.url.label", "Guides");
 		props.put("spring.guides.url.external", "true");
 			//future value: "${spring.site.url}/guides"
 
 		//New and Noteworthy
-		props.put("sts.nan.url", "http://static.springsource.org/sts/nan/latest/NewAndNoteworthy.html");
+		props.put("sts.nan.url", "http://docs.spring.io/sts/nan/latest/NewAndNoteworthy.html");
 		//props.put("sts.nan.url.external", "true");
 		return props;
 	}
