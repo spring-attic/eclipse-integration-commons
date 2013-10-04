@@ -161,7 +161,7 @@ public class StsProperties {
 			boolean affected = false;
 			try {
 				Bundle platformBundle = Platform.getBundle("org.eclipse.platform");
-				System.err.println("org.eclipse.platform bundle: " + platformBundle);
+//				System.err.println("org.eclipse.platform bundle: " + platformBundle);
 				Version version = platformBundle.getVersion();
 				affected = version.getMajor()==3; //Both eclipse 3.7 and 3.8 are affected but not Eclipse 4.2 and 4.3
 			} catch (Throwable e) {
