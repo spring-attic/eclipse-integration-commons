@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.core.preferences;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +20,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Properties;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -30,6 +33,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 import org.springsource.ide.eclipse.commons.core.HttpUtil;
 import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
+import org.springsource.ide.eclipse.commons.internal.core.net.HttpClientTransportService;
 
 /**
  * An instance of this class provides a mechanism to retrieve String properties.
@@ -127,21 +131,16 @@ public class StsProperties {
 
 	private final Properties props;
 
+
+	private static Boolean isHangingBug = null;
+
 	private StsProperties(IProgressMonitor mon) {
 		props = createProperties();
 		FromUrl[] sources = readExtensionPoints();
 
-		boolean eclipse37 = isEclipse37();
 		mon.beginTask("Read Sts Properties", sources.length+1);
 		try {
 			for (FromUrl source : sources) {
-				if (eclipse37 && source.url.startsWith("http")) {
-					//Bug on Eclipse 3.7: https://issuetracker.springsource.com/browse/STS-3581
-					// reading external urls via HttpUtils will hang eclipse during startup.
-					//So eclipse 3.7 users will have to make do with built-in default values.
-					// no props read from external urls.
-					continue;
-				}
 				readProperties(source.url, new SubProgressMonitor(mon, 1));
 			}
 			String url = System.getProperty(PROPERTIES_URL_PROPERTY);
@@ -153,22 +152,31 @@ public class StsProperties {
 		}
 	}
 
-	private boolean isEclipse37() {
-		try {
-			Bundle platformBundle = Platform.getBundle("org.eclipse.core.runtime");
-			System.err.println("org.eclipse.core.runtime bundle: " + platformBundle);
-			Version version = platformBundle.getVersion();
-			return version.getMajor()==3 && version.getMinor()==7;
-		} catch (Throwable e) {
-			CorePlugin.log(e);
+	/**
+	 * Determinese whether this instance is affected by the 'hanging on startup' bug:
+	 * Bug on Eclipse 3.7: https://issuetracker.springsource.com/browse/STS-3581
+	 */
+	private boolean isHangingBug() {
+		if (isHangingBug==null) {
+			boolean affected = false;
+			try {
+				Bundle platformBundle = Platform.getBundle("org.eclipse.platform");
+				System.err.println("org.eclipse.platform bundle: " + platformBundle);
+				Version version = platformBundle.getVersion();
+				affected = version.getMajor()==3; //Both eclipse 3.7 and 3.8 are affected but not Eclipse 4.2 and 4.3
+			} catch (Throwable e) {
+				CorePlugin.log(e);
+			} finally {
+				isHangingBug = affected;
+			}
 		}
-		return false;
+		return isHangingBug;
 	}
 
 	private void readProperties(String url, IProgressMonitor mon) {
 		if (url!=null) {
 			try {
-				InputStream content = HttpUtil.stream(new URI(url), mon);
+				InputStream content = uriStream(new URI(url), mon);
 				if (content != null) {
 					try {
 						props.load(content);
@@ -177,9 +185,25 @@ public class StsProperties {
 					}
 				}
 			} catch (Throwable e) {
+				CorePlugin.log(e);
 				//Catch and log all exceptions. This should never fail to initialise *something* usable.
 				CorePlugin.warn("Couldn't read sts properties from '"+url+"' internal default values will be used");
 			}
+		}
+	}
+
+	private InputStream uriStream(URI uri, IProgressMonitor mon) throws CoreException, MalformedURLException, IOException {
+		if (isHangingBug()) {
+			return new HttpClientTransportService().stream(uri, mon);
+//			//Bug: using HttpUtil causes a hang. So instead we use a simple URLConnection here. This doesn't
+//			// provide the same level of completeness (i.e. proxy authentication is not supported yet)
+//			//But at least it doesn't hang.
+//			URLConnectionFactory cf = URLConnectionFactory.getDefault();
+//			URLConnection conn = cf.createConnection(uri.toURL());
+//			return conn.getInputStream();
+
+		} else {
+			return HttpUtil.stream(uri, mon);
 		}
 	}
 
