@@ -18,39 +18,39 @@
 
 	<!-- UAA -->
 	<feature
-		url="org.springframework.ide.eclipse.uaa.feature_3.4.0.qualifier.jar"
-		id="org.springframework.ide.eclipse.uaa.feature" version="3.4.0.qualifier">
+		url="org.springframework.ide.eclipse.uaa.feature_3.5.0.qualifier.jar"
+		id="org.springframework.ide.eclipse.uaa.feature" version="3.5.0.qualifier">
 		<category name="Core / Eclipse Integration Commons" />
 	</feature>
 
 	<feature
-		url="org.springsource.ide.eclipse.commons_3.4.0.qualifier.jar"
-		id="org.springsource.ide.eclipse.commons" version="3.4.0.qualifier">
+		url="org.springsource.ide.eclipse.commons_3.5.0.qualifier.jar"
+		id="org.springsource.ide.eclipse.commons" version="3.5.0.qualifier">
 		<category name="Core / Eclipse Integration Commons" />
 	</feature>
 
  	<feature
-		url="org.springsource.ide.eclipse.commons.quicksearch.feature_3.4.0.qualifier.jar"
-		id="org.springsource.ide.eclipse.commons.quicksearch.feature" version="3.4.0.qualifier">
+		url="org.springsource.ide.eclipse.commons.quicksearch.feature_3.5.0.qualifier.jar"
+		id="org.springsource.ide.eclipse.commons.quicksearch.feature" version="3.5.0.qualifier">
 		<category name="Core / Eclipse Integration Commons" />
 	</feature>
 	
 	<feature
-		url="org.springsource.ide.eclipse.dashboard_3.4.0.qualifier.jar"
-		id="org.springsource.ide.eclipse.dashboard" version="3.4.0.qualifier">
+		url="org.springsource.ide.eclipse.dashboard_3.5.0.qualifier.jar"
+		id="org.springsource.ide.eclipse.dashboard" version="3.5.0.qualifier">
 		<category name="Core / Eclipse Integration Commons" />
 	</feature>
 
 	<!-- Dependencies - uncategorized -->
 	<feature
-		url="org.springsource.ide.eclipse.commons.test_3.4.0.qualifier.jar"
-		id="org.springsource.ide.eclipse.commons.test" version="3.4.0.qualifier">
+		url="org.springsource.ide.eclipse.commons.test_3.5.0.qualifier.jar"
+		id="org.springsource.ide.eclipse.commons.test" version="3.5.0.qualifier">
 	</feature>
 
 	<!-- Resources -->
 	<feature
-		url="org.springframework.ide.eclipse.uaa.feature.source_3.4.0.qualifier.jar"
-		id="org.springframework.ide.eclipse.uaa.feature.source" version="3.4.0.qualifier">
+		url="org.springframework.ide.eclipse.uaa.feature.source_3.5.0.qualifier.jar"
+		id="org.springframework.ide.eclipse.uaa.feature.source" version="3.5.0.qualifier">
 		<category name="Resources / Eclipse Integration Commons" />
 	</feature>
 	
