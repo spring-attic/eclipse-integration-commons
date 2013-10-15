@@ -11,6 +11,7 @@
 package org.springsource.ide.eclipse.commons.livexp.core;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -124,6 +125,15 @@ public class LiveSet<T> extends LiveExpression<Set<T>> {
 	 * be fired no matter how many elements where actually added.
 	 */
 	public void addAll(T[] elements) {
+		synchronized (this) {
+			for (T e : elements) {
+				dirty = value.add(e) || dirty;
+			}
+		}
+		refresh();
+	}
+
+	public void addAll(Collection<T> elements) {
 		synchronized (this) {
 			for (T e : elements) {
 				dirty = value.add(e) || dirty;

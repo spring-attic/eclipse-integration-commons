@@ -32,9 +32,13 @@ import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
 
+//TODO: This code doesn't belong in commons but in spring-ide in a plugin
+//  dedicated to spring-boot support. Either that or it should be made
+//  more generally useful for other things than boot apps.
+
 @SuppressWarnings("restriction")
 public class BootLaunchShortcut extends JavaApplicationLaunchShortcut {
-	
+
 	private static final String MAIN_CLASS_PROP = "start-class";
 
 	@Override
@@ -87,20 +91,20 @@ public class BootLaunchShortcut extends JavaApplicationLaunchShortcut {
 			wc.setMappedResources(new IResource[] {type.getUnderlyingResource()});
 			config = wc.doSave();
 		} catch (CoreException exception) {
-			MessageDialog.openError(JDIDebugUIPlugin.getActiveWorkbenchShell(), LauncherMessages.JavaLaunchShortcut_3, exception.getStatus().getMessage());	
-		} 
+			MessageDialog.openError(JDIDebugUIPlugin.getActiveWorkbenchShell(), LauncherMessages.JavaLaunchShortcut_3, exception.getStatus().getMessage());
+		}
 		return config;
 	}
-	
+
 	/**
 	 * Returns the singleton launch manager.
-	 * 
+	 *
 	 * @return launch manager
 	 */
 	private ILaunchManager getLaunchManager() {
 		return DebugPlugin.getDefault().getLaunchManager();
 	}
-	
+
 	public static void launch(IProject project, String mode) {
 		BootLaunchShortcut shortcut = new BootLaunchShortcut();
 		StructuredSelection selection = new StructuredSelection(new Object[] {project});

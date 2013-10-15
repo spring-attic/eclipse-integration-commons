@@ -36,4 +36,11 @@ public abstract class Validator extends LiveExpression<ValidationResult> {
 		return v;
 	}
 
+	/**
+	 * Create a trivial validator that always has the same error message.
+	 */
+	public static LiveExpression<ValidationResult> alwaysError(String msg) {
+		return LiveExpression.constant(ValidationResult.error(msg));
+	}
+
 }

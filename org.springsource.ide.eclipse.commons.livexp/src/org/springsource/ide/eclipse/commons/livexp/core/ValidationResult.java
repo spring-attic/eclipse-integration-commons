@@ -11,6 +11,7 @@
 package org.springsource.ide.eclipse.commons.livexp.core;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.dialogs.IMessageProvider;
 
 /**
  * A value representing the result of a wizard page validation. 
@@ -98,6 +99,28 @@ public class ValidationResult {
 			return "WARNING";	
 		default:
 			return ""+s;
+		}
+	}
+	
+	/**
+	 * Convert the status code of this validation results into an IMessageProvider status code.
+	 */
+	public int getMessageProviderStatus() {
+		switch (status) {
+		case IStatus.OK:
+			return IMessageProvider.NONE;
+		case IStatus.CANCEL:
+			//There's no corresponding statis in IMessageProvider. Treat cancelation like an error.
+			return IMessageProvider.ERROR;
+		case IStatus.ERROR:
+			return IMessageProvider.ERROR;
+		case IStatus.INFO:
+			return IMessageProvider.INFORMATION;
+		case IStatus.WARNING:
+			return IMessageProvider.WARNING;
+		default:
+			//Shouldn't happen since all cases should be covered above... byt anyhow
+			return IMessageProvider.ERROR;
 		}
 	}
 	
