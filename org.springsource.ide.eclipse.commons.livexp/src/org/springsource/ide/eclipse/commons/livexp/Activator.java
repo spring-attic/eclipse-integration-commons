@@ -10,11 +10,15 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 public class Activator extends AbstractUIPlugin {
 
+	public static final String PLUGIN_ID = "Activator";
+	
 	private static Activator plugin = null;
 	private static BundleContext context;
 
@@ -44,4 +48,19 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	/**
+	 * Returns a new <code>IStatus</code> for this plug-in
+	 */
+	public static IStatus createErrorStatus(Throwable exception) {
+		String message = exception.getMessage();
+		if (message == null) {
+			message = "";
+		}
+		return new Status(IStatus.ERROR, PLUGIN_ID, 0, message, exception);
+	}
+
+	public static void log(Throwable e) {
+		getDefault().getLog().log(createErrorStatus(e));
+	}
+	
 }

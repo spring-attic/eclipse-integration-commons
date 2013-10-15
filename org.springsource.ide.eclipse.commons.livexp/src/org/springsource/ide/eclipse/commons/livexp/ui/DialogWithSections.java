@@ -22,18 +22,15 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.m2e.core.ui.internal.M2EUIPluginActivator;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.dialogs.SelectionStatusDialog;
 import org.eclipse.ui.progress.UIJob;
-import org.springframework.ide.eclipse.boot.core.BootActivator;
-import org.springframework.ide.eclipse.boot.core.SpringBootCore;
 import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
+import org.springsource.ide.eclipse.commons.livexp.Activator;
 import org.springsource.ide.eclipse.commons.livexp.core.CompositeValidator;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
@@ -110,7 +107,7 @@ public abstract class DialogWithSections extends TitleAreaDialog implements Valu
 		try {
 			return createSections();
 		} catch (CoreException e) {
-			BootActivator.log(e);
+			Activator.log(e);
 			return Arrays.asList(
 					new CommentSection(this, "Dialog couldn't be created because of an unexpected error:+\n"+ExceptionUtil.getMessage(e)+"\n\n"
 							+ "Check the error log for details"),
@@ -137,7 +134,7 @@ public abstract class DialogWithSections extends TitleAreaDialog implements Valu
 		if (value==null || value.isOk()) {
 			return Status.OK_STATUS;
 		} else {
-			return new Status(value.status, BootActivator.PLUGIN_ID , value.msg);
+			return new Status(value.status, Activator.PLUGIN_ID , value.msg);
 		}
 	}
 	
@@ -244,7 +241,7 @@ public abstract class DialogWithSections extends TitleAreaDialog implements Valu
 
 	private static IDialogSettings getDialogSettings(String settingsSection) {
 		// activator is null inside WindowBuilder design editor
-		BootActivator activator = BootActivator.getDefault();
+		Activator activator = Activator.getDefault();
 		IDialogSettings pluginSettings = activator != null ? activator.getDialogSettings() : null;
 		IDialogSettings settings = pluginSettings != null ? pluginSettings.getSection(settingsSection) : null;
 		if(settings == null) {
