@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="org.spring.ide.eclipse.completions.externaltypes" name="org.spring.ide.eclipse.completions.externaltypes" schema="schema/org.spring.ide.eclipse.completions.externaltypes.exsd"/>
+   <extension
+         id="externalTypesProposalCategory"
+         point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
+         name="Jar Type Search">
+      <proposalCategory></proposalCategory>
+   </extension>
+   <extension
+         id="externalTypeCompletions"
+         name="External Type Completiions"
+         point="org.eclipse.jdt.ui.javaCompletionProposalComputer">
+      <javaCompletionProposalComputer
+            activate="true"
+            categoryId="org.springsource.ide.eclipse.commons.completions.externalTypesProposalCategory"
+            class="org.springsource.ide.eclipse.commons.completions.externaltype.ExternalTypesProposalComputer">
+         <partition type="__dftl_partition_content_type"/>
+		 <partition type="__java_string"/>
+      </javaCompletionProposalComputer>
+   </extension>
+   
+<!--   
+   <extension
+         id="demoExternalTypes"
+         point="org.spring.ide.eclipse.completions.externaltypes">
+      <typeSource
+            class="org.springsource.ide.eclipse.commons.completions.externaltype.examples.DemoTypeDiscovery:bar.foo.Foo:foo.bar.Bar">
+      </typeSource>
+   </extension>
+  -->
+
+</plugin>
