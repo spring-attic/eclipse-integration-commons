@@ -13,6 +13,9 @@ package org.springsource.ide.eclipse.commons.ui.launch;
 import java.util.ArrayList;
 
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
@@ -37,7 +40,7 @@ import org.springsource.ide.eclipse.commons.ui.launch.LaunchList.Item;
  *
  * @author Kris De Volder
  */
-public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowPulldownDelegate {
+public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowPulldownDelegate, ILaunchConfigurationListener {
 
 	private IWorkbenchWindow window;
 	private Menu menu;
@@ -45,22 +48,17 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 	private LaunchList launches = createList().addListener(launchListener = new LaunchList.Listener() {
 		public void changed() {
 			if (action!=null && window!=null) {
-				Shell shell = window.getShell();
-				if (shell!=null) {
-					//We may not be in the UIThread here. So take care before futzing with the widgets!
-					Display display = shell.getDisplay();
-					if (display!=null) {
-						display.asyncExec(new Runnable() {
-							public void run() {
-								update();
-							}
-						});
-					}
-				}
+				uiUpdate();
 			}
 		}
+
 	});
 	private IAction action;
+
+
+	public AbstractLaunchToolbarPulldown() {
+		DebugPlugin.getDefault().getLaunchManager().addLaunchConfigurationListener(this);
+	}
 
 	/**
 	 * FActory method to create or obtain an instance that keeps track of the launches to be
@@ -98,6 +96,9 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 		update();
 	}
 
+	/**
+	 * Update labels etc. This method must only be called from the UI thread.
+	 */
 	private void update() {
 		if (action!=null) {
 			Item launch = launches.getLast();
@@ -111,6 +112,26 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 		}
 	}
 
+	/**
+	 * Update labels etc. This method may be called from a non-ui thread.
+	 */
+	private void uiUpdate() {
+		Shell shell = window.getShell();
+		if (shell!=null) {
+			//We may not be in the UIThread here. So take care before futzing with the widgets!
+			Display display = shell.getDisplay();
+			if (display!=null) {
+				display.asyncExec(new Runnable() {
+					public void run() {
+						update();
+					}
+				});
+			}
+		}
+	}
+
+
+
 	@Override
 	public void dispose() {
 		if (menu!=null) {
@@ -121,6 +142,7 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 			launches.removeListener(launchListener);
 			launches = null;
 		}
+		DebugPlugin.getDefault().getLaunchManager().removeLaunchConfigurationListener(this);
 	}
 
 	@Override
@@ -210,6 +232,22 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 			return array;
 		}
 
+	}
+
+	@Override
+	public void launchConfigurationAdded(ILaunchConfiguration configuration) {
+		uiUpdate(); //force update tooltip on button in case label changed on acount of the
+        // config it launches got renamed or deleted
+	}
+
+	@Override
+	public void launchConfigurationChanged(ILaunchConfiguration configuration) {
+	}
+
+	@Override
+	public void launchConfigurationRemoved(ILaunchConfiguration configuration) {
+		uiUpdate(); //force update tooltip on button in case labe changed on acount of the
+		            // config it launches got renamed or deleted
 	}
 
 

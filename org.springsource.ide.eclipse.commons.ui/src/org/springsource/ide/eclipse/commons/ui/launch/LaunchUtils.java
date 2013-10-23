@@ -24,22 +24,6 @@ import org.eclipse.debug.ui.DebugUITools;
 
 public class LaunchUtils {
 
-//	/**
-//	 * Terminate a given launch (if it is running) then relaunch it.
-//	 */
-//	public static void terminateAndRelaunch(final ILaunch launch) throws DebugException {
-//		if (!launch.isTerminated()) {
-//			launch.terminate();
-//		}
-//		whenTerminated(launch, new UiRunnable() {
-//			@Override
-//			public void uiRun() {
-//				//must run in UI thread since it may popup dialogs in some cases.
-//				DebugUITools.launch(launch.getLaunchConfiguration(), launch.getLaunchMode());
-//			}
-//		});
-//	}
-
 	/**
 	 * Execute some code as soon as a given list of launches are all terminated. If the launches are
 	 * already terminated then the code is executed synchronously, otherwise it is executed asynchronously when
