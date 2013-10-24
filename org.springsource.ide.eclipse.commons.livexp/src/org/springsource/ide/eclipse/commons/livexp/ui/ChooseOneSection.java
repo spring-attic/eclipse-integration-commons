@@ -1,0 +1,174 @@
+/*******************************************************************************
+ * Copyright (c) 2013 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *   GoPivotal, Inc. - initial API and implementation
+ *******************************************************************************/
+package org.springsource.ide.eclipse.commons.livexp.ui;
+
+import java.util.Set;
+
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.viewers.CheckStateChangedEvent;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
+import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
+import org.springsource.ide.eclipse.commons.livexp.core.LiveSet;
+import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
+import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
+import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
+import org.springsource.ide.eclipse.commons.livexp.ui.ChooseMultipleSection.ContentProvider;
+import org.springsource.ide.eclipse.commons.livexp.ui.ChooseMultipleSection.LabelProvider;
+
+public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
+
+	private static final boolean DEBUG = (""+Platform.getLocation()).contains("kdvolder");
+	
+	private String labelText;
+	private Ilabelable[] validChoices;
+	private LiveVariable<T> chosen;
+	private LiveExpression<ValidationResult> validator;
+
+	public ChooseOneSection(IPageWithSections owner, 
+			String labelText,
+			T[] validChoices,
+			LiveVariable<T> chosen,
+			LiveExpression<ValidationResult> validator
+	) {
+		super(owner);
+		this.labelText = labelText;
+		this.validChoices = validChoices;
+		this.chosen = chosen;
+		this.validator = validator;
+	}
+
+	@Override
+	public LiveExpression<ValidationResult> getValidator() {
+		return validator;
+	}
+
+	
+	@SuppressWarnings("unchecked")
+	private T getSingleSelection(ListViewer lv) {
+		if (lv!=null) {
+			ISelection sel = lv.getSelection();
+			if (sel instanceof IStructuredSelection) {
+				return (T) ((IStructuredSelection) sel).getFirstElement();
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public void createContents(Composite page) {
+        Composite composite = new Composite(page, SWT.NONE);
+        GridLayout layout = new GridLayout();
+        layout.numColumns = 2;
+        layout.marginWidth = 0;
+        composite.setLayout(layout);
+        GridDataFactory grab = GridDataFactory.fillDefaults().grab(true, true);//.hint(SWT.DEFAULT, 150);
+        grab.applyTo(composite);
+        composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		
+		Label label = new Label(composite, SWT.NONE);
+		label.setText(labelText);
+		GridDataFactory.fillDefaults()
+			.align(SWT.CENTER, SWT.BEGINNING)
+			.hint(UIConstants.FIELD_LABEL_WIDTH_HINT, SWT.DEFAULT)
+			.applyTo(label);
+		
+		final ListViewer tv = new ListViewer(composite, SWT.SINGLE|SWT.BORDER);
+		grab.applyTo(tv.getList());
+		tv.setContentProvider(new ContentProvider());
+		tv.setLabelProvider(new LabelProvider());
+		tv.setInput(validChoices);
+		chosen.addListener(new ValueListener<T>() {
+			public void gotValue(LiveExpression<T> exp, T value) {
+				if (value==null) {
+					tv.setSelection(StructuredSelection.EMPTY);
+				} else {
+					tv.setSelection(new StructuredSelection(value));
+				}
+			}
+		});
+		
+		if (DEBUG) {
+			chosen.addListener(new ValueListener<T>() {
+				public void gotValue(LiveExpression<T> exp, T value) {
+					System.out.println("starter: "+value);
+				}
+			});
+		}
+		
+		tv.addSelectionChangedListener(new ISelectionChangedListener() {
+			public void selectionChanged(SelectionChangedEvent event) {
+				chosen.setValue(getSingleSelection(tv));
+			}
+		});
+	}
+
+	class ContentProvider implements IStructuredContentProvider {
+		public void dispose() {
+		}
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		}
+		public Object[] getElements(Object inputElement) {
+			return validChoices;
+		}
+	}
+	
+	public class LabelProvider implements ILabelProvider {
+
+		public void addListener(ILabelProviderListener listener) {
+		}
+
+		public void dispose() {
+		}
+
+		public boolean isLabelProperty(Object element, String property) {
+			return false;
+		}
+
+		public void removeListener(ILabelProviderListener listener) {
+		}
+
+		public Image getImage(Object element) {
+			//no image
+			return null;
+		}
+
+		public String getText(Object element) {
+			if (element instanceof Ilabelable) {
+				return ((Ilabelable) element).getLabel();
+			}
+			return ""+element;
+		}
+
+	}
+
+	
+	
+	
+}

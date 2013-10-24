@@ -21,6 +21,7 @@ import org.eclipse.jface.dialogs.DialogSettings;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
@@ -46,11 +47,13 @@ import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 public abstract class DialogWithSections extends TitleAreaDialog implements ValueListener<ValidationResult>, IPageWithSections {
 
 	private String title;
+	private final OkButtonHandler model;
 
-	public DialogWithSections(String title, Shell shell) {
+	public DialogWithSections(String title, OkButtonHandler model, Shell shell) {
 		super(shell);
 		this.title = title;
 		this.settings = getDialogSettings(this.getClass().getName());
+		this.model = model;
 	}
 	
 	public void create() {
@@ -92,6 +95,7 @@ public abstract class DialogWithSections extends TitleAreaDialog implements Valu
 	 */
 	private static final long MESSAGE_DELAY = 250;
 
+	
 	private List<WizardPageSection> sections = null;
 	private CompositeValidator validator;
 	private UIJob updateJob;
@@ -204,7 +208,7 @@ public abstract class DialogWithSections extends TitleAreaDialog implements Valu
 	protected final IDialogSettings settings;
 	private Point location;
 	private Point size;
-	
+
 	/**
 	 * Initializes itself from the dialog settings with the same state as at the previous invocation.
 	 */
@@ -237,6 +241,17 @@ public abstract class DialogWithSections extends TitleAreaDialog implements Valu
 		Point size = getShell().getSize();
 		settings.put(KEY_WIDTH, size.x);
 		settings.put(KEY_HEIGHT, size.y);
+	}
+
+	@Override
+	protected final void okPressed() {
+		super.okPressed();
+		try {
+			model.performOk();
+		} catch (Exception e) {
+			Activator.log(e);
+			MessageDialog.openError(getShell(), "Error", ExceptionUtil.getMessage(e));
+		}
 	}
 
 	private static IDialogSettings getDialogSettings(String settingsSection) {
