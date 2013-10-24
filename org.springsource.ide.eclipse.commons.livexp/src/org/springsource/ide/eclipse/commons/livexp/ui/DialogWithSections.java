@@ -244,6 +244,12 @@ public abstract class DialogWithSections extends TitleAreaDialog implements Valu
 	}
 
 	@Override
+	protected void cancelPressed() {
+		super.cancelPressed();
+		writeSettings();
+	}
+	
+	@Override
 	protected final void okPressed() {
 		super.okPressed();
 		try {
@@ -252,6 +258,7 @@ public abstract class DialogWithSections extends TitleAreaDialog implements Valu
 			Activator.log(e);
 			MessageDialog.openError(getShell(), "Error", ExceptionUtil.getMessage(e));
 		}
+		writeSettings();
 	}
 
 	private static IDialogSettings getDialogSettings(String settingsSection) {
