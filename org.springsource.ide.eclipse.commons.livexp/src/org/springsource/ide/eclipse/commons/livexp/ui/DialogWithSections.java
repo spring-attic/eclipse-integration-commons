@@ -17,13 +17,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.DialogSettings;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -44,7 +41,10 @@ import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
  * 
  * @author Kris De Volder
  */
-public abstract class DialogWithSections extends TitleAreaDialog implements ValueListener<ValidationResult>, IPageWithSections {
+public abstract class DialogWithSections 
+	extends TitleAreaDialog 
+	implements ValueListener<ValidationResult>, IPageWithSections, IPageWithOkButton
+{
 
 	private String title;
 	private final OkButtonHandler model;
@@ -52,7 +52,6 @@ public abstract class DialogWithSections extends TitleAreaDialog implements Valu
 	public DialogWithSections(String title, OkButtonHandler model, Shell shell) {
 		super(shell);
 		this.title = title;
-		this.settings = getDialogSettings(this.getClass().getName());
 		this.model = model;
 	}
 	
@@ -62,7 +61,7 @@ public abstract class DialogWithSections extends TitleAreaDialog implements Valu
 	}
 
 	protected Control createDialogArea(Composite parent) {
-		readSettings();
+//		readSettings();
 		Composite page = (Composite) super.createDialogArea(parent);
 		
 //		GridDataFactory.fillDefaults().grab(true,true).applyTo(parent);
@@ -83,9 +82,9 @@ public abstract class DialogWithSections extends TitleAreaDialog implements Valu
 	/**
 	 * A delay used for posting status messages to the dialog area after a status update happens.
 	 * This is to get rid of spurious message that only appear for a fraction of a second as
-	 * internal some auto updating states in models are inconsistent. E.g. in new boot project wizard 
+	 * some auto updating states in models are inconsistent. E.g. in new boot project wizard 
 	 * when project name is entered it is temporarily inconsistent with default project location until
-	 * that project location itself is update in response to the change event from the project name.
+	 * that project location itself is updated in response to the change event from the project name.
 	 * If the project location validator runs before the location update, a spurious validation error
 	 * temporarily results.
 	 * 
@@ -185,68 +184,9 @@ public abstract class DialogWithSections extends TitleAreaDialog implements Valu
 		}
 	}	
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	/// Dialog settings related cruft. Most of this code copied from AbstractMavenDialog.
-	///
-	/// Therefore the code below is copyrighted as follows: 
-	/*******************************************************************************
-	 * Copyright (c) 2008-2010 Sonatype, Inc.
-	 * All rights reserved. This program and the accompanying materials
-	 * are made available under the terms of the Eclipse Public License v1.0
-	 * which accompanies this distribution, and is available at
-	 * http://www.eclipse.org/legal/epl-v10.html
-	 *
-	 * Contributors:
-	 *      Sonatype, Inc. - initial API and implementation
-	 *******************************************************************************/
-
-	protected static final String KEY_WIDTH = "width"; //$NON-NLS-1$
-	protected static final String KEY_HEIGHT = "height"; //$NON-NLS-1$
-	private static final String KEY_X = "x"; //$NON-NLS-1$
-	private static final String KEY_Y = "y"; //$NON-NLS-1$
-
-	protected final IDialogSettings settings;
-	private Point location;
-	private Point size;
-
-	/**
-	 * Initializes itself from the dialog settings with the same state as at the previous invocation.
-	 */
-	protected void readSettings() {
-		try {
-			int x = settings.getInt(KEY_X);
-			int y = settings.getInt(KEY_Y);
-			location = new Point(x, y);
-		} catch(NumberFormatException e) {
-			location = null;
-		}
-		try {
-			int width = settings.getInt(KEY_WIDTH);
-			int height = settings.getInt(KEY_HEIGHT);
-			size = new Point(width, height);
-
-		} catch(NumberFormatException e) {
-			size = null;
-		}
-	}
-
-	/**
-	 * Stores it current configuration in the dialog store.
-	 */
-	private void writeSettings() {
-		Point location = getShell().getLocation();
-		settings.put(KEY_X, location.x);
-		settings.put(KEY_Y, location.y);
-
-		Point size = getShell().getSize();
-		settings.put(KEY_WIDTH, size.x);
-		settings.put(KEY_HEIGHT, size.y);
-	}
-
 	@Override
 	protected void cancelPressed() {
 		super.cancelPressed();
-		writeSettings();
 	}
 	
 	@Override
@@ -258,23 +198,18 @@ public abstract class DialogWithSections extends TitleAreaDialog implements Valu
 			Activator.log(e);
 			MessageDialog.openError(getShell(), "Error", ExceptionUtil.getMessage(e));
 		}
-		writeSettings();
 	}
 
-	private static IDialogSettings getDialogSettings(String settingsSection) {
-		// activator is null inside WindowBuilder design editor
-		Activator activator = Activator.getDefault();
-		IDialogSettings pluginSettings = activator != null ? activator.getDialogSettings() : null;
-		IDialogSettings settings = pluginSettings != null ? pluginSettings.getSection(settingsSection) : null;
-		if(settings == null) {
-			settings = new DialogSettings(settingsSection);
-			settings.put(KEY_WIDTH, 480);
-			settings.put(KEY_HEIGHT, 450);
-			if(pluginSettings != null) {
-				pluginSettings.addSection(settings);
-			}
+	/**
+	 * Simulate clicking the ok button. Does nothing if ok button is not found or disabled.
+	 */
+	public boolean clickOk() {
+		Button button = getButton(OK);
+		if (button!=null && button.isEnabled()) {
+			okPressed();
+			return true;
 		}
-		return settings;
+		return false;
 	}
 
 }

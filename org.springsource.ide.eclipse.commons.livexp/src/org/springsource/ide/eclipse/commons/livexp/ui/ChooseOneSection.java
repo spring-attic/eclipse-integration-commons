@@ -10,13 +10,16 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -50,6 +53,7 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 	private Ilabelable[] validChoices;
 	private LiveVariable<T> chosen;
 	private LiveExpression<ValidationResult> validator;
+	private OkButtonHandler okHandler = null;
 
 	public ChooseOneSection(IPageWithSections owner, 
 			String labelText,
@@ -68,7 +72,6 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 	public LiveExpression<ValidationResult> getValidator() {
 		return validator;
 	}
-
 	
 	@SuppressWarnings("unchecked")
 	private T getSingleSelection(ListViewer lv) {
@@ -127,6 +130,15 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 				chosen.setValue(getSingleSelection(tv));
 			}
 		});
+		
+		if (owner instanceof IPageWithOkButton) {
+			tv.addDoubleClickListener(new IDoubleClickListener() {
+				public void doubleClick(DoubleClickEvent event) {
+					((IPageWithOkButton)owner).clickOk();
+				}
+			});
+		}
+		
 	}
 
 	class ContentProvider implements IStructuredContentProvider {
