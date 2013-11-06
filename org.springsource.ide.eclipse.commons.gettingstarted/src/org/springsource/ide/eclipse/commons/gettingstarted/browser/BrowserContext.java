@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.gettingstarted.browser;
 
-import org.eclipse.swt.browser.Browser;
+import javafx.scene.web.WebView;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -21,21 +21,14 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class BrowserContext {
 
-	private Browser browser;
+	private WebView browser;
 	
-	public BrowserContext(Browser browser) {
+	public BrowserContext(WebView browser) {
 		this.browser = browser;
 		
 	}
 	
-	protected Shell getShell() {
-		if (browser!=null) {
-			return browser.getShell();
-		}
-		return null;
-	}
-	
-	public Browser getBrowser() {
+	public WebView getBrowser() {
 		return browser;
 	}
 

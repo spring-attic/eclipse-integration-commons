@@ -10,21 +10,12 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.gettingstarted.browser;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Properties;
+import javafx.scene.web.WebView;
 
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.internal.browser.BrowserViewer;
-import org.osgi.framework.Bundle;
-import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 
 //TODO: This browserfactory works under the assumption that all browser are
 //  created via this factory. This can however not be guaranteed if browsers
@@ -159,7 +150,7 @@ public class BrowserFactory {
 	 * Add STS specific customizations to the browser to support integration of springsource.org
 	 * webpages when shown inside STS browser / Dashboard.
 	 */
-	public static void customizeBrowser(Browser browser) {
+	public static void customizeBrowser(WebView browser) {
 		//Not platform-specific browser customizations added here.
 		new BrowserCustomizer(browser);
 	}
