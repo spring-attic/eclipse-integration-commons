@@ -4,8 +4,8 @@
 		"linkText":"<a href=\"pref:org.springsource.ide.eclipse.commons.curatorPreferencesPage\">Open curated preferences page</a>"
 	},
 	{
-		"infoText":"Check out the latest info on SpringFramework",
-		"linkText":"Go to <a href=\"http://springsource.org\">SpringSource</a> website."
+		"infoText":"Check out the latest info on Spring Framework",
+		"linkText":"Go to the <a href=\"http:/spring.io\">spring.io</a> website."
 	},
 	{
 		"infoText":"Do you know about the new quick search feature?",
