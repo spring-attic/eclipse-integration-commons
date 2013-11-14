@@ -71,7 +71,7 @@ public class TipProvider {
 
 		if (tipList.size() == 0) {
 			tips = new TipInfo[] { new TipInfo("There's a lot going on with Spring",
-					"Read the latest <a href\"http://www.springsource.org/\">Spring news</a>.") };
+					"Read the latest <a href\"http://spring.io/blog\">Spring news</a>.") };
 		}
 		else {
 			tips = tipList.toArray(new TipInfo[tipList.size()]);
