@@ -10,13 +10,17 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.completions.externaltype;
 
+import java.net.URL;
+
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.CompletionProposal;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.internal.ui.text.java.LazyJavaTypeCompletionProposal;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.swt.graphics.Image;
 import org.springsource.ide.eclipse.commons.completions.CompletionsActivator;
 import org.springsource.ide.eclipse.commons.completions.externaltype.indexing.ExternalTypeIndexer;
 
@@ -26,6 +30,8 @@ public class ExternalTypeCompletionProposal extends LazyJavaTypeCompletionPropos
 	private ExternalTypeIndexer index;
 	private ExternalType type;
 	private IJavaProject project;
+	
+	private Image icon = null;
 
 	public ExternalTypeCompletionProposal(CompletionProposal proposal, JavaContentAssistInvocationContext context, ExternalType et, ExternalTypeIndexer index) {
 		super(proposal, context);
@@ -46,4 +52,22 @@ public class ExternalTypeCompletionProposal extends LazyJavaTypeCompletionPropos
 		}
 	}
 
+	@Override
+	protected Image computeImage() {
+		try {
+			if (icon==null) {
+				ImageDescriptor descriptor = ImageDescriptor.createFromURL(
+						new URL("platform:/plugin/org.springsource.ide.eclipse.commons.completions/resources/greyed-class.png")
+				);
+				icon = descriptor.createImage();
+			}
+		} catch (Exception e) {
+			CompletionsActivator.log(e);
+		}
+		if (icon==null) {
+			return super.computeImage();
+		}
+		return icon;
+	}
+	
 }

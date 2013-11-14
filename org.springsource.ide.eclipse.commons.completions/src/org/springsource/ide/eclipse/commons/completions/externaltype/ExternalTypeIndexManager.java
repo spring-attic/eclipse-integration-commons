@@ -47,6 +47,7 @@ public class ExternalTypeIndexManager {
 	public synchronized ExternalTypeIndexer getIndexFor(IJavaProject project) {
 		if (indexer==null) {
 			indexer = new SimpleExternalTypeIndexer();
+			addSources(indexer);
 		}
 		return indexer;
 	}
