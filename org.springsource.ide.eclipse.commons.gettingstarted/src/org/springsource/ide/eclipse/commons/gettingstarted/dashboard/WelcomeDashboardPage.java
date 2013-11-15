@@ -108,7 +108,7 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 		    @Override
 		    public void changed(ObservableValue<? extends State> ov, State t, State t1) {
 		        if (t1 == Worker.State.SUCCEEDED) {
-		        	new DashboardJSHandler(getBrowserViewer().getBrowser().getEngine(), dashboard);
+		        	new DashboardJSHandler(getBrowserViewer().getBrowser(), dashboard);
 		        }
 		    }
 		});

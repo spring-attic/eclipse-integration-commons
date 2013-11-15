@@ -1,8 +1,5 @@
 package org.springsource.ide.eclipse.commons.gettingstarted.browser;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -18,10 +15,10 @@ import java.util.regex.Pattern;
 
 import javafx.application.Platform;
 import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -33,7 +30,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.PlatformUI;
@@ -53,7 +49,6 @@ import org.w3c.dom.NodeList;
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.xml.internal.ws.util.StringUtils;
 
 public class DashboardJSHandler {
 
@@ -69,8 +64,11 @@ public class DashboardJSHandler {
 
 	private WebEngine engine;
 
-	public DashboardJSHandler(WebEngine engine, DashboardEditor editor) {
-		this.engine = engine;
+	private WebView view;
+
+	public DashboardJSHandler(WebView view, DashboardEditor editor) {
+		this.view = view;
+		this.engine = view.getEngine();
 		this.editor = editor;
 		JSObject window = (JSObject) engine.executeScript("window");
 		window.setMember("ide", this);
@@ -102,12 +100,10 @@ public class DashboardJSHandler {
 		try {
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer transformer = tf.newTransformer();
-			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 			transformer.setOutputProperty(OutputKeys.METHOD, "html");
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount",
-					"4");
 
 			transformer.transform(new DOMSource(doc), new StreamResult(sw));
 			return sw.toString();
@@ -139,6 +135,7 @@ public class DashboardJSHandler {
 						js.call("setRssHtml", innerHtml);
 						final Document doc = engine.getDocument();
 						System.out.println(toDocumentString(doc));
+						view.requestLayout();
 					}
 
 				});
