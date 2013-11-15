@@ -1,22 +1,69 @@
-html {
-	height: 100%;
-	width: 100%;
-}
-
 body {
-	width: 100%;
-	height: 100%; 
-	margin: 0; 
-	padding: 0;
+	font-family: Tahoma, Arial, sans-serif;
+	font-size: 12px;
+	text-decoration: none;
+	margin: 0px;
+	padding: 0px;
+	border: none;
+	height: 100%;
+	background: -webkit-gradient(linear, left top, left bottom, from(rgb(62, 144, 64)),
+		to(rgb(158, 193, 72)));
+	display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -webkit-flex; /* NEW - Chrome */
+	display: flex; /* NEW, Spec - Opera 12.1, Firefox 20+ */
+	box-orient: vertical;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
 }
 
-#bg {
-	position: fixed; 
-	top: 0; 
-	left: 0; 
-	width: 100%; 
-	height: 100%;
-	z-index:1000;
+#content {
+	display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -webkit-flex; /* NEW - Chrome */
+	display: flex; /* NEW, Spec - Opera 12.1, Firefox 20+ */
+}
+
+.pane {
+	border-radius: 4px;
+	box-shadow: 0px 0px 0px 4px rgba(0, 0, 0, 0.3);
+	background-color: rgba(1, 1, 1, 0.1);
+	margin: 10px;
+	height: 70%;
+}
+
+.paneBody {
+	padding: 0px 0px;
+}
+
+.paneTitle {
+	font-size: 12px;
+	padding: 5px 10px;
+	margin: 0px;
+	background-color: rgba(1, 1, 1, 0.2);
+}
+
+#top {
+	background: url('logo_sts.png') no-repeat;
+	height: 100px;
+}
+
+#bottom {
+	height: 100px;
+	display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -webkit-flex; /* NEW - Chrome */
+	display: flex; /* NEW, Spec - Opera 12.1, Firefox 20+ */
+}
+
+#bottom-left {
+	background: url('copyright.png') no-repeat;
+	z-index: 10;
+	width: 100%;
+}
+
+#bottom-right {
+	background: url('logo_spring.png') no-repeat;
+	z-index: 10;
+	width: 150px;
 }
 
 * {
@@ -24,96 +71,71 @@ body {
 }
 
 #content {
-	position: absolute; 
-	z-index: 3000;
 	width: 100%;
 	height: 100%;
-}
-
-.top-left-logo {
-	background: url('logo_upper_left.png') no-repeat top left;
-}
-
-.lower-right-logo {
-	background: url('logo_lower_right.png') no-repeat bottom right;
-}
-
-.title {
-	background: url('logo_title.png') no-repeat top left;
-}
-
-.copyright {
-	background: url('copyright.png') no-repeat bottom left;
-}
-
-.full-page {
-	height: 100%;
-	width: 100%;
-}
-
-.space {
-	height: 10%;
-}
-
-.v-outer {
-	display: table;
-	#position: relative;
+	background: url('logo_bigleaf.png') no-repeat;
 	overflow: hidden;
-	height: 100%;
-	width: 100%;
-}
- 
-.v-middle {
-	display: table-cell;
-	#position: absolute;
-	#top: 50%;
-	width: 100%;
-	vertical-align: middle;
-	align: center;
-}
-
-.v-inner {
-	#position: relative;
-	#top: -50%;
-	width: 100%;
-}
-
-.list {
-	align: center;
 }
 
 .largefont {
-	font-size: 18px;
+	font-size: 16px;
 }
 
-@media (max-width: 700px),(max-height: 500px) {
-	.largefont {
-		font-size: 14px;
-	}
-	.button {
-		width: 28px;
-		height: 32px;
-	}
+div .links {
+	width: 300px;
+	padding: 0px;
 }
 
-img {
-	vertical-align: middle;
-	border: 0;
+div .linksBody {
+	height: 100%;
 }
 
-.left-align {
-	text-align: left;
+div .rssFeed {
+	width: 100%;
 }
 
-td {
+div #rssHolder {
+	
+}
+
+div #rssBody {
+	height: 100%;
+	overflow: auto;
+}
+
+.rssAuthor {
+	font-size: 10px;
+}
+
+.rssDate {
+	font-size: 10px;
+}
+
+.rssText {
+	font-size: 9px;
+}
+
+li .links {
+	list-style-type: none;
+}
+
+.button {
+	list-style-type: none;
 	vertical-align: top;
+	padding-bottom: 10px;
+}
+
+article {
+	padding: 10px 0px 0px 20px;
+}
+
+article h1 {
+	font-size: 11px;
 }
 
 a {
-	font-family: Tahoma,Arial,sans-serif;
+	font-family: Tahoma, Arial, sans-serif;
 	font-size: 12px;
 	text-decoration: none;
 	border: none;
 }
-	
-
