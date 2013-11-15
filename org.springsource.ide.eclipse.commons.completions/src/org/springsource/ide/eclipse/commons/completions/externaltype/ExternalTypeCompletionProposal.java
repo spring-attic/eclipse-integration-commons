@@ -12,12 +12,20 @@ package org.springsource.ide.eclipse.commons.completions.externaltype;
 
 import java.net.URL;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.CompletionProposal;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.corext.javadoc.JavaDocLocations;
+import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.text.java.LazyJavaTypeCompletionProposal;
+import org.eclipse.jdt.internal.ui.text.java.hover.JavadocBrowserInformationControlInput;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
+import org.eclipse.jface.internal.text.html.HTMLPrinter;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.graphics.Image;
@@ -52,6 +60,41 @@ public class ExternalTypeCompletionProposal extends LazyJavaTypeCompletionPropos
 		}
 	}
 
+	@Override
+	public Object getAdditionalProposalInfo(IProgressMonitor mon) {
+		ExternalTypeSource source = index.getSource(type);
+		if (source!=null) {
+			String info= source.getDescription();
+			if (info != null && info.length() > 0) {
+				StringBuffer buffer= new StringBuffer();
+				HTMLPrinter.insertPageProlog(buffer, 0, getCSSStyles());
+
+				buffer.append(info);
+
+//				IJavaElement element= null;
+//				try {
+//					element= getProposalInfo().getJavaElement();
+//					if (element instanceof IMember) {
+//						String base= JavaDocLocations.getBaseURL(element, ((IMember) element).isBinary());
+//						if (base != null) {
+//							int endHeadIdx= buffer.indexOf("</head>"); //$NON-NLS-1$
+//							buffer.insert(endHeadIdx, "\n<base href='" + base + "'>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+//						}
+//					}
+//				} catch (JavaModelException e) {
+//					JavaPlugin.log(e);
+//				}
+
+				HTMLPrinter.addPageEpilog(buffer);
+				info= buffer.toString();
+
+				return info;
+				//return new JavadocBrowserInformationControlInput(null, element, info, 0);
+			}
+		}
+		return null;
+	}
+	
 	@Override
 	protected Image computeImage() {
 		try {

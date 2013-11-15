@@ -86,22 +86,25 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 	
 	@Override
 	public void createContents(Composite page) {
-        Composite composite = new Composite(page, SWT.NONE);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.marginWidth = 0;
-        composite.setLayout(layout);
-        GridDataFactory grab = GridDataFactory.fillDefaults().grab(true, true);//.hint(SWT.DEFAULT, 150);
-        grab.applyTo(composite);
-        composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
-		Label label = new Label(composite, SWT.NONE);
-		label.setText(labelText);
-		GridDataFactory.fillDefaults()
+
+		Composite composite = new Composite(page, SWT.NONE);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = labelText==null?1:2;
+		layout.marginWidth = 0;
+		composite.setLayout(layout);
+		GridDataFactory grab = GridDataFactory.fillDefaults().grab(true, true);//.hint(SWT.DEFAULT, 150);
+		grab.applyTo(composite);
+		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		if (labelText!=null) {
+			Label label = new Label(composite, SWT.NONE);
+			label.setText(labelText);
+			GridDataFactory.fillDefaults()
 			.align(SWT.CENTER, SWT.BEGINNING)
 			.hint(UIConstants.FIELD_LABEL_WIDTH_HINT, SWT.DEFAULT)
 			.applyTo(label);
-		
+		}
+
 		final ListViewer tv = new ListViewer(composite, SWT.SINGLE|SWT.BORDER);
 		grab.applyTo(tv.getList());
 		tv.setContentProvider(new ContentProvider());

@@ -46,8 +46,6 @@ public abstract class ExternalTypeIndexer {
 	 * indexed implementation should use the index to avoid iterating everything.
 	 */
 	public void getByPrefix(final String prefix, final Requestor<ExternalType> requestor) {
-		//TODO: this is a terrible implementation it doesn't search by any kind of index.
-		//  ok for a couple of types not for 1000s of types.
 		getAll(new Requestor<ExternalType>() {
 			public boolean receive(ExternalType element) {
 				if (element.getName().startsWith(prefix)) {

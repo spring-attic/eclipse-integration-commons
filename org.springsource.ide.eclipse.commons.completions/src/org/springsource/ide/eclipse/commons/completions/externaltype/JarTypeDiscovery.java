@@ -30,13 +30,11 @@ import org.springsource.ide.eclipse.commons.completions.util.Requestor;
  * 
  * @author Kris De Volder
  */
-public class JarTypeDiscovery implements ExternalTypeDiscovery, ExternalTypeSource {
+public class JarTypeDiscovery extends AbstractExternalTypeSource implements ExternalTypeDiscovery {
 
 	private static final boolean DEBUG = (""+Platform.getLocation()).contains("kdvolder"); 
 	
 	private final File jarFile;
-	
-	private ExternalTypeSource typeSource;
 	
 	public JarTypeDiscovery(File jarFile) {
 		this.jarFile = jarFile; 
@@ -108,6 +106,5 @@ public class JarTypeDiscovery implements ExternalTypeDiscovery, ExternalTypeSour
 			CompletionsActivator.log(e);
 		}
 	}
-
 
 }
