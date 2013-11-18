@@ -22,8 +22,8 @@ body {
 
 .pane {
 	border-radius: 4px;
-	box-shadow: 0px 0px 0px 4px rgba(0, 0, 0, 0.3);
-	background-color: rgba(1, 1, 1, 0.1);
+	box-shadow: 0px 0px 0px 4px rgba(1, 1, 1, 0.4);
+	background-color: rgba(1, 1, 1, 0.3);
 	margin: 10px;
 	height: 600px;
 }
@@ -62,33 +62,40 @@ body {
 
 div .links {
 	display: table-cell;
-	padding: 0px;
+	padding: 10px 10px 0px 0px;
+}
+
+div .linksbody {
+	padding: 20px 0px 0px 0px;
 }
 
 div .rssFeed {
 	display: table-cell;
 }
 
-div .linksBody {
-	
-}
-
 div #rssBody {
 	overflow-y: scroll;
 	overflow-x: hidden;
 	height: 580px;
+	width: 600px;
+}
+
+.rssTitle {
+	text-decoration: underline
 }
 
 .rssAuthor {
 	font-size: 10px;
+	font-style: bold;
 }
 
 .rssDate {
 	font-size: 10px;
+	font-style: italic;
 }
 
 .rssText {
-	font-size: 9px;
+	font-size: 11px;
 }
 
 li .links {
@@ -102,7 +109,7 @@ li .links {
 }
 
 article {
-	padding: 10px 0px 0px 20px;
+	padding: 10px 0px 0px 5px;
 }
 
 article h1 {
@@ -114,4 +121,8 @@ a {
 	font-size: 12px;
 	text-decoration: none;
 	border: none;
+}
+
+a:hover {
+	color: yellow;
 }

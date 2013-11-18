@@ -196,7 +196,7 @@ public class DashboardJSHandler {
 			entryAuthor = entry.getAuthor();
 		}
 		html += "<article>";
-		html += "<header class=\"rssTitle\"><h1>" + entry.getTitle() + "</h1></header>";
+		html += "<header class=\"rssTitle\"><h1>" + "<a href=\"\" onclick=\"ide.openPage('" + entry.getLink() + "')\">" + entry.getTitle() + "</a></h1></header>";
 		html += "<p class=\"rssText\">" + trimText(getDescription(entry)) + "</p>";
 		html += "<footer class=\"rssAuthor\">" + entryAuthor + " <i>" + dateString + "</i></footer>";
 		html += "</article>";
