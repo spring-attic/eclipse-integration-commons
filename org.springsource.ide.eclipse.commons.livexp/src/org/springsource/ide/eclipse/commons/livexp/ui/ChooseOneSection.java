@@ -10,15 +10,9 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
-import java.util.ArrayList;
-import java.util.Set;
-
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.viewers.CheckStateChangedEvent;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -36,14 +30,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
-import org.springsource.ide.eclipse.commons.livexp.core.LiveSet;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
-import org.springsource.ide.eclipse.commons.livexp.ui.ChooseMultipleSection.ContentProvider;
-import org.springsource.ide.eclipse.commons.livexp.ui.ChooseMultipleSection.LabelProvider;
 
 public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 
@@ -53,7 +43,6 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 	private Ilabelable[] validChoices;
 	private LiveVariable<T> chosen;
 	private LiveExpression<ValidationResult> validator;
-	private OkButtonHandler okHandler = null;
 
 	public ChooseOneSection(IPageWithSections owner, 
 			String labelText,
