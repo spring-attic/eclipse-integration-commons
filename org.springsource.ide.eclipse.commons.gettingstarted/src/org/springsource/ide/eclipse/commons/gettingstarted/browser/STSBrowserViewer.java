@@ -239,8 +239,6 @@ public class STSBrowserViewer extends Composite {
 		FXCanvas fxCanvas = new FXCanvas(this, SWT.NONE);
 		fxCanvas.setLayoutData(GridDataFactory.fillDefaults().grab(true, true)
 				.align(SWT.FILL, SWT.FILL).create());
-		fxCanvas.setBackground(Display.getCurrent().getSystemColor(
-				SWT.COLOR_BLUE));
 		fxCanvas.setLayout(GridLayoutFactory.fillDefaults().create());
 		browser = new WebView();
 		BorderPane border = new BorderPane();
