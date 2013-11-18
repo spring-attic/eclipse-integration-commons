@@ -22,5 +22,7 @@ public class UIConstants {
 	public static final int FIELD_LABEL_WIDTH_HINT = 80;
 	
 	public static final int FIELD_TEXT_AREA_WIDTH = 250;
+	
+	public static final int DIALOG_WIDTH_HINT = 310;
 
 }

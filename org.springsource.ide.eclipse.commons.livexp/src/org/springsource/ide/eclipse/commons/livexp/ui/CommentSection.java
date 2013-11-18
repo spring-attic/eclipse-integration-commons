@@ -40,7 +40,7 @@ public class CommentSection extends WizardPageSection {
 	public void createContents(Composite page) {
 		l = new Label(page, SWT.WRAP);
 		l.setText(text);
-		GridDataFactory.fillDefaults().grab(true, false).hint(300, SWT.DEFAULT).applyTo(l);
+		GridDataFactory.fillDefaults().grab(true, false).hint(UIConstants.DIALOG_WIDTH_HINT, SWT.DEFAULT).applyTo(l);
 	}
 	
 	@Override

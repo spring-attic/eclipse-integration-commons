@@ -105,7 +105,7 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 			.applyTo(label);
 		}
 
-		final ListViewer tv = new ListViewer(composite, SWT.SINGLE|SWT.BORDER);
+		final ListViewer tv = new ListViewer(composite, SWT.SINGLE|SWT.BORDER|SWT.V_SCROLL);
 		grab.applyTo(tv.getList());
 		tv.setContentProvider(new ContentProvider());
 		tv.setLabelProvider(new LabelProvider());
