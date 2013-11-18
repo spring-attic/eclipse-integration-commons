@@ -38,7 +38,7 @@ import org.springsource.ide.eclipse.commons.completions.util.Requestor;
 @SuppressWarnings("restriction")
 public class ExternalTypesProposalComputer implements IJavaCompletionProposalComputer {
 
-	private static final boolean DEBUG = (""+Platform.getLocation()).contains("kdvolder");
+	private static final boolean DEBUG = false;// (""+Platform.getLocation()).contains("kdvolder");
 	private void debug(String string) {
 		if (DEBUG) {
 			System.out.println(string);
@@ -72,7 +72,7 @@ public class ExternalTypesProposalComputer implements IJavaCompletionProposalCom
 			final JavaContentAssistInvocationContext context = (JavaContentAssistInvocationContext) _context;
 			try {
 				final String idPrefix = context.computeIdentifierPrefix().toString();
-				System.out.println("IdPrefix = "+idPrefix);
+				//System.out.println("IdPrefix = "+idPrefix);
 				//Only compute proposals if we actually have something to look for. This avoids adding our suggestions
 				// for completions like 'foo.^".
 				if (idPrefix!=null && !"".equals(idPrefix)) {
