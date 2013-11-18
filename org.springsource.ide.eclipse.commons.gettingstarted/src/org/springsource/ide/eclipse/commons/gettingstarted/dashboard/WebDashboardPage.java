@@ -117,14 +117,14 @@ public class WebDashboardPage extends ADashboardPage /*
 										+ "<p>Url should be provided via the setInitializationData method</p>");
 			}
 			if (getName() == null) {
-				browser.getEngine().locationProperty()
+				browser.getEngine().titleProperty()
 						.addListener(new ChangeListener<String>() {
 							@Override
 							public void changed(
 									ObservableValue<? extends String> observable,
 									String oldValue, String newValue) {
 								setName(newValue);
-								browser.getEngine().locationProperty()
+								browser.getEngine().titleProperty()
 								.removeListener(this);
 							}
 						});
