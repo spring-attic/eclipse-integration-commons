@@ -15,12 +15,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.CompletionProposal;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.Signature;
-import org.eclipse.jdt.internal.ui.text.java.LazyJavaTypeCompletionProposal;
 import org.eclipse.jdt.ui.text.java.ContentAssistInvocationContext;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
@@ -35,7 +33,6 @@ import org.springsource.ide.eclipse.commons.completions.util.Requestor;
  * 
  * @author Kris De Volder
  */
-@SuppressWarnings("restriction")
 public class ExternalTypesProposalComputer implements IJavaCompletionProposalComputer {
 
 	private static final boolean DEBUG = false;// (""+Platform.getLocation()).contains("kdvolder");
