@@ -8,13 +8,12 @@
  * Contributors:
  * GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.core.util;
+package org.springsource.ide.eclipse.commons.frameworks.core;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
-import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
 
 /**
  * Utility methods to convert exceptions into other types of exceptions, status
@@ -75,7 +74,7 @@ public class ExceptionUtil {
 	}
 
 	public static IStatus status(int severity, String msg) {
-		return new Status(severity, CorePlugin.PLUGIN_ID, msg);
+		return new Status(severity, FrameworkCoreActivator.PLUGIN_ID, msg);
 	}
 
 	public static IStatus status(Throwable e) {
@@ -95,7 +94,7 @@ public class ExceptionUtil {
 				}
 			}
 		}
-		return new Status(severity, CorePlugin.PLUGIN_ID, getMessage(e), e);
+		return new Status(severity, FrameworkCoreActivator.PLUGIN_ID, getMessage(e), e);
 	}
 
 	public static IStatus status(String msg) {

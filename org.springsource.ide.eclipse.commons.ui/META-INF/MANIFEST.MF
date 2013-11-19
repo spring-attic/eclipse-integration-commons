@@ -21,7 +21,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.debug.ui,
  org.eclipse.jdt.launching,
  org.eclipse.jdt.debug.ui,
- org.eclipse.core.expressions
+ org.eclipse.core.expressions,
+ org.springsource.ide.eclipse.commons.frameworks.core
 Export-Package: org.springsource.ide.eclipse.commons.internal.ui,
  org.springsource.ide.eclipse.commons.ui,
  org.springsource.ide.eclipse.commons.ui.launch,
