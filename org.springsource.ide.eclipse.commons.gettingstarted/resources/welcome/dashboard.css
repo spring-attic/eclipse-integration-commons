@@ -1,18 +1,14 @@
-body {
-	font-family: Tahoma, Arial, sans-serif;
-	font-size: 12px;
-	text-decoration: none;
-	margin: 0px;
-	padding: 0px;
-	border: none;
-	height: 100%;
+.pad-extra {
+	padding-bottom: 10px;
+}
+
+.top {
+	height: 80px;
 	width: 100%;
-	background: url('logo_spring.png'), url('logo_bigleaf.png'),
-		-webkit-gradient(linear, left top, left bottom, from(rgb(62, 144, 64)),
-		to(rgb(158, 193, 72)));
-	background-position: top left, center center, top left;
-	background-attachment: fixed, fixed, fixed;
-	background-repeat: no-repeat, no-repeat, no-repeat;
+	background-position: top left;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-color: black;
 }
 
 .row,.col,.page {
@@ -45,21 +41,6 @@ body {
 	bottom: 0px;
 	overflow: hidden;
 	position: absolute;
-}
-
-* {
-	color: white;
-}
-
-a {
-	font-family: Tahoma, Arial, sans-serif;
-	font-size: 12px;
-	text-decoration: none;
-	border: none;
-}
-
-a:hover {
-	color: yellow;
 }
 
 .sub-window {
@@ -117,16 +98,18 @@ li .links {
 	list-style-type: none;
 }
 
-.button {
-	list-style-type: none;
-	vertical-align: top;
-	padding-bottom: 10px;
-}
-
 article {
 	padding: 10px 0px 0px 5px;
 }
 
 article h1 {
 	font-size: 11px;
+}
+
+.search-widget {
+	right: 220px;
+}
+
+.search-box {
+	color: black;
 }

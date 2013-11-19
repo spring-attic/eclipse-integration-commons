@@ -1,76 +1,149 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Welcome</title>
-<link rel="stylesheet" href="shared.css" type="text/css" />
-<style type="text/css">
-.left.col {
-	width: 250px;
-}
+<title>Spring</title>
+<meta
+	content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1, user-scalable=no"
+	id="Viewport" name="viewport" />
+<link rel="stylesheet" type="text/css" href="dashboard.css" />
+<link rel="shortcut icon" type="image/x-icon"
+	href="https://spring.io/img/favicon.png" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/bootstrap/css/bootstrap.css" />
 
-.right.col {
-	left: 275px;
-	right: 0;
-}
-
-.body.row {
-	top: 75px;
-	bottom: 50px;
-}
-</style>
-<script>
-	function setRssHtml(html) {
-		document.getElementById('rssBody').innerHTML = html;
-	}
-</script>
+<link
+	href="https://fonts.googleapis.com/css?family=Varela+Round|Montserrat:400,700"
+	rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/font-awesome/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/css/fontcustom.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/css/icons.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/css/buttons.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/css/typography.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/css/main.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/css/application.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/css/markdown-content.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/css/team.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/css/docs.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/css/homepage.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/css/tools.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/css/projects.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/css/highlight.css" />
+<link rel="stylesheet" type="text/css"
+	href="https://spring.io/css/responsive.css" />
+<script type="text/javascript" src="https://spring.io/js/jquery.js"></script>
+<script type="text/javascript"
+	src="https://spring.io/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="https://spring.io/js/ZeroClipboard.min.js"></script>
+<script type="text/javascript"
+	src="https://spring.io/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="https://spring.io/js/filter.js"></script>
+<script type="text/javascript" src="https://spring.io/js/application.js"></script>
+<script type="text/javascript" src="https://spring.io/js/guide.js"></script>
 </head>
-
 <body>
-	<div class="content">
-		<div class="sub-window left col">
-			<div class="sub-window-title">Help and Documentation</div>
-			<ul class="sub-window-content row">
-				<li class="left-align"><a href=""
-					onclick="ide.openPage('${sts.nan.url}')" class="largefont"> <img
-						class="button" src="new_32.png" /> New and Noteworthy
-				</a></li>
-				<li class="left-align"><a href=""
-					onclick="ide.openPage('${sts.forum.url}')" class="largefont"> <img
-						class="button" src="forum_32.png" /> Community Forums
-				</a></li>
-				<li class="left-align"><a href=""
-					onclick="ide.openPage('${sts.tracker.url}')" class="largefont">
-						<img class="button" src="bug_32.png" /> Issue and Bug Tracker
-				</a></li>
-				<li class="left-align"><a href=""
-					onclick="ide.openDashboardPage('extensions')" class="largefont"
-					id="dashLink" class="largefont"> <img class="button"
-						src="extension_32.png" /> Install Extension
-				</a></li>
-				<li class="left-align"><a href=""
-					onclick="ide.openImportWizard()" class="largefont"> <img
-						class="button" src="guides_32.png" /> Import Guide
-				</a></li>
-				<li class="left-align"><a href=""
-					onclick="ide.openPage('${spring.guides.url}')" class="largefont">
-						<img class="button" src="guides_32.png" /> Browse Guides
-				</a></li>
-				<li class="left-align"><a href=""
-					onclick="ide.openPage('${spring.docs.url}')" class="largefont">
-						<img class="button" src="springdocs_32.png" /> SpringFramework
-						Docs
-				</a></li>
-				<li class="left-align"><a href=""
-					onclick="ide.openPage('${spring.blog.url}')" class="largefont">
-						<img class="button" src="blog_32.png" /> Spring Blog
-				</a></li>
-			</ul>
+	<script>
+		function setRssHtml(html) {
+			document.getElementById('rssEntries').innerHTML = html;
+		}
+
+		function search(input) {
+			if (input.value != "") {
+				ide.openPage('https://spring.io/search?q=' + input.value)
+				input.value = "";
+			}
+		}
+	</script>
+	<div class="viewport">
+		<header class="navbar header--navbar">
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<div class="spring-logo--container">
+						<a class="spring-logo" href="/"><span></span></a>
+					</div>
+					<ul class="nav pull-right">
+						<li class="navbar-link"><a href=""
+							onclick="ide.openPage('${sts.nan.url}')">New</a></li>
+						<li class="navbar-link"><a href=""
+							onclick="ide.openPage('${spring.docs.url}')">Docs</a></li>
+						<li class="navbar-link"><a href=""
+							onclick="ide.openPage('${spring.guides.url}')">Guides</a></li>
+						<li class="navbar-link"><a href=""
+							onclick="ide.openPage('${sts.tracker.url}')">Issues</a></li>
+						<li class="navbar-link"><a href=""
+							onclick="ide.openPage('${spring.blog.url}')">Blog</a></li>
+						<li class="navbar-link"><a href=""
+							onclick="ide.openPage('${sts.forum.url}')">Forum</a></li>
+						<li class="navbar-link"><a href=""
+							onclick="ide.openDashboardPage('extensions')">Forum</a></li>
+						<li class="navbar-link"><a href=""
+							onclick="ide.openImportWizard()">Import</a></li>
+						<li class="navbar-link"><a href=""
+							onclick="ide.openDashboardPage('extensions')">Install</a></li>
+							
+						<li class="navbar-link nav-search"><i
+							class="icon-search navbar-search--icon js-search-input-open"></i>
+							<div class="search-input-close js-search-input-close">x</div></li>
+					</ul>
+				</div>
+			</div>
+			<div class="search-dropdown--container js-search-dropdown">
+				<div class="container-fluid">
+					<div class="search-form--container">
+						<form action=""
+							class="form-inline form-search" method="get">
+							<input class="search-query search-form--form js-search-input"
+								name="q" onchange="search(this)"
+								placeholder="Search for documentation, guides, and posts..."
+								type="text" value="" />
+							<button class="search-form--submit" type="submit">
+								<i class="icon-search"></i>
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</header>
+		<div class="body--container container-fluid ">
+			<div class="main-body--wrapper">
+				<div class="row-fluid blog--wrapper">
+					<div class="span8 mobile-left-pane">
+						<div id="rssEntries"></div>
+					</div>
+				</div>
+			</div>
 		</div>
-		<div class="sub-window right col">
-			<div class="sub-window-title">Feeds</div>
-			<div id="rssBody" class="sub-window-content row scroll-y"></div>
-		</div>
+		<footer class="footer">
+			<div class="container-fluid">
+				<div class="row-fluid">
+					<div class="span8">
+						&copy;
+						<script type="text/javascript">
+							var d = new Date();
+							document.write(d.getFullYear());
+						</script>
+						<a href="http://gopivotal.com">Pivotal Software</a>, Inc. All
+						Rights Reserved. <a href="http://www.gopivotal.com/terms-of-use">Terms
+							of Use</a> and <a href="http://www.gopivotal.com/privacy-policy">Privacy</a>
+					</div>
+				</div>
+			</div>
+		</footer>
 	</div>
 </body>
 </html>
