@@ -4,6 +4,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Welcome</title>
 <link rel="stylesheet" href="shared.css" type="text/css" />
+<style type="text/css">
+.left.col {
+	width: 250px;
+}
+
+.right.col {
+	left: 275px;
+	right: 0;
+}
+
+.body.row {
+	top: 75px;
+	bottom: 50px;
+}
+</style>
 <script>
 	function setRssHtml(html) {
 		document.getElementById('rssBody').innerHTML = html;
@@ -12,61 +27,50 @@
 </head>
 
 <body>
-	<div id="top"></div>
-	<div id="content">
-		<div class="links">
-			<div class="pane">
-				<div class="paneTitle">Help and Documentation</div>
-				<div class="linksBody">
-					<ul class="links">
-						<li class="left-align"><a href=""
-							onclick="ide.openPage('${sts.nan.url}')" class="largefont"> <img
-								class="button" src="new_32.png" /> New and Noteworthy
-						</a></li>
-						<li class="left-align"><a href=""
-							onclick="ide.openPage('${sts.forum.url}')" class="largefont">
-								<img class="button" src="forum_32.png" /> Community Forums
-						</a></li>
-						<li class="left-align"><a href=""
-							onclick="ide.openPage('${sts.tracker.url}')" class="largefont">
-								<img class="button" src="bug_32.png" /> Issue and Bug Tracker
-						</a></li>
-						<li class="left-align"><a href=""
-							onclick="ide.openDashboardPage('extensions')" class="largefont"
-							id="dashLink" class="largefont"> <img class="button"
-								src="extension_32.png" /> Install Extension
-						</a></li>
-						<li class="left-align"><a href=""
-							onclick="ide.openImportWizard()" class="largefont">
-								<img class="button" src="guides_32.png" /> Import Guide
-						</a></li>
-						<li class="left-align"><a href=""
-							onclick="ide.openPage('${spring.guides.url}')" class="largefont">
-								<img class="button" src="guides_32.png" /> Browse Guides
-						</a></li>
-						<li class="left-align"><a href=""
-							onclick="ide.openPage('${spring.docs.url}')" class="largefont">
-								<img class="button" src="springdocs_32.png" /> SpringFramework
-								Docs
-						</a></li>
-						<li class="left-align"><a href=""
-							onclick="ide.openPage('${spring.blog.url}')" class="largefont">
-								<img class="button" src="blog_32.png" /> Spring Blog
-						</a></li>
-					</ul>
-				</div>
-			</div>
+	<div class="content">
+		<div class="sub-window left col">
+			<div class="sub-window-title">Help and Documentation</div>
+			<ul class="sub-window-content row">
+				<li class="left-align"><a href=""
+					onclick="ide.openPage('${sts.nan.url}')" class="largefont"> <img
+						class="button" src="new_32.png" /> New and Noteworthy
+				</a></li>
+				<li class="left-align"><a href=""
+					onclick="ide.openPage('${sts.forum.url}')" class="largefont"> <img
+						class="button" src="forum_32.png" /> Community Forums
+				</a></li>
+				<li class="left-align"><a href=""
+					onclick="ide.openPage('${sts.tracker.url}')" class="largefont">
+						<img class="button" src="bug_32.png" /> Issue and Bug Tracker
+				</a></li>
+				<li class="left-align"><a href=""
+					onclick="ide.openDashboardPage('extensions')" class="largefont"
+					id="dashLink" class="largefont"> <img class="button"
+						src="extension_32.png" /> Install Extension
+				</a></li>
+				<li class="left-align"><a href=""
+					onclick="ide.openImportWizard()" class="largefont"> <img
+						class="button" src="guides_32.png" /> Import Guide
+				</a></li>
+				<li class="left-align"><a href=""
+					onclick="ide.openPage('${spring.guides.url}')" class="largefont">
+						<img class="button" src="guides_32.png" /> Browse Guides
+				</a></li>
+				<li class="left-align"><a href=""
+					onclick="ide.openPage('${spring.docs.url}')" class="largefont">
+						<img class="button" src="springdocs_32.png" /> SpringFramework
+						Docs
+				</a></li>
+				<li class="left-align"><a href=""
+					onclick="ide.openPage('${spring.blog.url}')" class="largefont">
+						<img class="button" src="blog_32.png" /> Spring Blog
+				</a></li>
+			</ul>
 		</div>
-		<div class="rssFeed">
-			<div class="pane">
-				<div class="paneTitle">Feeds</div>
-				<div id="rssBody">(Loading)</div>
-			</div>
+		<div class="sub-window right col">
+			<div class="sub-window-title">Feeds</div>
+			<div id="rssBody" class="sub-window-content row scroll-y"></div>
 		</div>
-	</div>
-	<div id="bottom">
-		<div id="bottom-left"></div>
-		<div id="bottom-right"></div>
 	</div>
 </body>
 </html>
