@@ -13,10 +13,13 @@ package org.springsource.ide.eclipse.dashboard.internal.ui.preferences;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -31,7 +34,7 @@ import org.springsource.ide.eclipse.commons.core.ResourceProvider.Property;
 import org.springsource.ide.eclipse.commons.core.preferences.StsProperties;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IIdeUiConstants;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
-
+import org.springsource.ide.eclipse.dashboard.internal.ui.util.IdeUiUtils;
 
 /**
  * @author Steffen Pingel
@@ -102,7 +105,7 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 		composite.setLayout(new GridLayout(2, false));
 
 		createShowOnStartupButton(composite);
-		
+
 		createUseOldDasboardButton(composite);
 
 		for (PropertyEditor editor : editors) {
@@ -121,25 +124,34 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 
 			editor.performReset();
 		}
-
 		return composite;
 	}
-	
+
 	private void createUseOldDasboardButton(Composite composite) {
 		useOldDashboardButton = new Button(composite, SWT.CHECK);
 		useOldDashboardButton.setText("Use Old Dashboard");
 		GridDataFactory.fillDefaults().span(2, 1).applyTo(useOldDashboardButton);
 		useOldDashboardButton.setSelection(getUseOldDashboard());
+		useOldDashboardButton.addSelectionListener(new SelectionListener() {
+
+			public void widgetSelected(SelectionEvent e) {
+				updateDashboardWarning();
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+		updateDashboardWarning();
 	}
 
 	private boolean getUseOldDashboard() {
 		String value = getPreferenceStore().getString(IIdeUiConstants.PREF_USE_OLD_DASHOARD);
-		if (value==null) {
+		if (value == null) {
 			return getDefaultUseOldDashboard();
 		}
 		return Boolean.valueOf(value);
 	}
-	
+
 	private boolean getDefaultUseOldDashboard() {
 		boolean useNew = StsProperties.getInstance().get("sts.new.dashboard.enabled", false);
 		return !useNew;
@@ -171,11 +183,13 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 	protected void performDefaults() {
 		showOnStartupButton.setSelection(getPreferenceStore().getDefaultBoolean(
 				IIdeUiConstants.PREF_OPEN_DASHBOARD_STARTUP));
-		useOldDashboardButton.setSelection(getPreferenceStore().getDefaultBoolean(IIdeUiConstants.PREF_USE_OLD_DASHOARD));
+		useOldDashboardButton.setSelection(getPreferenceStore()
+				.getDefaultBoolean(IIdeUiConstants.PREF_USE_OLD_DASHOARD));
 		for (PropertyEditor editor : editors) {
 			editor.performDefaults();
 		}
 		super.performDefaults();
+		updateDashboardWarning();
 	}
 
 	@Override
@@ -189,15 +203,29 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 	}
 
 	/**
-	 * Set boolean preference, taking care to only actually set it if it differs from the default value (so that if
-	 * default value changes at a later time...)
+	 * Set boolean preference, taking care to only actually set it if it differs
+	 * from the default value (so that if default value changes at a later
+	 * time...)
 	 */
 	private void setBoolean(IPreferenceStore preferenceStore, String propName, boolean value) {
 		boolean defaultValue = preferenceStore.getDefaultBoolean(propName);
-		if (value==defaultValue) {
-			preferenceStore.setToDefault(propName);	
-		} else {
+		if (value == defaultValue) {
+			preferenceStore.setToDefault(propName);
+		}
+		else {
 			preferenceStore.setValue(propName, value);
+		}
+	}
+
+	private void updateDashboardWarning() {
+		if (!IdeUiPlugin.getDefault().supportsNewDashboard(new NullProgressMonitor())
+				&& !useOldDashboardButton.getSelection()) {
+			setMessage("Current environment does not support new dashboard. Upgrade to Eclipse "
+					+ IdeUiPlugin.JAVAFX_MINIMUM_ECLIPSE_VERSION + " and Java "
+					+ IdeUiPlugin.JAVAFX_MINIMUM_JRE_VERSION + " or newer. Will fall back to old dashboard.", WARNING);
+		}
+		else {
+			setMessage(null);
 		}
 	}
 
