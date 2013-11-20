@@ -38,6 +38,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarker;
@@ -80,7 +81,6 @@ import org.eclipse.ui.PlatformUI;
 import org.junit.Assert;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
-import org.springsource.ide.eclipse.commons.core.util.ExceptionUtil;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
