@@ -31,6 +31,7 @@ public class ExternalType implements Comparable<ExternalType> {
 		} else {
 			throw new IllegalArgumentException("Invalid fqName: "+fqName);
 		}
+		//throw new Error("This is inefficient, someone should optimize package names to reuse the strings");
 	}
 
 	@Override

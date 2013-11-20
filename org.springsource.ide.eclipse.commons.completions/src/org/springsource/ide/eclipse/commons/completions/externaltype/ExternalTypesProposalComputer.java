@@ -15,12 +15,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.CompletionProposal;
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.Signature;
-import org.eclipse.jdt.internal.ui.text.java.LazyJavaTypeCompletionProposal;
 import org.eclipse.jdt.ui.text.java.ContentAssistInvocationContext;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
@@ -35,10 +33,9 @@ import org.springsource.ide.eclipse.commons.completions.util.Requestor;
  * 
  * @author Kris De Volder
  */
-@SuppressWarnings("restriction")
 public class ExternalTypesProposalComputer implements IJavaCompletionProposalComputer {
 
-	private static final boolean DEBUG = (""+Platform.getLocation()).contains("kdvolder");
+	private static final boolean DEBUG = false;// (""+Platform.getLocation()).contains("kdvolder");
 	private void debug(String string) {
 		if (DEBUG) {
 			System.out.println(string);
@@ -72,7 +69,7 @@ public class ExternalTypesProposalComputer implements IJavaCompletionProposalCom
 			final JavaContentAssistInvocationContext context = (JavaContentAssistInvocationContext) _context;
 			try {
 				final String idPrefix = context.computeIdentifierPrefix().toString();
-				System.out.println("IdPrefix = "+idPrefix);
+				//System.out.println("IdPrefix = "+idPrefix);
 				//Only compute proposals if we actually have something to look for. This avoids adding our suggestions
 				// for completions like 'foo.^".
 				if (idPrefix!=null && !"".equals(idPrefix)) {

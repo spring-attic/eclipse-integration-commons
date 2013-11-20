@@ -21,6 +21,15 @@ import org.eclipse.core.runtime.CoreException;
 public interface OkButtonHandler {
 
 	/**
+	 * OKButtonHanlder that does nothing at all.
+	 */
+	OkButtonHandler DUMMY = new OkButtonHandler() {
+		public void performOk() throws Exception {
+			//does nothinh
+		}
+	};
+
+	/**
 	 * Called by the hosting UI (e.g. a DialogWithSections) when the user presses the ok button.
 	 */
 	void performOk() throws Exception;

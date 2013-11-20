@@ -42,6 +42,12 @@ public class DemoTypeDiscovery implements ExternalTypeDiscovery, IExecutableExte
 		public void addToClassPath(IJavaProject project, IProgressMonitor mon) {
 			//nothing to do
 		}
+
+		@Override
+		public String getDescription() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	};
 	
 	private String[] fqNames;

@@ -10,15 +10,9 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
-import java.util.ArrayList;
-import java.util.Set;
-
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.viewers.CheckStateChangedEvent;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -36,14 +30,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
-import org.springsource.ide.eclipse.commons.livexp.core.LiveSet;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
-import org.springsource.ide.eclipse.commons.livexp.ui.ChooseMultipleSection.ContentProvider;
-import org.springsource.ide.eclipse.commons.livexp.ui.ChooseMultipleSection.LabelProvider;
 
 public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 
@@ -53,7 +43,6 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 	private Ilabelable[] validChoices;
 	private LiveVariable<T> chosen;
 	private LiveExpression<ValidationResult> validator;
-	private OkButtonHandler okHandler = null;
 
 	public ChooseOneSection(IPageWithSections owner, 
 			String labelText,
@@ -86,23 +75,26 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 	
 	@Override
 	public void createContents(Composite page) {
-        Composite composite = new Composite(page, SWT.NONE);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-        layout.marginWidth = 0;
-        composite.setLayout(layout);
-        GridDataFactory grab = GridDataFactory.fillDefaults().grab(true, true);//.hint(SWT.DEFAULT, 150);
-        grab.applyTo(composite);
-        composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
-		Label label = new Label(composite, SWT.NONE);
-		label.setText(labelText);
-		GridDataFactory.fillDefaults()
+
+		Composite composite = new Composite(page, SWT.NONE);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = labelText==null?1:2;
+		layout.marginWidth = 0;
+		composite.setLayout(layout);
+		GridDataFactory grab = GridDataFactory.fillDefaults().grab(true, true);//.hint(SWT.DEFAULT, 150);
+		grab.applyTo(composite);
+		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		if (labelText!=null) {
+			Label label = new Label(composite, SWT.NONE);
+			label.setText(labelText);
+			GridDataFactory.fillDefaults()
 			.align(SWT.CENTER, SWT.BEGINNING)
 			.hint(UIConstants.FIELD_LABEL_WIDTH_HINT, SWT.DEFAULT)
 			.applyTo(label);
-		
-		final ListViewer tv = new ListViewer(composite, SWT.SINGLE|SWT.BORDER);
+		}
+
+		final ListViewer tv = new ListViewer(composite, SWT.SINGLE|SWT.BORDER|SWT.V_SCROLL);
 		grab.applyTo(tv.getList());
 		tv.setContentProvider(new ContentProvider());
 		tv.setLabelProvider(new LabelProvider());

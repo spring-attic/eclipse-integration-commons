@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.core;
 
-import org.springsource.ide.eclipse.commons.core.ResourceProvider;
-
 import junit.framework.TestCase;
 
 /**
@@ -29,7 +27,7 @@ public class ResourceProviderTest extends TestCase {
 
 	public void testGetUrls() {
 		assertEquals(1, ResourceProvider.getUrls("dashboard.feeds.update").length);
-		assertEquals(2, ResourceProvider.getUrls("dashboard.feeds.blogs").length);
+		assertEquals(1, ResourceProvider.getUrls("dashboard.feeds.blogs").length);
 	}
 
 }

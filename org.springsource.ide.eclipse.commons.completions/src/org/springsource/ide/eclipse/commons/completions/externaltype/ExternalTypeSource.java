@@ -25,7 +25,7 @@ public interface ExternalTypeSource {
 	/**
 	 * Instance representing an unknown type source. Use instead of 'null'.
 	 */
-	public static final ExternalTypeSource UNKNOWN = new ExternalTypeSource() {
+	public static final ExternalTypeSource UNKNOWN = new AbstractExternalTypeSource() {
 		public void addToClassPath(IJavaProject project, IProgressMonitor mon) {
 			//nothing to do
 		}
@@ -33,7 +33,7 @@ public interface ExternalTypeSource {
 			return "UNKNOWN";
 		}
 	};
-
+	
 	/**
 	 * Manipulate the project's classpath in some way to add this type source
 	 * to the classpath.
@@ -43,5 +43,15 @@ public interface ExternalTypeSource {
 	 * classpath. The caller should ensure this.
 	 */
 	void addToClassPath(IJavaProject project, IProgressMonitor mon);
+
+	/**
+	 * Return a html formatted String that will be shown in the JavaDoc side panel
+	 * of the content assist. This may return null if there's nothing interesting
+	 * to show.
+	 * <p>
+	 * A good thing to show here is information about how the type source
+	 * will/can be added to the project's classpath.
+	 */
+	String getDescription();
 	
 }
