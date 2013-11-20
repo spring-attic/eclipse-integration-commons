@@ -107,7 +107,7 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 		getBrowserViewer().getBrowser().getEngine().getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
 		    @Override
 		    public void changed(ObservableValue<? extends State> ov, State t, State t1) {
-		        if (t1 == Worker.State.SUCCEEDED) {
+		        if (t1 == Worker.State.SUCCEEDED && getBrowserViewer() != null) {
 		        	new DashboardJSHandler(getBrowserViewer().getBrowser(), dashboard);
 		        }
 		    }

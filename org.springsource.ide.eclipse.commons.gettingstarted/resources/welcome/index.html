@@ -64,6 +64,10 @@
 			document.getElementById('rssEntries').innerHTML = html;
 		}
 
+		function setWizardHtml(html) {
+			document.getElementById('projectWizards').innerHTML = html;
+		}
+
 		function search(input) {
 			if (input.value != "") {
 				ide.openPage('https://spring.io/search?q=' + input.value)
@@ -91,13 +95,6 @@
 							onclick="ide.openPage('${spring.blog.url}')">Blog</a></li>
 						<li class="navbar-link"><a href=""
 							onclick="ide.openPage('${sts.forum.url}')">Forum</a></li>
-						<li class="navbar-link"><a href=""
-							onclick="ide.openDashboardPage('extensions')">Forum</a></li>
-						<li class="navbar-link"><a href=""
-							onclick="ide.openImportWizard()">Import</a></li>
-						<li class="navbar-link"><a href=""
-							onclick="ide.openDashboardPage('extensions')">Install</a></li>
-
 						<li class="navbar-link nav-search"><i
 							class="fa fa-search navbar-search--icon js-search-input-open"></i>
 							<div class="search-input-close js-search-input-close">x</div></li>
@@ -107,13 +104,12 @@
 			<div class="search-dropdown--container js-search-dropdown">
 				<div class="container-fluid">
 					<div class="search-form--container">
-						<form action=""
-							class="form-inline form-search" method="get">
+						<form action="" class="form-inline form-search" method="get">
 							<input class="search-query search-form--form js-search-input"
 								name="q" onchange="search(this)"
 								placeholder="Search for documentation, guides, and posts..."
 								type="text" value="" />
-							<button class="search-form--submit" type="submit" style="color:green">
+							<button class="search-form--submit" type="submit">
 								<i class="fa fa-search"></i>
 							</button>
 						</form>
@@ -122,11 +118,30 @@
 			</div>
 		</header>
 		<div class="body--container container-fluid ">
-			<div class="main-body--wrapper">
+			<div class="main-body--wrapper" style="padding-top: 20px; margin-top: 0px;"> <!-- Override Spring IO Page Whitespace -->
 				<div class="row-fluid blog--wrapper">
 					<div class="span8 mobile-left-pane">
 						<div id="rssEntries"></div>
 					</div>
+
+					<aside class="span4 content-right-pane--container mobile-left-pane"
+						id="sidebar">
+						<div class="right-pane-widget--container">
+							<h2>Install</h2>
+							<a class="github_download btn btn-black uppercase"
+								href="" onclick="ide.openImportWizard()"><img src="guides_32.png"/> Guides</a>
+							<a class="github_download btn btn-black uppercase"
+								href="" onclick="ide.openDashboardPage('extensions')"><img src="extension_32.png"/> Extensions</a>
+						</div>
+					</aside>
+					
+					<aside class="span4 content-right-pane--container mobile-left-pane"
+						id="sidebar">
+						<div class="right-pane-widget--container">
+							<h2>Get Started!</h2>
+							<div id="projectWizards"></div>
+						</div>
+					</aside>
 				</div>
 			</div>
 		</div>

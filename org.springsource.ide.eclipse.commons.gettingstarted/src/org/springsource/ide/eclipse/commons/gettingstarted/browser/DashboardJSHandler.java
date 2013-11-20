@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2013 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     GoPivotal, Inc. - initial API and implementation
+ *******************************************************************************/
 package org.springsource.ide.eclipse.commons.gettingstarted.browser;
 
 import java.io.StringWriter;
@@ -27,6 +37,10 @@ import netscape.javascript.JSObject;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -42,19 +56,44 @@ import org.springsource.ide.eclipse.commons.gettingstarted.dashboard.DashboardEd
 import org.springsource.ide.eclipse.commons.ui.UiUtil;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.AggregateFeedJob;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 
+/**
+ * 
+ * @author Miles Parker
+ * 
+ * Code refactored from org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardMainPage:
+ * 
+ * @author Terry Denney
+ * @author Christian Dupuis
+ * @author Steffen Pingel
+ * @author Leo Dos Santos */
 public class DashboardJSHandler {
 
 	private static final int FEEDS_DESCRIPTION_MAX = 200;
 
 	public static final String RESOURCE_DASHBOARD_FEEDS_BLOGS = "dashboard.feeds.blogs";
+
+	private static final String ELEMENT_CLASS = "class";
+
+	private static final String ELEMENT_ICON = "icon";
+
+	private static final String ELEMENT_NAME = "name";
+
+	private static final String EXTENSION_ID_NEW_WIZARD = "org.eclipse.ui.newWizards";
+
+	private static final String GRAILS_WIZARD_ID = "org.grails.ide.eclipse.ui.wizard.newGrailsProjectWizard";
+
+	private static final String ROO_WIZARD_ID = "com.springsource.sts.roo.ui.wizard.newRooProjectWizard";
+
+	private static final String GROOVY_WIZARD_ID = "org.codehaus.groovy.eclipse.ui.groovyProjectWizard";
+
+	private static final String SPRING_WIZARD_ID = "com.springsource.sts.wizard.template";
+
+	private static final String JAVA_WIZARD_ID = "org.eclipse.jdt.ui.wizards.JavaProjectWizard";
 
 	private DashboardEditor editor;
 
@@ -73,26 +112,6 @@ public class DashboardJSHandler {
 		JSObject window = (JSObject) engine.executeScript("window");
 		window.setMember("ide", this);
 		displayFeeds();
-	}
-
-	// It's not really clear why, but I'm not able to get getElementById to work
-	// as expected
-	private Element getElement(Element element, String id) {
-		String idAttr = element.getAttribute("id");
-		if (idAttr != null && idAttr.equals(id)) {
-			return element;
-		}
-		NodeList childNodes = element.getChildNodes();
-		for (int i = 0; i < childNodes.getLength(); i++) {
-			Node item = childNodes.item(i);
-			if (item instanceof Element) {
-				Element child = getElement((Element) item, id);
-				if (child != null) {
-					return child;
-				}
-			}
-		}
-		return null;
 	}
 
 	public String toDocumentString(Document doc) {
@@ -126,13 +145,15 @@ public class DashboardJSHandler {
 				Map<SyndEntry, SyndFeed> entryToFeed = job.getFeedReader()
 						.getFeedsWithEntries();
 				Set<SyndEntry> entries = entryToFeed.keySet();
-				final String innerHtml = displayFeeds(entries);
+				final String feedHtml = displayFeeds(entries);
+				final String wizardHtml = displayWizards();
 				Platform.runLater(new Runnable() {
 
 					@Override
 					public void run() {
 						JSObject js = (JSObject) engine.executeScript("window");
-						js.call("setRssHtml", innerHtml);
+						js.call("setRssHtml", feedHtml);
+						js.call("setWizardHtml", wizardHtml);
 						final Document doc = engine.getDocument();
 						System.out.println(toDocumentString(doc));
 						view.requestLayout();
@@ -143,6 +164,40 @@ public class DashboardJSHandler {
 		});
 		unfinishedJobs.add(job);
 		job.schedule();
+	}
+
+	private String displayWizards() {
+		String html = "";
+		IExtensionRegistry registry = org.eclipse.core.runtime.Platform
+				.getExtensionRegistry();
+		IExtensionPoint extensionPoint = registry
+				.getExtensionPoint(EXTENSION_ID_NEW_WIZARD);
+		IExtension[] extensions = extensionPoint.getExtensions();
+
+		IConfigurationElement[] foundElements = new IConfigurationElement[6];
+		String[] ids = new String[] { JAVA_WIZARD_ID, SPRING_WIZARD_ID, ROO_WIZARD_ID,
+				GROOVY_WIZARD_ID, GRAILS_WIZARD_ID };
+
+		for (IExtension extension : extensions) {
+			IConfigurationElement[] elements = extension.getConfigurationElements();
+			for (IConfigurationElement element : elements) {
+				String id = element.getAttribute("id");
+				for (int i = 0; i < ids.length; i++) {
+					if (ids[i].equals(id) && element.getAttribute(ELEMENT_CLASS) != null
+							&& element.getAttribute(ELEMENT_NAME) != null
+							&& element.getAttribute(ELEMENT_ICON) != null) {
+						//We use github_download as that seems to provide the shape we need
+						html += "<a class=\"github_download btn btn-black uppercase\" href=\"\" onclick=\"ide.showWizard('"
+								+ id
+								+ "')\"><img src=\"new_32.png\"/> "
+								+ element.getAttribute(ELEMENT_NAME) + "</a>";
+
+						foundElements[i] = element;
+					}
+				}
+			}
+		}
+		return html;
 	}
 
 	private String displayFeeds(Set<SyndEntry> entries) {
@@ -168,10 +223,6 @@ public class DashboardJSHandler {
 		});
 
 		for (SyndEntry entry : sortedEntries) {
-			// Element row = engine.getDocument().createElement("tr");
-			// table.appendChild(row);
-			// Element cell = engine.getDocument().createElement("td");
-			// row.appendChild(cell);
 			html += displayFeed(entry);
 		}
 		return html;
@@ -205,7 +256,7 @@ public class DashboardJSHandler {
 		html += "			<p>" + trimText(getDescription(entry)) + "</p>";
 		html += "		</div>";
 		html += "	</div>";
-		html += "	<div class=\"author\">"+entryAuthor+ " <i>" + dateString
+		html += "	<div class=\"author\">" + entryAuthor + " <i>" + dateString
 				+ "</i></div>";
 		html += "</div>";
 		return html;
