@@ -12,8 +12,10 @@ package org.springsource.ide.eclipse.dashboard.internal.ui;
 
 import java.net.URL;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -28,6 +30,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.UIJob;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Version;
 import org.springsource.ide.eclipse.commons.core.ResourceProvider;
 import org.springsource.ide.eclipse.commons.core.ResourceProvider.Property;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardEditorInputFactory;
@@ -41,6 +44,7 @@ import org.springsource.ide.eclipse.dashboard.ui.actions.ShowDashboardAction;
  * @author Christian Dupuis
  * @author Wesley Coelho
  * @author Leo Dos Santos
+ * @author Miles Parker
  */
 public class IdeUiPlugin extends AbstractUIPlugin {
 
@@ -48,6 +52,10 @@ public class IdeUiPlugin extends AbstractUIPlugin {
 
 	private static IdeUiPlugin plugin;
 
+	public static final Version JAVAFX_MINIMUM_ECLIPSE_VERSION = new Version("4.3");
+	
+	public static final Version JAVAFX_MINIMUM_JRE_VERSION = new Version("1.7");
+	
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
@@ -161,6 +169,20 @@ public class IdeUiPlugin extends AbstractUIPlugin {
 
 	public static void log(Throwable e) {
 		getDefault().getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, "Unexpected exception", e));
+	}
+	
+	public boolean supportsNewDashboard(IProgressMonitor mon) {
+		Version eclipseVersion = new Version(Platform.getBundle("org.eclipse.platform").getHeaders().get("Bundle-Version"));
+		boolean eclipseCompatible = eclipseVersion.compareTo(JAVAFX_MINIMUM_ECLIPSE_VERSION) >= 0;
+		String javaVersionString = System.getProperty("java.version");
+		String[] majorMinorQualifier = StringUtils.split(javaVersionString, ".");
+		Version jreVersion = new Version(Integer.parseInt(majorMinorQualifier[0]), Integer.parseInt(majorMinorQualifier[1]), 0);
+		boolean jreCompatible = jreVersion.compareTo(JAVAFX_MINIMUM_JRE_VERSION) >= 0;
+		return eclipseCompatible && jreCompatible;
+	}
+
+	public boolean useNewDashboard(IProgressMonitor mon) {
+		return supportsNewDashboard(mon) && !IdeUiPlugin.getDefault().getPreferenceStore().getBoolean(IIdeUiConstants.PREF_USE_OLD_DASHOARD);
 	}
 	
 	private void migrateBlogFeeds() {

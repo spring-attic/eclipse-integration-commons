@@ -195,11 +195,19 @@ public class DashboardJSHandler {
 		if (entry.getAuthor() != null && entry.getAuthor().trim() != "") {
 			entryAuthor = entry.getAuthor();
 		}
-		html += "<article>";
-		html += "<header class=\"rssTitle\"><h1>" + "<a href=\"\" onclick=\"ide.openPage('" + entry.getLink() + "')\">" + entry.getTitle() + "</a></h1></header>";
-		html += "<p class=\"rssText\">" + trimText(getDescription(entry)) + "</p>";
-		html += "<footer class=\"rssAuthor\">" + entryAuthor + " <i>" + dateString + "</i></footer>";
-		html += "</article>";
+		html += "<div class=\"blog--container blog-preview pad-extra\">";
+		html += "	<div class=\"blog--title\">";
+		html += "	<a href=\"\" onclick=\"ide.openPage('" + entry.getLink() + "')\">"
+				+ entry.getTitle() + "</a>";
+		html += "	</div>";
+		html += "	<div class=\"blog--post desktop-only\">";
+		html += "		<div>";
+		html += "			<p>" + trimText(getDescription(entry)) + "</p>";
+		html += "		</div>";
+		html += "	</div>";
+		html += "	<div class=\"author\">"+entryAuthor+ " <i>" + dateString
+				+ "</i></div>";
+		html += "</div>";
 		return html;
 	}
 
