@@ -1,0 +1,150 @@
+body {
+	font-family: Tahoma, Arial, sans-serif;
+	font-size: 12px;
+	text-decoration: none;
+	margin: 0px;
+	padding: 0px;
+	border: none;
+	height: 100%;
+	width: 100%;
+	background: url('logo_bigleaf.png'),
+		-webkit-gradient(linear, left top, left bottom, from(rgb(62, 144, 64)),
+		to(rgb(158, 193, 72)));
+	background-position: center center, top left;
+	background-attachment: fixed, fixed;
+	background-repeat: no-repeat, no-repeat;
+}
+
+.top {
+	height: 80px;
+	width: 100%;
+	background: url('logo_spring.png');
+	background-position: top left;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+}
+
+.row,.col,.page {
+	overflow: hidden;
+	position: absolute;
+}
+
+.row {
+	left: 0;
+	right: 0;
+}
+
+.col {
+	top: 0;
+	bottom: 0;
+}
+
+.scroll-x {
+	overflow-x: auto;
+}
+
+.scroll-y {
+	overflow-y: auto;
+}
+
+.content {
+	left: 0px;
+	right: 0px;
+	top: 75px;
+	bottom: 0px;
+	overflow: hidden;
+	position: absolute;
+}
+
+* {
+	color: white;
+}
+
+a {
+	font-family: Tahoma, Arial, sans-serif;
+	font-size: 12px;
+	text-decoration: none;
+	border: none;
+}
+
+a:hover {
+	color: yellow;
+}
+
+.sub-window {
+	border-radius: 4px;
+	box-shadow: 0px 0px 0px 4px rgba(1, 1, 1, 0.4);
+	background-color: rgba(1, 1, 1, 0.3);
+	margin: 20px;
+}
+
+.sub-window-title {
+	font-size: 12px;
+	padding: 5px 10px;
+	margin: 0px;
+	background-color: rgba(1, 1, 1, 0.2);
+}
+
+.sub-window-content {
+	padding: 0px;
+	border: none;
+	height: 100%;
+	width: 100%;
+}
+
+.largefont {
+	font-size: 16px;
+}
+
+div .linksbody {
+	padding: 20px 0px 0px 0px;
+}
+
+div .rssFeed {
+	
+}
+
+.rssTitle {
+	text-decoration: underline
+}
+
+.rssAuthor {
+	font-size: 10px;
+	font-style: bold;
+}
+
+.rssDate {
+	font-size: 10px;
+	font-style: italic;
+}
+
+.rssText {
+	font-size: 11px;
+}
+
+li .links {
+	list-style-type: none;
+}
+
+.button {
+	list-style-type: none;
+	vertical-align: top;
+	padding-bottom: 10px;
+}
+
+article {
+	padding: 10px 0px 0px 5px;
+}
+
+article h1 {
+	font-size: 11px;
+}
+
+.search-widget {
+	width: 200px;
+	right: 220px;
+}
+
+.search-box {
+	color: black;
+}

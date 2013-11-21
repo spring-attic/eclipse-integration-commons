@@ -143,7 +143,6 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 		try {
 			WelcomeDashboardPage mainPage = new WelcomeDashboardPage(this);
 			pages.add(mainPage);
-			String mainUrl = mainPage.getHomeUrl();
 			customizeUrlBehavior(StsProperties.getInstance(new NullProgressMonitor()));
 			
 		} catch (Exception e) {
@@ -156,19 +155,8 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 				}
 			}
 		}
-//		addDashboardWebPages(pages);
-		
-//		try {
-//			pages.add(new GeneratedGuidesDashboardPage());
-//		} catch (Exception e) {
-//			GettingStartedActivator.log(e);
-//		}
 		
 		pages.add(new DashboardExtensionsPage());
-//		pages.add(new GuidesDashboardPageWithPreview());
-//		for (int i = 1; i < 3; i++) {
-//			pages.add(new DemoDashboardPage("Demo "+i, "Contents for page "+i));
-//		}
 		return pages;
 	}
 
@@ -191,20 +179,6 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 		}
 		this.openExternal = openExternal.toArray(new String[openExternal.size()]);
 	}
-	
-//	private void readCustomNames(InputStream input) throws IOException {
-//		Properties props = new Properties();
-//		props.load(input);
-//		customNames = props;
-//	}
-
-//	private void addDashboardWebPages(List<IDashboardPage> pages) {
-//		URLBookmark[] bookmarks = GettingStartedActivator.getDefault().getPreferences().getDashboardWebPages();
-//
-//		for (URLBookmark bm : bookmarks) {
-//			pages.add(new WebDashboardPage(bm.getName(), bm.getUrl()));
-//		}
-//	}
 
 	@Override
 	public void init(IEditorSite site, IEditorInput input) {
@@ -330,5 +304,4 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 		}
 		return null;
 	}
-
 }

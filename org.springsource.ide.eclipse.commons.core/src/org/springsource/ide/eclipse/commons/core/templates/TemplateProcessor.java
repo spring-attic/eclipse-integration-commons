@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.springsource.ide.eclipse.commons.core.FileUtil;
 
 /**
@@ -56,6 +58,12 @@ public class TemplateProcessor {
 			logger.debug("Copying binary file " + source);
 			FileUtil.copy(source, target);
 		} else if (source.isDirectory()) {
+			try {
+				FileUtil.copyDirectory(source, target, new NullProgressMonitor());
+			}
+			catch (CoreException e) {
+				logger.error("Problem while attempting to copy template directory", e);
+			}
 			String[] names = source.list();
 			if (names!=null) {
 				for (String childName : names) {
