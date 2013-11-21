@@ -16,6 +16,19 @@ import org.eclipse.jdt.core.IType;
 
 public interface IMainTypeFinder {
 
-	public IType findMain(IJavaProject project, IProgressMonitor mon) throws Exception;
-	
+	/**
+	 * Finds main types in a given Java project. If no types are found, an empty
+	 * value is returned.
+	 * 
+	 * @param project
+	 *            java project where main types should be searched.
+	 * @param mon
+	 * @return non-null list of main types in the project. Return empty value if
+	 *         no main types are found.
+	 * @throws Exception
+	 *             if failure occurred while finding main types
+	 */
+	public IType[] findMain(IJavaProject project, IProgressMonitor mon)
+			throws Exception;
+
 }
