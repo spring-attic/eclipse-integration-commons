@@ -279,6 +279,7 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 				WebDashboardPage page = new WebDashboardPage(customName, url);
 				CTabItem widget = createPageWidget(page);
 				setActivePage((DashboardPageContainer)widget.getData());
+				page.getBrowserViewer().setVisible(true);
 				return true;
 			}
 		}

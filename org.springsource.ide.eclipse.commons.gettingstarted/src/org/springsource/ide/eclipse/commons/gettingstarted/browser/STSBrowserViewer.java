@@ -241,18 +241,17 @@ public class STSBrowserViewer extends Composite {
 				.align(SWT.FILL, SWT.FILL).create());
 		fxCanvas.setLayout(GridLayoutFactory.fillDefaults().create());
 		browser = new WebView();
+		browser.setVisible(false);
 		BorderPane border = new BorderPane();
 		Scene scene = new Scene(border);
 		border.setCenter(browser);
 		fxCanvas.setScene(scene);
-
 		if (showURLbar)
 			updateHistory();
 		if (showToolbar)
 			updateBackNextBusy();
 		
 		addBrowserListeners();
-		// listen();
 	}
 
 	/**
@@ -371,6 +370,7 @@ public class STSBrowserViewer extends Composite {
 							style += BUTTON_BAR;
 						STSBrowserViewer browser2 = new STSBrowserViewer(
 								shell2, style);
+						browser2.setVisible(true);
 						browser2.newWindow = true;
 						return browser2.getBrowser().getEngine();
 					}
@@ -881,6 +881,12 @@ public class STSBrowserViewer extends Composite {
 
 	public IBrowserViewerContainer getContainer() {
 		return container;
+	}
+	
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		browser.setVisible(true);
 	}
 
 	public void setContainer(IBrowserViewerContainer container) {

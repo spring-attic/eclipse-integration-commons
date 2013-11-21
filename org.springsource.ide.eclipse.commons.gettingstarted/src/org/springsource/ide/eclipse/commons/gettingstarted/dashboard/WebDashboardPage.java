@@ -24,7 +24,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.internal.browser.WebBrowserUtil;
 import org.springsource.ide.eclipse.commons.gettingstarted.browser.BrowserFactory;
-import org.springsource.ide.eclipse.commons.gettingstarted.browser.DashboardJSHandler;
 import org.springsource.ide.eclipse.commons.gettingstarted.browser.STSBrowserViewer;
 
 //Note: some complications on Linux systems because of problems satisfying

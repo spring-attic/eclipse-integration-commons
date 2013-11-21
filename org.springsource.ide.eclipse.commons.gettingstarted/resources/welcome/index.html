@@ -6,7 +6,6 @@
 	content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1, user-scalable=no"
 	id="Viewport" name="viewport" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="common/css/dashboard.css" />
 <link rel="stylesheet" type="text/css"
 	href="common/bootstrap/css/bootstrap.css" />
 <link
@@ -36,6 +35,10 @@
 <script type="text/javascript" src="common/js/filter.js"></script>
 <script type="text/javascript" src="common/js/application.js"></script>
 <script type="text/javascript" src="common/js/guide.js"></script>
+
+<link rel="stylesheet" type="text/css" href="common/css/blog.css" />
+<link rel="stylesheet" type="text/css" href="common/css/dashboard.css" />
+
 </head>
 <body>
 	<script>
@@ -100,8 +103,16 @@
 			<div class="main-body--wrapper" style="padding-top: 20px; margin-top: 0px;"> <!-- Override Spring IO Page Whitespace -->
 				<div class="row-fluid blog--wrapper">
 					<div class="span8">
-						<div id="rssEntries"></div>
+						<div id="rssEntries"><i class="fa fa-refresh" style="font-size: 48px"></i><b>Loading...</b></div>
 					</div>
+					
+					<aside class="span4 content-right-pane--container"
+						id="sidebar">
+						<div class="right-pane-widget--container">
+							<h2>Get Started!</h2>
+							<div id="projectWizards"><i class="fa fa-refresh" style="font-size: 48px"></i><b>Loading...</b></div>
+						</div>
+					</aside>
 
 					<aside class="span4 content-right-pane--container"
 						id="sidebar">
@@ -111,14 +122,6 @@
 								href="" onclick="ide.openImportWizard()"><img src="common/img/guides_32.png"/> Guides</a>
 							<a class="github_download btn btn-black uppercase"
 								href="" onclick="ide.openDashboardPage('extensions')"><img src="common/img/extension_32.png"/> Extensions</a>
-						</div>
-					</aside>
-					
-					<aside class="span4 content-right-pane--container"
-						id="sidebar">
-						<div class="right-pane-widget--container">
-							<h2>Get Started!</h2>
-							<div id="projectWizards"></div>
 						</div>
 					</aside>
 				</div>

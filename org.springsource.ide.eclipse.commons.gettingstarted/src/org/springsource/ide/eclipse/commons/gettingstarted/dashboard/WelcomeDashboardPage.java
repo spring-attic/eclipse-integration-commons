@@ -12,7 +12,6 @@ package org.springsource.ide.eclipse.commons.gettingstarted.dashboard;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -22,29 +21,10 @@ import javafx.concurrent.Worker;
 import javafx.concurrent.Worker.State;
 import javafx.scene.web.WebView;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.browser.LocationEvent;
-import org.eclipse.swt.browser.LocationListener;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbenchWizard;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.internal.browser.BrowserViewer;
-import org.eclipse.ui.internal.browser.WebBrowserPreference;
-import org.eclipse.ui.wizards.IWizardDescriptor;
-import org.eclipse.ui.wizards.IWizardRegistry;
 import org.springsource.ide.eclipse.commons.core.preferences.StsProperties;
-import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
-import org.springsource.ide.eclipse.commons.gettingstarted.browser.BrowserContext;
-import org.springsource.ide.eclipse.commons.gettingstarted.browser.DashboardJSHandler;
-import org.springsource.ide.eclipse.commons.ui.UiUtil;
 
-@SuppressWarnings("restriction")
 public class WelcomeDashboardPage extends WebDashboardPage {
 
 	private File welcomeHtml;
@@ -52,9 +32,9 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 
 	public WelcomeDashboardPage(DashboardEditor dashboard)
 			throws URISyntaxException, IOException {
+		this.dashboard = dashboard;
 		StsProperties props = StsProperties
 				.getInstance(new NullProgressMonitor());
-		this.dashboard = dashboard;
 		String contentUrl = props.get("dashboard.welcome.url");
 		setName("Welcome"); // Although this is the title in the html page,
 							// windows browser doesn't seem to reliably give a
@@ -63,7 +43,7 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 		if (contentUrl == null) {
 			// shouldn't happen, but do something with this anyhow, better than
 			// a blank page or an error.
-			setHomeUrl("http://springsource.org");
+			setHomeUrl("http://spring.io");
 		} else if (contentUrl.startsWith("platform:")) {
 			// platform url assumed to point to a bundled directory of
 			// 'templated' content that needs StsProperties replaced.
@@ -106,9 +86,9 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 		super.addBrowserHooks(browser);
 		getBrowserViewer().getBrowser().getEngine().getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
 		    @Override
-		    public void changed(ObservableValue<? extends State> ov, State t, State t1) {
-		        if (t1 == Worker.State.SUCCEEDED && getBrowserViewer() != null) {
-		        	new DashboardJSHandler(getBrowserViewer().getBrowser(), dashboard);
+		    public void changed(ObservableValue<? extends State> ov, State oldState, State newState) {
+		        if (newState == Worker.State.SUCCEEDED && getBrowserViewer() != null) {
+		    		new DashboardWebView(getBrowserViewer().getBrowser(), dashboard);
 		        }
 		    }
 		});

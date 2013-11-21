@@ -141,10 +141,6 @@ public class BrowserFactory {
 		customizeBrowser(viewer.getBrowser());
 		return viewer;
 	}
-	
-	public static STSBrowserViewer create(Composite comp) {
-		return create(comp, true);
-	}
 
 	/**
 	 * Add STS specific customizations to the browser to support integration of springsource.org

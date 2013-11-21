@@ -10,10 +10,10 @@
 
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<LINK rel="stylesheet" type="text/css" href="shared/css/dashboard.css">
+<LINK rel="stylesheet" type="text/css" href="common/css/dashboard.css">
 
 <LINK rel="stylesheet" type="text/css"
-	href="shared/bootstrap/css/bootstrap.css">
+	href="common/bootstrap/css/bootstrap.css">
 
 <LINK
 	href="https://fonts.googleapis.com/css?family=Varela+Round|Montserrat:400,700"
@@ -22,44 +22,47 @@
 <LINK rel="stylesheet" type="text/css"
 	href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css">
 
-<LINK rel="stylesheet" type="text/css" href="shared/css/fontcustom.css">
+<LINK rel="stylesheet" type="text/css" href="common/css/fontcustom.css">
 
 <LINK rel="stylesheet" type="text/css"
-	href="shared/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+	href="common/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
 
-<LINK rel="stylesheet" type="text/css" href="shared/css/icons.css">
+<LINK rel="stylesheet" type="text/css" href="common/css/blog.css">
+<LINK rel="stylesheet" type="text/css" href="common/css/icons.css">
 
-<LINK rel="stylesheet" type="text/css" href="shared/css/buttons.css">
+<LINK rel="stylesheet" type="text/css" href="common/css/buttons.css">
 
-<LINK rel="stylesheet" type="text/css" href="shared/css/typography.css">
+<LINK rel="stylesheet" type="text/css" href="common/css/typography.css">
 
-<LINK rel="stylesheet" type="text/css" href="shared/css/main.css">
+<LINK rel="stylesheet" type="text/css" href="common/css/main.css">
 
-<LINK rel="stylesheet" type="text/css" href="shared/css/application.css">
+<LINK rel="stylesheet" type="text/css" href="common/css/application.css">
 
 <LINK rel="stylesheet" type="text/css"
-	href="shared/css/markdown-content.css">
+	href="common/css/markdown-content.css">
 
-<LINK rel="stylesheet" type="text/css" href="shared/css/docs.css">
+<LINK rel="stylesheet" type="text/css" href="common/css/docs.css">
 
-<LINK rel="stylesheet" type="text/css" href="shared/css/homepage.css">
+<LINK rel="stylesheet" type="text/css" href="common/css/homepage.css">
 
-<LINK rel="stylesheet" type="text/css" href="shared/css/tools.css">
+<LINK rel="stylesheet" type="text/css" href="common/css/tools.css">
 
-<LINK rel="stylesheet" type="text/css" href="shared/css/projects.css">
+<LINK rel="stylesheet" type="text/css" href="common/css/projects.css">
 
-<LINK rel="stylesheet" type="text/css" href="shared/css/highlight.css">
+<LINK rel="stylesheet" type="text/css" href="common/css/highlight.css">
 
-<LINK rel="stylesheet" type="text/css" href="shared/css/responsive.css">
+<LINK rel="stylesheet" type="text/css" href="common/css/responsive.css">
+<link rel="stylesheet" type="text/css" href="common/css/blog.css" />
+<link rel="stylesheet" type="text/css" href="common/css/dashboard.css" />
 
-<SCRIPT type="text/javascript" src="shared/js/jquery.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="common/js/jquery.js"></SCRIPT>
 <SCRIPT type="text/javascript"
-	src="shared/bootstrap/js/bootstrap.min.js"></SCRIPT>
+	src="common/bootstrap/js/bootstrap.min.js"></SCRIPT>
 <SCRIPT type="text/javascript"
-	src="shared/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></SCRIPT>
-<SCRIPT type="text/javascript" src="shared/js/filter.js"></SCRIPT>
-<SCRIPT type="text/javascript" src="shared/js/application.js"></SCRIPT>
-<SCRIPT type="text/javascript" src="shared/js/guide.js"></SCRIPT>
+	src="common/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="common/js/filter.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="common/js/application.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="common/js/guide.js"></SCRIPT>
 
 </HEAD>
 
@@ -164,9 +167,27 @@
 
 				<DIV class="row-fluid blog--wrapper">
 
-					<DIV class="span8 mobile-left-pane">
+					<DIV class="span8">
 
 						<DIV id="rssEntries">
+							<DIV class="blog--container blog-preview">
+								<DIV class="blog--title">
+									<A href=""
+										onclick="ide.openPage('https://spring.io/blog/2013/11/21/first-milestone-of-spring-data-release-train-codd-released')">First
+										milestone of Spring Data release train Codd released</A>
+								</DIV>
+								<DIV class="blog--post desktop-only">
+									<DIV>
+										<P>I am happy to announce the first milestone of the next
+											Spring Data release train named Codd. We welcome two new
+											members to the train: the Spring Data Solr community project
+											as well as Spring Data REST ...</P>
+									</DIV>
+								</DIV>
+								<DIV class="author">
+									Oliver Gierke <I>Nov 21, 2013</I>
+								</DIV>
+							</DIV>
 							<DIV class="blog--container blog-preview pad-extra">
 								<DIV class="blog--title">
 									<A href=""
@@ -499,7 +520,7 @@
 										onclick="ide.openPage('https://spring.io/blog/2013/11/06/spring-exchange-nov-14-15-london')">Spring
 										eXchange Nov 14-15, London</A>
 								</DIV>
-								<DIV class="blog--post desktop-only">
+								<DIV class="blog--post">
 									<DIV>
 										<P>Are you interested in the latest on Spring Framework 4
 											and Java 8, Web Socket architectures, running Spring
@@ -511,50 +532,12 @@
 									Chloe Jackson <I>Nov 6, 2013</I>
 								</DIV>
 							</DIV>
-							<DIV class="blog--container blog-preview pad-extra">
-								<DIV class="blog--title">
-									<A href=""
-										onclick="ide.openPage('https://spring.io/blog/2013/11/05/this-week-in-spring-november-5-2013')">This
-										Week in Spring - November 5, 2013</A>
-								</DIV>
-								<DIV class="blog--post desktop-only">
-									<DIV>
-										<P>Welcome to another installment of This Week in Spring!
-											I'm in Malmo, Sweden at the fantastic &Oslash;redev
-											conference, talking to developers about Spring, Cloud
-											Foundry, and more! I'll be at JMaghreb next week ...</P>
-									</DIV>
-								</DIV>
-								<DIV class="author">
-									Josh Long <I>Nov 4, 2013</I>
-								</DIV>
-							</DIV>
 						</DIV>
 
 					</DIV>
 
 
-					<ASIDE class="span4 content-right-pane--container mobile-left-pane"
-						id="sidebar">
-
-						<DIV class="right-pane-widget--container">
-
-							<H2>Install</H2>
-
-							<A class="github_download btn btn-black uppercase" href=""
-								onclick="ide.openImportWizard()"><IMG
-								src="shared/img/guides_32.png"> Guides</A> <A
-								class="github_download btn btn-black uppercase" href=""
-								onclick="ide.openDashboardPage('extensions')"><IMG
-								src="shared/img/extension_32.png"> Extensions</A>
-
-						</DIV>
-
-					</ASIDE>
-
-
-					<ASIDE class="span4 content-right-pane--container mobile-left-pane"
-						id="sidebar">
+					<ASIDE class="span4 content-right-pane--container" id="sidebar">
 
 						<DIV class="right-pane-widget--container">
 
@@ -568,6 +551,24 @@
 									onclick="ide.showWizard('com.springsource.sts.wizard.template')"><IMG
 									src="common/img/new_32.png"> Spring Project</A>
 							</DIV>
+
+						</DIV>
+
+					</ASIDE>
+
+
+					<ASIDE class="span4 content-right-pane--container" id="sidebar">
+
+						<DIV class="right-pane-widget--container">
+
+							<H2>Install</H2>
+
+							<A class="github_download btn btn-black uppercase" href=""
+								onclick="ide.openImportWizard()"><IMG
+								src="common/img/guides_32.png"> Guides</A> <A
+								class="github_download btn btn-black uppercase" href=""
+								onclick="ide.openDashboardPage('extensions')"><IMG
+								src="common/img/extension_32.png"> Extensions</A>
 
 						</DIV>
 
