@@ -108,7 +108,7 @@
 		<test.useUIThread>true</test.useUIThread>
 		<test.skip>${maven.test.skip}</test.skip>
 
-		<tycho-version>0.17.0</tycho-version>
+		<tycho-version>0.19.0</tycho-version>
 
 		<maven.test.error.ignore>true</maven.test.error.ignore>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
@@ -567,10 +567,12 @@
 							-Xmx1024m -XX:MaxPermSize=256m -Djava.io.tmpdir=${project.build.directory}
 							-Duser.home=${project.build.directory} ${test.vmargs}
 						</argLine>
+<!-- 					What's this?? It seems to stop test from running with e43 because keystore.password file not found.
+						Commented out for now.
 						<appArgLine>
 							-eclipse.keyring ${project.build.directory}/keystore -eclipse.password
 							${project.build.directory}/keystore.password
-						</appArgLine>
+						</appArgLine> -->
 						<dependencies>
 							<dependency>
 								<type>p2-installable-unit</type>
