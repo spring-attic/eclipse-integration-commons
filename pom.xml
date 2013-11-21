@@ -261,6 +261,12 @@
 		</repository>
 
 		<repository>
+			<id>javafx</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/efxclipse/runtime-nightly/site/</url>
+		</repository>
+
+		<repository>
 			<id>orbit</id>
 			<layout>p2</layout>
 			<!-- More recent needed for HttpComponents. Use of api URIBuilder (used 
