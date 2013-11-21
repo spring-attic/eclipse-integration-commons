@@ -6,57 +6,36 @@
 	content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1, user-scalable=no"
 	id="Viewport" name="viewport" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css" href="dashboard.css" />
-<link rel="shortcut icon" type="image/x-icon"
-	href="https://spring.io/img/favicon.png" />
+<link rel="stylesheet" type="text/css" href="common/css/dashboard.css" />
 <link rel="stylesheet" type="text/css"
-	href="https://spring.io/bootstrap/css/bootstrap.css" />
-
+	href="common/bootstrap/css/bootstrap.css" />
 <link
 	href="https://fonts.googleapis.com/css?family=Varela+Round|Montserrat:400,700"
 	rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css"
 	href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css" />
+<link rel="stylesheet" type="text/css" href="common/css/fontcustom.css" />
 <link rel="stylesheet" type="text/css"
-	href="https://spring.io/css/fontcustom.css" />
-<link rel="stylesheet" type="text/css"
-	href="https://spring.io/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
-<link rel="stylesheet" type="text/css"
-	href="https://spring.io/css/icons.css" />
-<link rel="stylesheet" type="text/css"
-	href="https://spring.io/css/buttons.css" />
-<link rel="stylesheet" type="text/css"
-	href="https://spring.io/css/typography.css" />
-<link rel="stylesheet" type="text/css"
-	href="https://spring.io/css/main.css" />
-<link rel="stylesheet" type="text/css"
-	href="https://spring.io/css/application.css" />
-<link rel="stylesheet" type="text/css"
-	href="https://spring.io/css/markdown-content.css" />
-<link rel="stylesheet" type="text/css"
-	href="https://spring.io/css/team.css" />
-<link rel="stylesheet" type="text/css"
-	href="https://spring.io/css/docs.css" />
-<link rel="stylesheet" type="text/css"
-	href="https://spring.io/css/homepage.css" />
-<link rel="stylesheet" type="text/css"
-	href="https://spring.io/css/tools.css" />
-<link rel="stylesheet" type="text/css"
-	href="https://spring.io/css/projects.css" />
-<link rel="stylesheet" type="text/css"
-	href="https://spring.io/css/highlight.css" />
-<link rel="stylesheet" type="text/css"
-	href="https://spring.io/css/responsive.css" />
-<script type="text/javascript" src="https://spring.io/js/jquery.js"></script>
+	href="common/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" type="text/css" href="common/css/icons.css" />
+<link rel="stylesheet" type="text/css" href="common/css/buttons.css" />
+<link rel="stylesheet" type="text/css" href="common/css/typography.css" />
+<link rel="stylesheet" type="text/css" href="common/css/main.css" />
+<link rel="stylesheet" type="text/css" href="common/css/application.css" />
+<link rel="stylesheet" type="text/css" href="common/css/markdown-content.css" />
+<link rel="stylesheet" type="text/css" href="common/css/docs.css" />
+<link rel="stylesheet" type="text/css" href="common/css/homepage.css" />
+<link rel="stylesheet" type="text/css" href="common/css/tools.css" />
+<link rel="stylesheet" type="text/css" href="common/css/projects.css" />
+<link rel="stylesheet" type="text/css" href="common/css/highlight.css" />
+<link rel="stylesheet" type="text/css" href="common/css/responsive.css" />
+<script type="text/javascript" src="common/js/jquery.js"></script>
+<script type="text/javascript" src="common/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript"
-	src="https://spring.io/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript"
-	src="https://spring.io/js/ZeroClipboard.min.js"></script>
-<script type="text/javascript"
-	src="https://spring.io/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript" src="https://spring.io/js/filter.js"></script>
-<script type="text/javascript" src="https://spring.io/js/application.js"></script>
-<script type="text/javascript" src="https://spring.io/js/guide.js"></script>
+	src="common/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="common/js/filter.js"></script>
+<script type="text/javascript" src="common/js/application.js"></script>
+<script type="text/javascript" src="common/js/guide.js"></script>
 </head>
 <body>
 	<script>
@@ -80,7 +59,7 @@
 			<div class="navbar-inner">
 				<div class="container-fluid">
 					<div class="spring-logo--container">
-						<a class="spring-logo" href="/"><span></span></a>
+						<a class="spring-logo" href=""><span></span></a>
 					</div>
 					<ul class="nav pull-right">
 						<li class="navbar-link"><a href=""
@@ -120,22 +99,22 @@
 		<div class="body--container container-fluid ">
 			<div class="main-body--wrapper" style="padding-top: 20px; margin-top: 0px;"> <!-- Override Spring IO Page Whitespace -->
 				<div class="row-fluid blog--wrapper">
-					<div class="span8 mobile-left-pane">
+					<div class="span8">
 						<div id="rssEntries"></div>
 					</div>
 
-					<aside class="span4 content-right-pane--container mobile-left-pane"
+					<aside class="span4 content-right-pane--container"
 						id="sidebar">
 						<div class="right-pane-widget--container">
 							<h2>Install</h2>
 							<a class="github_download btn btn-black uppercase"
-								href="" onclick="ide.openImportWizard()"><img src="guides_32.png"/> Guides</a>
+								href="" onclick="ide.openImportWizard()"><img src="common/img/guides_32.png"/> Guides</a>
 							<a class="github_download btn btn-black uppercase"
-								href="" onclick="ide.openDashboardPage('extensions')"><img src="extension_32.png"/> Extensions</a>
+								href="" onclick="ide.openDashboardPage('extensions')"><img src="common/img/extension_32.png"/> Extensions</a>
 						</div>
 					</aside>
 					
-					<aside class="span4 content-right-pane--container mobile-left-pane"
+					<aside class="span4 content-right-pane--container"
 						id="sidebar">
 						<div class="right-pane-widget--container">
 							<h2>Get Started!</h2>
@@ -154,9 +133,7 @@
 							var d = new Date();
 							document.write(d.getFullYear());
 						</script>
-						<a href="http://gopivotal.com">Pivotal Software</a>, Inc. All
-						Rights Reserved. <a href="http://www.gopivotal.com/terms-of-use">Terms
-							of Use</a> and <a href="http://www.gopivotal.com/privacy-policy">Privacy</a>
+						Pivotal Software, Inc. All Rights Reserved.
 					</div>
 				</div>
 			</div>

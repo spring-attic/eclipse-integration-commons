@@ -10,14 +10,10 @@
 
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<LINK rel="stylesheet" type="text/css" href="dashboard.css">
-
-<LINK rel="shortcut icon" type="image/x-icon"
-	href="https://spring.io/img/favicon.png">
+<LINK rel="stylesheet" type="text/css" href="shared/css/dashboard.css">
 
 <LINK rel="stylesheet" type="text/css"
-	href="https://spring.io/bootstrap/css/bootstrap.css">
-
+	href="shared/bootstrap/css/bootstrap.css">
 
 <LINK
 	href="https://fonts.googleapis.com/css?family=Varela+Round|Montserrat:400,700"
@@ -26,61 +22,44 @@
 <LINK rel="stylesheet" type="text/css"
 	href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css">
 
-<LINK rel="stylesheet" type="text/css"
-	href="https://spring.io/css/fontcustom.css">
+<LINK rel="stylesheet" type="text/css" href="shared/css/fontcustom.css">
 
 <LINK rel="stylesheet" type="text/css"
-	href="https://spring.io/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+	href="shared/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+
+<LINK rel="stylesheet" type="text/css" href="shared/css/icons.css">
+
+<LINK rel="stylesheet" type="text/css" href="shared/css/buttons.css">
+
+<LINK rel="stylesheet" type="text/css" href="shared/css/typography.css">
+
+<LINK rel="stylesheet" type="text/css" href="shared/css/main.css">
+
+<LINK rel="stylesheet" type="text/css" href="shared/css/application.css">
 
 <LINK rel="stylesheet" type="text/css"
-	href="https://spring.io/css/icons.css">
+	href="shared/css/markdown-content.css">
 
-<LINK rel="stylesheet" type="text/css"
-	href="https://spring.io/css/buttons.css">
+<LINK rel="stylesheet" type="text/css" href="shared/css/docs.css">
 
-<LINK rel="stylesheet" type="text/css"
-	href="https://spring.io/css/typography.css">
+<LINK rel="stylesheet" type="text/css" href="shared/css/homepage.css">
 
-<LINK rel="stylesheet" type="text/css"
-	href="https://spring.io/css/main.css">
+<LINK rel="stylesheet" type="text/css" href="shared/css/tools.css">
 
-<LINK rel="stylesheet" type="text/css"
-	href="https://spring.io/css/application.css">
+<LINK rel="stylesheet" type="text/css" href="shared/css/projects.css">
 
-<LINK rel="stylesheet" type="text/css"
-	href="https://spring.io/css/markdown-content.css">
+<LINK rel="stylesheet" type="text/css" href="shared/css/highlight.css">
 
-<LINK rel="stylesheet" type="text/css"
-	href="https://spring.io/css/team.css">
+<LINK rel="stylesheet" type="text/css" href="shared/css/responsive.css">
 
-<LINK rel="stylesheet" type="text/css"
-	href="https://spring.io/css/docs.css">
-
-<LINK rel="stylesheet" type="text/css"
-	href="https://spring.io/css/homepage.css">
-
-<LINK rel="stylesheet" type="text/css"
-	href="https://spring.io/css/tools.css">
-
-<LINK rel="stylesheet" type="text/css"
-	href="https://spring.io/css/projects.css">
-
-<LINK rel="stylesheet" type="text/css"
-	href="https://spring.io/css/highlight.css">
-
-<LINK rel="stylesheet" type="text/css"
-	href="https://spring.io/css/responsive.css">
-
-<SCRIPT type="text/javascript" src="https://spring.io/js/jquery.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="shared/js/jquery.js"></SCRIPT>
 <SCRIPT type="text/javascript"
-	src="https://spring.io/bootstrap/js/bootstrap.min.js"></SCRIPT>
+	src="shared/bootstrap/js/bootstrap.min.js"></SCRIPT>
 <SCRIPT type="text/javascript"
-	src="https://spring.io/js/ZeroClipboard.min.js"></SCRIPT>
-<SCRIPT type="text/javascript"
-	src="https://spring.io/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></SCRIPT>
-<SCRIPT type="text/javascript" src="https://spring.io/js/filter.js"></SCRIPT>
-<SCRIPT type="text/javascript" src="https://spring.io/js/application.js"></SCRIPT>
-<SCRIPT type="text/javascript" src="https://spring.io/js/guide.js"></SCRIPT>
+	src="shared/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="shared/js/filter.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="shared/js/application.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="shared/js/guide.js"></SCRIPT>
 
 </HEAD>
 
@@ -113,7 +92,7 @@
 
 					<DIV class="spring-logo--container">
 
-						<A class="spring-logo" href="/"><SPAN></SPAN></A>
+						<A class="spring-logo" href=""><SPAN></SPAN></A>
 
 					</DIV>
 
@@ -139,9 +118,6 @@
 						<LI class="navbar-link"><A href=""
 							onclick="ide.openPage('http://forum.springsource.org/forumdisplay.php?32-SpringSource-Tool-Suite')">Forum</A>
 						</LI>
-
-						<LI class="navbar-link"><A href=""
-							onclick="ide.openDashboardPage('extensions')">Forum</A></LI>
 
 						<LI class="navbar-link nav-search"><I
 							class="fa fa-search navbar-search--icon js-search-input-open"></I>
@@ -180,15 +156,35 @@
 
 		</HEADER>
 
-		<DIV class="body--container container-fluid">
+		<DIV class="body--container container-fluid ">
 
-			<DIV class="main-body--wrapper" style="padding-top: 0px; margin-top: 0px;">
+			<DIV class="main-body--wrapper"
+				style="padding-top: 20px; margin-top: 0px;">
+				<!-- Override Spring IO Page Whitespace -->
 
 				<DIV class="row-fluid blog--wrapper">
 
 					<DIV class="span8 mobile-left-pane">
 
 						<DIV id="rssEntries">
+							<DIV class="blog--container blog-preview pad-extra">
+								<DIV class="blog--title">
+									<A href=""
+										onclick="ide.openPage('https://spring.io/blog/2013/11/21/spring-best-practices-cloud-foundry-event-in-bangalore')">Spring
+										Best Practices &amp; Cloud Foundry Event in Bangalore</A>
+								</DIV>
+								<DIV class="blog--post desktop-only">
+									<DIV>
+										<P>We are glad to announce that we will host a free
+											conference about Spring and Cloud Foundry on Sunday November
+											24th at the office of SpringPeople in Bangalore, from 10.00
+											AM to 12.30 PM. You can register ...</P>
+									</DIV>
+								</DIV>
+								<DIV class="author">
+									Mark Baars <I>Nov 20, 2013</I>
+								</DIV>
+							</DIV>
 							<DIV class="blog--container blog-preview pad-extra">
 								<DIV class="blog--title">
 									<A href=""
@@ -533,24 +529,6 @@
 									Josh Long <I>Nov 4, 2013</I>
 								</DIV>
 							</DIV>
-							<DIV class="blog--container blog-preview pad-extra">
-								<DIV class="blog--title">
-									<A href=""
-										onclick="ide.openPage('https://spring.io/blog/2013/11/01/spring-security-3-2-0-rc2-released')">Spring
-										Security 3.2.0.RC2 Released</A>
-								</DIV>
-								<DIV class="blog--post desktop-only">
-									<DIV>
-										<P>Spring Security 3.2.0.RC2 is now available from the
-											SpringSource repository at http://repo.springsource.org. See
-											here for a quick tutorial on resolving these artifacts via
-											Maven. What's new? The release ...</P>
-									</DIV>
-								</DIV>
-								<DIV class="author">
-									Rob Winch <I>Nov 1, 2013</I>
-								</DIV>
-							</DIV>
 						</DIV>
 
 					</DIV>
@@ -559,18 +537,16 @@
 					<ASIDE class="span4 content-right-pane--container mobile-left-pane"
 						id="sidebar">
 
-						<DIV class="right-pane-widget--container desktop-only">
+						<DIV class="right-pane-widget--container">
 
-							<H2>Get Started!</H2>
+							<H2>Install</H2>
 
-							<DIV id="projectWizards">
-								<A class="github_download btn btn-black uppercase" href=""
-									onclick="ide.showWizard('org.eclipse.jdt.ui.wizards.JavaProjectWizard')">Create
-									Java Project</A><A class="github_download btn btn-black uppercase"
-									href=""
-									onclick="ide.showWizard('com.springsource.sts.wizard.template')">Create
-									Spring Project</A>
-							</DIV>
+							<A class="github_download btn btn-black uppercase" href=""
+								onclick="ide.openImportWizard()"><IMG
+								src="shared/img/guides_32.png"> Guides</A> <A
+								class="github_download btn btn-black uppercase" href=""
+								onclick="ide.openDashboardPage('extensions')"><IMG
+								src="shared/img/extension_32.png"> Extensions</A>
 
 						</DIV>
 
@@ -580,15 +556,18 @@
 					<ASIDE class="span4 content-right-pane--container mobile-left-pane"
 						id="sidebar">
 
-						<DIV class="right-pane-widget--container desktop-only">
+						<DIV class="right-pane-widget--container">
 
-							<H2>Configure IDE</H2>
+							<H2>Get Started!</H2>
 
-							<A class="github_download btn btn-black uppercase" href=""
-								onclick="ide.openImportWizard()">Import Guide</A> <A
-								class="github_download btn btn-black uppercase" href=""
-								onclick="ide.openDashboardPage('extensions')">Install
-								Extensions</A>
+							<DIV id="projectWizards">
+								<A class="github_download btn btn-black uppercase" href=""
+									onclick="ide.showWizard('org.eclipse.jdt.ui.wizards.JavaProjectWizard')"><IMG
+									src="common/img/new_32.png"> Java Project</A><A
+									class="github_download btn btn-black uppercase" href=""
+									onclick="ide.showWizard('com.springsource.sts.wizard.template')"><IMG
+									src="common/img/new_32.png"> Spring Project</A>
+							</DIV>
 
 						</DIV>
 
@@ -612,10 +591,7 @@
 							var d = new Date();
 							document.write(d.getFullYear());
 						</SCRIPT>
-						2013 <A href="http://gopivotal.com">Pivotal Software</A>, Inc. All
-						Rights Reserved. <A href="http://www.gopivotal.com/terms-of-use">Terms
-							of Use</A> and <A href="http://www.gopivotal.com/privacy-policy">Privacy</A>
-
+						2013 Pivotal Software, Inc. All Rights Reserved.
 					</DIV>
 
 				</DIV>

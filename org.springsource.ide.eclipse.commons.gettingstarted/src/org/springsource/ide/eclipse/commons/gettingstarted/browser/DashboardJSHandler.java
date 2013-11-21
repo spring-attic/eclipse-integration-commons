@@ -189,7 +189,7 @@ public class DashboardJSHandler {
 						//We use github_download as that seems to provide the shape we need
 						html += "<a class=\"github_download btn btn-black uppercase\" href=\"\" onclick=\"ide.showWizard('"
 								+ id
-								+ "')\"><img src=\"new_32.png\"/> "
+								+ "')\"><img src=\"common/img/new_32.png\"/> "
 								+ element.getAttribute(ELEMENT_NAME) + "</a>";
 
 						foundElements[i] = element;
