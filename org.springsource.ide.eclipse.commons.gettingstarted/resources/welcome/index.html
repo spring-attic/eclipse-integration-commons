@@ -21,7 +21,8 @@
 <link rel="stylesheet" type="text/css" href="common/css/typography.css" />
 <link rel="stylesheet" type="text/css" href="common/css/main.css" />
 <link rel="stylesheet" type="text/css" href="common/css/application.css" />
-<link rel="stylesheet" type="text/css" href="common/css/markdown-content.css" />
+<link rel="stylesheet" type="text/css"
+	href="common/css/markdown-content.css" />
 <link rel="stylesheet" type="text/css" href="common/css/docs.css" />
 <link rel="stylesheet" type="text/css" href="common/css/homepage.css" />
 <link rel="stylesheet" type="text/css" href="common/css/tools.css" />
@@ -29,7 +30,8 @@
 <link rel="stylesheet" type="text/css" href="common/css/highlight.css" />
 <link rel="stylesheet" type="text/css" href="common/css/responsive.css" />
 <script type="text/javascript" src="common/js/jquery.js"></script>
-<script type="text/javascript" src="common/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="common/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript"
 	src="common/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" src="common/js/filter.js"></script>
@@ -42,6 +44,10 @@
 </head>
 <body>
 	<script>
+		function setUpdateHtml(html) {
+			document.getElementById('updates').innerHTML = html;
+		}
+
 		function setRssHtml(html) {
 			document.getElementById('rssEntries').innerHTML = html;
 		}
@@ -100,28 +106,37 @@
 			</div>
 		</header>
 		<div class="body--container container-fluid ">
-			<div class="main-body--wrapper" style="padding-top: 20px; margin-top: 0px;"> <!-- Override Spring IO Page Whitespace -->
+			<div class="main-body--wrapper"
+				style="padding-top: 20px; margin-top: 0px;">
+				<!-- Override Spring IO Page Whitespace -->
 				<div class="row-fluid blog--wrapper">
 					<div class="span8">
-						<div id="rssEntries"><i class="fa fa-refresh" style="font-size: 48px"></i><b>Loading...</b></div>
+						<h3 class="feed-header">Important Updates</h3>
+						<div id="updates"><b>Loading...</b></div>
+						<h3 class="feed-header">News</h3>
+						<div id="rssEntries"><b>Loading...</b></div>
 					</div>
-					
-					<aside class="span4 content-right-pane--container"
-						id="sidebar">
+
+					<aside class="span4 content-right-pane--container" id="sidebar">
 						<div class="right-pane-widget--container">
 							<h2>Get Started!</h2>
-							<div id="projectWizards"><i class="fa fa-refresh" style="font-size: 48px"></i><b>Loading...</b></div>
+							<a class="ide_widget btn btn-black uppercase" href=""
+								onclick="ide.openImportWizard()">Import Getting Started
+								Guide</a> <a class="ide_widget btn btn-black uppercase" href=""
+								onclick="ide.openImportWizard()">Import Tutorial Guide</a> <a
+								class="ide_widget btn btn-black uppercase" href=""
+								onclick="ide.openImportWizard()">Get Reference App</a>
+							<div id="projectWizards">
+								<b>Loading...</b>
+							</div>
 						</div>
 					</aside>
 
-					<aside class="span4 content-right-pane--container"
-						id="sidebar">
+					<aside class="span4 content-right-pane--container" id="sidebar">
 						<div class="right-pane-widget--container">
-							<h2>Install</h2>
-							<a class="github_download btn btn-black uppercase"
-								href="" onclick="ide.openImportWizard()"><img src="common/img/guides_32.png"/> Guides</a>
-							<a class="github_download btn btn-black uppercase"
-								href="" onclick="ide.openDashboardPage('extensions')"><img src="common/img/extension_32.png"/> Extensions</a>
+							<h2>Manage</h2>
+							<a class="ide_widget btn btn-black uppercase" href=""
+								onclick="ide.openDashboardPage('extensions')">IDE Extensions</a>
 						</div>
 					</aside>
 				</div>

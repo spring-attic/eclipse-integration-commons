@@ -1,31 +1,77 @@
-.pad-extra {
-	padding-bottom: 0px;
+.content-right-pane--container .ide_widget {
+	display: block;
+	text-align: center;
+	margin: 10px 20px;
 }
 
-.blog--title,.blog--post,.blog--post p,.blog--container,.blog--container div,.blog--preview,.blog--preview div,.author div {
+.btn.btn-black {
+	font-size: 12px;
+	line-height: 12px;
+	padding: 10px 20px;
+	background-color: #6db33f;
+	color: #34302d;
+	border: 2px solid #34302d;
+}
+
+.btn.btn-black:hover {
+	border-color: #34302d;
+	background-color: #34302d;
+	box-shadow: 0 1px 3px #0b0a0a;
+}
+
+.new-star {
+	color: gold;
+	border-color: black;
+}
+
+.content-right-pane--container .gettingStartedButton {
+	display: block;
+	text-align: center;
+	margin: 45px 6.2%;
+}
+
+.main-body--wrapper {
+	padding-top: 20px;
 	margin-top: 0px;
-	margin-bottom: 0px;
-	padding-top: 0px;
-	padding-bottom: 0px;
 }
 
-.blog--container.blog-preview .blog--post p {
-	margin-bottom: 0px;
+.blog--title {
+	margin-top: 6px !important;
+	margin-bottom: 2px !important;
 }
 
-.blog--container .blog--post p {
-	margin-bottom: 0px;
+.blog--container {
+	margin-bottom: 0px !important;
+	padding: 0px !important;
+}
+
+div .blog--post,.blog--container.blog-preview {
+	margin: 0px !important;
+	padding: 0px !important;
+}
+
+div .blog--post {
+	line-height: 10px !important;
 }
 
 .blog--title a {
-	font-size: 14px;	
+	font-size: 14px;
 	line-height: 15px;
 }
 
 .blog--post p {
 	font-size: 11px;
+	line-height: 15px;
+	margin-bottom: 10px !important;
 }
 
 .author {
-	font-size: 12px;	
+	font-size: 11px;
+	line-height: 15px;
+	font-weight: bold;
+}
+
+.feed-header {
+	color: #6db33f;
+	margin-bottom: 0px;
 }

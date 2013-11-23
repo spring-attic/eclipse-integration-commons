@@ -38,8 +38,6 @@ import netscape.javascript.JSObject;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -47,20 +45,24 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
-import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.browser.WebBrowserPreference;
 import org.eclipse.ui.wizards.IWizardDescriptor;
 import org.eclipse.ui.wizards.IWizardRegistry;
+import org.springframework.ide.eclipse.wizard.gettingstarted.guides.GSImportWizard;
 import org.springsource.ide.eclipse.commons.core.ResourceProvider;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
+import org.springsource.ide.eclipse.commons.ui.StsUiImages;
 import org.springsource.ide.eclipse.commons.ui.UiUtil;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.AggregateFeedJob;
+import org.springsource.ide.eclipse.dashboard.internal.ui.editors.UpdateNotification;
 import org.w3c.dom.Document;
 
 import com.sun.syndication.feed.synd.SyndContent;
@@ -85,6 +87,8 @@ public class DashboardWebView {
 	private static final int FEEDS_DESCRIPTION_MAX = 200;
 
 	public static final String RESOURCE_DASHBOARD_FEEDS_BLOGS = "dashboard.feeds.blogs";
+
+	public static final String RESOURCE_DASHBOARD_FEEDS_UPDATE = "dashboard.feeds.update";
 
 	private static final String ELEMENT_ID = "id";
 
@@ -114,7 +118,14 @@ public class DashboardWebView {
 
 	private WebEngine engine;
 
+	private String feedHtml;
+	private String wizardHtml;
+	private String updateHtml;
+
+	private WebView view;
+
 	public DashboardWebView(final WebView view, DashboardEditor editor) {
+		this.view = view;
 		this.engine = view.getEngine();
 		this.editor = editor;
 		JSObject window = (JSObject) engine.executeScript("window");
@@ -124,33 +135,54 @@ public class DashboardWebView {
 		for (String url : urls) {
 			springMap.put(url, null);
 		}
-		final AggregateFeedJob job = new AggregateFeedJob(springMap, "Feeds");
-		job.addJobChangeListener(new JobChangeAdapter() {
+		wizardHtml = buildCreateWizards();
+
+		final AggregateFeedJob feedJob = new AggregateFeedJob(springMap, "Feeds");
+		feedJob.addJobChangeListener(new JobChangeAdapter() {
+
 			@Override
 			public void done(IJobChangeEvent event) {
-				unfinishedJobs.remove(job);
-				Map<SyndEntry, SyndFeed> entryToFeed = job.getFeedReader()
+				unfinishedJobs.remove(feedJob);
+				Map<SyndEntry, SyndFeed> entryToFeed = feedJob.getFeedReader()
 						.getFeedsWithEntries();
 				Set<SyndEntry> entries = entryToFeed.keySet();
-				final String feedHtml = buildFeeds(entries);
-				final String wizardHtml = buildCreateWizards();
-				Platform.runLater(new Runnable() {
-
-					@Override
-					public void run() {
-						JSObject js = (JSObject) engine.executeScript("window");
-						js.call("setWizardHtml", wizardHtml);
-						js.call("setRssHtml", feedHtml);
-						view.requestLayout();
-						view.setVisible(true);
-						System.out.println(toDocumentString(engine.getDocument()));
-					}
-
-				});
+				feedHtml = buildFeeds(entries);
+				checkUpdate();
 			}
 		});
-		unfinishedJobs.add(job);
-		job.schedule();
+		unfinishedJobs.add(feedJob);
+		feedJob.schedule();
+		
+		Map<String, String> updateMap = new HashMap<String, String>();
+		updateMap.put(ResourceProvider.getUrl(RESOURCE_DASHBOARD_FEEDS_UPDATE), null);
+		final AggregateFeedJob updatesJob = new AggregateFeedJob(springMap, "Updates");
+		updatesJob.addJobChangeListener(new JobChangeAdapter() {
+			@Override
+			public void done(IJobChangeEvent event) {
+				unfinishedJobs.remove(updatesJob);
+				updateHtml = buildUpdates(updatesJob.getNotifications());
+				checkUpdate();
+			}
+		});
+		unfinishedJobs.add(updatesJob);
+		updatesJob.schedule();
+	}
+
+	private void checkUpdate() {
+		if (wizardHtml != null && feedHtml!= null && updateHtml != null) {
+			Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+					JSObject js = (JSObject) engine.executeScript("window");
+					js.call("setWizardHtml", wizardHtml);
+					js.call("setRssHtml", feedHtml);
+					js.call("setUpdateHtml", updateHtml);
+					view.requestLayout();
+					view.setVisible(true);
+				}
+			});
+		}
 	}
 
 	private static IConfigurationElement getExtension(String id) {
@@ -180,9 +212,10 @@ public class DashboardWebView {
 					&& element.getAttribute(ELEMENT_ICON) != null) {
 				// We use github_download as that seems to provide the shape we
 				// need
-				html += "<a class=\"github_download btn btn-black uppercase\" href=\"\" onclick=\"ide.showWizard('"
+				html += "<a class=\"ide_widget btn btn-black uppercase\" href=\"\" onclick=\"ide.showWizard('"
 						+ ids[i]
-						+ "')\"><img src=\"common/img/new_32.png\"/> "
+						+ "')\">"
+						+ "Create "
 						+ element.getAttribute(ELEMENT_NAME) + "</a>";
 			}
 		}
@@ -241,6 +274,55 @@ public class DashboardWebView {
 		return html;
 	}
 
+	private String buildUpdates(List<UpdateNotification> notifications) {
+		String html = "<div>";
+		// make sure the entries are sorted correctly
+		Collections.sort(notifications, new Comparator<UpdateNotification>() {
+			public int compare(UpdateNotification o1, UpdateNotification o2) {
+				if (o2.getEntry() != null && o2.getEntry().getPublishedDate() != null
+						&& o1.getEntry() != null) {
+					return o2.getEntry().getPublishedDate()
+							.compareTo(o1.getEntry().getPublishedDate());
+				}
+				return 0;
+			}
+		});
+
+		for (UpdateNotification notification : notifications) {
+			String update = buildUpdate(notification);
+			if (update != null) {
+				html += update;
+			}
+		}
+		html += "</div>";
+		return html;
+	}
+
+	private String buildUpdate(UpdateNotification notification) {
+		if (notification.getEntry() == null) {
+			return null;
+		}
+		if ("important".equals(notification.getSeverity())) {
+			return buildUpdateBody(notification);
+		} else if ("warning".equals(notification.getSeverity())) {
+			return buildUpdateBody(notification);
+		} else {
+		}
+		return null;
+	}
+
+	private String buildUpdateBody(UpdateNotification notification) {
+		String html = null;
+		SyndEntry entry = notification.getEntry();
+		html += "<div class=\"blog--container blog-preview\">";
+		html += "	<div class=\"blog--title\">";
+		html += "	<a href=\"\" onclick=\"ide.openPage('" + entry.getLink() + "')\">"
+				+ entry.getTitle() + "</a>";
+		html += "	</div>";
+		html += "</div>";
+		return html;
+	}
+
 	private String buildFeed(SyndEntry entry) {
 		String html = "";
 		Date entryDate = new Date(0);
@@ -259,18 +341,21 @@ public class DashboardWebView {
 		if (entry.getAuthor() != null && entry.getAuthor().trim() != "") {
 			entryAuthor = entry.getAuthor();
 		}
-		html += "<div class=\"blog--container blog-preview pad-extra\">";
+		html += "<div class=\"blog--container blog-preview\">";
 		html += "	<div class=\"blog--title\">";
+		if (true) {
+			html += "<i class=\"fa fa-star new-star\"></i>";
+		}
 		html += "	<a href=\"\" onclick=\"ide.openPage('" + entry.getLink() + "')\">"
 				+ entry.getTitle() + "</a>";
 		html += "	</div>";
 		html += "	<div class=\"blog--post\">";
 		html += "		<div>";
-		html += "			<p>" + trimText(buildDescription(entry)) + "</p>";
+		html += "			<p>" + trimText(buildDescription(entry));
+		html += "	<span class=\"author\">" + entryAuthor + " <i>" + dateString
+				+ "</i></span></p>";
 		html += "		</div>";
 		html += "	</div>";
-		html += "	<div class=\"author\">" + entryAuthor + " <i>" + dateString
-				+ "</i></div>";
 		html += "</div>";
 		return html;
 	}
@@ -376,7 +461,7 @@ public class DashboardWebView {
 			IWizardDescriptor descriptor = registry
 					.findWizard("org.springsource.ide.eclipse.gettingstarted.wizards.import.generic");
 			if (descriptor != null) {
-				IWorkbenchWizard wiz = descriptor.createWizard();
+				GSImportWizard wiz = (GSImportWizard) descriptor.createWizard();
 				Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 						.getShell();
 				WizardDialog dialog = new WizardDialog(shell, wiz);
@@ -387,7 +472,7 @@ public class DashboardWebView {
 			GettingStartedActivator.log(e);
 		}
 	}
-	
+
 	public String toDocumentString(Document doc) {
 		StringWriter sw = new StringWriter();
 		try {
