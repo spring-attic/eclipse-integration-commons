@@ -45,20 +45,17 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
+import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.browser.WebBrowserPreference;
 import org.eclipse.ui.wizards.IWizardDescriptor;
 import org.eclipse.ui.wizards.IWizardRegistry;
-import org.springframework.ide.eclipse.wizard.gettingstarted.guides.GSImportWizard;
 import org.springsource.ide.eclipse.commons.core.ResourceProvider;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
-import org.springsource.ide.eclipse.commons.ui.StsUiImages;
 import org.springsource.ide.eclipse.commons.ui.UiUtil;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.AggregateFeedJob;
@@ -155,7 +152,7 @@ public class DashboardWebView {
 		
 		Map<String, String> updateMap = new HashMap<String, String>();
 		updateMap.put(ResourceProvider.getUrl(RESOURCE_DASHBOARD_FEEDS_UPDATE), null);
-		final AggregateFeedJob updatesJob = new AggregateFeedJob(springMap, "Updates");
+		final AggregateFeedJob updatesJob = new AggregateFeedJob(updateMap, "Updates");
 		updatesJob.addJobChangeListener(new JobChangeAdapter() {
 			@Override
 			public void done(IJobChangeEvent event) {
@@ -169,7 +166,7 @@ public class DashboardWebView {
 	}
 
 	private void checkUpdate() {
-		if (wizardHtml != null && feedHtml!= null && updateHtml != null) {
+		if (wizardHtml != null && updateHtml != null) {
 			Platform.runLater(new Runnable() {
 
 				@Override
@@ -180,6 +177,7 @@ public class DashboardWebView {
 					js.call("setUpdateHtml", updateHtml);
 					view.requestLayout();
 					view.setVisible(true);
+					//printPageHtml();
 				}
 			});
 		}
@@ -275,7 +273,7 @@ public class DashboardWebView {
 	}
 
 	private String buildUpdates(List<UpdateNotification> notifications) {
-		String html = "<div>";
+		String html = "";
 		// make sure the entries are sorted correctly
 		Collections.sort(notifications, new Comparator<UpdateNotification>() {
 			public int compare(UpdateNotification o1, UpdateNotification o2) {
@@ -290,11 +288,10 @@ public class DashboardWebView {
 
 		for (UpdateNotification notification : notifications) {
 			String update = buildUpdate(notification);
-			if (update != null) {
+			if (!update.isEmpty()) {
 				html += update;
 			}
 		}
-		html += "</div>";
 		return html;
 	}
 
@@ -302,27 +299,28 @@ public class DashboardWebView {
 		if (notification.getEntry() == null) {
 			return null;
 		}
-		if ("important".equals(notification.getSeverity())) {
+//		if ("important".equals(notification.getSeverity())) {
 			return buildUpdateBody(notification);
-		} else if ("warning".equals(notification.getSeverity())) {
-			return buildUpdateBody(notification);
-		} else {
-		}
-		return null;
+//		} else {
+//		}
+//		return null;
 	}
 
 	private String buildUpdateBody(UpdateNotification notification) {
-		String html = null;
+		String html = "";
 		SyndEntry entry = notification.getEntry();
 		html += "<div class=\"blog--container blog-preview\">";
 		html += "	<div class=\"blog--title\">";
-		html += "	<a href=\"\" onclick=\"ide.openPage('" + entry.getLink() + "')\">"
-				+ entry.getTitle() + "</a>";
+		html += "   <i class=\"fa fa-exclamation new-star\"></i>";
+		html += "	<a href=\"\" onclick=\"ide.openPage('" + entry.getLink() + "')\"><b>"
+				+ entry.getTitle() + "</b></a>";
 		html += "	</div>";
 		html += "</div>";
 		return html;
 	}
 
+	int i = 0;
+	
 	private String buildFeed(SyndEntry entry) {
 		String html = "";
 		Date entryDate = new Date(0);
@@ -343,7 +341,7 @@ public class DashboardWebView {
 		}
 		html += "<div class=\"blog--container blog-preview\">";
 		html += "	<div class=\"blog--title\">";
-		if (true) {
+		if (i++ < 5) {
 			html += "<i class=\"fa fa-star new-star\"></i>";
 		}
 		html += "	<a href=\"\" onclick=\"ide.openPage('" + entry.getLink() + "')\">"
@@ -461,7 +459,7 @@ public class DashboardWebView {
 			IWizardDescriptor descriptor = registry
 					.findWizard("org.springsource.ide.eclipse.gettingstarted.wizards.import.generic");
 			if (descriptor != null) {
-				GSImportWizard wiz = (GSImportWizard) descriptor.createWizard();
+				IWorkbenchWizard wiz = descriptor.createWizard();
 				Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 						.getShell();
 				WizardDialog dialog = new WizardDialog(shell, wiz);
@@ -473,7 +471,7 @@ public class DashboardWebView {
 		}
 	}
 
-	public String toDocumentString(Document doc) {
+	private void printPageHtml() {
 		StringWriter sw = new StringWriter();
 		try {
 			TransformerFactory tf = TransformerFactory.newInstance();
@@ -483,8 +481,8 @@ public class DashboardWebView {
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 
-			transformer.transform(new DOMSource(doc), new StreamResult(sw));
-			return sw.toString();
+			transformer.transform(new DOMSource(view.getEngine().getDocument()), new StreamResult(sw));
+			System.out.println(sw.toString());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
