@@ -194,11 +194,6 @@ public class STSBrowserViewer extends Composite {
 		layout.verticalSpacing = 0;
 		layout.numColumns = 1;
 		setLayout(layout);
-		// No! Don't setLayoutData its really up to the client to decide how
-		// this component will be used / layed out.
-		// The component itself should only control how its children are laid
-		// out!
-		// setLayoutData(new GridData(GridData.FILL_BOTH));
 		clipboard = new Clipboard(parent.getDisplay());
 
 		if (showToolbar || showURLbar) {

@@ -43,6 +43,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -57,6 +58,7 @@ import org.springsource.ide.eclipse.commons.core.ResourceProvider;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.ui.UiUtil;
+import org.springsource.ide.eclipse.dashboard.internal.ui.IIdeUiConstants;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.AggregateFeedJob;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.UpdateNotification;
@@ -109,8 +111,6 @@ public class DashboardWebView {
 
 	private DashboardEditor editor;
 
-	private List<SyndEntry> displayedEntries = new ArrayList<SyndEntry>();
-
 	private Set<AggregateFeedJob> unfinishedJobs = new CopyOnWriteArraySet<AggregateFeedJob>();
 
 	private WebEngine engine;
@@ -121,7 +121,16 @@ public class DashboardWebView {
 
 	private WebView view;
 
+	private Date lastUpdated = null;
+
+	private Date currentUpdated = null;
+
 	public DashboardWebView(final WebView view, DashboardEditor editor) {
+		IPreferenceStore prefStore = IdeUiPlugin.getDefault().getPreferenceStore();
+		long lastUpdateLong = prefStore
+				.getLong(IIdeUiConstants.PREF_FEED_ENTRY_LAST_UPDATE_DISPLAYED);
+		lastUpdated = new Date(lastUpdateLong);
+		currentUpdated = lastUpdated;
 		this.view = view;
 		this.engine = view.getEngine();
 		this.editor = editor;
@@ -149,7 +158,7 @@ public class DashboardWebView {
 		});
 		unfinishedJobs.add(feedJob);
 		feedJob.schedule();
-		
+
 		Map<String, String> updateMap = new HashMap<String, String>();
 		updateMap.put(ResourceProvider.getUrl(RESOURCE_DASHBOARD_FEEDS_UPDATE), null);
 		final AggregateFeedJob updatesJob = new AggregateFeedJob(updateMap, "Updates");
@@ -177,7 +186,7 @@ public class DashboardWebView {
 					js.call("setUpdateHtml", updateHtml);
 					view.requestLayout();
 					view.setVisible(true);
-					//printPageHtml();
+					// printPageHtml();
 				}
 			});
 		}
@@ -299,11 +308,11 @@ public class DashboardWebView {
 		if (notification.getEntry() == null) {
 			return null;
 		}
-//		if ("important".equals(notification.getSeverity())) {
-			return buildUpdateBody(notification);
-//		} else {
-//		}
-//		return null;
+		// if ("important".equals(notification.getSeverity())) {
+		return buildUpdateBody(notification);
+		// } else {
+		// }
+		// return null;
 	}
 
 	private String buildUpdateBody(UpdateNotification notification) {
@@ -319,8 +328,6 @@ public class DashboardWebView {
 		return html;
 	}
 
-	int i = 0;
-	
 	private String buildFeed(SyndEntry entry) {
 		String html = "";
 		Date entryDate = new Date(0);
@@ -341,8 +348,11 @@ public class DashboardWebView {
 		}
 		html += "<div class=\"blog--container blog-preview\">";
 		html += "	<div class=\"blog--title\">";
-		if (i++ < 5) {
+		if (lastUpdated.before(entryDate)) {
 			html += "<i class=\"fa fa-star new-star\"></i>";
+		}
+		if (currentUpdated.before(entryDate)) {
+			currentUpdated = entryDate;
 		}
 		html += "	<a href=\"\" onclick=\"ide.openPage('" + entry.getLink() + "')\">"
 				+ entry.getTitle() + "</a>";
@@ -350,7 +360,7 @@ public class DashboardWebView {
 		html += "	<div class=\"blog--post\">";
 		html += "		<div>";
 		html += "			<p>" + trimText(buildDescription(entry));
-		html += "	<span class=\"author\">" + entryAuthor + " <i>" + dateString
+		html += "		<span class=\"author\">" + entryAuthor + " <i>" + dateString
 				+ "</i></span></p>";
 		html += "		</div>";
 		html += "	</div>";
@@ -481,10 +491,17 @@ public class DashboardWebView {
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 
-			transformer.transform(new DOMSource(view.getEngine().getDocument()), new StreamResult(sw));
+			transformer.transform(new DOMSource(view.getEngine().getDocument()),
+					new StreamResult(sw));
 			System.out.println(sw.toString());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public void dispose() {
+		IPreferenceStore prefStore = IdeUiPlugin.getDefault().getPreferenceStore();
+		prefStore.setValue(IIdeUiConstants.PREF_FEED_ENTRY_LAST_UPDATE_DISPLAYED,
+				currentUpdated.getTime());
 	}
 }

@@ -30,6 +30,8 @@ public interface IIdeUiConstants {
 
 	public static final String PREF_FEED_ENTRY_READ_STATE = IdeUiPlugin.PLUGIN_ID + "dashboard.feed.item.state";
 
+	public static final String PREF_FEED_ENTRY_LAST_UPDATE_DISPLAYED = IdeUiPlugin.PLUGIN_ID + "dashboard.feed.last_update";
+
 	public static final String PREF_OPEN_DASHBOARD_STARTUP = IdeUiPlugin.PLUGIN_ID + "dashboard.startup";
 	public static final String PREF_USE_OLD_DASHOARD = IdeUiPlugin.PLUGIN_ID + "dashboard.use.old";
 

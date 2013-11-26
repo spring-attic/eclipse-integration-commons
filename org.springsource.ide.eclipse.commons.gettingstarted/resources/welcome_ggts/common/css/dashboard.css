@@ -8,7 +8,7 @@
 	font-size: 12px;
 	line-height: 12px;
 	padding: 10px 20px;
-	background-color: #6db33f;
+	background-color: rgb(183,235,149);
 	color: #34302d;
 	border: 2px solid #34302d;
 }
@@ -23,6 +23,7 @@
 .new-star {
 	color: gold;
 	border-color: black;
+	font-size: 14px;
 }
 
 .content-right-pane--container .gettingStartedButton {

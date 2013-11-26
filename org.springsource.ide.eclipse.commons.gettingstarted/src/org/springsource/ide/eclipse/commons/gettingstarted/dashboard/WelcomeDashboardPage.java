@@ -29,12 +29,12 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 
 	private File welcomeHtml;
 	private DashboardEditor dashboard;
+	private DashboardWebView webView;
 
-	public WelcomeDashboardPage(DashboardEditor dashboard)
-			throws URISyntaxException, IOException {
+	public WelcomeDashboardPage(DashboardEditor dashboard) throws URISyntaxException,
+			IOException {
 		this.dashboard = dashboard;
-		StsProperties props = StsProperties
-				.getInstance(new NullProgressMonitor());
+		StsProperties props = StsProperties.getInstance(new NullProgressMonitor());
 		String contentUrl = props.get("dashboard.welcome.url");
 		setName("Welcome"); // Although this is the title in the html page,
 							// windows browser doesn't seem to reliably give a
@@ -80,17 +80,30 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 		// Shouldn't allow closing the main / welcome page.
 		return false;
 	}
-	
+
 	@Override
 	protected void addBrowserHooks(final WebView browser) {
 		super.addBrowserHooks(browser);
-		getBrowserViewer().getBrowser().getEngine().getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-		    @Override
-		    public void changed(ObservableValue<? extends State> ov, State oldState, State newState) {
-		        if (newState == Worker.State.SUCCEEDED && getBrowserViewer() != null) {
-		    		new DashboardWebView(getBrowserViewer().getBrowser(), dashboard);
-		        }
-		    }
-		});
+		getBrowserViewer().getBrowser().getEngine().getLoadWorker().stateProperty()
+				.addListener(new ChangeListener<Worker.State>() {
+
+					@Override
+					public void changed(ObservableValue<? extends State> ov,
+							State oldState, State newState) {
+						if (newState == Worker.State.SUCCEEDED
+								&& getBrowserViewer() != null) {
+							webView = new DashboardWebView(getBrowserViewer()
+									.getBrowser(), dashboard);
+						}
+					}
+				});
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		if (webView != null) {
+			webView.dispose();
+		}
 	}
 }
