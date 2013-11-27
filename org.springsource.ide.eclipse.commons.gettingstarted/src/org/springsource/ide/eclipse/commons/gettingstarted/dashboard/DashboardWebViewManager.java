@@ -82,7 +82,7 @@ import com.sun.syndication.feed.synd.SyndFeed;
  * @author Steffen Pingel
  * @author Leo Dos Santos
  */
-public class DashboardWebView {
+public class DashboardWebViewManager {
 
 	private static final int FEEDS_DESCRIPTION_MAX = 200;
 
@@ -128,11 +128,10 @@ public class DashboardWebView {
 
 	private Date currentUpdated = null;
 
-	public DashboardWebView(final WebView view, DashboardEditor editor) {
+	public DashboardWebViewManager(final WebView view, DashboardEditor editor) {
 		IPreferenceStore prefStore = IdeUiPlugin.getDefault().getPreferenceStore();
 		long lastUpdateLong = prefStore
 				.getLong(IIdeUiConstants.PREF_FEED_ENTRY_LAST_UPDATE_DISPLAYED);
-		view.setVisible(false);
 		lastUpdated = new Date(lastUpdateLong);
 		currentUpdated = lastUpdated;
 		this.view = view;
@@ -195,7 +194,7 @@ public class DashboardWebView {
 							view.setVisible(true);
 						}
 					});
-					// printPageHtml();
+					//printPageHtml();
 				}
 			});
 		}
@@ -331,7 +330,7 @@ public class DashboardWebView {
 		html += "<div class=\"blog--container blog-preview\">";
 		html += "	<div class=\"blog--title\">";
 		html += "   <i class=\"fa fa-exclamation new-star\"></i>";
-		html += "	<a href=\"\" onclick=\"ide.openPage('" + entry.getUri() + "')\"><b>"
+		html += "	<a href=\"\" onclick=\"ide.openPage('" + entry.getLink() + "')\"><b>"
 				+ entry.getTitle() + "</b></a>";
 		html += "	</div>";
 		html += "</div>";
@@ -364,7 +363,7 @@ public class DashboardWebView {
 		if (currentUpdated.before(entryDate)) {
 			currentUpdated = entryDate;
 		}
-		html += "	<a href=\"\" onclick=\"ide.openPage('" + entry.getUri() + "')\">"
+		html += "	<a href=\"\" onclick=\"ide.openPage('" + entry.getLink() + "')\">"
 				+ entry.getTitle() + "</a>";
 		html += "	</div>";
 		html += "	<div class=\"blog--post\">";

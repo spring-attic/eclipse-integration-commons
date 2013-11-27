@@ -29,7 +29,7 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 
 	private File welcomeHtml;
 	private DashboardEditor dashboard;
-	private DashboardWebView webView;
+	private DashboardWebViewManager webView;
 
 	public WelcomeDashboardPage(DashboardEditor dashboard) throws URISyntaxException,
 			IOException {
@@ -92,7 +92,7 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 							State oldState, State newState) {
 						if (newState == Worker.State.SUCCEEDED
 								&& getBrowserViewer() != null) {
-							webView = new DashboardWebView(getBrowserViewer()
+							webView = new DashboardWebViewManager(getBrowserViewer()
 									.getBrowser(), dashboard);
 						}
 					}
