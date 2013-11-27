@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.completions.externaltype.indexing;
 
+import org.eclipse.core.runtime.Assert;
 import org.springsource.ide.eclipse.commons.completions.externaltype.ExternalType;
 import org.springsource.ide.eclipse.commons.completions.externaltype.ExternalTypeDiscovery;
 import org.springsource.ide.eclipse.commons.completions.externaltype.ExternalTypeSource;
@@ -64,4 +65,29 @@ public abstract class ExternalTypeIndexer {
 	public abstract ExternalTypeSource getSource(ExternalType type);
 	
 
+	/**
+	 * TRivial implementation of an empty index. You can't store anything in it and requesting any
+	 * information from it returns nothing.
+	 * <p>
+	 * Usually it is more appropriate to use this instance instead of 'null'. As it won't cause NPEs
+	 * when trying to retrieve data from it.
+	 */
+	public static final ExternalTypeIndexer EMPTY = new ExternalTypeIndexer() {
+		
+		@Override
+		public ExternalTypeSource getSource(ExternalType type) {
+			return null;
+		}
+		
+		@Override
+		public void getAll(Requestor<ExternalType> requestor) {
+			//Nothing to do.
+		}
+		
+		@Override
+		public void addFrom(ExternalTypeDiscovery ets) {
+			Assert.isLegal(false, "EMPTY index is immutable");
+		}
+	};
+	
 }

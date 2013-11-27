@@ -55,8 +55,16 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.springsource.ide.eclipse.commons.completions.externaltype.ExternalTypeSource"/>
+                  <meta.attribute kind="java" basedOn=":org.springsource.ide.eclipse.commons.completions.externaltype.ExternalTypeDiscoveryFactory"/>
                </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="natures" type="string">
+            <annotation>
+               <documentation>
+                  If a &apos;natures&apos; is specified then it is interpreted as a comma-separated list of natures.
+At least one of the natures must be present on the current project for the extension point to be applicable.
+               </documentation>
             </annotation>
          </attribute>
       </complexType>
