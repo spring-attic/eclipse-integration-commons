@@ -20,7 +20,6 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.internal.compiler.apt.model.Factory;
 import org.springsource.ide.eclipse.commons.completions.CompletionsActivator;
 import org.springsource.ide.eclipse.commons.completions.externaltype.indexing.ExternalTypeIndexer;
 import org.springsource.ide.eclipse.commons.completions.externaltype.indexing.SimpleExternalTypeIndexer;
