@@ -43,6 +43,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.jdt.internal.core.SetVariablesOperation;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -131,6 +132,7 @@ public class DashboardWebView {
 		IPreferenceStore prefStore = IdeUiPlugin.getDefault().getPreferenceStore();
 		long lastUpdateLong = prefStore
 				.getLong(IIdeUiConstants.PREF_FEED_ENTRY_LAST_UPDATE_DISPLAYED);
+		view.setVisible(false);
 		lastUpdated = new Date(lastUpdateLong);
 		currentUpdated = lastUpdated;
 		this.view = view;
@@ -177,7 +179,7 @@ public class DashboardWebView {
 	}
 
 	private void checkUpdate() {
-		if (wizardHtml != null && updateHtml != null) {
+		if (feedHtml != null && wizardHtml != null && updateHtml != null) {
 			Platform.runLater(new Runnable() {
 
 				@Override
@@ -187,7 +189,12 @@ public class DashboardWebView {
 					js.call("setRssHtml", feedHtml);
 					js.call("setUpdateHtml", updateHtml);
 					view.requestLayout();
-					view.setVisible(true);
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							view.setVisible(true);
+						}
+					});
 					// printPageHtml();
 				}
 			});
