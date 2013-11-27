@@ -12,6 +12,7 @@ package org.springsource.ide.eclipse.commons.livexp.core;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
 
 /**
  * A value representing the result of a wizard page validation. 
@@ -121,6 +122,29 @@ public class ValidationResult {
 		default:
 			//Shouldn't happen since all cases should be covered above... byt anyhow
 			return IMessageProvider.ERROR;
+		}
+	}
+	
+	/**
+	 * Convert an Eclipse IStatus into a ValidationResult
+	 */
+	public static ValidationResult from(IStatus status) {
+		if (status.isOK()) {
+			return ValidationResult.OK;
+		} else {
+			Throwable e = status.getException();
+			String msg;
+			if (e!=null) {
+				//produces more informative error messages (from the deepest cause rather than a generic message
+				// usually attached to the IStatuses from Eclipse.
+				msg = ExceptionUtil.getMessage(e);
+			} else {
+				msg = status.getMessage();
+			}
+			if (msg==null) {
+				msg = "Error";
+			}
+			return new ValidationResult(status.getSeverity(), msg);
 		}
 	}
 	

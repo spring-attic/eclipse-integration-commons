@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.core;
 
+import java.net.URISyntaxException;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -71,6 +73,9 @@ public class FrameworkCoreActivator extends AbstractUIPlugin {
 	public static void logError(String message, Throwable exception) {
 		getDefault().getLog().log(createErrorStatus(message, exception));
 	}
+	public static void log(Throwable e) {
+		getDefault().getLog().log(createErrorStatus(e.getMessage(), e));
+	}
 
 	public static IStatus createErrorStatus(String message, Throwable exception) {
 		if (message == null) {
@@ -107,4 +112,5 @@ public class FrameworkCoreActivator extends AbstractUIPlugin {
         plugins += "," + pluginid + ","; //$NON-NLS-1$ //$NON-NLS-2$
         getPreferenceStore().putValue(IConversionConstants.LEGACY_MIGRATION_PLUGINS, plugins);
     }
+
 }

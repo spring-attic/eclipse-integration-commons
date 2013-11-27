@@ -154,22 +154,21 @@ public class FileUtil {
 		}
 	}
 
+	/**
+	 * Deprecated: moved to org.springsource.ide.eclipse.commons.frameworks.core.util.FileUtil.
+	 */
+	@Deprecated
 	public static File createTempDirectory(String name) throws IOException {
-		final File temp;
-		temp = File.createTempFile(name, Long.toString(System.nanoTime()));
-		if (!(temp.delete())) {
-			throw new IOException("Could not delete temp file: " + temp.getAbsolutePath());
-		}
-		if (!(temp.mkdirs())) {
-			throw new IOException("Could not create temp directory: " + temp.getAbsolutePath());
-		}
-		return (temp);
+		return org.springsource.ide.eclipse.commons.frameworks.core.util.FileUtil.createTempDirectory(name);
 	}
 
+	/**
+	 * Deprecated: moved to org.springsource.ide.eclipse.commons.frameworks.core.util.FileUtil.
+	 */
+	@Deprecated
 	public static File createTempDirectory() throws IOException {
-		return createTempDirectory("temp");
+		return org.springsource.ide.eclipse.commons.frameworks.core.util.FileUtil.createTempDirectory();
 	}
-
 
 	private static String[] BINARY_EXTENSIONS = new String[] { "jar", "gif", "jpg", "jpeg", ".class", "png" };
 

@@ -8,7 +8,7 @@
  * Contributors:
  *    GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.core.util;
+package org.springsource.ide.eclipse.commons.frameworks.core.util;
 
 import org.w3c.dom.Node;
 
