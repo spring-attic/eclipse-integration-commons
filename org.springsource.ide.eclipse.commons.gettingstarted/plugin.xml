@@ -2,6 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="org.springsource.ide.eclipse.commons.dashboard.browser.customization" name="Dashboard Browser Customization" schema="schema/org.springsource.ide.eclipse.commons.dashboard.browser.customization.exsd"/>
+   <extension-point id="org.springsource.ide.common.dashboard.browser.function" name="Dahboard Browser Function" schema="schema/org.springsource.ide.common.dashboard.browser.function.exsd"/>
  
  <!-- New dashboard -->
  

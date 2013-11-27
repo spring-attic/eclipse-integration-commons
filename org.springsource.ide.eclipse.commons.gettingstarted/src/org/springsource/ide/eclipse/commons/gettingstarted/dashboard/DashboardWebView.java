@@ -98,6 +98,8 @@ public class DashboardWebView {
 	private static final String ELEMENT_NAME = "name";
 
 	private static final String EXTENSION_ID_NEW_WIZARD = "org.eclipse.ui.newWizards";
+	
+	private static final String EXTENSION_ID_DASHBOARD_FUNCTION = "org.springsource.ide.common.dashboard.browser.function";
 
 	private static final String GRAILS_WIZARD_ID = "org.grails.ide.eclipse.ui.wizard.newGrailsProjectWizard";
 
@@ -192,11 +194,11 @@ public class DashboardWebView {
 		}
 	}
 
-	private static IConfigurationElement getExtension(String id) {
+	private static IConfigurationElement getExtension(String extensionId, String id) {
 		IExtensionRegistry registry = org.eclipse.core.runtime.Platform
 				.getExtensionRegistry();
 		IConfigurationElement[] configurations = registry
-				.getConfigurationElementsFor(EXTENSION_ID_NEW_WIZARD);
+				.getConfigurationElementsFor(extensionId);
 		for (IConfigurationElement element : configurations) {
 			String elementId = element.getAttribute(ELEMENT_ID);
 			if (elementId.equals(id)) {
@@ -213,7 +215,7 @@ public class DashboardWebView {
 				GROOVY_WIZARD_ID, GRAILS_WIZARD_ID };
 
 		for (int i = 0; i < ids.length; i++) {
-			IConfigurationElement element = getExtension(ids[i]);
+			IConfigurationElement element = getExtension(EXTENSION_ID_NEW_WIZARD, ids[i]);
 			if (element != null && element.getAttribute(ELEMENT_CLASS) != null
 					&& element.getAttribute(ELEMENT_NAME) != null
 					&& element.getAttribute(ELEMENT_ICON) != null) {
@@ -229,10 +231,22 @@ public class DashboardWebView {
 		return html;
 	}
 
+	public void call(String functionId, String argument) {
+		try {
+			IConfigurationElement element = getExtension(EXTENSION_ID_DASHBOARD_FUNCTION, functionId);
+			IDashboardFunction function = (IDashboardFunction) WorkbenchPlugin.createExtension(element, ELEMENT_CLASS);
+			function.call(argument);
+		} catch (CoreException ex) {
+			StatusHandler.log(new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
+					"Could not find dashboard extension", ex));
+			return;
+		}
+	}
+	
 	public void showWizard(String extensionId) {
 		Object object;
 		try {
-			IConfigurationElement element = getExtension(extensionId);
+			IConfigurationElement element = getExtension(EXTENSION_ID_NEW_WIZARD, extensionId);
 			object = WorkbenchPlugin.createExtension(element, ELEMENT_CLASS);
 		} catch (CoreException ex) {
 			StatusHandler.log(new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
@@ -305,23 +319,12 @@ public class DashboardWebView {
 	}
 
 	private String buildUpdate(UpdateNotification notification) {
-		if (notification.getEntry() == null) {
-			return null;
-		}
-		// if ("important".equals(notification.getSeverity())) {
-		return buildUpdateBody(notification);
-		// } else {
-		// }
-		// return null;
-	}
-
-	private String buildUpdateBody(UpdateNotification notification) {
 		String html = "";
 		SyndEntry entry = notification.getEntry();
 		html += "<div class=\"blog--container blog-preview\">";
 		html += "	<div class=\"blog--title\">";
 		html += "   <i class=\"fa fa-exclamation new-star\"></i>";
-		html += "	<a href=\"\" onclick=\"ide.openPage('" + entry.getLink() + "')\"><b>"
+		html += "	<a href=\"\" onclick=\"ide.openPage('" + entry.getUri() + "')\"><b>"
 				+ entry.getTitle() + "</b></a>";
 		html += "	</div>";
 		html += "</div>";
@@ -354,7 +357,7 @@ public class DashboardWebView {
 		if (currentUpdated.before(entryDate)) {
 			currentUpdated = entryDate;
 		}
-		html += "	<a href=\"\" onclick=\"ide.openPage('" + entry.getLink() + "')\">"
+		html += "	<a href=\"\" onclick=\"ide.openPage('" + entry.getUri() + "')\">"
 				+ entry.getTitle() + "</a>";
 		html += "	</div>";
 		html += "	<div class=\"blog--post\">";

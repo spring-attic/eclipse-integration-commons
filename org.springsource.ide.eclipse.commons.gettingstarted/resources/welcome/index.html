@@ -111,21 +111,26 @@
 				<!-- Override Spring IO Page Whitespace -->
 				<div class="row-fluid blog--wrapper">
 					<div class="span8">
-						<h3 class="feed-header">Important Updates</h3>
-						<div id="updates"><b>Loading...</b></div>
+						<h3 class="feed-header">Tooling Updates</h3>
+						<div id="updates">
+							<b>Loading...</b>
+						</div>
 						<h3 class="feed-header">News</h3>
-						<div id="rssEntries"><b>Loading...</b></div>
+						<div id="rssEntries">
+							<b>Loading...</b>
+						</div>
 					</div>
 
 					<aside class="span4 content-right-pane--container" id="sidebar">
 						<div class="right-pane-widget--container">
 							<h2>Get Started!</h2>
 							<a class="ide_widget btn btn-black uppercase" href=""
-								onclick="ide.openImportWizard()">Import Getting Started
-								Guide</a> <a class="ide_widget btn btn-black uppercase" href=""
-								onclick="ide.openImportWizard()">Import Tutorial Guide</a> <a
+								onclick="ide.call('org.springframework.ide.wizard.gettingstarted.openGuide','Getting Started Guide')">Import
+								Getting Started Guide</a> <a
 								class="ide_widget btn btn-black uppercase" href=""
-								onclick="ide.openImportWizard()">Get Reference App</a>
+								onclick="ide.call('org.springframework.ide.wizard.gettingstarted.openGuide','Tutorial Guide')">Import
+								Tutorial Guide</a> <a class="ide_widget btn btn-black uppercase"
+								href="" onclick="ide.call('org.springframework.ide.wizard.gettingstarted.openGuide','Reference App')">Get Reference App</a>
 							<div id="projectWizards">
 								<b>Loading...</b>
 							</div>

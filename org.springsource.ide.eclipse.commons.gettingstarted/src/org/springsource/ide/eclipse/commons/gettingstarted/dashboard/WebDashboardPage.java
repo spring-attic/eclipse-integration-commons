@@ -38,6 +38,7 @@ import org.springsource.ide.eclipse.commons.gettingstarted.browser.STSBrowserVie
  * A DashBoard page that displays the contents of a webpage.
  * 
  * @author Kris De Volder
+ * @author Miles Parker
  */
 public class WebDashboardPage extends ADashboardPage /*
 													 * implements
@@ -82,21 +83,6 @@ public class WebDashboardPage extends ADashboardPage /*
 		this.name = name;
 		this.homeUrl = homeUrl;
 	}
-
-	// @Override
-	// public void setInitializationData(IConfigurationElement cfig,
-	// String propertyName, Object data) {
-	// if (data!=null && data instanceof Map) {
-	// @SuppressWarnings("unchecked")
-	// Map<String, String> map = (Map<String, String>) data;
-	// this.name = map.get("name");
-	// this.homeUrl = map.get("url");
-	// }
-	// Assert.isNotNull(this.name,
-	// "A name must be provided as initialization data for WebDashboardPage");
-	// Assert.isNotNull(this.homeUrl,
-	// "A url must be provided as initialization data for WebDashboardPage");
-	// }
 
 	@SuppressWarnings("restriction")
 	@Override
