@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.dashboard.ui.actions;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jface.action.IAction;
@@ -25,6 +27,7 @@ import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.intro.IIntroManager;
 import org.eclipse.ui.intro.IIntroPart;
 import org.eclipse.ui.progress.UIJob;
+import org.osgi.framework.Version;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IIdeUiConstants;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardEditorInput;
@@ -39,12 +42,6 @@ import org.springsource.ide.eclipse.dashboard.internal.ui.editors.MultiPageDashb
  * @author Terry Denney
  */
 public class ShowDashboardPageAction implements IWorkbenchWindowActionDelegate {
-	
-//	private static final boolean useNewDashboard = isActivatedNow();
-
-	private static boolean useNewDashboard(IProgressMonitor mon) {
-		return !IdeUiPlugin.getDefault().getPreferenceStore().getBoolean(IIdeUiConstants.PREF_USE_OLD_DASHOARD);
-	}
 
 	private IWorkbenchWindow window;
 
@@ -80,7 +77,7 @@ public class ShowDashboardPageAction implements IWorkbenchWindowActionDelegate {
 					IWorkbenchPage page = window.getActivePage();
 					try {
 						try {
-							if (useNewDashboard(new SubProgressMonitor(mon, 1))) {
+							if (IdeUiPlugin.getDefault().useNewDashboard(new SubProgressMonitor(mon, 1))) {
 								IEditorPart editor = page.openEditor(DashboardEditorInput.INSTANCE, MultiPageDashboardEditor.NEW_EDITOR_ID);
 								if (editor instanceof IDashboardWithPages) {
 									IDashboardWithPages dashboard = (IDashboardWithPages) editor;

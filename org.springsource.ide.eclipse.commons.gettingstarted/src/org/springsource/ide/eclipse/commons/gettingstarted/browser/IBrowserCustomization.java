@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.gettingstarted.browser;
 
-import org.eclipse.swt.browser.Browser;
+import javafx.scene.web.WebView;
 
 /**
  * Instances of this interface can be contributed via extension point
@@ -27,6 +27,6 @@ public interface IBrowserCustomization {
 	 * Called right after a browser instance is created to display content in a 
 	 * dashboard page.
 	 */
-	void apply(Browser browser);
+	void apply(WebView browser);
 
 }

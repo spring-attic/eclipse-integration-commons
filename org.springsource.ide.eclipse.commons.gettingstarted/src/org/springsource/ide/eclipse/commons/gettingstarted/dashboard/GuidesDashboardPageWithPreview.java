@@ -19,7 +19,7 @@
 //import org.eclipse.jface.layout.GridDataFactory;
 //import org.eclipse.swt.SWT;
 //import org.eclipse.swt.SWTException;
-//import org.eclipse.swt.browser.Browser;
+//import javafx.scene.web.WebView;
 //import org.eclipse.swt.custom.SashForm;
 //import org.eclipse.swt.events.ControlEvent;
 //import org.eclipse.swt.events.ControlListener;
