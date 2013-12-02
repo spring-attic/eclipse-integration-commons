@@ -102,5 +102,13 @@ public class ExceptionUtil {
 	}
 
 	public static final IStatus OK_STATUS = status(IStatus.OK, "");
+	
+	public static Exception exception(Throwable e) {
+		if (e instanceof Exception) {
+			return (Exception)e;
+		} else {
+			return coreException(e);
+		}
+	}
 
 }

@@ -58,6 +58,10 @@ public class DownloadManager {
 	public DownloadManager(DownloadService downloader, File cacheDir) throws IOException {
 		if (cacheDir==null) {
 			cacheDir = FileUtil.createTempDirectory("downloadCache");
+			this.deleteCacheOnDispose = true; // This dir can not be used by anynone after this DLM is diposed so better delete it.
+		}
+		if (downloader==null) {
+			downloader = new SimpleDownloadService();
 		}
 		this.downloader = downloader;
 		this.cacheDirectory = cacheDir;

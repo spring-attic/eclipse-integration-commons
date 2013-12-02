@@ -31,10 +31,10 @@ import org.springsource.ide.eclipse.commons.frameworks.core.downloadmanager.Down
 public class DownloadableItem {
 
 	private final URL url;
-	private final DownloadManager downloader;
+	protected final DownloadManager downloader;
 	private String name; //optional name. If set this name will be used as filename in the cache otherwise
 						// suitable name will be computed.
-	private IStatus downloadStatus = Status.OK_STATUS; //error message if download failed. Otherwise contains 'OK'.
+	protected IStatus downloadStatus = Status.OK_STATUS; //error message if download failed. Otherwise contains 'OK'.
 
 	public DownloadableItem(URL url, DownloadManager downloader) {
 		this.url = url;
@@ -77,7 +77,7 @@ public class DownloadableItem {
 		}
 	}
 
-	private IStatus error(String message) {
+	protected IStatus error(String message) {
 		return new Status(IStatus.ERROR, FrameworkCoreActivator.PLUGIN_ID, message);
 	}
 
