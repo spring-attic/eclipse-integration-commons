@@ -61,7 +61,7 @@ public class LiveAndDeadProcessTracker extends LaunchList {
 
 	}
 
-	private static final boolean DEBUG = false; //(""+Platform.getLocation()).contains("kdvolder");
+	private static final boolean DEBUG = false;// (""+Platform.getLocation()).contains("kdvolder");
 
 	private static LiveAndDeadProcessTracker instance;
 	public synchronized static LaunchList getInstance() {
@@ -99,10 +99,16 @@ public class LiveAndDeadProcessTracker extends LaunchList {
 		fireChangeEvent();
 	}
 
+	private boolean exists(ILaunchConfiguration conf) {
+		//Assume working copyies exist as long as we have a reference to them.
+		return conf.exists() || conf.isWorkingCopy();
+	}
+
+
 	@Override
 	public synchronized Item getLast() {
 		if (last!=null) {
-			if (last.conf.exists()) {
+			if (exists(last.conf)) {
 				return last;
 			}
 			//might be conf delete or renamed
@@ -121,7 +127,7 @@ public class LiveAndDeadProcessTracker extends LaunchList {
 
 	@Override
 	public synchronized Collection<Item> getLaunches() {
-//		debug(">>> getLaunches");
+		//debug(">>> getLaunches");
 
 		ArrayList<String> names = new ArrayList<String>(configs.keySet());
 		for (String name : names) {
@@ -129,7 +135,7 @@ public class LiveAndDeadProcessTracker extends LaunchList {
 			ProcessItem item = configs.get(name);
 //			debug("name (item) = "+item.getName());
 			ILaunchConfiguration conf = item.conf;
-			if (conf.exists()) {
+			if (exists(conf)) {
 //				debug("exists: "+conf.getName());
 				continue;
 			}
@@ -163,7 +169,7 @@ public class LiveAndDeadProcessTracker extends LaunchList {
 		ILaunch l = item.process.getLaunch();
 		if (l!=null) {
 			ILaunchConfiguration renamedConf = l.getLaunchConfiguration();
-			if (renamedConf!=null && renamedConf.exists()) {
+			if (renamedConf!=null && exists(renamedConf)) {
 				return item.setConf(renamedConf);
 			}
 		}
