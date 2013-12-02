@@ -13,6 +13,7 @@ package org.springsource.ide.eclipse.commons.core;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -40,9 +41,9 @@ public class ZipFileUtil {
 	 * To remedy this problem, clients can provide their own logic for setting
 	 * permissions they may care about. A subclass of PermissionSetter is used
 	 * to determine the permission setting logic.
-	 * 
+	 *
 	 * @author Kris De Volder
-	 * 
+	 *
 	 * @since 2.8
 	 */
 	public static abstract class PermissionSetter {
@@ -171,6 +172,10 @@ public class ZipFileUtil {
 		finally {
 			monitor.done();
 		}
+	}
+
+	public static void unzip(File zipFile, File unzipDir, IProgressMonitor monitor) throws MalformedURLException, IOException {
+		unzip(zipFile.toURI().toURL(), unzipDir, monitor);
 	}
 
 }
