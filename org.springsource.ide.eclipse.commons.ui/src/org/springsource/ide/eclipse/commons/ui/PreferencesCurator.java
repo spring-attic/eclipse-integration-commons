@@ -31,7 +31,7 @@ import org.springsource.ide.eclipse.commons.core.preferences.GlobalPreferenceEnh
 /**
  * This preferences page provides a shortcut for setting a group of preferences
  * that we believe make Eclipse more awesome
- * 
+ *
  * @author Andrew Eisenberg
  * @since 3.3.0
  */
@@ -96,8 +96,9 @@ public class PreferencesCurator extends PreferencePage implements IWorkbenchPref
 		jdtLabelExplanation.setText("We set the following JDT preferences:\n" + "* Editor smart paste (true)\n"
 				+ "* Editor smart semicolon placement (true)\n" + "* Editor smart opening brace placement (true)\n"
 				+ "* Editor smart backspace (true)\n" + "* Editor smart tab (true)\n"
-				+ "* Escape text when pasting into a string literal (true)\n" + "* Auto activation delay (40 ms)\n"
-				+ "* Auto activation triggers for Java (._abcdefghijklmnopqrstuvwxyz)\n");
+				+ "* Escape text when pasting into a string literal (true)\n"
+				+ "* Auto activation delay (40 ms)\n");
+//				+ "* Auto activation triggers for Java (._abcdefghijklmnopqrstuvwxyz)\n");
 		Button jdtSetButton = new Button(jdtComposite, SWT.PUSH);
 		jdtSetButton.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
 		jdtSetButton.setText("Set JDT preferences only");

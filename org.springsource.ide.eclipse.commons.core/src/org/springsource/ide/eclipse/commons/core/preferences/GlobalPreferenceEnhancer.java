@@ -102,7 +102,7 @@ public class GlobalPreferenceEnhancer {
 			jdtUiPrefs.putBoolean(EDITOR_SMART_PASTE, true);
 			jdtUiPrefs.putBoolean(EDITOR_ESCAPE_STRINGS, true);
 			jdtUiPrefs.putInt(CODEASSIST_AUTOACTIVATION_DELAY, 40);
-			jdtUiPrefs.put(CODEASSIST_AUTOACTIVATION_TRIGGERS_JAVA, "_.abcdefghijklmnopqrstuvwxyz");
+			//jdtUiPrefs.put(CODEASSIST_AUTOACTIVATION_TRIGGERS_JAVA, "_.abcdefghijklmnopqrstuvwxyz");
 			jdtUiPrefs.putBoolean(EDITOR_SMART_SEMICOLON, true);
 			jdtUiPrefs.putBoolean(EDITOR_SMART_OPENING_BRACE, true);
 			jdtUiPrefs.putBoolean(EDITOR_SMART_BACKSPACE, true);
