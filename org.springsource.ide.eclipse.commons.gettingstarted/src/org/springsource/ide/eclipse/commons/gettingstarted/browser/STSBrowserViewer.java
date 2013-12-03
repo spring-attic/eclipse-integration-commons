@@ -22,6 +22,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
@@ -137,6 +138,8 @@ public class STSBrowserViewer extends Composite {
 
 	protected List<PropertyChangeListener> propertyListeners;
 
+	String initialUrl;
+	
 	/**
 	 * Under development - do not use
 	 */
@@ -219,7 +222,6 @@ public class STSBrowserViewer extends Composite {
 
 					public void mouseDown(MouseEvent e) {
 						goHome();
-						//							setURL("http://www.eclipse.org"); //$NON-NLS-1$
 					}
 
 					public void mouseUp(MouseEvent e) {
@@ -227,26 +229,32 @@ public class STSBrowserViewer extends Composite {
 					}
 				});
 			}
-			// PlatformUI.getWorkbench().getHelpSystem().setHelp(this,
-			// ContextIds.WEB_BROWSER);
 		}
 
-		FXCanvas fxCanvas = new FXCanvas(this, SWT.NONE);
+		final FXCanvas fxCanvas = new FXCanvas(this, SWT.NONE);
 		fxCanvas.setLayoutData(GridDataFactory.fillDefaults().grab(true, true)
 				.align(SWT.FILL, SWT.FILL).create());
 		fxCanvas.setLayout(GridLayoutFactory.fillDefaults().create());
-		browser = new WebView();
-		browser.setVisible(false);
-		BorderPane border = new BorderPane();
-		Scene scene = new Scene(border);
-		border.setCenter(browser);
-		fxCanvas.setScene(scene);
-		if (showURLbar)
-			updateHistory();
-		if (showToolbar)
-			updateBackNextBusy();
-		
-		addBrowserListeners();
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				browser = new WebView();
+				browser.setVisible(false);
+				BorderPane border = new BorderPane();
+				Scene scene = new Scene(border);
+				border.setCenter(browser);
+				fxCanvas.setScene(scene);
+				if (showURLbar)
+					updateHistory();
+				if (showToolbar)
+					updateBackNextBusy();
+				addBrowserListeners();
+				if (initialUrl != null) {
+					browser.getEngine().load(initialUrl);
+				}
+			}
+			
+		});
 	}
 
 	/**
@@ -389,17 +397,6 @@ public class STSBrowserViewer extends Composite {
 					}
 				});
 
-		// browser.addCloseWindowListener(new CloseWindowListener() {
-		// public void close(WindowEvent event) {
-		// // if shell is not null, it must be a secondary popup window,
-		// // else its an editor window
-		// if (newWindow)
-		// getShell().dispose();
-		// else
-		// container.close();
-		// }
-		// });
-
 		browser.getEngine().getLoadWorker().stateProperty()
 				.addListener(new ChangeListener<State>() {
 					@Override
@@ -509,7 +506,6 @@ public class STSBrowserViewer extends Composite {
 
 		PropertyChangeEvent event = new PropertyChangeEvent(this, propertyName,
 				oldValue, newValue);
-		// Trace.trace("Firing: " + event + " " + oldValue);
 		try {
 			int size = propertyListeners.size();
 			PropertyChangeListener[] pcl = new PropertyChangeListener[size];
@@ -642,16 +638,20 @@ public class STSBrowserViewer extends Composite {
 	 *                </ul>
 	 */
 	public void refresh() {
-		browser.getEngine().reload();
-		try {
-			Thread.sleep(50);
-		} catch (Exception e) {
-			// ignore
+		if (browser != null) {
+			browser.getEngine().reload();
+			try {
+				Thread.sleep(50);
+			} catch (Exception e) {
+				// ignore
+			}
 		}
 	}
 
 	private void setURL(String url, boolean browse) {
-		//    Trace.trace(Trace.FINEST, "setURL: " + url + " " + browse); //$NON-NLS-1$ //$NON-NLS-2$
+		if (initialUrl == null) {
+			this.initialUrl = url;
+		}
 		if (url == null) {
 			goHome();
 			return;
@@ -666,9 +666,11 @@ public class STSBrowserViewer extends Composite {
 			if (url != null && url.equals(getURL())) {
 				refresh();
 			} else {
-				browser.getEngine().load(url); //$NON-NLS-1$
-				addToHistory(url);
-				updateHistory();
+				if (browser != null) {
+					browser.getEngine().load(url); //$NON-NLS-1$
+					addToHistory(url);
+					updateHistory();
+				}
 			}
 		}
 	}
@@ -844,7 +846,10 @@ public class STSBrowserViewer extends Composite {
 	 * @see #setURL(String)
 	 */
 	public String getURL() {
-		return browser.getEngine().locationProperty().get();
+		if (browser != null) {
+			return browser.getEngine().locationProperty().get();
+		}
+		return initialUrl;
 	}
 
 	public boolean setFocus() {

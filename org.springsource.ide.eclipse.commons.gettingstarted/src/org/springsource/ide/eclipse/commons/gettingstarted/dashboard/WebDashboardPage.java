@@ -114,7 +114,7 @@ public class WebDashboardPage extends ADashboardPage /*
 							}
 						});
 			}
-			addBrowserHooks(browser);
+			addBrowserHooks();
 		} else {
 			errorPage = new BrowserErrorPage();
 			errorPage.createControl(parent);
@@ -134,7 +134,7 @@ public class WebDashboardPage extends ADashboardPage /*
 	 * Subclasses may override this if they want to customize the browser (e.g.
 	 * add listeners to handle certain urls specially.
 	 */
-	protected void addBrowserHooks(WebView browser) {
+	protected void addBrowserHooks() {
 	}
 
 	/**

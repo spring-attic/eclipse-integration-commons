@@ -8,16 +8,18 @@
 	font-size: 12px;
 	line-height: 12px;
 	padding: 10px 20px;
-	background-color: rgb(183,235,149);
-	color: #34302d;
-	border: 2px solid #34302d;
+	background-color: #34302d;
+	color: white;
+	border: 0px;
+	border-top: 3px solid #6db33f;
 }
 
 .btn.btn-black:hover {
 	color: white;
 	border-color: #34302d;
-	background-color: #34302d;
-	box-shadow: 0 1px 3px #0b0a0a;
+	background-color: #6db33f;
+	border: 0px;
+	border-top: 3px solid #6db33f;
 }
 
 .new-star {
