@@ -12,28 +12,35 @@
 			<div class="lower-right-logo full-page"><div class="top-left-logo full-page"><div class="title full-page"><div class="copyright full-page">
 				<div class="v-outer"><div class="v-middle"><div class="v-inner">
 					<table align="center" cellpadding="5"><tr>
+					<!--	<tr><td class="left-align">
+							<a href="http://org.eclipse.ui.intro/runAction?pluginId=org.springsource.ide.eclipse.dashboard.ui&amp;class=org.springsource.ide.eclipse.dashboard.ui.actions.ShowDashboardAction"
+				  		 		id="dashLink" class="largefont">
+				  		 		<img src="dashboard.png"/>
+				  		 		Open Dashboard
+				  			</a>
+						</td></tr> -->
 				  		<td class="left-align">
  					       <table align="top" cellpadding="5">
 						  		<tr><td class="left-align">
-					  				<a href="" onclick="ide.openPage('${sts.nan.url}')" class="largefont">
+					  				<a href="http://static.springsource.org/sts/nan/latest/NewAndNoteworthy.html" class="largefont">
 				 		  				<img class="button" src="new.png"/>
 				 		  				New and Noteworthy
 						  			</a>
 						  		</td></tr>
 						  		<tr><td class="left-align">
-					  				<a href="" onclick="ide.openPage('${sts.forum.url}')" class="largefont">
+					  				<a href="http://forum.springsource.org/forumdisplay.php?32-SpringSource-Tool-Suite" class="largefont">
 				 		  				<img class="button" src="Ico_Forum.png"/>
 				 		  				Community Forums
 						  			</a>
 						  		</td></tr>
 						  		<tr><td class="left-align">
-					  				<a href="" onclick="ide.openPage('${sts.tracker.url}')" class="largefont">
+					  				<a href="https://issuetracker.springsource.com/browse/STS" class="largefont">
 				 		  				<img class="button" src="bug.png"/>
 				 		  				Issue and Bug Tracker
 						  			</a>
 						  		</td></tr>
 						  		<tr><td class="left-align">
-					  				<a href="" onclick="ide.openDashboardPage('extensions')" class="largefont"
+					  				<a href="http://dashboard/extensions"
 					  		 			id="dashLink" class="largefont">
 					  					<img class="button" src="install-extension.png"/>
 					  					Install Extension
@@ -43,34 +50,45 @@
 				  		</td>
 				  		<td class="left-align">
  					       <table align="center" cellpadding="5">
-<!--  						  	Disabled, only works if wizard is present in the install.
-                                This can't be guaranteed in the 'no_product' case.
  						  		<tr><td class="left-align">
-					  				<a href="" onclick="ide.openDashboardPage('guides')" class="largefont">
+					  				<a href="http://dashboard/guides" class="largefont">
 				 		  				<img class="button" src="Ico_Guides.png"/>
-				 		  				Import Guide
+				 		  				Guides (Import)
 						  			</a>
- --> 					       
-  						  		<tr><td class="left-align">
-					  				<a href="" onclick="ide.openPage('${spring.guides.url}')" class="largefont">
+ 						  		<tr><td class="left-align">
+					  				<a href="${spring.site.url}/guides" class="largefont">
 				 		  				<img class="button" src="Ico_Guides.png"/>
-				 		  				Browse Guides
+				 		  				Guides (Browse)
 						  			</a>
 						  		</td></tr>
+<!-- 						  		<tr><td class="left-align">
+					  				<a href="${spring.site.url}/guides" class="largefont">
+				 		  				<img src="new.png"/>
+				 		  				SpringFramework Guides
+						  			</a>
+						  		</td></tr> -->
 						  		<tr><td class="left-align">
-					  				<a href="" onclick="ide.openPage('${spring.docs.url}')" class="largefont">
+					  				<a href="${spring.site.url}/docs" class="largefont">
 				 		  				<img class="button" src="Ico_springdocs.png"/>
 				 		  				SpringFramework Docs
 						  			</a>
 						  		</td></tr>
 						  		<tr><td class="left-align">
-					  				<a href="" onclick="ide.openPage('${spring.blog.url}')" class="largefont">
+					  				<a href="${spring.site.url}/blog" class="largefont">
 				 		  				<img class="button" src="Ico_Blog.png"/>
 				 		  				Spring Blog
 						  			</a>
 						  		</td></tr>
 						   </table>
 				  		</td>
+				  		<!-- 
+				  		<tr><td class="left-align">
+			  				<a href="http://org.eclipse.ui.intro/openBrowser?url=http://download.springsource.com/release/STS/doc/STS-feature_comparison.pdf" class="largefont">
+				  				<img src="comparison.png"/>
+				  				Feature Comparison
+				  			</a>
+				  		</td></tr>
+				  		-->
 				  	</tr></table>
 				</div></div></div>
 			</div></div></div></div>

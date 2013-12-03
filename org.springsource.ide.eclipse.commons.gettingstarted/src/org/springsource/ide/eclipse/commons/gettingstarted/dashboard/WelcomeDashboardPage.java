@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -23,6 +24,7 @@ import javafx.scene.web.WebView;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.internal.core.SetVariablesOperation;
 import org.springsource.ide.eclipse.commons.core.preferences.StsProperties;
 
 public class WelcomeDashboardPage extends WebDashboardPage {
@@ -82,21 +84,28 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 	}
 
 	@Override
-	protected void addBrowserHooks(final WebView browser) {
-		super.addBrowserHooks(browser);
-		getBrowserViewer().getBrowser().getEngine().getLoadWorker().stateProperty()
-				.addListener(new ChangeListener<Worker.State>() {
+	protected void addBrowserHooks() {
+		super.addBrowserHooks();
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				getBrowserViewer().getBrowser().getEngine().getLoadWorker()
+						.stateProperty().addListener(new ChangeListener<Worker.State>() {
 
-					@Override
-					public void changed(ObservableValue<? extends State> ov,
-							State oldState, State newState) {
-						if (newState == Worker.State.SUCCEEDED
-								&& getBrowserViewer() != null) {
-							webView = new DashboardWebViewManager(getBrowserViewer()
-									.getBrowser(), dashboard);
-						}
-					}
-				});
+							@Override
+							public void changed(ObservableValue<? extends State> ov,
+									State oldState, State newState) {
+								if (newState == Worker.State.SUCCEEDED
+										&& getBrowserViewer() != null) {
+									if (webView == null) {
+										webView = new DashboardWebViewManager(dashboard);
+									}
+									webView.setClient(getBrowserViewer().getBrowser());
+								}
+							}
+						});
+			}
+		});
 	}
 
 	@Override

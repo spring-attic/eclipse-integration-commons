@@ -99,7 +99,7 @@ public class DashboardWebViewManager {
 	private static final String ELEMENT_NAME = "name";
 
 	private static final String EXTENSION_ID_NEW_WIZARD = "org.eclipse.ui.newWizards";
-	
+
 	private static final String EXTENSION_ID_DASHBOARD_FUNCTION = "org.springsource.ide.common.dashboard.browser.function";
 
 	private static final String GRAILS_WIZARD_ID = "org.grails.ide.eclipse.ui.wizard.newGrailsProjectWizard";
@@ -128,17 +128,27 @@ public class DashboardWebViewManager {
 
 	private Date currentUpdated = null;
 
-	public DashboardWebViewManager(final WebView view, DashboardEditor editor) {
+	public DashboardWebViewManager(DashboardEditor editor) {
 		IPreferenceStore prefStore = IdeUiPlugin.getDefault().getPreferenceStore();
 		long lastUpdateLong = prefStore
 				.getLong(IIdeUiConstants.PREF_FEED_ENTRY_LAST_UPDATE_DISPLAYED);
 		lastUpdated = new Date(lastUpdateLong);
 		currentUpdated = lastUpdated;
+		this.editor = editor;
+	}
+
+	public void setClient(WebView view) {
 		this.view = view;
 		this.engine = view.getEngine();
-		this.editor = editor;
 		JSObject window = (JSObject) engine.executeScript("window");
 		window.setMember("ide", this);
+		loadHtml();
+	}
+	
+	void loadHtml() {
+		if (checkUpdate()) {
+			return;
+		}
 		final Map<String, String> springMap = new HashMap<String, String>();
 		String[] urls = ResourceProvider.getUrls(RESOURCE_DASHBOARD_FEEDS_BLOGS);
 		for (String url : urls) {
@@ -177,7 +187,7 @@ public class DashboardWebViewManager {
 		updatesJob.schedule();
 	}
 
-	private void checkUpdate() {
+	private boolean checkUpdate() {
 		if (feedHtml != null && wizardHtml != null && updateHtml != null) {
 			Platform.runLater(new Runnable() {
 
@@ -188,16 +198,13 @@ public class DashboardWebViewManager {
 					js.call("setRssHtml", feedHtml);
 					js.call("setUpdateHtml", updateHtml);
 					view.requestLayout();
-					Platform.runLater(new Runnable() {
-						@Override
-						public void run() {
-							view.setVisible(true);
-						}
-					});
-					//printPageHtml();
+					view.setVisible(true);
+					// printPageHtml();
 				}
 			});
+			return true;
 		}
+		return false;
 	}
 
 	private static IConfigurationElement getExtension(String extensionId, String id) {
@@ -239,20 +246,28 @@ public class DashboardWebViewManager {
 
 	public void call(String functionId, String argument) {
 		try {
-			IConfigurationElement element = getExtension(EXTENSION_ID_DASHBOARD_FUNCTION, functionId);
-			IDashboardFunction function = (IDashboardFunction) WorkbenchPlugin.createExtension(element, ELEMENT_CLASS);
-			function.call(argument);
+			IConfigurationElement element = getExtension(EXTENSION_ID_DASHBOARD_FUNCTION,
+					functionId);
+			if (element != null) {
+				IDashboardFunction function = (IDashboardFunction) WorkbenchPlugin
+						.createExtension(element, ELEMENT_CLASS);
+				function.call(argument);
+			} else {
+				StatusHandler.log(new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
+						"Could not find dashboard extension: " + functionId));
+			}
 		} catch (CoreException ex) {
 			StatusHandler.log(new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
 					"Could not find dashboard extension", ex));
 			return;
 		}
 	}
-	
+
 	public void showWizard(String extensionId) {
 		Object object;
 		try {
-			IConfigurationElement element = getExtension(EXTENSION_ID_NEW_WIZARD, extensionId);
+			IConfigurationElement element = getExtension(EXTENSION_ID_NEW_WIZARD,
+					extensionId);
 			object = WorkbenchPlugin.createExtension(element, ELEMENT_CLASS);
 		} catch (CoreException ex) {
 			StatusHandler.log(new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
