@@ -87,38 +87,30 @@ public class WebDashboardPage extends ADashboardPage /*
 	@SuppressWarnings("restriction")
 	@Override
 	public void createControl(Composite parent) {
-		if (WebBrowserUtil.canUseInternalWebBrowser()) {
-			this.shell = parent.getShell();
-			parent.setLayout(new FillLayout());
-			browserViewer = BrowserFactory.create(parent, hasToolbar());
-			final WebView browser = browserViewer.getBrowser();
-			if (homeUrl != null) {
-				browserViewer.setHomeUrl(homeUrl);
-				browserViewer.setURL(homeUrl);
-			} else {
-				browser.getEngine()
-						.loadContent(
-								"<h1>URL not set</h1>"
-										+ "<p>Url should be provided via the setInitializationData method</p>");
-			}
-			if (getName() == null) {
-				browser.getEngine().titleProperty()
-						.addListener(new ChangeListener<String>() {
-							@Override
-							public void changed(
-									ObservableValue<? extends String> observable,
-									String oldValue, String newValue) {
-								setName(newValue);
-								browser.getEngine().titleProperty()
-								.removeListener(this);
-							}
-						});
-			}
-			addBrowserHooks();
+		this.shell = parent.getShell();
+		parent.setLayout(new FillLayout());
+		browserViewer = BrowserFactory.create(parent, hasToolbar());
+		final WebView browser = browserViewer.getBrowser();
+		if (homeUrl != null) {
+			browserViewer.setHomeUrl(homeUrl);
+			browserViewer.setURL(homeUrl);
 		} else {
-			errorPage = new BrowserErrorPage();
-			errorPage.createControl(parent);
+			browser.getEngine()
+					.loadContent(
+							"<h1>URL not set</h1>"
+									+ "<p>Url should be provided via the setInitializationData method</p>");
 		}
+		if (getName() == null) {
+			browser.getEngine().titleProperty().addListener(new ChangeListener<String>() {
+				@Override
+				public void changed(ObservableValue<? extends String> observable,
+						String oldValue, String newValue) {
+					setName(newValue);
+					browser.getEngine().titleProperty().removeListener(this);
+				}
+			});
+		}
+		addBrowserHooks();
 	}
 
 	/**
@@ -184,7 +176,7 @@ public class WebDashboardPage extends ADashboardPage /*
 	public void goHome() {
 		browserViewer.goHome();
 	}
-	
+
 	protected STSBrowserViewer getBrowserViewer() {
 		return browserViewer;
 	}
