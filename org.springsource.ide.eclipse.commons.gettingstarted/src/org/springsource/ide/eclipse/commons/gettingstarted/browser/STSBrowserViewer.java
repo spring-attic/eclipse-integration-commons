@@ -230,6 +230,8 @@ public class STSBrowserViewer extends Composite {
 			}
 		}
 
+		//Without this, the JavaFx app will dispose itself the first time the dashboard closes. See https://bugs.eclipse.org/bugs/show_bug.cgi?id=422258#c3
+		Platform.setImplicitExit(false); 
 		final FXCanvas fxCanvas = new FXCanvas(this, SWT.NONE);
 		fxCanvas.setLayoutData(GridDataFactory.fillDefaults().grab(true, true)
 				.align(SWT.FILL, SWT.FILL).create());
