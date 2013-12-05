@@ -30,7 +30,7 @@ import org.springsource.ide.eclipse.commons.core.preferences.StsProperties;
 public class WelcomeDashboardPage extends WebDashboardPage {
 
 	private static final String WELCOME_PAGE_URI = "platform:/plugin/org.springsource.ide.eclipse.commons.gettingstarted/resources/welcome";
-	
+
 	private File welcomeHtml;
 	private DashboardEditor dashboard;
 	private DashboardWebViewManager webView;
@@ -78,26 +78,21 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 	@Override
 	protected void addBrowserHooks() {
 		super.addBrowserHooks();
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				getBrowserViewer().getBrowser().getEngine().getLoadWorker()
-						.stateProperty().addListener(new ChangeListener<Worker.State>() {
+		getBrowserViewer().getBrowser().getEngine().getLoadWorker().stateProperty()
+				.addListener(new ChangeListener<Worker.State>() {
 
-							@Override
-							public void changed(ObservableValue<? extends State> ov,
-									State oldState, State newState) {
-								if (newState == Worker.State.SUCCEEDED
-										&& getBrowserViewer() != null) {
-									if (webView == null) {
-										webView = new DashboardWebViewManager(dashboard);
-									}
-									webView.setClient(getBrowserViewer().getBrowser());
-								}
+					@Override
+					public void changed(ObservableValue<? extends State> ov,
+							State oldState, State newState) {
+						if (newState == Worker.State.SUCCEEDED
+								&& getBrowserViewer() != null) {
+							if (webView == null) {
+								webView = new DashboardWebViewManager(dashboard);
 							}
-						});
-			}
-		});
+							webView.setClient(getBrowserViewer().getBrowser());
+						}
+					}
+				});
 	}
 
 	@Override

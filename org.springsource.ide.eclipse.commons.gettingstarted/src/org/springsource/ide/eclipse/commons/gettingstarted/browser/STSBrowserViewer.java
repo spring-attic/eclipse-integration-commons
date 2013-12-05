@@ -139,7 +139,7 @@ public class STSBrowserViewer extends Composite {
 	protected List<PropertyChangeListener> propertyListeners;
 
 	String initialUrl;
-	
+
 	/**
 	 * Under development - do not use
 	 */
@@ -202,9 +202,8 @@ public class STSBrowserViewer extends Composite {
 		if (showToolbar || showURLbar) {
 			Composite toolbarComp = new Composite(this, SWT.NONE);
 			toolbarComp.setLayout(new ToolbarLayout());
-			toolbarComp.setLayoutData(new GridData(
-					GridData.VERTICAL_ALIGN_BEGINNING
-							| GridData.FILL_HORIZONTAL));
+			toolbarComp.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING
+					| GridData.FILL_HORIZONTAL));
 
 			if (showToolbar)
 				createToolbar(toolbarComp);
@@ -235,26 +234,20 @@ public class STSBrowserViewer extends Composite {
 		fxCanvas.setLayoutData(GridDataFactory.fillDefaults().grab(true, true)
 				.align(SWT.FILL, SWT.FILL).create());
 		fxCanvas.setLayout(GridLayoutFactory.fillDefaults().create());
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				browser = new WebView();
-				browser.setVisible(false);
-				BorderPane border = new BorderPane();
-				Scene scene = new Scene(border);
-				border.setCenter(browser);
-				fxCanvas.setScene(scene);
-				if (showURLbar)
-					updateHistory();
-				if (showToolbar)
-					updateBackNextBusy();
-				addBrowserListeners();
-				if (initialUrl != null) {
-					browser.getEngine().load(initialUrl);
-				}
-			}
-			
-		});
+		browser = new WebView();
+		browser.setVisible(false);
+		BorderPane border = new BorderPane();
+		Scene scene = new Scene(border);
+		border.setCenter(browser);
+		fxCanvas.setScene(scene);
+		if (showURLbar)
+			updateHistory();
+		if (showToolbar)
+			updateBackNextBusy();
+		addBrowserListeners();
+		if (initialUrl != null) {
+			browser.getEngine().load(initialUrl);
+		}
 	}
 
 	/**
@@ -371,45 +364,42 @@ public class STSBrowserViewer extends Composite {
 							style += LOCATION_BAR;
 						if (showToolbar)
 							style += BUTTON_BAR;
-						STSBrowserViewer browser2 = new STSBrowserViewer(
-								shell2, style);
+						STSBrowserViewer browser2 = new STSBrowserViewer(shell2, style);
 						browser2.setVisible(true);
 						browser2.newWindow = true;
 						return browser2.getBrowser().getEngine();
 					}
 				});
 
-		browser.getEngine().setOnVisibilityChanged(
-				new EventHandler<WebEvent<Boolean>>() {
+		browser.getEngine().setOnVisibilityChanged(new EventHandler<WebEvent<Boolean>>() {
 
-					@Override
-					public void handle(WebEvent<Boolean> event) {
-						if (event.getData()) {
-							// What to do here... -Miles
-							// Browser browser2 = (Browser)e.widget;
-							// if (browser2.getParent().getParent() instanceof
-							// Shell) {
-							// Shell shell = (Shell)
-							// browser2.getParent().getParent();
-							// shell.open();
-							// }
-						}
-					}
-				});
+			@Override
+			public void handle(WebEvent<Boolean> event) {
+				if (event.getData()) {
+					// What to do here... -Miles
+					// Browser browser2 = (Browser)e.widget;
+					// if (browser2.getParent().getParent() instanceof
+					// Shell) {
+					// Shell shell = (Shell)
+					// browser2.getParent().getParent();
+					// shell.open();
+					// }
+				}
+			}
+		});
 
 		browser.getEngine().getLoadWorker().stateProperty()
 				.addListener(new ChangeListener<State>() {
 					@Override
 					public void changed(ObservableValue<? extends State> ov,
 							State oldState, State newState) {
-						int progressWorked = (int) (browser.getEngine()
-								.getLoadWorker().getProgress() * 100.0);
+						int progressWorked = (int) (browser.getEngine().getLoadWorker()
+								.getProgress() * 100.0);
 						boolean done = newState == State.SUCCEEDED
 								|| newState == State.FAILED;
 						if (container != null) {
-							IProgressMonitor monitor = container
-									.getActionBars().getStatusLineManager()
-									.getProgressMonitor();
+							IProgressMonitor monitor = container.getActionBars()
+									.getStatusLineManager().getProgressMonitor();
 							if (done) {
 								monitor.done();
 							} else if (progressWorked == 0) {
@@ -440,16 +430,15 @@ public class STSBrowserViewer extends Composite {
 			browser.getEngine().locationProperty()
 					.addListener(new ChangeListener<String>() {
 						@Override
-						public void changed(
-								ObservableValue<? extends String> observable,
+						public void changed(ObservableValue<? extends String> observable,
 								String oldValue, String newValue) {
 							if (combo != null) { // STS-3599
-																		// Note:
-																		// Not
-																		// the
-																		// same
-																		// as
-																		// topmost!
+													// Note:
+													// Not
+													// the
+													// same
+													// as
+													// topmost!
 								if (!"about:blank".equals(newValue)) { //$NON-NLS-1$
 									combo.setText(newValue);
 									addToHistory(newValue);
@@ -459,17 +448,21 @@ public class STSBrowserViewer extends Composite {
 						}
 					});
 
-			browser.getEngine().titleProperty()
-					.addListener(new ChangeListener<String>() {
-						public void changed(
-								ObservableValue<? extends String> observable,
-								String oldValue, String newValue) {
-							firePropertyChangeEvent(PROPERTY_TITLE, oldValue,
-									newValue);// STS-3599 Is this really
-												// neccessary, or can we listen
-												// directly?
-						}
-					});
+			browser.getEngine().titleProperty().addListener(new ChangeListener<String>() {
+				public void changed(ObservableValue<? extends String> observable,
+						String oldValue, String newValue) {
+					firePropertyChangeEvent(PROPERTY_TITLE, oldValue, newValue);// STS-3599
+																				// Is
+																				// this
+																				// really
+																				// neccessary,
+																				// or
+																				// can
+																				// we
+																				// listen
+																				// directly?
+				}
+			});
 		}
 	}
 
@@ -499,13 +492,13 @@ public class STSBrowserViewer extends Composite {
 	/**
 	 * Fire a property change event.
 	 */
-	protected void firePropertyChangeEvent(String propertyName,
-			Object oldValue, Object newValue) {
+	protected void firePropertyChangeEvent(String propertyName, Object oldValue,
+			Object newValue) {
 		if (propertyListeners == null)
 			return;
 
-		PropertyChangeEvent event = new PropertyChangeEvent(this, propertyName,
-				oldValue, newValue);
+		PropertyChangeEvent event = new PropertyChangeEvent(this, propertyName, oldValue,
+				newValue);
 		try {
 			int size = propertyListeners.size();
 			PropertyChangeListener[] pcl = new PropertyChangeListener[size];
@@ -605,7 +598,8 @@ public class STSBrowserViewer extends Composite {
 	 * @see #forward
 	 */
 	public boolean isForwardEnabled() {
-		return browser.getEngine().getHistory().getCurrentIndex() < browser.getEngine().getHistory().getEntries().size() - 1;
+		return browser.getEngine().getHistory().getCurrentIndex() < browser.getEngine()
+				.getHistory().getEntries().size() - 1;
 	}
 
 	/**
@@ -725,8 +719,7 @@ public class STSBrowserViewer extends Composite {
 		combo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent we) {
 				try {
-					if (combo.getSelectionIndex() != -1
-							&& !combo.getListVisible()) {
+					if (combo.getSelectionIndex() != -1 && !combo.getListVisible()) {
 						setURL(combo.getItem(combo.getSelectionIndex()));
 					}
 				} catch (Exception e) {
@@ -745,8 +738,7 @@ public class STSBrowserViewer extends Composite {
 		ToolItem go = new ToolItem(toolbar, SWT.NONE);
 		go.setImage(ImageResource.getImage(ImageResource.IMG_ELCL_NAV_GO));
 		go.setHotImage(ImageResource.getImage(ImageResource.IMG_CLCL_NAV_GO));
-		go.setDisabledImage(ImageResource
-				.getImage(ImageResource.IMG_DLCL_NAV_GO));
+		go.setDisabledImage(ImageResource.getImage(ImageResource.IMG_DLCL_NAV_GO));
 		go.setToolTipText(Messages.actionWebBrowserGo);
 		go.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
@@ -772,12 +764,9 @@ public class STSBrowserViewer extends Composite {
 
 		// create back and forward actions
 		back = new ToolItem(toolbar, SWT.NONE);
-		back.setImage(ImageResource
-				.getImage(ImageResource.IMG_ELCL_NAV_BACKWARD));
-		back.setHotImage(ImageResource
-				.getImage(ImageResource.IMG_CLCL_NAV_BACKWARD));
-		back.setDisabledImage(ImageResource
-				.getImage(ImageResource.IMG_DLCL_NAV_BACKWARD));
+		back.setImage(ImageResource.getImage(ImageResource.IMG_ELCL_NAV_BACKWARD));
+		back.setHotImage(ImageResource.getImage(ImageResource.IMG_CLCL_NAV_BACKWARD));
+		back.setDisabledImage(ImageResource.getImage(ImageResource.IMG_DLCL_NAV_BACKWARD));
 		back.setToolTipText(Messages.actionWebBrowserBack);
 		back.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
@@ -786,10 +775,8 @@ public class STSBrowserViewer extends Composite {
 		});
 
 		forward = new ToolItem(toolbar, SWT.NONE);
-		forward.setImage(ImageResource
-				.getImage(ImageResource.IMG_ELCL_NAV_FORWARD));
-		forward.setHotImage(ImageResource
-				.getImage(ImageResource.IMG_CLCL_NAV_FORWARD));
+		forward.setImage(ImageResource.getImage(ImageResource.IMG_ELCL_NAV_FORWARD));
+		forward.setHotImage(ImageResource.getImage(ImageResource.IMG_CLCL_NAV_FORWARD));
 		forward.setDisabledImage(ImageResource
 				.getImage(ImageResource.IMG_DLCL_NAV_FORWARD));
 		forward.setToolTipText(Messages.actionWebBrowserForward);
@@ -802,10 +789,8 @@ public class STSBrowserViewer extends Composite {
 		// create refresh, stop, and print actions
 		ToolItem stop = new ToolItem(toolbar, SWT.NONE);
 		stop.setImage(ImageResource.getImage(ImageResource.IMG_ELCL_NAV_STOP));
-		stop.setHotImage(ImageResource
-				.getImage(ImageResource.IMG_CLCL_NAV_STOP));
-		stop.setDisabledImage(ImageResource
-				.getImage(ImageResource.IMG_DLCL_NAV_STOP));
+		stop.setHotImage(ImageResource.getImage(ImageResource.IMG_CLCL_NAV_STOP));
+		stop.setDisabledImage(ImageResource.getImage(ImageResource.IMG_DLCL_NAV_STOP));
 		stop.setToolTipText(Messages.actionWebBrowserStop);
 		stop.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
@@ -814,10 +799,8 @@ public class STSBrowserViewer extends Composite {
 		});
 
 		ToolItem refresh = new ToolItem(toolbar, SWT.NONE);
-		refresh.setImage(ImageResource
-				.getImage(ImageResource.IMG_ELCL_NAV_REFRESH));
-		refresh.setHotImage(ImageResource
-				.getImage(ImageResource.IMG_CLCL_NAV_REFRESH));
+		refresh.setImage(ImageResource.getImage(ImageResource.IMG_ELCL_NAV_REFRESH));
+		refresh.setHotImage(ImageResource.getImage(ImageResource.IMG_CLCL_NAV_REFRESH));
 		refresh.setDisabledImage(ImageResource
 				.getImage(ImageResource.IMG_DLCL_NAV_REFRESH));
 		refresh.setToolTipText(Messages.actionWebBrowserRefresh);
@@ -882,7 +865,7 @@ public class STSBrowserViewer extends Composite {
 	public IBrowserViewerContainer getContainer() {
 		return container;
 	}
-	
+
 	@Override
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
