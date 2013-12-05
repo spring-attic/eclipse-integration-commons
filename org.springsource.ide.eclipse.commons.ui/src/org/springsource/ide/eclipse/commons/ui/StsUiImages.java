@@ -105,6 +105,10 @@ public class StsUiImages {
 
 	public static final ImageDescriptor NEW_AJDT_PROJECT = create(OBJ, "new_ajdt_project.gif");
 
+	public static final ImageDescriptor SPRING_LOGO = create(T_VIEW, "spring.png");
+
+	public static final ImageDescriptor SPRING_LOGO_NOTIFY = create(T_VIEW, "spring_notify.png");
+
 	/**
 	 * Lazily initializes image map.
 	 */

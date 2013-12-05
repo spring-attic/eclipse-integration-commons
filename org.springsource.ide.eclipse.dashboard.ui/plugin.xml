@@ -4,17 +4,6 @@
 	<extension-point id="com.springsource.sts.ide.ui.dashboard" name="STS Dashboard"
 		schema="schema/dashboard.exsd" />
 
-	<extension point="org.eclipse.ui.actionSets">
-		<actionSet id="com.springsource.sts.ide.ui.actionSet.workbench"
-			label="SpringSource Tool Suite" visible="true">
-			<action
-				class="org.springsource.ide.eclipse.dashboard.ui.actions.ShowDashboardAction"
-				icon="icons/view16/spring.png" id="com.springsource.sts.ide.ui.action.dashboard"
-				label="Dashboard" menubarPath="help/group.intro" style="push"
-				toolbarPath="com.springsource.sts/main">
-			</action>
-		</actionSet>
-	</extension>
 
 	<extension point="org.eclipse.ui.editors">
 		<editor
@@ -170,5 +159,41 @@
 			id="com.springsource.sts.ide.ui.pageFactory.BugReport">
 		</pageFactory>
 	</extension>
+  <extension
+        point="org.eclipse.ui.startup">
+     <startup
+           class="org.springsource.ide.eclipse.dashboard.internal.ui.feeds.FeedMonitor">
+     </startup>
+  </extension>
+  <extension
+        point="org.eclipse.ui.commands">
+     <command
+           id="org.springsource.ide.eclipse.dashboard.ui.showDashboard"
+           name="Dashboard">
+     </command>
+  </extension>
+  <extension
+        point="org.eclipse.ui.menus">
+     <menuContribution
+           allPopups="false"
+           locationURI="toolbar:org.eclipse.ui.main.toolbar">
+        <toolbar
+              id="org.springsource.ide.eclipse.dashboard.ui.toolbar1">
+           <command
+                 commandId="org.springsource.ide.eclipse.dashboard.ui.showDashboard"
+                 icon="icons/view16/spring.png"
+                 label="Dashboard"
+                 style="push">
+           </command>
+        </toolbar>
+     </menuContribution>
+  </extension>
+  <extension
+        point="org.eclipse.ui.handlers">
+     <handler
+           class="org.springsource.ide.eclipse.dashboard.ui.actions.ShowDashboardCommand"
+           commandId="org.springsource.ide.eclipse.dashboard.ui.showDashboard">
+     </handler>
+  </extension>
 
 </plugin>

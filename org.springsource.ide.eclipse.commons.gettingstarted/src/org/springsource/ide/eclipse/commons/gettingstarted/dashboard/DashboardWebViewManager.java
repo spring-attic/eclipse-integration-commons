@@ -63,6 +63,8 @@ import org.springsource.ide.eclipse.dashboard.internal.ui.IIdeUiConstants;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.AggregateFeedJob;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.UpdateNotification;
+import org.springsource.ide.eclipse.dashboard.internal.ui.feeds.FeedMonitor;
+import org.springsource.ide.eclipse.dashboard.internal.ui.feeds.IFeedListener;
 import org.w3c.dom.Document;
 
 import com.sun.syndication.feed.synd.SyndContent;
@@ -114,8 +116,6 @@ public class DashboardWebViewManager {
 
 	private DashboardEditor editor;
 
-	private Set<AggregateFeedJob> unfinishedJobs = new CopyOnWriteArraySet<AggregateFeedJob>();
-
 	private WebEngine engine;
 
 	private String feedHtml;
@@ -135,6 +135,13 @@ public class DashboardWebViewManager {
 		lastUpdated = new Date(lastUpdateLong);
 		currentUpdated = lastUpdated;
 		this.editor = editor;
+		FeedMonitor.getInstance().addListener(new IFeedListener() {
+			
+			@Override
+			public void updated(String id) {
+				checkUpdate();
+			}
+		});
 	}
 
 	public void setClient(WebView view) {
@@ -142,52 +149,13 @@ public class DashboardWebViewManager {
 		this.engine = view.getEngine();
 		JSObject window = (JSObject) engine.executeScript("window");
 		window.setMember("ide", this);
-		loadHtml();
-	}
-	
-	void loadHtml() {
-		if (checkUpdate()) {
-			return;
-		}
-		final Map<String, String> springMap = new HashMap<String, String>();
-		String[] urls = ResourceProvider.getUrls(RESOURCE_DASHBOARD_FEEDS_BLOGS);
-		for (String url : urls) {
-			springMap.put(url, null);
-		}
-		wizardHtml = buildCreateWizards();
-
-		final AggregateFeedJob feedJob = new AggregateFeedJob(springMap, "Feeds");
-		feedJob.addJobChangeListener(new JobChangeAdapter() {
-
-			@Override
-			public void done(IJobChangeEvent event) {
-				unfinishedJobs.remove(feedJob);
-				Map<SyndEntry, SyndFeed> entryToFeed = feedJob.getFeedReader()
-						.getFeedsWithEntries();
-				Set<SyndEntry> entries = entryToFeed.keySet();
-				feedHtml = buildFeeds(entries);
-				checkUpdate();
-			}
-		});
-		unfinishedJobs.add(feedJob);
-		feedJob.schedule();
-
-		Map<String, String> updateMap = new HashMap<String, String>();
-		updateMap.put(ResourceProvider.getUrl(RESOURCE_DASHBOARD_FEEDS_UPDATE), null);
-		final AggregateFeedJob updatesJob = new AggregateFeedJob(updateMap, "Updates");
-		updatesJob.addJobChangeListener(new JobChangeAdapter() {
-			@Override
-			public void done(IJobChangeEvent event) {
-				unfinishedJobs.remove(updatesJob);
-				updateHtml = buildUpdates(updatesJob.getNotifications());
-				checkUpdate();
-			}
-		});
-		unfinishedJobs.add(updatesJob);
-		updatesJob.schedule();
+		checkUpdate();
 	}
 
 	private boolean checkUpdate() {
+		wizardHtml = buildCreateWizards();
+		updateHtml = buildUpdates();
+		feedHtml = buildFeeds();
 		if (feedHtml != null && wizardHtml != null && updateHtml != null) {
 			Platform.runLater(new Runnable() {
 
@@ -288,10 +256,13 @@ public class DashboardWebViewManager {
 		dialog.open();
 	}
 
-	private String buildFeeds(Set<SyndEntry> entries) {
+	private String buildFeeds() {
+		Set<SyndEntry> feedEntries = FeedMonitor.getInstance().getFeedEntries();
+		if (feedEntries == null) {
+			return null;
+		}
 		String html = "";
-		// make sure the entries are sorted correctly
-		List<SyndEntry> sortedEntries = new ArrayList<SyndEntry>(entries);
+		List<SyndEntry> sortedEntries = new ArrayList<SyndEntry>(feedEntries);
 		Collections.sort(sortedEntries, new Comparator<SyndEntry>() {
 			public int compare(SyndEntry o1, SyndEntry o2) {
 				Date o1Date = o1.getPublishedDate() != null ? o1.getPublishedDate() : o1
@@ -316,10 +287,14 @@ public class DashboardWebViewManager {
 		return html;
 	}
 
-	private String buildUpdates(List<UpdateNotification> notifications) {
+	private String buildUpdates() {
+		List<UpdateNotification> updates = FeedMonitor.getInstance().getUpdates();
+		if (updates == null) {
+			return null;
+		}
 		String html = "";
 		// make sure the entries are sorted correctly
-		Collections.sort(notifications, new Comparator<UpdateNotification>() {
+		Collections.sort(updates, new Comparator<UpdateNotification>() {
 			public int compare(UpdateNotification o1, UpdateNotification o2) {
 				if (o2.getEntry() != null && o2.getEntry().getPublishedDate() != null
 						&& o1.getEntry() != null) {
@@ -330,7 +305,7 @@ public class DashboardWebViewManager {
 			}
 		});
 
-		for (UpdateNotification notification : notifications) {
+		for (UpdateNotification notification : updates) {
 			String update = buildUpdate(notification);
 			if (!update.isEmpty()) {
 				html += update;
@@ -524,8 +499,6 @@ public class DashboardWebViewManager {
 	}
 
 	public void dispose() {
-		IPreferenceStore prefStore = IdeUiPlugin.getDefault().getPreferenceStore();
-		prefStore.setValue(IIdeUiConstants.PREF_FEED_ENTRY_LAST_UPDATE_DISPLAYED,
-				currentUpdated.getTime());
+		FeedMonitor.getInstance().markRead();
 	}
 }
