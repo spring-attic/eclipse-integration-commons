@@ -32,7 +32,7 @@ public class FeedMonitor implements IStartup {
 
 	public static final String RESOURCE_DASHBOARD_FEEDS_UPDATE = "dashboard.feeds.update";
 
-	private final static int FEED_POLLING_RATE = 5 * 1* 1000; // 5 Minutes
+	private final static int FEED_POLLING_RATE = 5 * 60 * 1000; // 5 Minutes
 
 	private Date lastUpdated;
 
