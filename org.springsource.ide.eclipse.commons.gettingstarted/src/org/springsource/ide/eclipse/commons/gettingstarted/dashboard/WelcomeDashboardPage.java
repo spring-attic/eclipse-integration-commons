@@ -29,6 +29,8 @@ import org.springsource.ide.eclipse.commons.core.preferences.StsProperties;
 
 public class WelcomeDashboardPage extends WebDashboardPage {
 
+	private static final String WELCOME_PAGE_URI = "platform:/plugin/org.springsource.ide.eclipse.commons.gettingstarted/resources/welcome";
+	
 	private File welcomeHtml;
 	private DashboardEditor dashboard;
 	private DashboardWebViewManager webView;
@@ -36,27 +38,17 @@ public class WelcomeDashboardPage extends WebDashboardPage {
 	public WelcomeDashboardPage(DashboardEditor dashboard) throws URISyntaxException,
 			IOException {
 		this.dashboard = dashboard;
-		StsProperties props = StsProperties.getInstance(new NullProgressMonitor());
-		String contentUrl = props.get("dashboard.welcome.url");
 		setName("Welcome"); // Although this is the title in the html page,
 							// windows browser doesn't seem to reliably give a
 							// title event for it. So we must
 							// provide a name ourselves.
-		if (contentUrl == null) {
-			// shouldn't happen, but do something with this anyhow, better than
-			// a blank page or an error.
-			setHomeUrl("http://spring.io");
-		} else if (contentUrl.startsWith("platform:")) {
-			// platform url assumed to point to a bundled directory of
-			// 'templated' content that needs StsProperties replaced.
-			URL fileURL = FileLocator.toFileURL(new URL(contentUrl));
-			File contentInstance = DashboardCopier.getCopy(urlToFile(fileURL),
-					new NullProgressMonitor());
-			welcomeHtml = new File(contentInstance, "index.html");
-			setHomeUrl(welcomeHtml.toURI().toString());
-		} else {
-			setHomeUrl(contentUrl);
-		}
+		// platform url assumed to point to a bundled directory of
+		// 'templated' content that needs StsProperties replaced.
+		URL fileURL = FileLocator.toFileURL(new URL(WELCOME_PAGE_URI));
+		File contentInstance = DashboardCopier.getCopy(urlToFile(fileURL),
+				new NullProgressMonitor());
+		welcomeHtml = new File(contentInstance, "index.html");
+		setHomeUrl(welcomeHtml.toURI().toString());
 	}
 
 	private File urlToFile(URL fileURL) {
