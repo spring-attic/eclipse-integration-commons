@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.mylyn.internal.tasks.core.sync.GetTaskHistoryJob;
 import org.eclipse.osgi.service.resolver.VersionRange;
 import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkUtil;
@@ -246,4 +247,18 @@ public class UpdateNotification {
 		}
 	}
 
+	@Override
+	public int hashCode() {
+		if (entry.getTitle() != null) {
+			return entry.getTitle().hashCode();
+		}
+		else {
+			return -1;
+		}
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		return other instanceof UpdateNotification && ((UpdateNotification) other).getEntry() != null && ((UpdateNotification) other).getEntry().getTitle().equals(entry.getTitle());
+	}
 }

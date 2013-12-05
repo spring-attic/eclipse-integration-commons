@@ -19,6 +19,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -54,6 +55,7 @@ import com.sun.syndication.io.XmlReader;
  * @author Steffen Pingel
  * @author Terry Denney
  * @author Christian Dupuis
+ * @author Miles Parker
  */
 public class AggregateFeedJob extends Job {
 
@@ -64,8 +66,10 @@ public class AggregateFeedJob extends Job {
 	private final CachedFeedsManager feedManager;
 
 	private final FeedsReader feedReader;
+	
+	private String feedName;
 
-	private final List<UpdateNotification> notifications = new ArrayList<UpdateNotification>();
+	private List<UpdateNotification> notifications = new ArrayList<UpdateNotification>();
 
 	public AggregateFeedJob(Map<String, String> feedsToIconsMap, String feedName) {
 		this("Downloading RSS feeds", feedsToIconsMap, feedName);
@@ -74,6 +78,7 @@ public class AggregateFeedJob extends Job {
 	public AggregateFeedJob(String name, Map<String, String> feedsToIconsMap, String feedName) {
 		super(name);
 		this.feedsToIconsMap = feedsToIconsMap;
+		this.feedName = feedName;
 		feedReader = new FeedsReader();
 		feedManager = new CachedFeedsManager(feedName, feedsToIconsMap, feedReader);
 		setProperty(IProgressConstants.ICON_PROPERTY, StsUiImages.RSS);
@@ -224,16 +229,21 @@ public class AggregateFeedJob extends Job {
 		});
 
 		Version ideVersion = IdeUiUtils.getVersion();
+		Set<UpdateNotification> notificationsSet = new HashSet<UpdateNotification>(notifications);
 		for (SyndEntry entry : sortedEntries) {
 			UpdateNotification notification = new UpdateNotification(entry);
 			if (notification.matches(ideVersion, installedFeatures, environment)) {
-				notifications.add(notification);
+				notificationsSet.add(notification);
 			}
 		}
+		notifications = new ArrayList<UpdateNotification>(notificationsSet);
 	}
 
 	public List<UpdateNotification> getNotifications() {
 		return notifications;
 	}
 
+	public String getFeedName() {
+		return feedName;
+	}
 }
