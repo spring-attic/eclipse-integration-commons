@@ -47,33 +47,28 @@ import org.springsource.ide.eclipse.dashboard.ui.actions.IDashboardWithPages;
  * @author Kris De Volder
  */
 public class DashboardEditor extends EditorPart implements IDashboardWithPages {
-	
+
 	private CTabFolder folder;
-	
+
 	/**
 	 * Assigns custom names to some urls that can be displayed in the dashboard.
 	 * This is because the web page titles aren't allways good enough (too long,
 	 * not clear in context etc.).
 	 */
 	private Map<String, String> customNames = null;
-	
-	/**
-	 * Urls contained in this set should always be opened in an external browser.
-	 */
-	private String[] openExternal = null;
-	
+
 	public DashboardEditor() {
 		DashboardReopener.ensure();
 	}
-		
+
 	public void createPartControl(Composite _parent) {
-		folder = new CTabFolder(_parent, SWT.BOTTOM|SWT.FLAT);
+		folder = new CTabFolder(_parent, SWT.BOTTOM | SWT.FLAT);
 		CTabItem defaultSelection = null;
 		for (final IDashboardPage page : createPages()) {
 			if (shouldAdd(page)) {
 				CTabItem pageWidget = createPageWidget(page);
-				if (defaultSelection==null) {
-					defaultSelection = pageWidget; //select the first
+				if (defaultSelection == null) {
+					defaultSelection = pageWidget; // select the first
 				}
 			}
 		}
@@ -87,7 +82,6 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 		ensureSelectedTabInitialized();
 	}
 
-	
 	private boolean shouldAdd(IDashboardPage page) {
 		if (page instanceof IEnablableDashboardPart) {
 			return ((IEnablableDashboardPart) page).shouldAdd();
@@ -96,8 +90,8 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 	}
 
 	/**
-	 * Creates a CTabItem and adds it to the dashboard. The contents of
-	 * the page is provide by an IDashboardPage
+	 * Creates a CTabItem and adds it to the dashboard. The contents of the page
+	 * is provide by an IDashboardPage
 	 */
 	private CTabItem createPageWidget(final IDashboardPage _page) {
 		final DashboardPageContainer page = new DashboardPageContainer(_page);
@@ -105,7 +99,7 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 		CTabItem pageWidget = new CTabItem(folder, style);
 		pageWidget.setData(page);
 		String name = page.getName();
-		if (name==null) {
+		if (name == null) {
 			name = "no name";
 		}
 		pageWidget.setText(name);
@@ -114,23 +108,22 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				page.dispose();
-			} 
+			}
 		});
 		return pageWidget;
 	}
-	
+
 	private void ensureSelectedTabInitialized() {
-		if (folder!=null && !folder.isDisposed()) {
+		if (folder != null && !folder.isDisposed()) {
 			CTabItem tab = folder.getSelection();
-			if (tab!=null) {
+			if (tab != null) {
 				DashboardPageContainer page = (DashboardPageContainer) tab.getData();
-				if (page!=null) {
+				if (page != null) {
 					page.initialize(getSite());
 				}
 			}
 		}
 	}
-	
 
 	/**
 	 * Called when we need the initial pages. This will be called only once per
@@ -144,18 +137,18 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 			WelcomeDashboardPage mainPage = new WelcomeDashboardPage(this);
 			pages.add(mainPage);
 			customizeUrlBehavior(StsProperties.getInstance(new NullProgressMonitor()));
-			
+
 		} catch (Exception e) {
 			GettingStartedActivator.log(e);
 		} finally {
-			if (input!=null) {
+			if (input != null) {
 				try {
 					input.close();
 				} catch (IOException e) {
 				}
 			}
 		}
-		
+
 		pages.add(new DashboardExtensionsPage());
 		return pages;
 	}
@@ -166,18 +159,12 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 		for (String propName : props.getExplicitProperties()) {
 			if (propName.endsWith(".url")) {
 				String url = props.get(propName);
-				String customLabel = props.get(propName+".label");
-				if (customLabel!=null) {
+				String customLabel = props.get(propName + ".label");
+				if (customLabel != null) {
 					customNames.put(url, customLabel);
-				}
-				
-				boolean external = props.get(propName+".external", false);
-				if (external) {
-					openExternal.add(url);
 				}
 			}
 		}
-		this.openExternal = openExternal.toArray(new String[openExternal.size()]);
 	}
 
 	@Override
@@ -185,7 +172,7 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 		setSite(site);
 		setInput(input);
 	}
-	
+
 	@Override
 	public void setFocus() {
 		if (folder != null) {
@@ -195,27 +182,30 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		//This isn't a real editor. So there's really nothing to save.
+		// This isn't a real editor. So there's really nothing to save.
 	}
+
 	@Override
 	public void doSaveAs() {
-		//This isn't a real editor. So there's really nothing to save.
+		// This isn't a real editor. So there's really nothing to save.
 	}
+
 	@Override
 	public boolean isDirty() {
-		//This isn't a real editor. It's never dirty.
+		// This isn't a real editor. It's never dirty.
 		return false;
 	}
+
 	@Override
 	public boolean isSaveAsAllowed() {
-		//This isn't a real editor. There's nothing to save.
+		// This isn't a real editor. There's nothing to save.
 		return false;
 	}
 
 	@Override
 	public boolean setActivePage(String pageId) {
 		DashboardPageContainer p = getPage(pageId);
-		if (p!=null) {
+		if (p != null) {
 			if (pageId.equals(p.getPageId())) {
 				setActivePage(p);
 				return true;
@@ -228,12 +218,12 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 		folder.setSelection(p.getWidget());
 		ensureSelectedTabInitialized();
 	}
-	
+
 	private DashboardPageContainer getPage(String pageId) {
 		for (CTabItem item : folder.getItems()) {
 			Object _p = item.getData();
 			if (_p instanceof DashboardPageContainer) {
-				DashboardPageContainer p = (DashboardPageContainer)_p;
+				DashboardPageContainer p = (DashboardPageContainer) _p;
 				if (pageId.equals(p.getPageId())) {
 					return p;
 				}
@@ -242,62 +232,37 @@ public class DashboardEditor extends EditorPart implements IDashboardWithPages {
 		return null;
 	}
 
-	private static void openUrlInExternalBrowser(String url) {
-		try {
-			IWorkbenchBrowserSupport support = PlatformUI.getWorkbench()
-					.getBrowserSupport();
-			support.getExternalBrowser().openURL(new URL(url));
-		}
-		catch (Exception e) {
-			GettingStartedActivator.log(e);
-		}
-	}
-	
-	
 	/**
-	 * Try to open a webpage in the dashboard. The url will be used as the 'page-id' for the
-	 * page. If a page with the given id already exists then it will be reused rather than
-	 * creating a new page. 
-	 * @return 
+	 * Try to open a webpage in the dashboard. The url will be used as the
+	 * 'page-id' for the page. If a page with the given id already exists then
+	 * it will be reused rather than creating a new page.
+	 * 
+	 * @return
 	 */
 	public boolean openWebPage(String url) {
-		if (openExternal(url)) {
-			openUrlInExternalBrowser(url);
-			return true;
+		DashboardPageContainer p = getPage(url);
+		if (p != null) {
+			IDashboardPage _wp = p.getPage();
+			if (_wp instanceof WebDashboardPage) {
+				WebDashboardPage wp = (WebDashboardPage) _wp;
+				wp.goHome();
+				setActivePage(p);
+				return true;
+			}
+			return false;
 		} else {
-			DashboardPageContainer p = getPage(url);
-			if (p!=null) {
-				IDashboardPage _wp = p.getPage();
-				if (_wp instanceof WebDashboardPage) {
-					WebDashboardPage wp = (WebDashboardPage) _wp;
-					wp.goHome();
-					setActivePage(p);
-					return true;
-				}
-			} else {
-				String customName = getCustomName(url);
-				WebDashboardPage page = new WebDashboardPage(customName, url);
-				CTabItem widget = createPageWidget(page);
-				setActivePage((DashboardPageContainer)widget.getData());
-				page.getBrowserViewer().setVisible(true);
-				return true;
-			}
+			String customName = getCustomName(url);
+			WebDashboardPage page = new WebDashboardPage(customName, url);
+			CTabItem widget = createPageWidget(page);
+			setActivePage((DashboardPageContainer) widget.getData());
+			page.getBrowserViewer().setVisible(true);
+			return true;
 		}
-		return false;
-	}
-
-	private boolean openExternal(String url) {
-		for (String prefix : openExternal) {
-			if (url.startsWith(prefix)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	private String getCustomName(String url) {
 		try {
-			if (customNames!=null) {
+			if (customNames != null) {
 				return (String) customNames.get(url);
 			}
 		} catch (Exception e) {

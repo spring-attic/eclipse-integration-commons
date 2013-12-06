@@ -144,7 +144,7 @@ public class DashboardWebViewManager {
 		window.setMember("ide", this);
 		loadHtml();
 	}
-	
+
 	void loadHtml() {
 		if (checkUpdate()) {
 			return;
@@ -473,13 +473,7 @@ public class DashboardWebViewManager {
 	}
 
 	public void openPage(String url) {
-		if (WebBrowserPreference.getBrowserChoice() == WebBrowserPreference.INTERNAL) {
-			if (editor.openWebPage(url)) {
-				return;
-			}
-		} else {
-			UiUtil.openUrl(url);
-		}
+		editor.openWebPage(url);
 	}
 
 	public void openDashboardPage(String path) {
