@@ -111,4 +111,8 @@ public class ExceptionUtil {
 		}
 	}
 
+	public static RuntimeException unchecked(Exception e) {
+		return new RuntimeException(e);
+	}
+
 }

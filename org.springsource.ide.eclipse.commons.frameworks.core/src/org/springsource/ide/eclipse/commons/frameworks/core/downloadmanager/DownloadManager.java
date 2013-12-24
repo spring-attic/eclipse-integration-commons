@@ -21,6 +21,7 @@ import java.net.URL;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.swt.widgets.Display;
 import org.springsource.ide.eclipse.commons.frameworks.core.FrameworkCoreActivator;
 import org.springsource.ide.eclipse.commons.frameworks.core.util.FileUtil;
@@ -140,12 +141,20 @@ public class DownloadManager {
 		}
 	}
 
-	private File getLocalLocation(DownloadableItem item) throws URISyntaxException {
+	/**
+	 * Get the local location of given item. Note that the item may or may not yet be downloaded so
+	 * there are no guarantees there is anything meaningful to be found there. 
+	 */
+	public File getLocalLocation(DownloadableItem item) {
 		URL url = item.getURL();
 		String protocol = url.getProtocol();
-		if ("file".equals(protocol)) {
-			//already local, so don't bother downloading.
-			return new File(url.toURI());
+		try {
+			if ("file".equals(protocol)) {
+				//already local, so don't bother downloading.
+				return new File(URIUtil.toURI(url));
+			}
+		} catch (URISyntaxException e) {
+			FrameworkCoreActivator.log(e);
 		}
 
 		String filename = item.getFileName();
@@ -190,13 +199,8 @@ public class DownloadManager {
 	}
 
 	public boolean isDownloaded(DownloadableItem item) {
-		try {
-			File target = getLocalLocation(item);
-			return target!=null && target.exists();
-		} catch (URISyntaxException e) {
-			FrameworkCoreActivator.log(e);
-		}
-		return false;
+		File target = getLocalLocation(item);
+		return target!=null && target.exists();
 	}
 
 	/**

@@ -16,6 +16,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
@@ -124,6 +126,28 @@ public class DownloadableItem {
 	 */
 	public IStatus getDownloadStatus() {
 		return downloadStatus;
+	}
+
+	public void clearCache() {
+		//Take care not to delete the original file if was local to begin with (in that case we don't 
+		// copy it into the cache dir so there is no cache to clear!
+		if (url!=null && !"file".equals(url.getProtocol())) {
+			//Avoid race conditions when someone is downloading this item at the moment.
+			synchronized (downloader) {
+				File localFile = downloader.getLocalLocation(this);
+				FileUtils.deleteQuietly(localFile);
+			}
+		}
+	}
+
+	/**
+	 * Determine the location to unzip to (without actually doing any unzipping).
+	 */
+	public File getUnzipDir() {
+		String fileName = getFileName();
+		Assert.isTrue(fileName.endsWith(".zip"));
+		File unzipLocation = new File(downloader.getCacheDir(), fileName.substring(0, fileName.length()-4));
+		return unzipLocation;
 	}
 
 }
