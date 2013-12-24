@@ -262,7 +262,7 @@ public class StsProperties {
 		//props.put("sts.nan.url.external", "true");
 
 		//Spring boot runtime
-		props.put("spring.boot.zip.url", "http://repo.spring.io/milestone/org/springframework/boot/spring-boot-cli/0.5.0.M6/spring-boot-cli-0.5.0.M6-bin.zip");
+		props.put("spring.boot.install.url", "http://repo.spring.io/milestone/org/springframework/boot/spring-boot-cli/0.5.0.M6/spring-boot-cli-0.5.0.M6-bin.zip");
 
 		return props;
 	}
