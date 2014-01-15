@@ -1,4 +1,4 @@
-instructions.install = \
-	addJvmArg(jvmArg:-Dorg.eclipse.swt.browser.IEVersion=10001);
-instructions.install.import= \
-	org.eclipse.equinox.p2.touchpoint.eclipse.addJvmArg
+instructions.configure = \
+  setProgramProperty(propName:osgi.framework.extensions, propValue:org.eclipse.fx.osgi); \
+instructions.unconfigure = \
+  setProgramProperty(propName:osgi.framework.extensions, propValue:); \
