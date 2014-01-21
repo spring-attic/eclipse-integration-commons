@@ -28,8 +28,6 @@ import org.springsource.ide.eclipse.commons.completions.util.Requestor;
  */
 public class SimpleExternalTypeIndexer extends ExternalTypeIndexer {
 
-	//TODO: implement getByIndex to use TreeMap slicing to avoid iterating the entire tree.
-	
 	private TreeMap<ExternalType, ExternalTypeSource> allKnownTypes = new TreeMap<ExternalType, ExternalTypeSource>();
 	
 	public SimpleExternalTypeIndexer() {
