@@ -4,7 +4,7 @@ Bundle-Name: SpringSource Tool Suite (Core)
 Bundle-SymbolicName: org.springsource.ide.eclipse.commons.core;singleton:=true
 Bundle-Version: 3.5.0.qualifier
 Bundle-Activator: org.springsource.ide.eclipse.commons.internal.core.CorePlugin
-Bundle-Vendor: GoPivotal, Inc.
+Bundle-Vendor: Pivotal Software, Inc.
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.mylyn.commons.net;bundle-version="[3.3.0,4.0.0)",
@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.platform,
  org.springsource.ide.eclipse.commons.frameworks.core;bundle-version="3.5.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.springsource.ide.eclipse.commons.core,
  org.springsource.ide.eclipse.commons.core.preferences,
  org.springsource.ide.eclipse.commons.core.process,
