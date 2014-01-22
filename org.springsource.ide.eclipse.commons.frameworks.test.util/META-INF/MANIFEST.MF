@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.springsource.ide.eclipse.commons.frameworks.test.util;s
 Bundle-Version: 3.5.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: GoPivotal, Inc.
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.swtbot.go,
  org.springsource.ide.eclipse.commons.tests.util,
  org.eclipse.debug.core,

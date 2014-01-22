@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.platform,
  org.springsource.ide.eclipse.commons.frameworks.core;bundle-version="3.5.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.springsource.ide.eclipse.commons.core,
  org.springsource.ide.eclipse.commons.core.preferences,
  org.springsource.ide.eclipse.commons.core.process,
