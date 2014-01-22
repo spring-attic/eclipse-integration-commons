@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: SpringSource Tool Suite Content (Core)
 Bundle-SymbolicName: org.springsource.ide.eclipse.commons.content.core;singleton:=true
 Bundle-Version: 3.5.0.qualifier
-Bundle-Vendor: GoPivotal, Inc.
+Bundle-Vendor: Pivotal Software, Inc.
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.springsource.ide.eclipse.commons.content.core.ContentPlugin

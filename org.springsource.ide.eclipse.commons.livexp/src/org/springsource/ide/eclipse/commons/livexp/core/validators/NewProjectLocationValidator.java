@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 GoPivotal, Inc. and others.
+ * Copyright (c) 2013 Pivotal Software, Inc. and others.
  * 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,8 +7,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * GoPivotal, Inc. - initial API and implementation
- * GoPivotal, Inc. - moved to commons for reuse across projects.
+ * Pivotal Software, Inc. - initial API and implementation
+ * Pivotal Software, Inc. - moved to commons for reuse across projects.
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.core.validators;
 
