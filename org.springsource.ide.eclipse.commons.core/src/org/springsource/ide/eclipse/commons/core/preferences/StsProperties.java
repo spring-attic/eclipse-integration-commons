@@ -264,6 +264,10 @@ public class StsProperties {
 		//Spring boot runtime
 		props.put("spring.boot.install.url", "http://repo.spring.io/milestone/org/springframework/boot/spring-boot-cli/0.5.0.M6/spring-boot-cli-0.5.0.M6-bin.zip");
 
+
+		//Discovery url for spring reference app
+		props.put("spring.reference.app.discovery.url", "https://raw.github.com/kdvolder/spring-reference-apps-meta/master/reference-apps.json");
+
 		return props;
 	}
 
