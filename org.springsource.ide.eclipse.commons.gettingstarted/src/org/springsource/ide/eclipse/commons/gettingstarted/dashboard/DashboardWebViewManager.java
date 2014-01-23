@@ -11,16 +11,15 @@
 package org.springsource.ide.eclipse.commons.gettingstarted.dashboard;
 
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.regex.Pattern;
 
 import javafx.application.Platform;
@@ -41,35 +40,34 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.jdt.internal.core.SetVariablesOperation;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.INewWizard;
+import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.IWorkbenchWizard;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.WorkbenchPlugin;
-import org.eclipse.ui.internal.browser.WebBrowserPreference;
+import org.eclipse.ui.internal.browser.WebBrowserEditorInput;
+import org.eclipse.ui.internal.part.NullEditorInput;
+import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.wizards.IWizardDescriptor;
 import org.eclipse.ui.wizards.IWizardRegistry;
-import org.springsource.ide.eclipse.commons.core.ResourceProvider;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
-import org.springsource.ide.eclipse.commons.ui.UiUtil;
+import org.springsource.ide.eclipse.commons.javafx.browser.IJavaFxBrowserFunction;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IIdeUiConstants;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
-import org.springsource.ide.eclipse.dashboard.internal.ui.editors.AggregateFeedJob;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.UpdateNotification;
 import org.springsource.ide.eclipse.dashboard.internal.ui.feeds.FeedMonitor;
 import org.springsource.ide.eclipse.dashboard.internal.ui.feeds.IFeedListener;
-import org.w3c.dom.Document;
 
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndFeed;
 
 /**
  * 
@@ -114,8 +112,6 @@ public class DashboardWebViewManager {
 
 	private static final String JAVA_WIZARD_ID = "org.eclipse.jdt.ui.wizards.JavaProjectWizard";
 
-	private DashboardEditor editor;
-
 	private WebEngine engine;
 
 	private String feedHtml;
@@ -128,13 +124,12 @@ public class DashboardWebViewManager {
 
 	private Date currentUpdated = null;
 
-	public DashboardWebViewManager(DashboardEditor editor) {
+	public DashboardWebViewManager() {
 		IPreferenceStore prefStore = IdeUiPlugin.getDefault().getPreferenceStore();
 		long lastUpdateLong = prefStore
 				.getLong(IIdeUiConstants.PREF_FEED_ENTRY_LAST_UPDATE_DISPLAYED);
 		lastUpdated = new Date(lastUpdateLong);
 		currentUpdated = lastUpdated;
-		this.editor = editor;
 		FeedMonitor.getInstance().addListener(new IFeedListener() {
 			
 			@Override
@@ -217,7 +212,7 @@ public class DashboardWebViewManager {
 			IConfigurationElement element = getExtension(EXTENSION_ID_DASHBOARD_FUNCTION,
 					functionId);
 			if (element != null) {
-				IDashboardFunction function = (IDashboardFunction) WorkbenchPlugin
+				IJavaFxBrowserFunction function = (IJavaFxBrowserFunction) WorkbenchPlugin
 						.createExtension(element, ELEMENT_CLASS);
 				function.call(argument);
 			} else {
@@ -448,11 +443,22 @@ public class DashboardWebViewManager {
 	}
 
 	public void openPage(String url) {
-		editor.openWebPage(url);
+		try {
+			WebBrowserEditorInput input = new WebBrowserEditorInput(new URL(url));
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(input, GettingStartedActivator.JAVAFX_BROWSER_EDITOR_ID);
+		} catch (MalformedURLException e) {
+			GettingStartedActivator.warn("Bad page url: " + url);
+		} catch (PartInitException e) {
+			GettingStartedActivator.log(e);
+		}
 	}
 
 	public void openDashboardPage(String path) {
-		editor.setActivePage(path);
+		try {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(new NullEditorInput(), GettingStartedActivator.EXTENSIONS_EDITOR_ID);
+		} catch (PartInitException e) {
+			GettingStartedActivator.log(e);
+		}
 	}
 
 	public void openImportWizard() {

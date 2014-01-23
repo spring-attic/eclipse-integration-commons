@@ -11,7 +11,7 @@
  *   Kris De Volder - Renamed to 'STSBrowserViewer and 
  *                    modified to use as browser for STS dashboard.
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.gettingstarted.browser;
+package org.springsource.ide.eclipse.commons.javafx.browser;
 
 //Most of this code copied from org.eclipse.ui.internal.browser.BrowserViewer
 // modified to reuse as a browser for STS dashboard.
@@ -69,7 +69,7 @@ import org.eclipse.ui.internal.browser.WebBrowserPreference;
 import org.springsource.ide.eclipse.commons.gettingstarted.Images;
 
 /**
- * A Web browser widget. It extends the Eclipse SWT Browser widget by adding an
+ * A Web browser widget. It provides a JavaFx WebView and adds an
  * optional toolbar complete with a URL combo box, history, back & forward, and
  * refresh buttons.
  * <p>
@@ -89,10 +89,13 @@ import org.springsource.ide.eclipse.commons.gettingstarted.Images;
  * <dd>None</dd>
  * </dl>
  * 
+ * @author Kris De Volder
+ * @author Miles Parker
+ * 
  * @since 1.0
  */
 @SuppressWarnings("restriction")
-public class STSBrowserViewer extends Composite {
+public class JavaFxBrowserViewer extends Composite {
 	/**
 	 * Style parameter (value 1) indicating that the URL and Go button will be
 	 * on the local toolbar.
@@ -181,7 +184,7 @@ public class STSBrowserViewer extends Composite {
 	 * @param style
 	 *            the style of control to construct
 	 */
-	public STSBrowserViewer(Composite parent, int style) {
+	public JavaFxBrowserViewer(Composite parent, int style) {
 		super(parent, SWT.NONE);
 
 		if ((style & LOCATION_BAR) != 0)
@@ -366,7 +369,7 @@ public class STSBrowserViewer extends Composite {
 							style += LOCATION_BAR;
 						if (showToolbar)
 							style += BUTTON_BAR;
-						STSBrowserViewer browser2 = new STSBrowserViewer(shell2, style);
+						JavaFxBrowserViewer browser2 = new JavaFxBrowserViewer(shell2, style);
 						browser2.setVisible(true);
 						browser2.newWindow = true;
 						return browser2.getBrowser().getEngine();

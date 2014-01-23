@@ -188,7 +188,7 @@ public class MultiPageDashboardEditor extends SharedHeaderFormEditor {
 
 	public static String EDITOR_ID = "com.springsource.sts.internal.ide.ui.editors.MultiPageDashboardEditor";
 
-	public static final String NEW_EDITOR_ID = "org.springsource.ide.eclipse.commons.gettingstarted.dashboard.DashboardEditor";
+	public static final String NEW_EDITOR_ID = "org.springsource.ide.eclipse.commons.gettingstarted.dashboard.WelcomeDashboard";
 
 	/**
 	 * Copied from TasksUiInternal to avoid initialization of

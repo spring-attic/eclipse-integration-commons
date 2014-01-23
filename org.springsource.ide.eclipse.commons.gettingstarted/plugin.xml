@@ -8,36 +8,22 @@
  
 	<extension point="org.eclipse.ui.editors">
 		<editor
-			class="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.DashboardEditor"
+			class="org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowser"
+			icon="resources/icons/spring_browser.png"
+			id="org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowser"
+			name="Browser">
+		</editor>
+		<editor
+			class="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.WelcomeDashboard"
 			icon="resources/icons/spring.png"
-			id="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.DashboardEditor"
+			id="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.WelcomeDashboard"
 			name="Dashboard">
 		</editor>
+		<editor
+			class="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ExtensionsEditor"
+			icon="resources/icons/spring_ext.png"
+			id="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ExtensionsEditor"
+			name="Spring Extensions">
+		</editor>
 	</extension>
- 
- <!-- Sample: shows how to use the extension point. Don't turn on for real
- <extension
-       point="org.springsource.ide.eclipse.commons.dashboard.browser.customization">
-    <customization
-          class="org.springsource.ide.eclipse.commons.gettingstarted.browser.sample.SampleBrowserCustomization">
-    </customization>
- </extension>
- --> 
- 
-  <!-- Preference page
- 
-   Disabled for now. Nothing interesting on this page anymore. 
-   The urls for dash webpages are now better added as links on the landing page.
- 
-    <extension
-      point = "org.eclipse.ui.preferencePages">
-       <page id="org.springsource.ide.eclipse.gettingstarted.preferences.GettingStartedPreferencesPage"
-	        class="org.springsource.ide.eclipse.commons.gettingstarted.preferences.GettingStartedPreferencesPage"
-            category="org.springsource.ide.eclipse.commons.preferencePage"
-            name="Dashboard (New)">
-       </page>
-    </extension>
-  
-   --> 
- 
-</plugin>
+ </plugin>

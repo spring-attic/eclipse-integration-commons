@@ -24,12 +24,14 @@ public class GettingStartedActivator extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.springsource.ide.eclipse.commons.gettingstarted"; //$NON-NLS-1$
 
+	public static final String JAVAFX_BROWSER_EDITOR_ID = "org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowser";
+
+	public static final String DASHBOARD_EDITOR_ID = "org.springsource.ide.eclipse.commons.gettingstarted.dashboard.WelcomeDashboard";
+
+	public static final String EXTENSIONS_EDITOR_ID = "org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ExtensionsEditor";
+	
 	// The shared instance
 	private static GettingStartedActivator plugin;
-
-//	private GettingStartedPreferences prefs;
-
-//	private ServiceTracker tracker;
 	
 	/**
 	 * The constructor
@@ -86,27 +88,4 @@ public class GettingStartedActivator extends AbstractUIPlugin {
 		}
 		return new Status(IStatus.ERROR, PLUGIN_ID, 0, message, exception);
 	}
-
-	
-//	public GettingStartedPreferences getPreferences() {
-//		if (prefs==null) {
-//			prefs = new GettingStartedPreferences(InstanceScope.INSTANCE.getNode(GettingStartedActivator.PLUGIN_ID));
-//		}
-//		return prefs;
-//	}
-	
-//	@SuppressWarnings("unchecked")
-//	public synchronized IProxyService getProxyService() {
-//		if (proxyService == null) {
-//			if (tracker == null) {
-//				tracker = new ServiceTracker(getBundle().getBundleContext(), IProxyService.class.getName(), null);
-//				tracker.open();
-//			}
-//
-//			proxyService = (IProxyService) tracker.getService();
-//		}
-//		return proxyService;
-//	}
-
-	
 }
