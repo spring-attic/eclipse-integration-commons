@@ -67,6 +67,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
@@ -74,11 +75,14 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.handlers.IHandlerService;
+import org.eclipse.ui.internal.part.NullEditorInput;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.Version;
 import org.springframework.util.StringUtils;
+import org.springsource.ide.eclipse.commons.browser.IBrowserFunction;
 import org.springsource.ide.eclipse.commons.core.ResourceProvider;
+import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.internal.configurator.Activator;
 import org.springsource.ide.eclipse.commons.internal.configurator.IConfigurator;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
@@ -130,6 +134,23 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 	public static final Set<String> OLD_M2E_FEATURES = Collections
 			.unmodifiableSet(new HashSet<String>(
 					Arrays.asList(new String[] { "org.maven.ide.eclipse.feature.feature.group" })));
+
+	public static class OpenEditorFunction implements IBrowserFunction {
+
+		@Override
+		public void call(String argument) {
+			try {
+				PlatformUI
+						.getWorkbench()
+						.getActiveWorkbenchWindow()
+						.getActivePage()
+						.openEditor(new NullEditorInput(),
+								GettingStartedActivator.EXTENSIONS_EDITOR_ID);
+			} catch (PartInitException e) {
+				GettingStartedActivator.log(e);
+			}
+		}
+	}
 
 	private ProgressMonitorPart progressMonitorPart;
 

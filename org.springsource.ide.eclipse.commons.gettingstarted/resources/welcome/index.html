@@ -56,7 +56,7 @@
 
 		function search(input) {
 			if (input.value != "") {
-				ide.openPage('https://spring.io/search?q=' + input.value)
+				ide.call('openWebPage', 'https://spring.io/search?q=' + input.value)
 				input.value = "";
 			}
 		}
@@ -70,15 +70,15 @@
 					</div>
 					<ul class="nav pull-right">
 						<li class="navbar-link"><a href=""
-							onclick="ide.openPage('${spring.docs.url}')">Docs</a></li>
+							onclick="ide.call('openWebPage', '${spring.docs.url}')">Docs</a></li>
 						<li class="navbar-link"><a href=""
-							onclick="ide.openPage('${spring.guides.url}')">Guides</a></li>
+							onclick="ide.call('openWebPage', '${spring.guides.url}')">Guides</a></li>
 						<li class="navbar-link"><a href=""
-							onclick="ide.openPage('${sts.tracker.url}')">Issues</a></li>
+							onclick="ide.call('openWebPage', '${sts.tracker.url}')">Issues</a></li>
 						<li class="navbar-link"><a href=""
-							onclick="ide.openPage('${spring.blog.url}')">Blog</a></li>
+							onclick="ide.call('openWebPage', '${spring.blog.url}')">Blog</a></li>
 						<li class="navbar-link"><a href=""
-							onclick="ide.openPage('${sts.forum.url}')">Forum</a></li>
+							onclick="ide.call('openWebPage', '${sts.forum.url}')">Forum</a></li>
 						<li class="navbar-link nav-search"><i
 							class="fa fa-search navbar-search--icon js-search-input-open"></i>
 							<div class="search-input-close js-search-input-close">x</div></li>
@@ -137,7 +137,7 @@
 						<div class="right-pane-widget--container">
 							<h2>Manage</h2>
 							<a class="ide_widget btn btn-black uppercase" href=""
-								onclick="ide.openDashboardPage('extensions')">IDE Extensions</a>
+								onclick="ide.call('openEditor', 'org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ExtensionsEditor')">IDE Extensions</a>
 						</div>
 					</aside>
 				</div>

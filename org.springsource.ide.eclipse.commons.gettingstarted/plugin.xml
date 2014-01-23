@@ -26,4 +26,20 @@
 			name="Spring Extensions">
 		</editor>
 	</extension>
+	    <extension
+          point="org.springsource.ide.common.dashboard.browser.function">
+       <function
+             class="org.springsource.ide.eclipse.commons.browser.OpenWebPageFunction"
+             id="openWebPage">
+       </function>
+       <function
+             class="org.springsource.ide.eclipse.commons.browser.OpenEditorFunction"
+             id="openEditor">
+       </function>
+       <function
+             class="org.springsource.ide.eclipse.commons.browser.OpenWizardFunction"
+             id="openWizard">
+       </function>
+    </extension>
+	
  </plugin>

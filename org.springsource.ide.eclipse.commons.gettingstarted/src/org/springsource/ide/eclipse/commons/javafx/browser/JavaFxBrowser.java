@@ -14,6 +14,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.web.WebView;
 
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -32,6 +34,8 @@ import org.eclipse.ui.part.EditorPart;
  * @author Miles Parker
  */
 public class JavaFxBrowser extends EditorPart {
+
+	private static final String ELEMENT_ID = "id";
 
 	/**
 	 * The URL that will be displayed in this Dashboard webpage.
@@ -53,7 +57,7 @@ public class JavaFxBrowser extends EditorPart {
 	public void createPartControl(Composite parent) {
 		parent.setLayout(new FillLayout());
 		browserViewer = new JavaFxBrowserViewer(parent,
-				hasToolbar() ? BrowserViewer.BUTTON_BAR | BrowserViewer.LOCATION_BAR
+				hasToolbar() ? JavaFxBrowserViewer.BUTTON_BAR | JavaFxBrowserViewer.LOCATION_BAR
 						: SWT.NONE);
 		final WebView browser = browserViewer.getBrowser();
 		if (getEditorInput() instanceof WebBrowserEditorInput) {
@@ -82,6 +86,20 @@ public class JavaFxBrowser extends EditorPart {
 		}
 	}
 
+	public static IConfigurationElement getExtension(String extensionId, String id) {
+		IExtensionRegistry registry = org.eclipse.core.runtime.Platform
+				.getExtensionRegistry();
+		IConfigurationElement[] configurations = registry
+				.getConfigurationElementsFor(extensionId);
+		for (IConfigurationElement element : configurations) {
+			String elementId = element.getAttribute(ELEMENT_ID);
+			if (elementId.equals(id)) {
+				return element;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Subclasses may override if they don't want the url and buttons toolbar.
 	 * Defailt implementation returns true causing the toolbar to be added when
@@ -97,10 +115,6 @@ public class JavaFxBrowser extends EditorPart {
 	 */
 	public String getHomeUrl() {
 		return homeUrl;
-	}
-
-	public String getPageId() {
-		return getHomeUrl();
 	}
 
 	/**
