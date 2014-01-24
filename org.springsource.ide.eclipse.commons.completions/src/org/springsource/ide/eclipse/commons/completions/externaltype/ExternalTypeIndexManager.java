@@ -18,7 +18,11 @@ import java.util.Set;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IJavaProject;
 import org.springsource.ide.eclipse.commons.completions.CompletionsActivator;
 import org.springsource.ide.eclipse.commons.completions.externaltype.indexing.ExternalTypeIndexer;
@@ -63,7 +67,7 @@ public class ExternalTypeIndexManager {
 	private Set<ExternalTypeDiscovery> contentKey = null;
 	
 	public synchronized ExternalTypeIndexer getIndexFor(IJavaProject project) {
-		HashSet<ExternalTypeDiscovery> newContentKey = new HashSet<ExternalTypeDiscovery>();
+		final HashSet<ExternalTypeDiscovery> newContentKey = new HashSet<ExternalTypeDiscovery>();
 		for (ExternalTypeDiscoveryFactory factory : getFactories()) {
 			ExternalTypeDiscovery discovery = factory.discoveryFor(project);
 			if (discovery!=null) {
@@ -78,13 +82,27 @@ public class ExternalTypeIndexManager {
 		if (index!=null && contentKey.equals(newContentKey)) {
 			return index;
 		}
-		//Must (re)build the index
-		//TODO: consider building index asynchronously if it takes too much time.
-		contentKey = newContentKey;
 		index = new SimpleExternalTypeIndexer();
-		for (ExternalTypeDiscovery discovery : contentKey) {
-			index.addFrom(discovery);
-		}
+		contentKey = newContentKey;
+		Job rebuildIndex = new Job("Indexing Jar Types") {
+			@Override
+			protected IStatus run(IProgressMonitor mon) {
+				mon.beginTask("Indexing Jar Types", contentKey.size());
+				try {
+					//Must (re)build the index
+					for (ExternalTypeDiscovery discovery : contentKey) {
+						index.addFrom(discovery);
+						mon.worked(1);
+					}
+				} finally {
+					mon.done();
+				}
+				return Status.OK_STATUS;
+			}
+			
+		};
+		rebuildIndex.setPriority(Job.DECORATE);
+		rebuildIndex.schedule();
 		return index;
 	}
 
