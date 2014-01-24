@@ -23,6 +23,8 @@ import org.springsource.ide.eclipse.commons.completions.util.Requestor;
  * Extremely simplistic implementation of ExternalTypeIndexer based on in memory TreeMap.
  * While fast, this implementation probably doesn't scale well in terms of memory
  * performance.
+ * <p>
+ * The index is thread safe and can be queried while it is being updated.
  * 
  * @author Kris De Volder
  */
@@ -44,7 +46,7 @@ public class SimpleExternalTypeIndexer extends ExternalTypeIndexer {
 	
 	@Override
 	public synchronized void getByPrefix(String prefix, Requestor<ExternalType> requestor) {
-		System.out.println(">>> getByPrefix: "+prefix);
+		//System.out.println(">>> getByPrefix: "+prefix);
 		try {
 			ExternalType prefixKey = new ExternalType(prefix, "");
 			NavigableMap<ExternalType, ExternalTypeSource> tailMap = allKnownTypes.tailMap(prefixKey, true);
@@ -52,7 +54,7 @@ public class SimpleExternalTypeIndexer extends ExternalTypeIndexer {
 				if (type.getName().startsWith(prefix)) { 
 					//still a match
 					boolean wantsMore = requestor.receive(type);
-					System.out.println(type);
+					//System.out.println(type);
 					if (!wantsMore) {
 						return;
 					}
@@ -62,7 +64,7 @@ public class SimpleExternalTypeIndexer extends ExternalTypeIndexer {
 				}
 			}
 		} finally {
-			System.out.println(">>> getByPrefix: "+prefix);
+			//System.out.println("<<< getByPrefix: "+prefix);
 		}
 	}
 
