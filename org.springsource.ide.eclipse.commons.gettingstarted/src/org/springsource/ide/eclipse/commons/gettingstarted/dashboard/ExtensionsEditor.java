@@ -67,7 +67,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
@@ -75,14 +74,11 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.handlers.IHandlerService;
-import org.eclipse.ui.internal.part.NullEditorInput;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.Version;
 import org.springframework.util.StringUtils;
-import org.springsource.ide.eclipse.commons.browser.IBrowserToEclipseFunction;
 import org.springsource.ide.eclipse.commons.core.ResourceProvider;
-import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.internal.configurator.Activator;
 import org.springsource.ide.eclipse.commons.internal.configurator.IConfigurator;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
@@ -109,31 +105,27 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 
 	public static final Map<String, List<String>> FEATURE_MAPPING;
 
-	public static final Set<String> SVN_FEATURES = Collections
-			.unmodifiableSet(new HashSet<String>(Arrays.asList(new String[] {
-					"org.eclipse.team.svn", "org.tigris.subversion.subclipse",
+	public static final Set<String> SVN_FEATURES = Collections.unmodifiableSet(new HashSet<String>(Arrays
+			.asList(new String[] { "org.eclipse.team.svn", "org.tigris.subversion.subclipse",
 					"com.collabnet.desktop.feature", })));
 
 	public static final String OLD_M2E_EXTENSION_ID = "org.maven.ide.eclipse.feature";
 
 	public static final String NEW_M2E_EXTENSION_ID = "org.eclipse.m2e.feature";
 
-	public static final Set<String> M2E_EXTENSION_IDS = Collections
-			.unmodifiableSet(new HashSet<String>(Arrays.asList(new String[] {
-					OLD_M2E_EXTENSION_ID, NEW_M2E_EXTENSION_ID })));
+	public static final Set<String> M2E_EXTENSION_IDS = Collections.unmodifiableSet(new HashSet<String>(Arrays
+			.asList(new String[] { OLD_M2E_EXTENSION_ID, NEW_M2E_EXTENSION_ID })));
 
-	public static final Set<String> NEW_M2E_FEATURES = Collections
-			.unmodifiableSet(new HashSet<String>(Arrays.asList(new String[] {
-					"org.eclipse.m2e.feature.feature.group",
+	public static final Set<String> NEW_M2E_FEATURES = Collections.unmodifiableSet(new HashSet<String>(Arrays
+			.asList(new String[] { "org.eclipse.m2e.feature.feature.group",
 					"org.eclipse.m2e.logback.feature.feature.group",
 					"org.sonatype.m2e.mavenarchiver.feature.feature.group",
 					"org.sonatype.m2e.buildhelper.feature.feature.group",
 					"org.maven.ide.eclipse.wtp.feature.feature.group",
 					"org.maven.ide.eclipse.ajdt.feature.feature.group" })));
 
-	public static final Set<String> OLD_M2E_FEATURES = Collections
-			.unmodifiableSet(new HashSet<String>(
-					Arrays.asList(new String[] { "org.maven.ide.eclipse.feature.feature.group" })));
+	public static final Set<String> OLD_M2E_FEATURES = Collections.unmodifiableSet(new HashSet<String>(Arrays
+			.asList(new String[] { "org.maven.ide.eclipse.feature.feature.group" })));
 
 	private ProgressMonitorPart progressMonitorPart;
 
@@ -160,11 +152,9 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 		// move that into an extension install/properties file
 
 		FEATURE_MAPPING = new HashMap<String, List<String>>();
-		FEATURE_MAPPING.put("com.google.gwt.eclipse.core", Arrays.asList(
-				"com.google.gdt.eclipse.suite.e35.feature",
+		FEATURE_MAPPING.put("com.google.gwt.eclipse.core", Arrays.asList("com.google.gdt.eclipse.suite.e35.feature",
 				"com.google.appengine.eclipse.sdkbundle.e35.feature.1.3.",
-				"com.google.gwt.eclipse.sdkbundle.e35.feature.2.1.0",
-				"com.google.gdt.eclipse.suite.e36.feature",
+				"com.google.gwt.eclipse.sdkbundle.e35.feature.2.1.0", "com.google.gdt.eclipse.suite.e36.feature",
 				"com.google.appengine.eclipse.sdkbundle.e36.feature.1.3.5",
 				"com.google.gwt.eclipse.sdkbundle.e36.feature.2.1.0"));
 		FEATURE_MAPPING.put("org.datanucleus.ide.eclipse",
@@ -175,8 +165,8 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 		super();
 	}
 
-	public void run(boolean fork, boolean cancelable, IRunnableWithProgress runnable)
-			throws InvocationTargetException, InterruptedException {
+	public void run(boolean fork, boolean cancelable, IRunnableWithProgress runnable) throws InvocationTargetException,
+			InterruptedException {
 		// The operation can only be canceled if it is executed in a separate
 		// thread.
 		// Otherwise the UI is blocked anyway.
@@ -185,9 +175,9 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 		}
 		activeRunningOperations++;
 		try {
-			ModalContext.run(runnable, fork, monitor, getEditorSite().getShell()
-					.getDisplay());
-		} finally {
+			ModalContext.run(runnable, fork, monitor, getEditorSite().getShell().getDisplay());
+		}
+		finally {
 			activeRunningOperations--;
 			// Stop if this is the last one
 			if (activeRunningOperations <= 0) {
@@ -205,10 +195,9 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 	 * About to start a long running operation triggered through the wizard.
 	 * Shows the progress monitor and disables the wizard's buttons and
 	 * controls.
-	 * 
-	 * @param enableCancelButton
-	 *            <code>true</code> if the Cancel button should be enabled, and
-	 *            <code>false</code> if it should be disabled
+	 *
+	 * @param enableCancelButton <code>true</code> if the Cancel button should
+	 * be enabled, and <code>false</code> if it should be disabled
 	 * @return the saved UI state
 	 */
 	private void aboutToStart(boolean enableCancelButton) {
@@ -237,8 +226,7 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 		environment.put("com.springsource.sts.version.major", version.getMajor());
 		environment.put("com.springsource.sts.version.minor", version.getMinor());
 		environment.put("com.springsource.sts.version.micro", version.getMicro());
-		environment.put("com.springsource.sts.nightly",
-				version.getQualifier().contains("-CI-"));
+		environment.put("com.springsource.sts.nightly", version.getQualifier().contains("-CI-"));
 		version = IdeUiUtils.getPlatformVersion();
 		environment.put("platform.version", version.toString()); //$NON-NLS-1$
 		environment.put("platform.major", version.getMajor());
@@ -255,14 +243,12 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
 				DiscoveryConnector connector = (DiscoveryConnector) element;
 				// filter out Collabnet on non-Windows platforms
-				if (connector.getId().startsWith("com.collabnet")
-						&& !Platform.getOS().equals(Platform.OS_WIN32)) {
+				if (connector.getId().startsWith("com.collabnet") && !Platform.getOS().equals(Platform.OS_WIN32)) {
 					return false;
 				}
 				// don't show SVN team providers if one is already
 				// installed unless it is the installed connector
-				if (SVN_FEATURES.contains(connector.getId()) && !isInstalled(connector)
-						&& isSvnInstalled()) {
+				if (SVN_FEATURES.contains(connector.getId()) && !isInstalled(connector) && isSvnInstalled()) {
 					return false;
 				}
 
@@ -275,9 +261,7 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 
 			private boolean isInstalled(DiscoveryConnector connector) {
 				Set<String> installedFeatures = viewer.getInstalledFeatures();
-				return installedFeatures != null
-						&& installedFeatures.contains(connector.getId()
-								+ ".feature.group");
+				return installedFeatures != null && installedFeatures.contains(connector.getId() + ".feature.group");
 			}
 
 			/**
@@ -327,13 +311,12 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 		if (DONT_DO_UNINSTALL) {
 			return false;
 		}
-		return featuresToUninstall.contains(featureId) || featureId.contains("m2e")
-				|| featureId.contains("maven");
+		return featuresToUninstall.contains(featureId) || featureId.contains("m2e") || featureId.contains("maven");
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets
 	 * .Composite)
@@ -347,25 +330,22 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 
 		discoveryViewer = new DashboardDiscoveryViewer(getSite(), this);
 		initialize(discoveryViewer);
-		discoveryViewer.setDirectoryUrl(ResourceProvider.getUrl(
-				RESOURCE_DISCOVERY_DIRECTORY).replace("%VERSION%",
+		discoveryViewer.setDirectoryUrl(ResourceProvider.getUrl(RESOURCE_DISCOVERY_DIRECTORY).replace("%VERSION%",
 				IdeUiUtils.getShortVersion()));
 		discoveryViewer.setShowConnectorDescriptorKindFilter(false);
 		discoveryViewer.createControl(body);
 		adaptRecursively(discoveryViewer.getControl(), toolkit);
-		GridDataFactory.fillDefaults().span(5, 1).grab(true, true)
-				.applyTo(discoveryViewer.getControl());
+		GridDataFactory.fillDefaults().span(5, 1).grab(true, true).applyTo(discoveryViewer.getControl());
 
 		findUpdatesButton = toolkit.createButton(body, "&Find Updates", SWT.NONE);
 		findUpdatesButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				IHandlerService handlerService = (IHandlerService) getSite().getService(
-						IHandlerService.class);
+				IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
 				try {
-					handlerService.executeCommand("org.eclipse.equinox.p2.ui.sdk.update",
-							new Event());
-				} catch (Exception e) {
+					handlerService.executeCommand("org.eclipse.equinox.p2.ui.sdk.update", new Event());
+				}
+				catch (Exception e) {
 					StatusManager.getManager().handle(
 							new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
 									"Find updates failed with an unexpected error.", e),
@@ -374,14 +354,12 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 			}
 		});
 
-		Hyperlink configureLink = toolkit.createHyperlink(body,
-				"Configure Extensions...", SWT.NONE);
+		Hyperlink configureLink = toolkit.createHyperlink(body, "Configure Extensions...", SWT.NONE);
 		configureLink.addHyperlinkListener(new HyperlinkAdapter() {
 			@Override
 			public void linkActivated(HyperlinkEvent event) {
-				PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn(
-						getSite().getShell(), ID_PREFERENCE_PAGE,
-						new String[] { ID_PREFERENCE_PAGE }, null);
+				PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn(getSite().getShell(),
+						ID_PREFERENCE_PAGE, new String[] { ID_PREFERENCE_PAGE }, null);
 				dialog.open();
 			}
 		});
@@ -420,23 +398,13 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				// check for conflicts
-				List<ConnectorDescriptor> selection = discoveryViewer
-						.getInstallableConnectors();
-				IStatus conflictStatus = new MultiStatus(
-						IdeUiPlugin.PLUGIN_ID,
-						-1,
-						new IStatus[] {
-								checkForConflicts(SVN_FEATURES,
-										" Please select only one SVN team provider.",
-										selection),
-								checkForConflicts(
-										M2E_EXTENSION_IDS,
-										" Please select only one m2e version to install.",
-										selection) },
-						"Could not perform install due to conflicts.", null);
+				List<ConnectorDescriptor> selection = discoveryViewer.getInstallableConnectors();
+				IStatus conflictStatus = new MultiStatus(IdeUiPlugin.PLUGIN_ID, -1, new IStatus[] {
+						checkForConflicts(SVN_FEATURES, " Please select only one SVN team provider.", selection),
+						checkForConflicts(M2E_EXTENSION_IDS, " Please select only one m2e version to install.",
+								selection) }, "Could not perform install due to conflicts.", null);
 				if (!conflictStatus.isOK()) {
-					StatusManager.getManager().handle(conflictStatus,
-							StatusManager.SHOW | StatusManager.BLOCK);
+					StatusManager.getManager().handle(conflictStatus, StatusManager.SHOW | StatusManager.BLOCK);
 					return;
 				}
 
@@ -447,17 +415,14 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 					IStatus uninstallResult = uninstallFeatures(featuresToUninstall);
 					if (!uninstallResult.isOK()) {
 						if (uninstallResult.getSeverity() != IStatus.CANCEL) {
-							StatusManager.getManager().handle(
-									uninstallResult,
-									StatusManager.SHOW | StatusManager.LOG
-											| StatusManager.BLOCK);
+							StatusManager.getManager().handle(uninstallResult,
+									StatusManager.SHOW | StatusManager.LOG | StatusManager.BLOCK);
 						}
 						return;
 					}
 				}
 
-				DiscoveryUi.install(discoveryViewer.getInstallableConnectors(),
-						ExtensionsEditor.this);
+				DiscoveryUi.install(discoveryViewer.getInstallableConnectors(), ExtensionsEditor.this);
 			}
 
 			private IStatus uninstallFeatures(final Set<String> featuresToUninstall) {
@@ -467,8 +432,7 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 					return Status.OK_STATUS;
 				}
 
-				boolean res = MessageDialog.openQuestion(getEditorSite().getShell(),
-						"Perform uninstall?",
+				boolean res = MessageDialog.openQuestion(getEditorSite().getShell(), "Perform uninstall?",
 						"In order to switch versions of m2eclipse, the following features will be uninstalled:\n"
 								+ allInstalled + "Do you want to continue?");
 
@@ -486,29 +450,24 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 						 * m2eclipse
 						 */
 						@Override
-						public boolean select(InstalledItem item) {
+						public boolean select(@SuppressWarnings("rawtypes") InstalledItem item) {
 							String featureId = item.getId();
 							return isRelatedToM2e(featuresToUninstall, featureId);
 						}
 					}, new NullProgressMonitor());
-				} catch (Exception e) {
-					return new Status(
-							IStatus.ERROR,
-							IdeUiPlugin.PLUGIN_ID,
-							NLS.bind(
-									"Could not uninstall features:\n{0},\n try uninstalling manually.",
-									featuresToUninstall), e);
+				}
+				catch (Exception e) {
+					return new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID, NLS.bind(
+							"Could not uninstall features:\n{0},\n try uninstalling manually.", featuresToUninstall), e);
 				}
 			}
 
-			private String findFeaturesToUninstall(Set<String> featuresToUninstall,
-					Set<String> installedFeatures) {
+			private String findFeaturesToUninstall(Set<String> featuresToUninstall, Set<String> installedFeatures) {
 				StringBuilder sb = new StringBuilder();
 				for (String featureId : installedFeatures) {
 					if (isRelatedToM2e(featuresToUninstall, featureId)) {
 						if (featureId.endsWith(".feature.group")) {
-							featureId = featureId.substring(0, featureId.length()
-									- ".feature.group".length());
+							featureId = featureId.substring(0, featureId.length() - ".feature.group".length());
 						}
 						sb.append("   " + featureId + "\n");
 					}
@@ -524,7 +483,8 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 					// first and vice versa
 					if (feature.getId().equals(NEW_M2E_EXTENSION_ID)) {
 						uninstallOld = true;
-					} else if (feature.getId().equals(OLD_M2E_EXTENSION_ID)) {
+					}
+					else if (feature.getId().equals(OLD_M2E_EXTENSION_ID)) {
 						uninstallNew = true;
 					}
 				}
@@ -532,14 +492,15 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 				Set<String> maybeUninstall;
 				if (uninstallOld) {
 					maybeUninstall = OLD_M2E_FEATURES;
-				} else if (uninstallNew) {
+				}
+				else if (uninstallNew) {
 					maybeUninstall = NEW_M2E_FEATURES;
-				} else {
+				}
+				else {
 					maybeUninstall = Collections.emptySet();
 				}
 
-				Set<String> installedFeatures = ExtensionsEditor.this.discoveryViewer
-						.getInstalledFeatures();
+				Set<String> installedFeatures = ExtensionsEditor.this.discoveryViewer.getInstalledFeatures();
 				Set<String> definitelyUninstall = new HashSet<String>();
 				for (String feature : maybeUninstall) {
 					if (installedFeatures.contains(feature)) {
@@ -559,18 +520,16 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 			 * This method checks for conflicts with requested installs. If a
 			 * conflict is found, this method will pop up a dialog explaining
 			 * the conflict and it will return true.
-			 * 
-			 * @param featuresToCheck
-			 *            set of features of which only one can be installed at
-			 *            once.
-			 * @param message
-			 *            message to add if there is an error
+			 *
+			 * @param featuresToCheck set of features of which only one can be
+			 * installed at once.
+			 * @param message message to add if there is an error
 			 * @param selection
-			 * 
+			 *
 			 * @return true iff there is a conflict.
 			 */
-			public IStatus checkForConflicts(Set<String> featuresToCheck,
-					String prependedMessage, List<ConnectorDescriptor> selection) {
+			public IStatus checkForConflicts(Set<String> featuresToCheck, String prependedMessage,
+					List<ConnectorDescriptor> selection) {
 				StringBuilder message = new StringBuilder();
 				List<ConnectorDescriptor> conflicting = new ArrayList<ConnectorDescriptor>();
 				for (ConnectorDescriptor descriptor : selection) {
@@ -583,13 +542,10 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 					}
 				}
 				if (conflicting.size() > 1) {
-					return new Status(
-							IStatus.WARNING,
-							IdeUiPlugin.PLUGIN_ID,
-							NLS.bind(
-									"The following extensions can not be installed at the same time: {0}.",
-									message.toString()));
-				} else {
+					return new Status(IStatus.WARNING, IdeUiPlugin.PLUGIN_ID, NLS.bind(
+							"The following extensions can not be installed at the same time: {0}.", message.toString()));
+				}
+				else {
 					return Status.OK_STATUS;
 				}
 			}
@@ -622,8 +578,7 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 
 		private Set<String> installedFeatures;
 
-		private DashboardDiscoveryViewer(IShellProvider shellProvider,
-				IRunnableContext context) {
+		private DashboardDiscoveryViewer(IShellProvider shellProvider, IRunnableContext context) {
 			super(shellProvider, context);
 		}
 
@@ -632,8 +587,7 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 		}
 
 		@Override
-		protected Set<String> getInstalledFeatures(IProgressMonitor monitor)
-				throws InterruptedException {
+		protected Set<String> getInstalledFeatures(IProgressMonitor monitor) throws InterruptedException {
 			this.installedFeatures = super.getInstalledFeatures(monitor);
 			IConfigurator configurator = Activator.getConfigurator();
 			if (configurator != null) {
@@ -651,23 +605,21 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 		protected void postDiscovery(ConnectorDiscovery connectorDiscovery) {
 			super.postDiscovery(connectorDiscovery);
 			for (DiscoveryConnector connector : connectorDiscovery.getConnectors()) {
-				if (connector.getSiteUrl() != null
-						&& connector.getSiteUrl().endsWith("-disabled")) {
+				if (connector.getSiteUrl() != null && connector.getSiteUrl().endsWith("-disabled")) {
 					connector.setAvailable(Boolean.FALSE);
 				}
 
 				// disable Groovy-Eclipse for read-only installations
 				// and provide an explanation why
-				if (connector.getId() != null
-						&& connector.getId().startsWith(GROOVY_FEATURE_PREFIX)) {
+				if (connector.getId() != null && connector.getId().startsWith(GROOVY_FEATURE_PREFIX)) {
 					File file = getInstallLocation();
 					boolean readOnly = isReadOnly(file);
 					boolean inProgramFiles = isInProgramFiles(file);
 					if (readOnly || inProgramFiles) {
 						connector.setAvailable(Boolean.FALSE);
 						connector.setName(connector.getName() + " (Cannot install)");
-						connector.setDescription(inProgramFiles ? PROGRAM_FILES_MESSAGE
-								: READ_ONLY_MESSAGE + connector.getDescription());
+						connector.setDescription(inProgramFiles ? PROGRAM_FILES_MESSAGE : READ_ONLY_MESSAGE
+								+ connector.getDescription());
 					}
 				}
 			}
@@ -677,7 +629,8 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 			URL url = Platform.getInstallLocation().getURL();
 			if (url != null) {
 				return new File(url.getFile());
-			} else {
+			}
+			else {
 				return null;
 			}
 		}
@@ -699,14 +652,13 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 			}
 			String absolutePath = installFolder.getAbsolutePath();
 			return installFolder.exists()
-					&& (absolutePath.startsWith("C:\\Program Files") || absolutePath
-							.startsWith("C:/Program Files"));
+					&& (absolutePath.startsWith("C:\\Program Files") || absolutePath.startsWith("C:/Program Files"));
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.
 	 * IProgressMonitor)
 	 */
@@ -716,7 +668,7 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorPart#doSaveAs()
 	 */
 	@Override
@@ -725,7 +677,7 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorPart#init(org.eclipse.ui.IEditorSite,
 	 * org.eclipse.ui.IEditorInput)
 	 */
@@ -737,7 +689,7 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorPart#isDirty()
 	 */
 	@Override
@@ -747,7 +699,7 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorPart#isSaveAsAllowed()
 	 */
 	@Override
@@ -757,7 +709,7 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
 	 */
 	@Override

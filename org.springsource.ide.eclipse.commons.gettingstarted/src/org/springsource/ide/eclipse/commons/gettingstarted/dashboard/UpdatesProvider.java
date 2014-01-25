@@ -15,7 +15,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowserManager;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.UpdateNotification;
 import org.springsource.ide.eclipse.dashboard.internal.ui.feeds.FeedMonitor;
 
@@ -24,9 +23,8 @@ import com.sun.syndication.feed.synd.SyndEntry;
 /**
  * @author Miles Parker
  * 
- *         Code refactored from
- *         org.springsource.ide.eclipse.dashboard.internal.ui
- *         .editors.DashboardMainPage:
+ * Code refactored from org.springsource.ide.eclipse.dashboard.internal.ui
+ * .editors.DashboardMainPage:
  * 
  * @author Terry Denney
  * @author Christian Dupuis
@@ -53,10 +51,8 @@ public class UpdatesProvider extends FeedProvider {
 			// make sure the entries are sorted correctly
 			Collections.sort(updates, new Comparator<UpdateNotification>() {
 				public int compare(UpdateNotification o1, UpdateNotification o2) {
-					if (o2.getEntry() != null && o2.getEntry().getPublishedDate() != null
-							&& o1.getEntry() != null) {
-						return o2.getEntry().getPublishedDate()
-								.compareTo(o1.getEntry().getPublishedDate());
+					if (o2.getEntry() != null && o2.getEntry().getPublishedDate() != null && o1.getEntry() != null) {
+						return o2.getEntry().getPublishedDate().compareTo(o1.getEntry().getPublishedDate());
 					}
 					return 0;
 				}
@@ -79,8 +75,8 @@ public class UpdatesProvider extends FeedProvider {
 		html += "<div class=\"blog--container blog-preview\">";
 		html += "	<div class=\"blog--title\">";
 		html += "   <i class=\"fa fa-exclamation new-star\"></i>";
-		html += "	<a href=\"\" onclick=\"ide.call('openWebPage', '" + entry.getLink()
-				+ "')\"><b>" + entry.getTitle() + "</b></a>";
+		html += "	<a href=\"\" onclick=\"ide.call('openWebPage', '" + entry.getLink() + "')\"><b>" + entry.getTitle()
+				+ "</b></a>";
 		html += "	</div>";
 		html += "</div>";
 		return html;

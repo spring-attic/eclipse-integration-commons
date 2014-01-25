@@ -12,16 +12,14 @@
 package org.springsource.ide.eclipse.commons.gettingstarted.dashboard;
 
 import org.springsource.ide.eclipse.commons.browser.IEclipseToBrowserFunction;
-import org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowserManager;
 import org.springsource.ide.eclipse.dashboard.internal.ui.feeds.FeedMonitor;
 import org.springsource.ide.eclipse.dashboard.internal.ui.feeds.IFeedListener;
 
 /**
  * @author Miles Parker
  * 
- *         Code refactored from
- *         org.springsource.ide.eclipse.dashboard.internal.ui
- *         .editors.DashboardMainPage:
+ * Code refactored from org.springsource.ide.eclipse.dashboard.internal.ui
+ * .editors.DashboardMainPage:
  * 
  * @author Terry Denney
  * @author Christian Dupuis

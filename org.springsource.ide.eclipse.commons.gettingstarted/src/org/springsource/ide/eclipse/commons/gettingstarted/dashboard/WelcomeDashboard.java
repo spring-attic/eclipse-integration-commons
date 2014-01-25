@@ -23,12 +23,10 @@ public class WelcomeDashboard extends JavaFxBrowser {
 
 	private static final String WELCOME_PAGE_URI = "platform:/plugin/org.springsource.ide.eclipse.commons.gettingstarted/resources/welcome";
 
-	public WelcomeDashboard() throws URISyntaxException,
-			IOException {
+	public WelcomeDashboard() throws URISyntaxException, IOException {
 		setName("Welcome");
 		URL fileURL = FileLocator.toFileURL(new URL(WELCOME_PAGE_URI));
-		File contentInstance = DashboardCopier.getCopy(new File(fileURL.toURI()),
-				new NullProgressMonitor());
+		File contentInstance = DashboardCopier.getCopy(new File(fileURL.toURI()), new NullProgressMonitor());
 		File welcomeHtml = new File(contentInstance, "index.html");
 		setHomeUrl(welcomeHtml.toURI().toString());
 	}

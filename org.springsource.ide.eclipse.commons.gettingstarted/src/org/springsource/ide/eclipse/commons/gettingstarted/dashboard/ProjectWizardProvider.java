@@ -36,14 +36,13 @@ public class ProjectWizardProvider extends IEclipseToBrowserFunction.Extension {
 		if (id.equals("html")) {
 			String html = "";
 
-			String[] ids = new String[] { JAVA_WIZARD_ID, SPRING_WIZARD_ID,
-					ROO_WIZARD_ID, GROOVY_WIZARD_ID, GRAILS_WIZARD_ID };
+			String[] ids = new String[] { JAVA_WIZARD_ID, SPRING_WIZARD_ID, ROO_WIZARD_ID, GROOVY_WIZARD_ID,
+					GRAILS_WIZARD_ID };
 
 			for (int i = 0; i < ids.length; i++) {
 				IConfigurationElement element = BrowserExtensions.getExtension(
 						BrowserExtensions.EXTENSION_ID_NEW_WIZARD, ids[i]);
-				if (element != null
-						&& element.getAttribute(BrowserExtensions.ELEMENT_CLASS) != null
+				if (element != null && element.getAttribute(BrowserExtensions.ELEMENT_CLASS) != null
 						&& element.getAttribute(BrowserExtensions.ELEMENT_NAME) != null
 						&& element.getAttribute(BrowserExtensions.ELEMENT_ICON) != null) {
 					// We use github_download as that seems to provide the shape
@@ -53,7 +52,8 @@ public class ProjectWizardProvider extends IEclipseToBrowserFunction.Extension {
 							+ ids[i]
 							+ "')\">"
 							+ "Create "
-							+ element.getAttribute(BrowserExtensions.ELEMENT_NAME) + "</a>";
+							+ element.getAttribute(BrowserExtensions.ELEMENT_NAME)
+							+ "</a>";
 				}
 			}
 			return html;

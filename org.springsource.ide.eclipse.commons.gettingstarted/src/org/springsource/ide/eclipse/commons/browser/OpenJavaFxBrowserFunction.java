@@ -28,16 +28,13 @@ public class OpenJavaFxBrowserFunction implements IBrowserToEclipseFunction {
 	public void call(String url) {
 		try {
 			WebBrowserEditorInput input = new WebBrowserEditorInput(new URL(url));
-			PlatformUI
-					.getWorkbench()
-					.getActiveWorkbenchWindow()
-					.getActivePage()
-					.openEditor(input,
-							GettingStartedActivator.JAVAFX_BROWSER_EDITOR_ID);
-		} catch (MalformedURLException e) {
-			StatusHandler.log(new Status(IStatus.ERROR, GettingStartedActivator.PLUGIN_ID,
-					"Bad page url: " + url, e));
-		} catch (PartInitException e) {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.openEditor(input, GettingStartedActivator.JAVAFX_BROWSER_EDITOR_ID);
+		}
+		catch (MalformedURLException e) {
+			StatusHandler.log(new Status(IStatus.ERROR, GettingStartedActivator.PLUGIN_ID, "Bad page url: " + url, e));
+		}
+		catch (PartInitException e) {
 			StatusHandler.log(new Status(IStatus.ERROR, GettingStartedActivator.PLUGIN_ID,
 					"Could not find brwoser editor extension", e));
 		}

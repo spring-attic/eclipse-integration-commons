@@ -34,9 +34,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.springsource.ide.eclipse.commons.browser.BrowserExtensions;
-import org.springsource.ide.eclipse.commons.browser.IEclipseToBrowserFunction;
 import org.springsource.ide.eclipse.commons.browser.IBrowserToEclipseFunction;
-import org.springsource.ide.eclipse.commons.core.StatusHandler;
+import org.springsource.ide.eclipse.commons.browser.IEclipseToBrowserFunction;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 
 /**
@@ -60,23 +59,19 @@ public class JavaFxBrowserManager {
 		window.setMember("ide", this);
 		Collection<IEclipseToBrowserFunction> onLoadFunctions = new ArrayList<IEclipseToBrowserFunction>();
 		IConfigurationElement[] extensions = BrowserExtensions.getExtensions(
-				BrowserExtensions.EXTENSION_ID_ECLIPSE_TO_BROWSER, null, view.getEngine()
-						.locationProperty().get());
+				BrowserExtensions.EXTENSION_ID_ECLIPSE_TO_BROWSER, null, view.getEngine().locationProperty().get());
 		for (IConfigurationElement element : extensions) {
 			try {
 				String onLoad = element.getAttribute(BrowserExtensions.ELEMENT_ONLOAD);
 				if (onLoad != null && onLoad.equals("true")) {
-					onLoadFunctions.add((IEclipseToBrowserFunction) WorkbenchPlugin
-							.createExtension(element, BrowserExtensions.ELEMENT_CLASS));
+					onLoadFunctions.add((IEclipseToBrowserFunction) WorkbenchPlugin.createExtension(element,
+							BrowserExtensions.ELEMENT_CLASS));
 				}
-			} catch (CoreException ex) {
-				StatusManager
-						.getManager()
-						.handle(new Status(
-								IStatus.ERROR,
-								IdeUiPlugin.PLUGIN_ID,
-								"Could not instantiate browser element provider extension.",
-								ex));
+			}
+			catch (CoreException ex) {
+				StatusManager.getManager().handle(
+						new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
+								"Could not instantiate browser element provider extension.", ex));
 				return;
 			}
 		}
@@ -84,35 +79,38 @@ public class JavaFxBrowserManager {
 	}
 
 	/**
-	 * Handle calls <i>from</i> Javascript functions on the browser. (This is called by reflection by JavaFx so there won't be any apparent usages for this method.)
+	 * Handle calls <i>from</i> Javascript functions on the browser. (This is
+	 * called by reflection by JavaFx so there won't be any apparent usages for
+	 * this method.)
 	 * @param functionId
 	 * @param argument
 	 */
 	public void call(String functionId, String argument) {
 		try {
 			IConfigurationElement element = BrowserExtensions.getExtension(
-					BrowserExtensions.EXTENSION_ID_BROWSER_TO_ECLIPSE, functionId, view
-							.getEngine().locationProperty().get());
+					BrowserExtensions.EXTENSION_ID_BROWSER_TO_ECLIPSE, functionId, view.getEngine().locationProperty()
+							.get());
 			if (element != null) {
-				IBrowserToEclipseFunction function = (IBrowserToEclipseFunction) WorkbenchPlugin
-						.createExtension(element, BrowserExtensions.ELEMENT_CLASS);
+				IBrowserToEclipseFunction function = (IBrowserToEclipseFunction) WorkbenchPlugin.createExtension(
+						element, BrowserExtensions.ELEMENT_CLASS);
 				function.call(argument);
-			} else {
+			}
+			else {
 				StatusManager.getManager().handle(
 						new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
-								"Could not instantiate browser function extension: "
-										+ functionId));
+								"Could not instantiate browser function extension: " + functionId));
 			}
-		} catch (CoreException ex) {
+		}
+		catch (CoreException ex) {
 			StatusManager.getManager().handle(
-					new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
-							"Could not find dashboard extension", ex));
+					new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID, "Could not find dashboard extension", ex));
 			return;
 		}
 	}
 
 	/**
-	 * Calls Javascript functions <i>to</i> the browser, refreshing the browser when all calls have completed.
+	 * Calls Javascript functions <i>to</i> the browser, refreshing the browser
+	 * when all calls have completed.
 	 * @param functions
 	 */
 	public void callOnBrowser(final Collection<IEclipseToBrowserFunction> functions) {
@@ -127,8 +125,7 @@ public class JavaFxBrowserManager {
 						public void run() {
 							JSObject js = (JSObject) getEngine().executeScript("window");
 							for (IEclipseToBrowserFunction provider : functions) {
-								js.call(provider.getFunctionName(),
-										(Object[]) provider.getArguments());
+								js.call(provider.getFunctionName(), (Object[]) provider.getArguments());
 							}
 							getView().requestLayout();
 							getView().setVisible(true);
@@ -162,10 +159,10 @@ public class JavaFxBrowserManager {
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 
-			transformer.transform(new DOMSource(getView().getEngine().getDocument()),
-					new StreamResult(sw));
+			transformer.transform(new DOMSource(getView().getEngine().getDocument()), new StreamResult(sw));
 			System.out.println(sw.toString());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}

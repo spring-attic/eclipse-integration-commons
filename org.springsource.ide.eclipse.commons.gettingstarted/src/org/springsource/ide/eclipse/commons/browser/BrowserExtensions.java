@@ -1,9 +1,9 @@
 /*******************************************************************************
  * Copyright (c) 2014 Pivotal Software, Inc. and others.
- * All rights reserved. This program and the accompanying materials are made 
- * available under the terms of the Eclipse Public License v1.0 
- * (http://www.eclipse.org/legal/epl-v10.html), and the Eclipse Distribution 
- * License v1.0 (http://www.eclipse.org/org/documents/edl-v10.html). 
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v1.0
+ * (http://www.eclipse.org/legal/epl-v10.html), and the Eclipse Distribution
+ * License v1.0 (http://www.eclipse.org/org/documents/edl-v10.html).
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -14,7 +14,6 @@ package org.springsource.ide.eclipse.commons.browser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.ObjectUtils;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 
@@ -50,25 +49,22 @@ public class BrowserExtensions {
 
 	public static final String ELEMENT_ONLOAD = "invokeOnLoad";
 
-	public static IConfigurationElement[] getExtensions(String extensionId, String id,
-			String url) {
+	public static IConfigurationElement[] getExtensions(String extensionId, String id, String url) {
 		List<IConfigurationElement> elements = new ArrayList<IConfigurationElement>();
-		IExtensionRegistry registry = org.eclipse.core.runtime.Platform
-				.getExtensionRegistry();
-		IConfigurationElement[] configurations = registry
-				.getConfigurationElementsFor(extensionId);
+		IExtensionRegistry registry = org.eclipse.core.runtime.Platform.getExtensionRegistry();
+		IConfigurationElement[] configurations = registry.getConfigurationElementsFor(extensionId);
 		for (IConfigurationElement element : configurations) {
 			String elementId = element.getAttribute(ELEMENT_ID);
 			String elementUrl = element.getAttribute(ELEMENT_URL);
-			if ((elementId == null || elementId.equals(id)) && (url == null || (elementUrl != null && url.matches(elementUrl)))) {
+			if ((elementId == null || elementId.equals(id))
+					&& (url == null || (elementUrl != null && url.matches(elementUrl)))) {
 				elements.add(element);
 			}
 		}
-		return elements.toArray(new IConfigurationElement[]{});
+		return elements.toArray(new IConfigurationElement[] {});
 	}
 
-	public static IConfigurationElement getExtension(String extensionId, String id,
-			String url) {
+	public static IConfigurationElement getExtension(String extensionId, String id, String url) {
 		IConfigurationElement[] extensionsForUrl = getExtensions(extensionId, id, url);
 		if (extensionsForUrl.length > 0) {
 			return extensionsForUrl[0];

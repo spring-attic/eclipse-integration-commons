@@ -22,7 +22,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowserManager;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IIdeUiConstants;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 import org.springsource.ide.eclipse.dashboard.internal.ui.feeds.FeedMonitor;
@@ -48,8 +47,7 @@ public class BlogsProvider extends FeedProvider {
 	public BlogsProvider() {
 		super(FeedMonitor.RESOURCE_DASHBOARD_FEEDS_BLOGS);
 		IPreferenceStore prefStore = IdeUiPlugin.getDefault().getPreferenceStore();
-		long lastUpdateLong = prefStore
-				.getLong(IIdeUiConstants.PREF_FEED_ENTRY_LAST_UPDATE_DISPLAYED);
+		long lastUpdateLong = prefStore.getLong(IIdeUiConstants.PREF_FEED_ENTRY_LAST_UPDATE_DISPLAYED);
 		lastUpdated = new Date(lastUpdateLong);
 		currentUpdated = lastUpdated;
 	}
@@ -85,7 +83,8 @@ public class BlogsProvider extends FeedProvider {
 		Date entryDate = new Date(0);
 		if (entry.getUpdatedDate() != null) {
 			entryDate = entry.getUpdatedDate();
-		} else {
+		}
+		else {
 			entryDate = entry.getPublishedDate();
 		}
 
@@ -106,14 +105,13 @@ public class BlogsProvider extends FeedProvider {
 		if (currentUpdated.before(entryDate)) {
 			currentUpdated = entryDate;
 		}
-		html += "	<a href=\"\" onclick=\"ide.call('openWebPage', '" + entry.getLink()
-				+ "')\">" + entry.getTitle() + "</a>";
+		html += "	<a href=\"\" onclick=\"ide.call('openWebPage', '" + entry.getLink() + "')\">" + entry.getTitle()
+				+ "</a>";
 		html += "	</div>";
 		html += "	<div class=\"blog--post\">";
 		html += "		<div>";
 		html += "			<p>" + trimText(buildDescription(entry));
-		html += "		<span class=\"author\">" + entryAuthor + " <i>" + dateString
-				+ "</i></span></p>";
+		html += "		<span class=\"author\">" + entryAuthor + " <i>" + dateString + "</i></span></p>";
 		html += "		</div>";
 		html += "	</div>";
 		html += "</div>";
@@ -138,17 +136,18 @@ public class BlogsProvider extends FeedProvider {
 			List<SyndEntry> sortedEntries = new ArrayList<SyndEntry>(feedEntries);
 			Collections.sort(sortedEntries, new Comparator<SyndEntry>() {
 				public int compare(SyndEntry o1, SyndEntry o2) {
-					Date o1Date = o1.getPublishedDate() != null ? o1.getPublishedDate()
-							: o1.getUpdatedDate();
-					Date o2Date = o2.getPublishedDate() != null ? o2.getPublishedDate()
-							: o2.getUpdatedDate();
+					Date o1Date = o1.getPublishedDate() != null ? o1.getPublishedDate() : o1.getUpdatedDate();
+					Date o2Date = o2.getPublishedDate() != null ? o2.getPublishedDate() : o2.getUpdatedDate();
 					if (o1Date == null && o2Date == null) {
 						return 0;
-					} else if (o1Date == null) {
+					}
+					else if (o1Date == null) {
 						return -1;
-					} else if (o2Date == null) {
+					}
+					else if (o2Date == null) {
 						return 1;
-					} else {
+					}
+					else {
 						return o2Date.compareTo(o1Date);
 					}
 				}
@@ -191,7 +190,8 @@ public class BlogsProvider extends FeedProvider {
 		while (pos < sb.length()) {
 			if (pattern.matcher(sb.subSequence(pos, pos + 1)).matches()) {
 				pos++;
-			} else {
+			}
+			else {
 				return pos;
 			}
 		}
@@ -204,9 +204,11 @@ public class BlogsProvider extends FeedProvider {
 		for (char currChar : value.toCharArray()) {
 			if (currChar == '<') {
 				tagOpened = true;
-			} else if (currChar == '>') {
+			}
+			else if (currChar == '>') {
 				tagOpened = false;
-			} else {
+			}
+			else {
 				if (!tagOpened) {
 					result.append(currChar);
 				}

@@ -21,13 +21,12 @@ public interface IEclipseToBrowserFunction {
 		public void ready(IEclipseToBrowserFunction function);
 	}
 
-	public abstract class Extension implements IEclipseToBrowserFunction,
-			IExecutableExtension {
+	public abstract class Extension implements IEclipseToBrowserFunction, IExecutableExtension {
 
 		String functionName;
-		
+
 		List<String> argumentIds = new ArrayList<String>();
-		
+
 		Map<String, String> literalArguments = new HashMap<String, String>();
 
 		private Callback client;
@@ -62,8 +61,8 @@ public interface IEclipseToBrowserFunction {
 		}
 
 		@Override
-		public void setInitializationData(IConfigurationElement config,
-				String propertyName, Object data) throws CoreException {
+		public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+				throws CoreException {
 			functionName = config.getAttribute(BrowserExtensions.ELEMENT_FUNCTION_NAME);
 			IConfigurationElement[] arguments = config.getChildren(BrowserExtensions.ELEMENT_ARGUMENT);
 			for (IConfigurationElement argumentElement : arguments) {
@@ -77,17 +76,23 @@ public interface IEclipseToBrowserFunction {
 			}
 			notifyIfReady();
 		}
-		
-		/* (non-Javadoc)
-		 * @see org.springsource.ide.eclipse.commons.browser.IEclipseToBrowserFunctionCall#getFunctionCall(java.lang.String)
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.springsource.ide.eclipse.commons.browser.
+		 * IEclipseToBrowserFunctionCall#getFunctionCall(java.lang.String)
 		 */
 		@Override
 		public String getFunctionName() {
 			return functionName;
 		}
-		
-		/* (non-Javadoc)
-		 * @see org.springsource.ide.eclipse.commons.browser.IEclipseToBrowserFunctionCall#getArguments()
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.springsource.ide.eclipse.commons.browser.
+		 * IEclipseToBrowserFunctionCall#getArguments()
 		 */
 		@Override
 		public String[] getArguments() {
@@ -107,7 +112,7 @@ public interface IEclipseToBrowserFunction {
 	String getFunctionName();
 
 	String[] getArguments();
-	
+
 	boolean isReady();
 
 	void dispose();
