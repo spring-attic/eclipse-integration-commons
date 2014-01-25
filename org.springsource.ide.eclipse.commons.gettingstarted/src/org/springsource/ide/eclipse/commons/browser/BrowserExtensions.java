@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 
 /**
  * @author Miles Parker
- * 
+ *
  */
 public class BrowserExtensions {
 

@@ -11,7 +11,7 @@
  *   Kris De Volder - Renamed to 'STSBrowserViewer and 
  *                    modified to use as browser for STS dashboard.
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.javafx.browser;
+package org.springsource.ide.eclipse.commons.browser.javafx;
 
 //Most of this code copied from org.eclipse.ui.internal.browser.BrowserViewer
 // modified to reuse as a browser for STS dashboard.

@@ -8,7 +8,7 @@
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.javafx.browser;
+package org.springsource.ide.eclipse.commons.browser.javafx;
 
 import java.io.StringWriter;
 import java.util.ArrayList;

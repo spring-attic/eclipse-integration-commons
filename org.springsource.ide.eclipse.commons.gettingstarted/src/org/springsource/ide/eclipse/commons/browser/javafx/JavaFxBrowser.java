@@ -8,7 +8,7 @@
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.javafx.browser;
+package org.springsource.ide.eclipse.commons.browser.javafx;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -28,11 +28,13 @@ import org.eclipse.ui.part.EditorPart;
 
 /**
  * An editor that displays the contents of a webpage using JavaFx WebView.
- * 
+ *
  * @author Kris De Volder
  * @author Miles Parker
  */
 public class JavaFxBrowser extends EditorPart {
+
+	public static final String EDITOR_ID = "org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowser";
 
 	/**
 	 * The URL that will be displayed in this Dashboard webpage.
@@ -47,7 +49,7 @@ public class JavaFxBrowser extends EditorPart {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets
 	 * .Composite)
@@ -143,7 +145,7 @@ public class JavaFxBrowser extends EditorPart {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.
 	 * IProgressMonitor)
 	 */
@@ -153,7 +155,7 @@ public class JavaFxBrowser extends EditorPart {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorPart#doSaveAs()
 	 */
 	@Override
@@ -162,7 +164,7 @@ public class JavaFxBrowser extends EditorPart {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorPart#init(org.eclipse.ui.IEditorSite,
 	 * org.eclipse.ui.IEditorInput)
 	 */
@@ -174,7 +176,7 @@ public class JavaFxBrowser extends EditorPart {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorPart#isDirty()
 	 */
 	@Override
@@ -184,7 +186,7 @@ public class JavaFxBrowser extends EditorPart {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorPart#isSaveAsAllowed()
 	 */
 	@Override
@@ -194,7 +196,7 @@ public class JavaFxBrowser extends EditorPart {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
 	 */
 	@Override

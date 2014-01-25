@@ -23,10 +23,6 @@ public class GettingStartedActivator extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.springsource.ide.eclipse.commons.gettingstarted"; //$NON-NLS-1$
 
-	public static final String JAVAFX_BROWSER_EDITOR_ID = "org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowser";
-
-	public static final String EXTENSIONS_EDITOR_ID = "org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ExtensionsEditor";
-
 	// The shared instance
 	private static GettingStartedActivator plugin;
 

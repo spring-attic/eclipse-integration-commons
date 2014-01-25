@@ -17,7 +17,7 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowser;
+import org.springsource.ide.eclipse.commons.browser.javafx.JavaFxBrowser;
 
 public class WelcomeDashboard extends JavaFxBrowser {
 

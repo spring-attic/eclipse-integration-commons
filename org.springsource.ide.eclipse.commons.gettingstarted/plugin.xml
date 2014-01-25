@@ -8,7 +8,7 @@
  
 	<extension point="org.eclipse.ui.editors">
 		<editor
-			class="org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowser"
+			class="org.springsource.ide.eclipse.commons.browser.javafx.JavaFxBrowser"
 			icon="resources/icons/spring_browser.png"
 			id="org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowser"
 			name="Browser">
@@ -29,7 +29,7 @@
 	    <extension
           point="org.springsource.ide.browser.function.browserToEclipse">
        <function
-             class="org.springsource.ide.eclipse.commons.browser.OpenJavaFxBrowserFunction"
+             class="org.springsource.ide.eclipse.commons.browser.javafx.OpenJavaFxBrowserFunction"
              id="openWebPage"
              urlExpression=".*\.html">
        </function>
