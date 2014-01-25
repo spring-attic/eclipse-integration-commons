@@ -71,7 +71,7 @@ public class FeedMonitor implements IStartup {
 			for (String url : urls) {
 				springMap.put(url, null);
 			}
-			final AggregateFeedJob feedJob = new AggregateFeedJob(springMap, "Feeds");
+			final AggregateFeedJob feedJob = new AggregateFeedJob(springMap, RESOURCE_DASHBOARD_FEEDS_BLOGS);
 			feedJob.addJobChangeListener(new JobChangeAdapter() {
 
 				@Override
@@ -91,7 +91,7 @@ public class FeedMonitor implements IStartup {
 		{
 			Map<String, String> updateMap = new HashMap<String, String>();
 			updateMap.put(ResourceProvider.getUrl(RESOURCE_DASHBOARD_FEEDS_UPDATE), null);
-			final AggregateFeedJob updatesJob = new AggregateFeedJob(updateMap, "Updates");
+			final AggregateFeedJob updatesJob = new AggregateFeedJob(updateMap, RESOURCE_DASHBOARD_FEEDS_UPDATE);
 			updatesJob.addJobChangeListener(new JobChangeAdapter() {
 
 				@Override

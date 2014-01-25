@@ -11,14 +11,9 @@
 package org.springsource.ide.eclipse.commons.javafx.browser;
 
 import java.io.StringWriter;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
+import java.util.Collection;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.application.Platform;
 import javafx.scene.web.WebEngine;
@@ -32,33 +27,17 @@ import javax.xml.transform.stream.StreamResult;
 
 import netscape.javascript.JSObject;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IPersistableElement;
-import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.statushandlers.StatusManager;
-import org.eclipse.ui.wizards.IWizardDescriptor;
-import org.eclipse.ui.wizards.IWizardRegistry;
-import org.springsource.ide.eclipse.commons.browser.BrowserUtils;
-import org.springsource.ide.eclipse.commons.browser.IBrowserFunction;
+import org.springsource.ide.eclipse.commons.browser.BrowserExtensions;
+import org.springsource.ide.eclipse.commons.browser.IEclipseToBrowserFunction;
+import org.springsource.ide.eclipse.commons.browser.IBrowserToEclipseFunction;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
-import org.springsource.ide.eclipse.dashboard.internal.ui.IIdeUiConstants;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
-import org.springsource.ide.eclipse.dashboard.internal.ui.editors.UpdateNotification;
-import org.springsource.ide.eclipse.dashboard.internal.ui.feeds.FeedMonitor;
-import org.springsource.ide.eclipse.dashboard.internal.ui.feeds.IFeedListener;
-
-import com.sun.syndication.feed.synd.SyndContent;
-import com.sun.syndication.feed.synd.SyndEntry;
 
 /**
  * 
@@ -66,38 +45,133 @@ import com.sun.syndication.feed.synd.SyndEntry;
  */
 public class JavaFxBrowserManager {
 
-	public static final String EXTENSION_ID_NEW_WIZARD = "org.eclipse.ui.newWizards";
-
-	public static final String EXTENSION_ID_DASHBOARD_FUNCTION = "org.springsource.ide.common.dashboard.browser.function";
-
 	private WebEngine engine;
 
 	private WebView view;
+
+	private boolean disposed;
+
+	private static final boolean DEBUG = false;
 
 	public void setClient(WebView view) {
 		this.view = view;
 		this.engine = view.getEngine();
 		JSObject window = (JSObject) engine.executeScript("window");
 		window.setMember("ide", this);
+		Collection<IEclipseToBrowserFunction> onLoadFunctions = new ArrayList<IEclipseToBrowserFunction>();
+		IConfigurationElement[] extensions = BrowserExtensions.getExtensions(
+				BrowserExtensions.EXTENSION_ID_ECLIPSE_TO_BROWSER, null, view.getEngine()
+						.locationProperty().get());
+		for (IConfigurationElement element : extensions) {
+			try {
+				String onLoad = element.getAttribute(BrowserExtensions.ELEMENT_ONLOAD);
+				if (onLoad != null && onLoad.equals("true")) {
+					onLoadFunctions.add((IEclipseToBrowserFunction) WorkbenchPlugin
+							.createExtension(element, BrowserExtensions.ELEMENT_CLASS));
+				}
+			} catch (CoreException ex) {
+				StatusManager
+						.getManager()
+						.handle(new Status(
+								IStatus.ERROR,
+								IdeUiPlugin.PLUGIN_ID,
+								"Could not instantiate browser element provider extension.",
+								ex));
+				return;
+			}
+		}
+		callOnBrowser(onLoadFunctions);
 	}
 
+	/**
+	 * Handle calls <i>from</i> Javascript functions on the browser. (This is called by reflection by JavaFx so there won't be any apparent usages for this method.)
+	 * @param functionId
+	 * @param argument
+	 */
 	public void call(String functionId, String argument) {
 		try {
-			IConfigurationElement element = BrowserUtils.getExtension(
-					EXTENSION_ID_DASHBOARD_FUNCTION, functionId);
+			IConfigurationElement element = BrowserExtensions.getExtension(
+					BrowserExtensions.EXTENSION_ID_BROWSER_TO_ECLIPSE, functionId, view
+							.getEngine().locationProperty().get());
 			if (element != null) {
-				IBrowserFunction function = (IBrowserFunction) WorkbenchPlugin
-						.createExtension(element, BrowserUtils.ELEMENT_CLASS);
+				IBrowserToEclipseFunction function = (IBrowserToEclipseFunction) WorkbenchPlugin
+						.createExtension(element, BrowserExtensions.ELEMENT_CLASS);
 				function.call(argument);
 			} else {
-				StatusHandler.log(new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
-						"Could not find dashboard extension: " + functionId));
+				StatusManager.getManager().handle(
+						new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
+								"Could not instantiate browser function extension: "
+										+ functionId));
 			}
 		} catch (CoreException ex) {
-			StatusHandler.log(new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
-					"Could not find dashboard extension", ex));
+			StatusManager.getManager().handle(
+					new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
+							"Could not find dashboard extension", ex));
 			return;
 		}
+	}
+
+	/**
+	 * Calls Javascript functions <i>to</i> the browser, refreshing the browser when all calls have completed.
+	 * @param functions
+	 */
+	public void callOnBrowser(final Collection<IEclipseToBrowserFunction> functions) {
+		final Collection<IEclipseToBrowserFunction> waitingFunctions = new CopyOnWriteArrayList<IEclipseToBrowserFunction>();
+		IEclipseToBrowserFunction.Callback callback = new IEclipseToBrowserFunction.Callback() {
+			@Override
+			public void ready(IEclipseToBrowserFunction function) {
+				waitingFunctions.remove(function);
+				if (waitingFunctions.isEmpty() && !disposed) {
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							JSObject js = (JSObject) getEngine().executeScript("window");
+							for (IEclipseToBrowserFunction provider : functions) {
+								js.call(provider.getFunctionName(),
+										(Object[]) provider.getArguments());
+							}
+							getView().requestLayout();
+							getView().setVisible(true);
+							if (DEBUG) {
+								printPageHtml();
+							}
+						}
+					});
+				}
+			}
+		};
+		for (IEclipseToBrowserFunction function : functions) {
+			if (!function.isReady()) {
+				waitingFunctions.add(function);
+				function.setCallback(callback);
+			}
+		}
+		callback.ready(null);
+	}
+
+	/**
+	 * For debugging..
+	 */
+	private void printPageHtml() {
+		StringWriter sw = new StringWriter();
+		try {
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			transformer.setOutputProperty(OutputKeys.METHOD, "html");
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+			transformer.transform(new DOMSource(getView().getEngine().getDocument()),
+					new StreamResult(sw));
+			System.out.println(sw.toString());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void dispose() {
+		disposed = true;
 	}
 
 	/**

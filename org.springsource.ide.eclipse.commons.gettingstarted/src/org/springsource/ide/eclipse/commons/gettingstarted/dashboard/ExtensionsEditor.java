@@ -80,7 +80,7 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.Version;
 import org.springframework.util.StringUtils;
-import org.springsource.ide.eclipse.commons.browser.IBrowserFunction;
+import org.springsource.ide.eclipse.commons.browser.IBrowserToEclipseFunction;
 import org.springsource.ide.eclipse.commons.core.ResourceProvider;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.commons.internal.configurator.Activator;
@@ -134,23 +134,6 @@ public class ExtensionsEditor extends EditorPart implements IRunnableContext {
 	public static final Set<String> OLD_M2E_FEATURES = Collections
 			.unmodifiableSet(new HashSet<String>(
 					Arrays.asList(new String[] { "org.maven.ide.eclipse.feature.feature.group" })));
-
-	public static class OpenEditorFunction implements IBrowserFunction {
-
-		@Override
-		public void call(String argument) {
-			try {
-				PlatformUI
-						.getWorkbench()
-						.getActiveWorkbenchWindow()
-						.getActivePage()
-						.openEditor(new NullEditorInput(),
-								GettingStartedActivator.EXTENSIONS_EDITOR_ID);
-			} catch (PartInitException e) {
-				GettingStartedActivator.log(e);
-			}
-		}
-	}
 
 	private ProgressMonitorPart progressMonitorPart;
 

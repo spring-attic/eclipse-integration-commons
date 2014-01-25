@@ -22,7 +22,7 @@ import org.eclipse.ui.internal.browser.WebBrowserEditorInput;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 
-public class OpenWebPageFunction implements IBrowserFunction {
+public class OpenJavaFxBrowserFunction implements IBrowserToEclipseFunction {
 
 	@Override
 	public void call(String url) {

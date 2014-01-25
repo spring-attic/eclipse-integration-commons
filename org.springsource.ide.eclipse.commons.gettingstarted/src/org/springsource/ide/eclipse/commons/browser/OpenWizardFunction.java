@@ -25,15 +25,15 @@ import org.springsource.ide.eclipse.commons.core.StatusHandler;
 import org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowserManager;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 
-public class OpenWizardFunction implements IBrowserFunction {
+public class OpenWizardFunction implements IBrowserToEclipseFunction {
 
 	@Override
 	public void call(String wizardId) {
 		Object object;
 		try {
-			IConfigurationElement element = BrowserUtils.getExtension(JavaFxBrowserManager.EXTENSION_ID_NEW_WIZARD,
+			IConfigurationElement element = BrowserExtensions.getExtension(BrowserExtensions.EXTENSION_ID_NEW_WIZARD,
 					wizardId);
-			object = WorkbenchPlugin.createExtension(element, BrowserUtils.ELEMENT_CLASS);
+			object = WorkbenchPlugin.createExtension(element, BrowserExtensions.ELEMENT_CLASS);
 		} catch (CoreException ex) {
 			StatusHandler.log(new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
 					"Could not read dashboard extension", ex));

@@ -12,6 +12,8 @@ package org.springsource.ide.eclipse.commons.javafx.browser;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
+import javafx.concurrent.Worker.State;
 import javafx.scene.web.WebView;
 
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -26,6 +28,9 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.browser.BrowserViewer;
 import org.eclipse.ui.internal.browser.WebBrowserEditorInput;
 import org.eclipse.ui.part.EditorPart;
+import org.springsource.ide.eclipse.commons.gettingstarted.dashboard.BlogsProvider;
+import org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ProjectWizardProvider;
+import org.springsource.ide.eclipse.commons.gettingstarted.dashboard.UpdatesProvider;
 
 /**
  * An editor that displays the contents of a webpage using JavaFx WebView.
@@ -35,8 +40,6 @@ import org.eclipse.ui.part.EditorPart;
  */
 public class JavaFxBrowser extends EditorPart {
 
-	private static final String ELEMENT_ID = "id";
-
 	/**
 	 * The URL that will be displayed in this Dashboard webpage.
 	 */
@@ -45,6 +48,8 @@ public class JavaFxBrowser extends EditorPart {
 	private String name;
 
 	private JavaFxBrowserViewer browserViewer;
+
+	private JavaFxBrowserManager dashboardManager;
 
 	/*
 	 * (non-Javadoc)
@@ -57,13 +62,13 @@ public class JavaFxBrowser extends EditorPart {
 	public void createPartControl(Composite parent) {
 		parent.setLayout(new FillLayout());
 		browserViewer = new JavaFxBrowserViewer(parent,
-				hasToolbar() ? JavaFxBrowserViewer.BUTTON_BAR | JavaFxBrowserViewer.LOCATION_BAR
-						: SWT.NONE);
+				hasToolbar() ? JavaFxBrowserViewer.BUTTON_BAR
+						| JavaFxBrowserViewer.LOCATION_BAR : SWT.NONE);
 		final WebView browser = browserViewer.getBrowser();
 		if (getEditorInput() instanceof WebBrowserEditorInput) {
 			homeUrl = ((WebBrowserEditorInput) getEditorInput()).getURL().toString();
 			browserViewer.setVisible(true);
-		} 
+		}
 		if (homeUrl != null) {
 			browserViewer.setHomeUrl(homeUrl);
 			browserViewer.setURL(homeUrl);
@@ -84,20 +89,21 @@ public class JavaFxBrowser extends EditorPart {
 				}
 			});
 		}
-	}
+		getBrowserViewer().getBrowser().getEngine().getLoadWorker().stateProperty()
+				.addListener(new ChangeListener<Worker.State>() {
 
-	public static IConfigurationElement getExtension(String extensionId, String id) {
-		IExtensionRegistry registry = org.eclipse.core.runtime.Platform
-				.getExtensionRegistry();
-		IConfigurationElement[] configurations = registry
-				.getConfigurationElementsFor(extensionId);
-		for (IConfigurationElement element : configurations) {
-			String elementId = element.getAttribute(ELEMENT_ID);
-			if (elementId.equals(id)) {
-				return element;
-			}
-		}
-		return null;
+					@Override
+					public void changed(ObservableValue<? extends State> ov,
+							State oldState, State newState) {
+						if (newState == Worker.State.SUCCEEDED
+								&& getBrowserViewer() != null) {
+							if (dashboardManager == null) {
+								dashboardManager = new JavaFxBrowserManager();
+							}
+							dashboardManager.setClient(getBrowserViewer().getBrowser());
+						}
+					}
+				});
 	}
 
 	/**

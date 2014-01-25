@@ -20,7 +20,7 @@ import org.springsource.ide.eclipse.commons.core.StatusHandler;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 
-public class OpenEditorFunction implements IBrowserFunction {
+public class OpenEditorFunction implements IBrowserToEclipseFunction {
 
 	@Override
 	public void call(String editorId) {

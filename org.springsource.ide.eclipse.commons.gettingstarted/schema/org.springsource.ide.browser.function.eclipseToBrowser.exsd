@@ -3,7 +3,7 @@
 <schema targetNamespace="org.springsource.ide.eclipse.commons.gettingstarted" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.springsource.ide.eclipse.commons.gettingstarted" id="org.springsource.ide.common.dashboard.browser.function" name="Dahboard Browser Function"/>
+         <meta.schema plugin="org.springsource.ide.eclipse.commons.gettingstarted" id="org.springsource.ide.common.elementProvider" name="Browser Element Provider"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <choice minOccurs="1" maxOccurs="unbounded">
-            <element ref="function"/>
+            <element ref="provider"/>
          </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,8 +47,11 @@
       </complexType>
    </element>
 
-   <element name="function">
+   <element name="provider">
       <complexType>
+         <sequence>
+            <element ref="argument" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
@@ -59,10 +62,52 @@
                </appinfo>
             </annotation>
          </attribute>
+         <attribute name="functionName" type="string">
+            <annotation>
+               <documentation>
+                  The name of the Javascript funciton to invoke.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="urlExpression" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A regular expression defining the URL(s) that this extension will be applied to. For example &quot;http://foo\.org/html/index.html&quot; applies the funtion to http://foo.org/html/index.html and &quot;.*\foo.html&quot; applies the function to all &quot;foo.html&quot; files opened from within a browser.
+
+Important note: urlExpressions should be as specific as possible, as the extension will be applied to any web pages opened which match the given expression regardless of whether an actual id matching id exists. For example, defining urlExpression as &quot;.*\index.html&quot; would be extremely bad behaviour!
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="invokeOnLoad" type="boolean">
+            <annotation>
+               <documentation>
+                  True if the funciton should be called automatically when the page loads.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="argument">
+      <complexType>
          <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
                   
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="literal" type="string">
+            <annotation>
+               <documentation>
+                  A literal value. Should not be provided is &quot;dynamic&quot; is true.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="dynamic" type="boolean">
+            <annotation>
+               <documentation>
+                  True if the value is provided by the implementing class. Otherwise, the id value is used.
                </documentation>
             </annotation>
          </attribute>

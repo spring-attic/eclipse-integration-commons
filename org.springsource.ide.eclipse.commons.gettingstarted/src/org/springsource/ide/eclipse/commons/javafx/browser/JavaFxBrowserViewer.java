@@ -67,9 +67,9 @@ import org.eclipse.ui.internal.browser.WebBrowserPreference;
 import org.springsource.ide.eclipse.commons.gettingstarted.Images;
 
 /**
- * A Web browser widget. It provides a JavaFx WebView and adds an
- * optional toolbar complete with a URL combo box, history, back & forward, and
- * refresh buttons.
+ * A Web browser widget. It provides a JavaFx WebView and adds an optional
+ * toolbar complete with a URL combo box, history, back & forward, and refresh
+ * buttons.
  * <p>
  * Use the style bits to choose which toolbars are available within the browser
  * composite. You can access the embedded SWT Browser directly using the
@@ -139,18 +139,7 @@ public class JavaFxBrowserViewer extends Composite {
 
 	protected List<PropertyChangeListener> propertyListeners;
 
-	String initialUrl;
-
-	/**
-	 * Under development - do not use
-	 */
-	public static interface ILocationListener {
-		public void locationChanged(String url);
-
-		public void historyChanged(String[] history2);
-	}
-
-	public ILocationListener locationListener;
+	private String initialUrl;
 
 	/**
 	 * Under development - do not use
@@ -231,8 +220,10 @@ public class JavaFxBrowserViewer extends Composite {
 			}
 		}
 
-		//Without this, the JavaFx app will dispose itself the first time the dashboard closes. See https://bugs.eclipse.org/bugs/show_bug.cgi?id=422258#c3
-		Platform.setImplicitExit(false); 
+		// Without this, the JavaFx app will dispose itself the first time the
+		// dashboard closes. See
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=422258#c3
+		Platform.setImplicitExit(false);
 		final FXCanvas fxCanvas = new FXCanvas(this, SWT.NONE);
 		fxCanvas.setLayoutData(GridDataFactory.fillDefaults().grab(true, true)
 				.align(SWT.FILL, SWT.FILL).create());
@@ -319,14 +310,6 @@ public class JavaFxBrowserViewer extends Composite {
 			backNextListener.updateBackNextBusy();
 	}
 
-	protected void updateLocation() {
-		if (locationListener != null)
-			locationListener.historyChanged(null);
-
-		if (locationListener != null)
-			locationListener.locationChanged(null);
-	}
-
 	/**
      *
      */
@@ -367,7 +350,8 @@ public class JavaFxBrowserViewer extends Composite {
 							style += LOCATION_BAR;
 						if (showToolbar)
 							style += BUTTON_BAR;
-						JavaFxBrowserViewer browser2 = new JavaFxBrowserViewer(shell2, style);
+						JavaFxBrowserViewer browser2 = new JavaFxBrowserViewer(shell2,
+								style);
 						browser2.setVisible(true);
 						browser2.newWindow = true;
 						return browser2.getBrowser().getEngine();
@@ -413,15 +397,11 @@ public class JavaFxBrowserViewer extends Composite {
 						}
 
 						if (showToolbar) {
-							if (!busy.isBusy() && !done)
+							if (!busy.isBusy() && !done) {
 								loading = true;
-							else if (busy.isBusy() && done) // once the progress
-															// hits
-								// 100 percent, done, set
-								// busy to false
+							} else if (busy.isBusy() && done) {
 								loading = false;
-
-							//System.out.println("loading: " + loading); //$NON-NLS-1$
+							}
 							updateBackNextBusy();
 							updateHistory();
 						}
@@ -435,18 +415,12 @@ public class JavaFxBrowserViewer extends Composite {
 						@Override
 						public void changed(ObservableValue<? extends String> observable,
 								String oldValue, String newValue) {
-							if (combo != null) { // STS-3599
-													// Note:
-													// Not
-													// the
-													// same
-													// as
-													// topmost!
+							if (combo != null) {
 								if (!"about:blank".equals(newValue)) { //$NON-NLS-1$
 									combo.setText(newValue);
 									addToHistory(newValue);
 									updateHistory();
-								}// else
+								}
 							}
 						}
 					});
@@ -454,16 +428,7 @@ public class JavaFxBrowserViewer extends Composite {
 			browser.getEngine().titleProperty().addListener(new ChangeListener<String>() {
 				public void changed(ObservableValue<? extends String> observable,
 						String oldValue, String newValue) {
-					firePropertyChangeEvent(PROPERTY_TITLE, oldValue, newValue);// STS-3599
-																				// Is
-																				// this
-																				// really
-																				// neccessary,
-																				// or
-																				// can
-																				// we
-																				// listen
-																				// directly?
+					firePropertyChangeEvent(PROPERTY_TITLE, oldValue, newValue);
 				}
 			});
 		}

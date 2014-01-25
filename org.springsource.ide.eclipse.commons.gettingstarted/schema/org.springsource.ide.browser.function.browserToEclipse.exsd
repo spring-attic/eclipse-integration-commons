@@ -3,7 +3,7 @@
 <schema targetNamespace="org.springsource.ide.eclipse.commons.gettingstarted" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.springsource.ide.eclipse.commons.gettingstarted" id="org.springsource.ide.eclipse.commons.dashboard.browser.customization" name="Dashboard Browser Customization"/>
+         <meta.schema plugin="org.springsource.ide.eclipse.commons.gettingstarted" id="org.springsource.ide.common.dashboard.browser.function" name="Dahboard Browser Function"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -17,9 +17,9 @@
          </appinfo>
       </annotation>
       <complexType>
-         <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="customization"/>
-         </sequence>
+         <choice minOccurs="1" maxOccurs="unbounded">
+            <element ref="function"/>
+         </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
                <documentation>
@@ -47,16 +47,30 @@
       </complexType>
    </element>
 
-   <element name="customization">
+   <element name="function">
       <complexType>
-         <attribute name="class" type="string">
+         <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.springsource.ide.eclipse.commons.gettingstarted.browser.IBrowserCustomization"/>
+                  <meta.attribute kind="java" basedOn=":org.springsource.ide.eclipse.commons.gettingstarted.dashboard.IDashboardFunction"/>
                </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="urlExpression" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A regular expression defining the URL(s) that this extension will be applied to. For example &quot;http://foo\.org/html/index.html&quot; applies the funtion to http://foo.org/html/index.html and &quot;.*\index.html&quot; applies the function to all &quot;index.html&quot; files opened from within a browser.
+               </documentation>
             </annotation>
          </attribute>
       </complexType>

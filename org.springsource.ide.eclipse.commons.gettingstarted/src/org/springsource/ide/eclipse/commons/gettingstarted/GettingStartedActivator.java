@@ -12,7 +12,6 @@ package org.springsource.ide.eclipse.commons.gettingstarted;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -25,8 +24,6 @@ public class GettingStartedActivator extends AbstractUIPlugin {
 	public static final String PLUGIN_ID = "org.springsource.ide.eclipse.commons.gettingstarted"; //$NON-NLS-1$
 
 	public static final String JAVAFX_BROWSER_EDITOR_ID = "org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowser";
-
-	public static final String DASHBOARD_EDITOR_ID = "org.springsource.ide.eclipse.commons.gettingstarted.dashboard.WelcomeDashboard";
 
 	public static final String EXTENSIONS_EDITOR_ID = "org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ExtensionsEditor";
 	

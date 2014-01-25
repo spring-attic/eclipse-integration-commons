@@ -5,7 +5,7 @@ package org.springsource.ide.eclipse.commons.browser;
  * @author Miles Parker
  *
  */
-public interface IBrowserFunction {
+public interface IBrowserToEclipseFunction {
 
 	public void call(String argument);
 }
