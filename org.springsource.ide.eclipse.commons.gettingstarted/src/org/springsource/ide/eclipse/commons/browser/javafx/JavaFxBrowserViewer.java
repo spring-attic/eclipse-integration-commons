@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2012 IBM Corporation and others.
+ * Copyright (c) 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,8 +9,9 @@
  * Contributors:
  *   IBM Corporation - Initial API and implementation
  *   Jacek Pospychala - jacek.pospychala@pl.ibm.com - fix for bug 224887
- *   Kris De Volder - Renamed to 'STSBrowserViewer and 
+ *   Kris De Volder - Renamed to 'STSBrowserViewer and
  *                    modified to use as browser for STS dashboard.
+ *   Miles Parker - Re-purposed Kris' STS wrapper into a JavaFx based implementation.
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.browser.javafx;
 
@@ -18,7 +20,6 @@ package org.springsource.ide.eclipse.commons.browser.javafx;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +28,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
 import javafx.embed.swt.FXCanvas;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.PopupFeatures;
 import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebView;
 import javafx.util.Callback;
 
@@ -42,7 +41,6 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
-import org.eclipse.swt.browser.LocationListener;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -86,10 +84,10 @@ import org.springsource.ide.eclipse.commons.gettingstarted.Images;
  * <dt><b>Events:</b></dt>
  * <dd>None</dd>
  * </dl>
- * 
+ *
  * @author Kris De Volder
  * @author Miles Parker
- * 
+ *
  * @since 1.0
  */
 @SuppressWarnings("restriction")
@@ -164,7 +162,7 @@ public class JavaFxBrowserViewer extends Composite {
 	 * constants that are applicable to the class. Style bits are also inherited
 	 * from superclasses.
 	 * </p>
-	 * 
+	 *
 	 * @param parent a composite control which will be the parent of the new
 	 * instance (cannot be null)
 	 * @param style the style of control to construct
@@ -172,11 +170,13 @@ public class JavaFxBrowserViewer extends Composite {
 	public JavaFxBrowserViewer(Composite parent, int style) {
 		super(parent, SWT.NONE);
 
-		if ((style & LOCATION_BAR) != 0)
+		if ((style & LOCATION_BAR) != 0) {
 			showURLbar = true;
+		}
 
-		if ((style & BUTTON_BAR) != 0)
+		if ((style & BUTTON_BAR) != 0) {
 			showToolbar = true;
+		}
 
 		GridLayout layout = new GridLayout();
 		layout.marginHeight = 0;
@@ -192,11 +192,13 @@ public class JavaFxBrowserViewer extends Composite {
 			toolbarComp.setLayout(new ToolbarLayout());
 			toolbarComp.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL));
 
-			if (showToolbar)
+			if (showToolbar) {
 				createToolbar(toolbarComp);
+			}
 
-			if (showURLbar)
+			if (showURLbar) {
 				createLocationBar(toolbarComp);
+			}
 
 			if (showToolbar | showURLbar) {
 				busy = new BusyIndicator(toolbarComp, SWT.NONE);
@@ -230,10 +232,12 @@ public class JavaFxBrowserViewer extends Composite {
 		Scene scene = new Scene(border);
 		border.setCenter(browser);
 		fxCanvas.setScene(scene);
-		if (showURLbar)
+		if (showURLbar) {
 			updateHistory();
-		if (showToolbar)
+		}
+		if (showToolbar) {
 			updateBackNextBusy();
+		}
 		addBrowserListeners();
 		if (initialUrl != null) {
 			browser.getEngine().load(initialUrl);
@@ -242,7 +246,7 @@ public class JavaFxBrowserViewer extends Composite {
 
 	/**
 	 * Returns the underlying SWT browser widget.
-	 * 
+	 *
 	 * @return the underlying browser
 	 */
 	public WebView getBrowser() {
@@ -271,7 +275,7 @@ public class JavaFxBrowserViewer extends Composite {
 
 	/**
 	 * Loads a URL.
-	 * 
+	 *
 	 * @param url the URL to be loaded
 	 * @return true if the operation was successful and false otherwise.
 	 * @exception IllegalArgumentException <ul>
@@ -298,31 +302,18 @@ public class JavaFxBrowserViewer extends Composite {
 			busy.setBusy(loading);
 		}
 
-		if (backNextListener != null)
+		if (backNextListener != null) {
 			backNextListener.updateBackNextBusy();
+		}
 	}
 
 	/**
      *
      */
 	private void addBrowserListeners() {
-		if (browser == null)
+		if (browser == null) {
 			return;
-		// respond to ExternalBrowserInstance StatusTextEvents events by
-		// updating the status line
-
-		// STS-3599 It doesn't look like this actually does anything for our
-		// case? -- Miles
-		// browser.addStatusTextListener(new StatusTextListener() {
-		// public void changed(StatusTextEvent event) {
-		//					//System.out.println("status: " + event.text); //$NON-NLS-1$
-		// if (container != null) {
-		// IStatusLineManager status = container.getActionBars()
-		// .getStatusLineManager();
-		// status.setMessage(event.text);
-		// }
-		// }
-		// });
+		}
 
 		// Add listener for new window creation so that we can instead of
 		// opening a separate
@@ -337,31 +328,16 @@ public class JavaFxBrowserViewer extends Composite {
 				shell2.setText(Messages.viewWebBrowserTitle);
 				shell2.setImage(getShell().getImage());
 				int style = 0;
-				if (showURLbar)
+				if (showURLbar) {
 					style += LOCATION_BAR;
-				if (showToolbar)
+				}
+				if (showToolbar) {
 					style += BUTTON_BAR;
+				}
 				JavaFxBrowserViewer browser2 = new JavaFxBrowserViewer(shell2, style);
 				browser2.setVisible(true);
 				browser2.newWindow = true;
 				return browser2.getBrowser().getEngine();
-			}
-		});
-
-		browser.getEngine().setOnVisibilityChanged(new EventHandler<WebEvent<Boolean>>() {
-
-			@Override
-			public void handle(WebEvent<Boolean> event) {
-				if (event.getData()) {
-					// What to do here... -Miles
-					// Browser browser2 = (Browser)e.widget;
-					// if (browser2.getParent().getParent() instanceof
-					// Shell) {
-					// Shell shell = (Shell)
-					// browser2.getParent().getParent();
-					// shell.open();
-					// }
-				}
 			}
 		});
 
@@ -421,31 +397,34 @@ public class JavaFxBrowserViewer extends Composite {
 
 	/**
 	 * Add a property change listener to this instance.
-	 * 
+	 *
 	 * @param listener java.beans.PropertyChangeListener
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		if (propertyListeners == null)
+		if (propertyListeners == null) {
 			propertyListeners = new ArrayList<PropertyChangeListener>();
+		}
 		propertyListeners.add(listener);
 	}
 
 	/**
 	 * Remove a property change listener from this instance.
-	 * 
+	 *
 	 * @param listener java.beans.PropertyChangeListener
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		if (propertyListeners != null)
+		if (propertyListeners != null) {
 			propertyListeners.remove(listener);
+		}
 	}
 
 	/**
 	 * Fire a property change event.
 	 */
 	protected void firePropertyChangeEvent(String propertyName, Object oldValue, Object newValue) {
-		if (propertyListeners == null)
+		if (propertyListeners == null) {
 			return;
+		}
 
 		PropertyChangeEvent event = new PropertyChangeEvent(this, propertyName, oldValue, newValue);
 		try {
@@ -453,13 +432,14 @@ public class JavaFxBrowserViewer extends Composite {
 			PropertyChangeListener[] pcl = new PropertyChangeListener[size];
 			propertyListeners.toArray(pcl);
 
-			for (int i = 0; i < size; i++)
+			for (int i = 0; i < size; i++) {
 				try {
 					pcl[i].propertyChange(event);
 				}
 				catch (Exception e) {
 					// ignore
 				}
+			}
 		}
 		catch (Exception e) {
 			// ignore
@@ -469,7 +449,7 @@ public class JavaFxBrowserViewer extends Composite {
 	/**
 	 * Navigate to the next session history item. Convenience method that calls
 	 * the underlying SWT browser.
-	 * 
+	 *
 	 * @return <code>true</code> if the operation was successful and
 	 * <code>false</code> otherwise
 	 * @exception SWTException <ul>
@@ -491,7 +471,7 @@ public class JavaFxBrowserViewer extends Composite {
 	/**
 	 * Navigate to the previous session history item. Convenience method that
 	 * calls the underlying SWT browser.
-	 * 
+	 *
 	 * @return <code>true</code> if the operation was successful and
 	 * <code>false</code> otherwise
 	 * @exception SWTException <ul>
@@ -514,7 +494,7 @@ public class JavaFxBrowserViewer extends Composite {
 	 * Returns <code>true</code> if the receiver can navigate to the previous
 	 * session history item, and <code>false</code> otherwise. Convenience
 	 * method that calls the underlying SWT browser.
-	 * 
+	 *
 	 * @return the receiver's back command enabled state
 	 * @exception SWTException <ul>
 	 * <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
@@ -531,7 +511,7 @@ public class JavaFxBrowserViewer extends Composite {
 	 * Returns <code>true</code> if the receiver can navigate to the next
 	 * session history item, and <code>false</code> otherwise. Convenience
 	 * method that calls the underlying SWT browser.
-	 * 
+	 *
 	 * @return the receiver's forward command enabled state
 	 * @exception SWTException <ul>
 	 * <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
@@ -548,21 +528,22 @@ public class JavaFxBrowserViewer extends Composite {
 	/**
 	 * Stop any loading and rendering activity. Convenience method that calls
 	 * the underlying SWT browser.
-	 * 
+	 *
 	 * @exception SWTException <ul>
 	 * <li>ERROR_THREAD_INVALID_ACCESS when called from the wrong thread</li>
 	 * <li>ERROR_WIDGET_DISPOSED when the widget has been disposed</li>
 	 * </ul>
 	 */
 	public void stop() {
-		if (browser != null)
+		if (browser != null) {
 			browser.getEngine().getLoadWorker().cancel();
+		}
 	}
 
 	/**
 	 * Refresh the current page. Convenience method that calls the underlying
 	 * SWT browser.
-	 * 
+	 *
 	 * @exception SWTException <ul>
 	 * <li>ERROR_THREAD_INVALID_ACCESS when called from the wrong thread</li>
 	 * <li>ERROR_WIDGET_DISPOSED when the widget has been disposed</li>
@@ -589,10 +570,12 @@ public class JavaFxBrowserViewer extends Composite {
 			return;
 		}
 
-		if ("eclipse".equalsIgnoreCase(url)) //$NON-NLS-1$
+		if ("eclipse".equalsIgnoreCase(url)) {
 			url = "http://www.eclipse.org"; //$NON-NLS-1$
-		else if ("wtp".equalsIgnoreCase(url)) //$NON-NLS-1$
+		}
+		else if ("wtp".equalsIgnoreCase(url)) {
 			url = "http://www.eclipse.org/webtools/"; //$NON-NLS-1$
+		}
 
 		if (browse) {
 			if (url != null && url.equals(getURL())) {
@@ -600,7 +583,7 @@ public class JavaFxBrowserViewer extends Composite {
 			}
 			else {
 				if (browser != null) {
-					browser.getEngine().load(url); //$NON-NLS-1$
+					browser.getEngine().load(url);
 					addToHistory(url);
 					updateHistory();
 				}
@@ -609,8 +592,9 @@ public class JavaFxBrowserViewer extends Composite {
 	}
 
 	protected void addToHistory(String url) {
-		if (history == null)
+		if (history == null) {
 			history = WebBrowserPreference.getInternalWebBrowserHistory();
+		}
 		int found = -1;
 		int size = history.size();
 		for (int i = 0; i < size; i++) {
@@ -622,8 +606,9 @@ public class JavaFxBrowserViewer extends Composite {
 		}
 
 		if (found == -1) {
-			if (size >= MAX_HISTORY)
+			if (size >= MAX_HISTORY) {
 				history.remove(size - 1);
+			}
 			history.add(0, url);
 			WebBrowserPreference.setInternalWebBrowserHistory(history);
 		}
@@ -637,17 +622,20 @@ public class JavaFxBrowserViewer extends Composite {
 	/**
      *
      */
+	@Override
 	public void dispose() {
 		super.dispose();
 
 		showToolbar = false;
 
-		if (busy != null)
+		if (busy != null) {
 			busy.dispose();
+		}
 		busy = null;
 
-		if (clipboard != null)
+		if (clipboard != null) {
 			clipboard.dispose();
+		}
 		clipboard = null;
 	}
 
@@ -657,6 +645,7 @@ public class JavaFxBrowserViewer extends Composite {
 		updateHistory();
 
 		combo.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent we) {
 				try {
 					if (combo.getSelectionIndex() != -1 && !combo.getListVisible()) {
@@ -682,6 +671,7 @@ public class JavaFxBrowserViewer extends Composite {
 		go.setDisabledImage(ImageResource.getImage(ImageResource.IMG_DLCL_NAV_GO));
 		go.setToolTipText(Messages.actionWebBrowserGo);
 		go.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				setURL(combo.getText());
 			}
@@ -710,6 +700,7 @@ public class JavaFxBrowserViewer extends Composite {
 		back.setDisabledImage(ImageResource.getImage(ImageResource.IMG_DLCL_NAV_BACKWARD));
 		back.setToolTipText(Messages.actionWebBrowserBack);
 		back.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				back();
 			}
@@ -721,6 +712,7 @@ public class JavaFxBrowserViewer extends Composite {
 		forward.setDisabledImage(ImageResource.getImage(ImageResource.IMG_DLCL_NAV_FORWARD));
 		forward.setToolTipText(Messages.actionWebBrowserForward);
 		forward.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				forward();
 			}
@@ -733,6 +725,7 @@ public class JavaFxBrowserViewer extends Composite {
 		stop.setDisabledImage(ImageResource.getImage(ImageResource.IMG_DLCL_NAV_STOP));
 		stop.setToolTipText(Messages.actionWebBrowserStop);
 		stop.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				stop();
 			}
@@ -744,6 +737,7 @@ public class JavaFxBrowserViewer extends Composite {
 		refresh.setDisabledImage(ImageResource.getImage(ImageResource.IMG_DLCL_NAV_REFRESH));
 		refresh.setToolTipText(Messages.actionWebBrowserRefresh);
 		refresh.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				refresh();
 			}
@@ -755,7 +749,7 @@ public class JavaFxBrowserViewer extends Composite {
 	/**
 	 * Returns the current URL. Convenience method that calls the underlying SWT
 	 * browser.
-	 * 
+	 *
 	 * @return the current URL or an empty <code>String</code> if there is no
 	 * current URL
 	 * @exception SWTException <ul>
@@ -771,6 +765,7 @@ public class JavaFxBrowserViewer extends Composite {
 		return initialUrl;
 	}
 
+	@Override
 	public boolean setFocus() {
 		if (browser != null) {
 			browser.requestFocus();
@@ -784,12 +779,14 @@ public class JavaFxBrowserViewer extends Composite {
 	 * Update the history list to the global/shared copy.
 	 */
 	protected void updateHistory() {
-		if (combo == null || combo.isDisposed())
+		if (combo == null || combo.isDisposed()) {
 			return;
+		}
 
 		String temp = combo.getText();
-		if (history == null)
+		if (history == null) {
 			history = WebBrowserPreference.getInternalWebBrowserHistory();
+		}
 
 		String[] historyList = new String[history.size()];
 		history.toArray(historyList);
@@ -811,19 +808,10 @@ public class JavaFxBrowserViewer extends Composite {
 	public void setContainer(IBrowserViewerContainer container) {
 		if (container == null && this.container != null) {
 			IStatusLineManager manager = this.container.getActionBars().getStatusLineManager();
-			if (manager != null)
+			if (manager != null) {
 				manager.getProgressMonitor().done();
+			}
 		}
 		this.container = container;
 	}
-
-	protected File file;
-
-	protected long timestamp;
-
-	protected Thread fileListenerThread;
-
-	protected LocationListener locationListener2;
-
-	protected Object syncObject = new Object();
 }
