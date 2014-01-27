@@ -42,16 +42,8 @@
 </head>
 <body>
 	<script>
-		function setUpdateHtml(html) {
-			document.getElementById('updates').innerHTML = html;
-		}
-
-		function setRssHtml(html) {
-			document.getElementById('rssEntries').innerHTML = html;
-		}
-
-		function setWizardHtml(html) {
-			document.getElementById('projectWizards').innerHTML = html;
+		function addHtml(element, html) {
+			document.getElementById(element).innerHTML = html;
 		}
 
 		function search(input) {
@@ -109,11 +101,9 @@
 					<div class="span8">
 						<h3 class="feed-header">Tooling Updates</h3>
 						<div id="updates">
-							<b>Loading...</b>
 						</div>
 						<h3 class="feed-header">News</h3>
-						<div id="rssEntries">
-							<b>Loading...</b>
+						<div id="feeds">
 						</div>
 					</div>
 
@@ -121,14 +111,13 @@
 						<div class="right-pane-widget--container">
 							<h2>Get Started!</h2>
 														<a class="ide_widget btn btn-black uppercase" href=""
-								onclick="ide.call('org.springframework.ide.wizard.gettingstarted.openGuide','Getting Started Guide')">Import
+								onclick="ide.call('org.springframework.openGuideWizard','Getting Started Guide')">Import
 								Getting Started Guide</a> <a
 								class="ide_widget btn btn-black uppercase" href=""
-								onclick="ide.call('org.springframework.ide.wizard.gettingstarted.openGuide','Tutorial Guide')">Import
+								onclick="ide.call('org.springframework.openGuideWizard','Tutorial Guide')">Import
 								Tutorial Guide</a> <a class="ide_widget btn btn-black uppercase"
-								href="" onclick="ide.call('org.springframework.ide.wizard.gettingstarted.openGuide','Reference App')">Get Reference App</a>
+								href="" onclick="ide.call('org.springframework.openGuideWizard','Reference App')">Get Reference App</a>
 							<div id="projectWizards">
-								<b>Loading...</b>
 							</div>
 						</div>
 					</aside>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="org.springsource.ide.eclipse.commons.dashboard.browser.customization" name="Dashboard Browser Customization" schema="schema/org.springsource.ide.eclipse.commons.dashboard.browser.customization.exsd"/>
-   <extension-point id="org.springsource.ide.common.dashboard.browser.function" name="Dahboard Browser Function" schema="schema/org.springsource.ide.common.dashboard.browser.function.exsd"/>
+   <extension-point id="org.springsource.ide.browser.function.browserToEclipse" name="Browser to Eclipse Function Call" schema="schema/org.springsource.ide.browser.function.browserToEclipse.exsd"/>
+   <extension-point id="org.springsource.ide.browser.function.eclipseToBrowser" name="Eclipse to Browser Function Call" schema="schema/org.springsource.ide.browser.function.eclipseToBrowser.exsd"/>
  
  <!-- New dashboard -->
  
 	<extension point="org.eclipse.ui.editors">
 		<editor
-			class="org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowser"
+			class="org.springsource.ide.eclipse.commons.browser.javafx.JavaFxBrowser"
 			icon="resources/icons/spring_browser.png"
 			id="org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowser"
 			name="Browser">
@@ -27,19 +27,70 @@
 		</editor>
 	</extension>
 	    <extension
-          point="org.springsource.ide.common.dashboard.browser.function">
+          point="org.springsource.ide.browser.function.browserToEclipse">
        <function
-             class="org.springsource.ide.eclipse.commons.browser.OpenWebPageFunction"
-             id="openWebPage">
+             class="org.springsource.ide.eclipse.commons.browser.javafx.OpenJavaFxBrowserFunction"
+             id="openWebPage"
+             urlExpression=".*\.html">
        </function>
        <function
              class="org.springsource.ide.eclipse.commons.browser.OpenEditorFunction"
-             id="openEditor">
+             id="openEditor"
+             urlExpression=".*\.html">
        </function>
        <function
              class="org.springsource.ide.eclipse.commons.browser.OpenWizardFunction"
-             id="openWizard">
+             id="openWizard"
+             urlExpression=".*\.html">
        </function>
     </extension>
+     <extension
+           point="org.springsource.ide.browser.function.eclipseToBrowser">
+        <provider
+              class="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ProjectWizardProvider"
+              functionName="addHtml"
+              invokeOnLoad="true"
+              urlExpression=".*org\.springsource\.ide\.eclipse\.commons\.gettingstarted.*/index.html">
+           <argument
+                 dynamic="false"
+                 id="divId"
+                 literal="projectWizards">
+           </argument>
+           <argument
+                 dynamic="true"
+                 id="html">
+           </argument>
+        </provider>
+        <provider
+              class="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.UpdatesProvider"
+              functionName="addHtml"
+              invokeOnLoad="true"
+              urlExpression=".*org\.springsource\.ide\.eclipse\.commons\.gettingstarted.*/index.html">
+           <argument
+                 dynamic="false"
+                 id="divId"
+                 literal="updates">
+           </argument>
+           <argument
+                 dynamic="true"
+                 id="html">
+           </argument>
+        </provider>
+        <provider
+              class="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.BlogsProvider"
+              functionName="addHtml"
+              invokeOnLoad="true"
+              urlExpression=".*org\.springsource\.ide\.eclipse\.commons\.gettingstarted.*/index.html">
+           <argument
+                 dynamic="false"
+                 id="divId"
+                 literal="feeds">
+           </argument>
+           <argument
+                 dynamic="true"
+                 id="html">
+           </argument>
+        </provider>
+     </extension>
 	
  </plugin>

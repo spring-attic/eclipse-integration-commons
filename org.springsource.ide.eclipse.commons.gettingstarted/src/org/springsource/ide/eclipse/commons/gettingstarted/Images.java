@@ -20,7 +20,7 @@ import org.eclipse.swt.graphics.Image;
 public class Images {
 
 	public static final String IMG_NAV_HOME = "IMG_NAV_HOME";
-	
+
 	// the image registry
 	private static ImageRegistry imageRegistry;
 
@@ -33,9 +33,9 @@ public class Images {
 		init();
 		return imageRegistry.getDescriptor(key);
 	}
-	
+
 	private synchronized static void init() {
-		if (imageRegistry==null) {
+		if (imageRegistry == null) {
 			imageRegistry = new ImageRegistry();
 			img(IMG_NAV_HOME, "resources/icons/home_16.png");
 		}
@@ -43,13 +43,14 @@ public class Images {
 
 	private static void img(String key, String path) {
 		try {
-		URL url = Platform.getBundle(GettingStartedActivator.PLUGIN_ID).getEntry(path);
-		ImageDescriptor image = ImageDescriptor.createFromURL(url);
-		imageRegistry.put(key, image);
-		} catch (Throwable e) {
-			//What the @#$!??
+			URL url = Platform.getBundle(GettingStartedActivator.PLUGIN_ID).getEntry(path);
+			ImageDescriptor image = ImageDescriptor.createFromURL(url);
+			imageRegistry.put(key, image);
+		}
+		catch (Throwable e) {
+			// What the @#$!??
 			GettingStartedActivator.log(e);
 		}
 	}
-	
+
 }

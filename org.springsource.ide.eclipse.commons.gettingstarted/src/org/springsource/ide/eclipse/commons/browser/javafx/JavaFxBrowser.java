@@ -8,14 +8,14 @@
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.javafx.browser;
+package org.springsource.ide.eclipse.commons.browser.javafx;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
+import javafx.concurrent.Worker.State;
 import javafx.scene.web.WebView;
 
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -23,19 +23,18 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.internal.browser.BrowserViewer;
 import org.eclipse.ui.internal.browser.WebBrowserEditorInput;
 import org.eclipse.ui.part.EditorPart;
 
 /**
  * An editor that displays the contents of a webpage using JavaFx WebView.
- * 
+ *
  * @author Kris De Volder
  * @author Miles Parker
  */
 public class JavaFxBrowser extends EditorPart {
 
-	private static final String ELEMENT_ID = "id";
+	public static final String EDITOR_ID = "org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowser";
 
 	/**
 	 * The URL that will be displayed in this Dashboard webpage.
@@ -46,9 +45,11 @@ public class JavaFxBrowser extends EditorPart {
 
 	private JavaFxBrowserViewer browserViewer;
 
+	private JavaFxBrowserManager dashboardManager;
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets
 	 * .Composite)
@@ -56,48 +57,44 @@ public class JavaFxBrowser extends EditorPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		parent.setLayout(new FillLayout());
-		browserViewer = new JavaFxBrowserViewer(parent,
-				hasToolbar() ? JavaFxBrowserViewer.BUTTON_BAR | JavaFxBrowserViewer.LOCATION_BAR
-						: SWT.NONE);
+		browserViewer = new JavaFxBrowserViewer(parent, hasToolbar() ? JavaFxBrowserViewer.BUTTON_BAR
+				| JavaFxBrowserViewer.LOCATION_BAR : SWT.NONE);
 		final WebView browser = browserViewer.getBrowser();
 		if (getEditorInput() instanceof WebBrowserEditorInput) {
 			homeUrl = ((WebBrowserEditorInput) getEditorInput()).getURL().toString();
 			browserViewer.setVisible(true);
-		} 
+		}
 		if (homeUrl != null) {
 			browserViewer.setHomeUrl(homeUrl);
 			browserViewer.setURL(homeUrl);
-		} else {
-			browser.getEngine()
-					.loadContent(
-							"<h1>URL not set</h1>"
-									+ "<p>Url should be provided via the setInitializationData method</p>");
+		}
+		else {
+			browser.getEngine().loadContent(
+					"<h1>URL not set</h1>" + "<p>Url should be provided via the setInitializationData method</p>");
 		}
 		if (getName() == null) {
 			browser.getEngine().titleProperty().addListener(new ChangeListener<String>() {
 				@Override
-				public void changed(ObservableValue<? extends String> observable,
-						String oldValue, String newValue) {
+				public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 					setName(newValue);
 					setPartName(newValue);
 					browser.getEngine().titleProperty().removeListener(this);
 				}
 			});
 		}
-	}
+		getBrowserViewer().getBrowser().getEngine().getLoadWorker().stateProperty()
+				.addListener(new ChangeListener<Worker.State>() {
 
-	public static IConfigurationElement getExtension(String extensionId, String id) {
-		IExtensionRegistry registry = org.eclipse.core.runtime.Platform
-				.getExtensionRegistry();
-		IConfigurationElement[] configurations = registry
-				.getConfigurationElementsFor(extensionId);
-		for (IConfigurationElement element : configurations) {
-			String elementId = element.getAttribute(ELEMENT_ID);
-			if (elementId.equals(id)) {
-				return element;
-			}
-		}
-		return null;
+					@Override
+					public void changed(ObservableValue<? extends State> ov, State oldState, State newState) {
+						if (newState == Worker.State.SUCCEEDED && getBrowserViewer() != null) {
+							if (dashboardManager == null) {
+								dashboardManager = new JavaFxBrowserManager();
+							}
+							dashboardManager.setClient(getBrowserViewer().getBrowser());
+						}
+					}
+				});
 	}
 
 	/**
@@ -148,7 +145,7 @@ public class JavaFxBrowser extends EditorPart {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.
 	 * IProgressMonitor)
 	 */
@@ -158,7 +155,7 @@ public class JavaFxBrowser extends EditorPart {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorPart#doSaveAs()
 	 */
 	@Override
@@ -167,7 +164,7 @@ public class JavaFxBrowser extends EditorPart {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorPart#init(org.eclipse.ui.IEditorSite,
 	 * org.eclipse.ui.IEditorInput)
 	 */
@@ -179,7 +176,7 @@ public class JavaFxBrowser extends EditorPart {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorPart#isDirty()
 	 */
 	@Override
@@ -189,7 +186,7 @@ public class JavaFxBrowser extends EditorPart {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorPart#isSaveAsAllowed()
 	 */
 	@Override
@@ -199,7 +196,7 @@ public class JavaFxBrowser extends EditorPart {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
 	 */
 	@Override

@@ -12,7 +12,6 @@ package org.springsource.ide.eclipse.commons.gettingstarted;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -24,15 +23,9 @@ public class GettingStartedActivator extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.springsource.ide.eclipse.commons.gettingstarted"; //$NON-NLS-1$
 
-	public static final String JAVAFX_BROWSER_EDITOR_ID = "org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowser";
-
-	public static final String DASHBOARD_EDITOR_ID = "org.springsource.ide.eclipse.commons.gettingstarted.dashboard.WelcomeDashboard";
-
-	public static final String EXTENSIONS_EDITOR_ID = "org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ExtensionsEditor";
-	
 	// The shared instance
 	private static GettingStartedActivator plugin;
-	
+
 	/**
 	 * The constructor
 	 */
@@ -41,7 +34,10 @@ public class GettingStartedActivator extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
@@ -50,7 +46,10 @@ public class GettingStartedActivator extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
@@ -59,7 +58,7 @@ public class GettingStartedActivator extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance
-	 *
+	 * 
 	 * @return the shared instance
 	 */
 	public static GettingStartedActivator getDefault() {
@@ -69,7 +68,7 @@ public class GettingStartedActivator extends AbstractUIPlugin {
 	public static void log(Throwable exception) {
 		getDefault().getLog().log(createErrorStatus(exception));
 	}
-	
+
 	public static void warn(String msg) {
 		getDefault().getLog().log(createWarningStatus(msg));
 	}

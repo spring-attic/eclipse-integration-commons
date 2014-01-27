@@ -18,20 +18,16 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.part.NullEditorInput;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
-import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 
-public class OpenEditorFunction implements IBrowserFunction {
+public class OpenEditorFunction implements IBrowserToEclipseFunction {
 
 	@Override
 	public void call(String editorId) {
 		try {
-			PlatformUI
-					.getWorkbench()
-					.getActiveWorkbenchWindow()
-					.getActivePage()
-					.openEditor(new NullEditorInput(),
-							editorId);
-		} catch (PartInitException e) {
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.openEditor(new NullEditorInput(), editorId);
+		}
+		catch (PartInitException e) {
 			StatusHandler.log(new Status(IStatus.ERROR, GettingStartedActivator.PLUGIN_ID,
 					"Could not find editor extension " + editorId, e));
 		}

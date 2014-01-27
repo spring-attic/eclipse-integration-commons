@@ -23,30 +23,30 @@ import org.springsource.ide.eclipse.commons.core.templates.TemplateProcessor;
 import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 
 /**
- * Makes a copy of some content from one directory to another.
- * The target directory is wiped before copying, but only one copy
- * is made per STS session. Subsequent copies requested will
- * reuse the first copy (until STS is restarted).
+ * Makes a copy of some content from one directory to another. The target
+ * directory is wiped before copying, but only one copy is made per STS session.
+ * Subsequent copies requested will reuse the first copy (until STS is
+ * restarted).
  * 
  * @author Kris De Volder
  */
 public class DashboardCopier {
-	
+
 	private static DashboardCopier instance = null;
-	
+
 	/**
-	 * Cache of processed content. This cache only retains content per Eclipse session.
-	 * So restarting STS should begin with a clear cache.
+	 * Cache of processed content. This cache only retains content per Eclipse
+	 * session. So restarting STS should begin with a clear cache.
 	 */
 	private Map<String, File> copied = new HashMap<String, File>();
 
 	private File workdir;
-	
+
 	private DashboardCopier() {
 		workdir = new File(GettingStartedActivator.getDefault().getStateLocation().toFile(), "dashboard");
 		FileUtils.deleteQuietly(workdir);
 	}
-	
+
 	public static synchronized DashboardCopier getInstance() {
 		if (instance == null) {
 			instance = new DashboardCopier();
@@ -55,7 +55,8 @@ public class DashboardCopier {
 	}
 
 	/**
-	 * Copy directory contens from some source directory to some working directory
+	 * Copy directory contens from some source directory to some working
+	 * directory
 	 */
 	public static File getCopy(File from, IProgressMonitor mon) throws IOException {
 		return getInstance()._getCopy(from, mon);
@@ -64,12 +65,12 @@ public class DashboardCopier {
 	private File _getCopy(File from, IProgressMonitor mon) throws IOException {
 		String key = from.getCanonicalPath();
 		File cached = copied.get(key);
-		if (cached!=null && cached.exists()) {
+		if (cached != null && cached.exists()) {
 			return cached;
 		}
 		File to = new File(workdir, generateFileName());
 		if (!to.mkdirs()) {
-			throw new IOException("Couldn't create dir "+to);
+			throw new IOException("Couldn't create dir " + to);
 		}
 		mon.beginTask("Instantiating Dashboard Content", 3);
 		try {
@@ -77,23 +78,24 @@ public class DashboardCopier {
 			Map<String, String> replacementContext = new HashMap<String, String>();
 			for (String propName : props.getExplicitProperties()) {
 				String value = props.get(propName);
-				if (value!=null) {
-					replacementContext.put("${"+propName+"}", value);
+				if (value != null) {
+					replacementContext.put("${" + propName + "}", value);
 				}
 			}
 			TemplateProcessor processor = new TemplateProcessor(replacementContext);
 			processor.process(from, to);
 			copied.put(key, to);
 			return to;
-		} finally {
+		}
+		finally {
 			mon.done();
 		}
 	}
 
 	long count = System.currentTimeMillis();
+
 	private String generateFileName() {
-		return ""+(count++);
+		return "" + (count++);
 	}
-	
-	
+
 }
