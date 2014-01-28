@@ -27,6 +27,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import netscape.javascript.JSObject;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
@@ -58,8 +59,11 @@ public class JavaFxBrowserManager {
 		JSObject window = (JSObject) engine.executeScript("window");
 		window.setMember("ide", this);
 		Collection<IEclipseToBrowserFunction> onLoadFunctions = new ArrayList<IEclipseToBrowserFunction>();
+		String currentUrl = view.getEngine().locationProperty().get();
+		//Need to remove any query parameters that might break pattern matching for extensions
+		currentUrl = StringUtils.substringBeforeLast(currentUrl, "?");
 		IConfigurationElement[] extensions = BrowserExtensions.getExtensions(
-				BrowserExtensions.EXTENSION_ID_ECLIPSE_TO_BROWSER, null, view.getEngine().locationProperty().get());
+				BrowserExtensions.EXTENSION_ID_ECLIPSE_TO_BROWSER, null, currentUrl);
 		for (IConfigurationElement element : extensions) {
 			try {
 				String onLoad = element.getAttribute(BrowserExtensions.ELEMENT_ONLOAD);
