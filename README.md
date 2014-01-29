@@ -50,7 +50,7 @@
   As of 3.5.0.M2 commons contains some code that leverages JavaFX this requires some additional 
   work to setup target platform and run in a runtime workbench.
   
-  ### JavaFx Setup
+### JavaFx Setup
 
   The browser projects use JavaFx to implement the dashboard and other managed html views. To build these, you'll need to have the e(fx)clipse tooling installed.
   
