@@ -55,15 +55,22 @@ public class JavaFxBrowserManager {
 
 	private Collection<IEclipseToBrowserFunction> onLoadFunctions;
 
+	private String currentUrl;
+
 	public void setClient(WebView view) {
 		this.view = view;
 		this.engine = view.getEngine();
 		JSObject window = (JSObject) engine.executeScript("window");
 		window.setMember("ide", this);
 		onLoadFunctions = new ArrayList<IEclipseToBrowserFunction>();
-		String currentUrl = view.getEngine().locationProperty().get();
+		currentUrl = view.getEngine().locationProperty().get();
 		//Need to remove any query parameters that might break pattern matching for extensions
 		currentUrl = StringUtils.substringBeforeLast(currentUrl, "?");
+		currentUrl = StringUtils.substringBeforeLast(currentUrl, "&");
+		loadInitialFunctions();
+	}
+
+	private void loadInitialFunctions() {
 		IConfigurationElement[] extensions = BrowserExtensions.getExtensions(
 				BrowserExtensions.EXTENSION_ID_ECLIPSE_TO_BROWSER, null, currentUrl);
 		for (IConfigurationElement element : extensions) {
@@ -94,8 +101,7 @@ public class JavaFxBrowserManager {
 	public void call(String functionId, String argument) {
 		try {
 			IConfigurationElement element = BrowserExtensions.getExtension(
-					BrowserExtensions.EXTENSION_ID_BROWSER_TO_ECLIPSE, functionId, view.getEngine().locationProperty()
-							.get());
+					BrowserExtensions.EXTENSION_ID_BROWSER_TO_ECLIPSE, functionId, currentUrl);
 			if (element != null) {
 				IBrowserToEclipseFunction function = (IBrowserToEclipseFunction) WorkbenchPlugin.createExtension(
 						element, BrowserExtensions.ELEMENT_CLASS);
