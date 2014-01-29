@@ -43,7 +43,7 @@
 <body>
 	<script>
 		function addHtml(element, html) {
-			document.getElementById(element).innerHTML = html;
+			document.getElementById(element).innerHTML = document.getElementById(element).innerHTML + html;
 		}
 
 		function search(input) {
@@ -110,13 +110,8 @@
 					<aside class="span4 content-right-pane--container" id="sidebar">
 						<div class="right-pane-widget--container">
 							<h2>Get Started!</h2>
-														<a class="ide_widget btn btn-black uppercase" href=""
-								onclick="ide.call('org.springframework.openGuideWizard','Getting Started Guide')">Import
-								Getting Started Guide</a> <a
-								class="ide_widget btn btn-black uppercase" href=""
-								onclick="ide.call('org.springframework.openGuideWizard','Tutorial Guide')">Import
-								Tutorial Guide</a> <a class="ide_widget btn btn-black uppercase"
-								href="" onclick="ide.call('org.springframework.openGuideWizard','Reference App')">Get Reference App</a>
+							<div id="gettingStarted">
+							</div>
 							<div id="projectWizards">
 							</div>
 						</div>
