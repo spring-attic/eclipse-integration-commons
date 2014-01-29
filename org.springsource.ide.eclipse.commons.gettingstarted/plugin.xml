@@ -1,32 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="org.springsource.ide.browser.function.browserToEclipse" name="Browser to Eclipse Function Call" schema="schema/org.springsource.ide.browser.function.browserToEclipse.exsd"/>
-   <extension-point id="org.springsource.ide.browser.function.eclipseToBrowser" name="Eclipse to Browser Function Call" schema="schema/org.springsource.ide.browser.function.eclipseToBrowser.exsd"/>
- 
- <!-- New dashboard -->
- 
 	<extension point="org.eclipse.ui.editors">
 		<editor
-			class="org.springsource.ide.eclipse.commons.browser.javafx.JavaFxBrowser"
-			icon="resources/icons/spring_browser.png"
-			id="org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowser"
-			name="Browser">
-		</editor>
-		<editor
 			class="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.WelcomeDashboard"
-			icon="resources/icons/spring.png"
+			icon="icons/spring.png"
 			id="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.WelcomeDashboard"
 			name="Dashboard">
 		</editor>
 		<editor
 			class="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ExtensionsEditor"
-			icon="resources/icons/spring_ext.png"
+			icon="icons/spring_ext.png"
 			id="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ExtensionsEditor"
 			name="Spring Extensions">
 		</editor>
-	</extension>
-	    <extension
+	</extension> 
+	<extension
           point="org.springsource.ide.browser.function.browserToEclipse">
        <function
              class="org.springsource.ide.eclipse.commons.browser.javafx.OpenJavaFxBrowserFunction"

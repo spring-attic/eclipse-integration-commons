@@ -29,6 +29,7 @@
 		<module>org.springsource.ide.eclipse.commons.quicksearch.test</module>
 
 		<!-- getting started -->
+		<module>org.springsource.ide.eclipse.commons.browser</module>
 		<module>org.springsource.ide.eclipse.commons.gettingstarted</module>
 		
 		<module>org.springsource.ide.eclipse.commons.content.core</module>
