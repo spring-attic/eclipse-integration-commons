@@ -35,9 +35,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.springsource.ide.eclipse.commons.browser.BrowserExtensions;
+import org.springsource.ide.eclipse.commons.browser.BrowserPlugin;
 import org.springsource.ide.eclipse.commons.browser.IBrowserToEclipseFunction;
 import org.springsource.ide.eclipse.commons.browser.IEclipseToBrowserFunction;
-import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 
 /**
  *
@@ -83,7 +83,7 @@ public class JavaFxBrowserManager {
 			}
 			catch (CoreException ex) {
 				StatusManager.getManager().handle(
-						new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
+						new Status(IStatus.ERROR, BrowserPlugin.PLUGIN_ID,
 								"Could not instantiate browser element provider extension.", ex));
 				return;
 			}
@@ -109,13 +109,13 @@ public class JavaFxBrowserManager {
 			}
 			else {
 				StatusManager.getManager().handle(
-						new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID,
+						new Status(IStatus.ERROR, BrowserPlugin.PLUGIN_ID,
 								"Could not instantiate browser function extension: " + functionId));
 			}
 		}
 		catch (CoreException ex) {
 			StatusManager.getManager().handle(
-					new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID, "Could not find dashboard extension", ex));
+					new Status(IStatus.ERROR, BrowserPlugin.PLUGIN_ID, "Could not find dashboard extension", ex));
 			return;
 		}
 	}
