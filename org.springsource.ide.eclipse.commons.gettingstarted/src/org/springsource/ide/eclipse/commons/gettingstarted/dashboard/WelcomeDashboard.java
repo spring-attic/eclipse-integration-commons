@@ -18,12 +18,14 @@ import java.net.URL;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.springsource.ide.eclipse.commons.browser.javafx.JavaFxBrowser;
+import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardReopener;
 
 public class WelcomeDashboard extends JavaFxBrowser {
 
 	private static final String WELCOME_PAGE_URI = "platform:/plugin/org.springsource.ide.eclipse.commons.gettingstarted/resources/welcome";
 
 	public WelcomeDashboard() throws URISyntaxException, IOException {
+		DashboardReopener.ensure();
 		setName("Welcome");
 		URL fileURL = FileLocator.toFileURL(new URL(WELCOME_PAGE_URI));
 		File contentInstance = DashboardCopier.getCopy(new File(fileURL.toURI()), new NullProgressMonitor());
