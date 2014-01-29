@@ -45,7 +45,7 @@ public class JavaFxBrowser extends EditorPart {
 
 	private JavaFxBrowserViewer browserViewer;
 
-	private JavaFxBrowserManager dashboardManager;
+	private JavaFxBrowserManager browserManager;
 
 	/*
 	 * (non-Javadoc)
@@ -88,10 +88,10 @@ public class JavaFxBrowser extends EditorPart {
 					@Override
 					public void changed(ObservableValue<? extends State> ov, State oldState, State newState) {
 						if (newState == Worker.State.SUCCEEDED && getBrowserViewer() != null) {
-							if (dashboardManager == null) {
-								dashboardManager = new JavaFxBrowserManager();
+							if (browserManager == null) {
+								browserManager = new JavaFxBrowserManager();
 							}
-							dashboardManager.setClient(getBrowserViewer().getBrowser());
+							browserManager.setClient(getBrowserViewer().getBrowser());
 						}
 					}
 				});
@@ -136,9 +136,13 @@ public class JavaFxBrowser extends EditorPart {
 
 	@Override
 	public void dispose() {
-		if (this.browserViewer != null) {
-			this.browserViewer.dispose();
-			this.browserViewer = null;
+		if (browserViewer != null) {
+			browserViewer.dispose();
+			browserViewer = null;
+		}
+		if (browserManager != null) {
+			browserManager.dispose();
+			browserManager = null;
 		}
 		super.dispose();
 	}

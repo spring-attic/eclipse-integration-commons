@@ -53,12 +53,14 @@ public class JavaFxBrowserManager {
 
 	private static final boolean DEBUG = false;
 
+	private Collection<IEclipseToBrowserFunction> onLoadFunctions;
+
 	public void setClient(WebView view) {
 		this.view = view;
 		this.engine = view.getEngine();
 		JSObject window = (JSObject) engine.executeScript("window");
 		window.setMember("ide", this);
-		Collection<IEclipseToBrowserFunction> onLoadFunctions = new ArrayList<IEclipseToBrowserFunction>();
+		onLoadFunctions = new ArrayList<IEclipseToBrowserFunction>();
 		String currentUrl = view.getEngine().locationProperty().get();
 		//Need to remove any query parameters that might break pattern matching for extensions
 		currentUrl = StringUtils.substringBeforeLast(currentUrl, "?");
@@ -173,6 +175,9 @@ public class JavaFxBrowserManager {
 
 	public void dispose() {
 		disposed = true;
+		for (IEclipseToBrowserFunction function : onLoadFunctions) {
+			function.dispose();
+		}
 	}
 
 	/**
