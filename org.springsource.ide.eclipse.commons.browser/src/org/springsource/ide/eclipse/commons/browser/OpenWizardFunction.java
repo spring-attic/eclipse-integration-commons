@@ -1,9 +1,9 @@
 /*******************************************************************************
  * Copyright (c) 2014 Pivotal Software, Inc. and others.
- * All rights reserved. This program and the accompanying materials are made 
- * available under the terms of the Eclipse Public License v1.0 
- * (http://www.eclipse.org/legal/epl-v10.html), and the Eclipse Distribution 
- * License v1.0 (http://www.eclipse.org/org/documents/edl-v10.html). 
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v1.0
+ * (http://www.eclipse.org/legal/epl-v10.html), and the Eclipse Distribution
+ * License v1.0 (http://www.eclipse.org/org/documents/edl-v10.html).
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -20,8 +20,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.WorkbenchPlugin;
-import org.springsource.ide.eclipse.commons.core.StatusHandler;
-import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 public class OpenWizardFunction implements IBrowserToEclipseFunction {
 
@@ -34,12 +33,11 @@ public class OpenWizardFunction implements IBrowserToEclipseFunction {
 			object = WorkbenchPlugin.createExtension(element, BrowserExtensions.ELEMENT_CLASS);
 		}
 		catch (CoreException ex) {
-			StatusHandler
-					.log(new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID, "Could not read dashboard extension", ex));
+			StatusManager.getManager().handle(new Status(IStatus.ERROR, BrowserPlugin.PLUGIN_ID, "Could not read dashboard extension", ex));
 			return;
 		}
 		if (!(object instanceof INewWizard)) {
-			StatusHandler.log(new Status(IStatus.ERROR, IdeUiPlugin.PLUGIN_ID, "Could not load "
+			StatusManager.getManager().handle(new Status(IStatus.ERROR, BrowserPlugin.PLUGIN_ID, "Could not load "
 					+ object.getClass().getCanonicalName() + " must implement " + INewWizard.class.getCanonicalName()));
 			return;
 		}

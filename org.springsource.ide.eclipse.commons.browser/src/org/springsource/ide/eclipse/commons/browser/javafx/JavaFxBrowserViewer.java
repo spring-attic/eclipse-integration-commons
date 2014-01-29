@@ -62,7 +62,7 @@ import org.eclipse.ui.internal.browser.ImageResource;
 import org.eclipse.ui.internal.browser.Messages;
 import org.eclipse.ui.internal.browser.ToolbarLayout;
 import org.eclipse.ui.internal.browser.WebBrowserPreference;
-import org.springsource.ide.eclipse.commons.gettingstarted.Images;
+import org.springsource.ide.eclipse.commons.browser.BrowserImages;
 
 /**
  * A Web browser widget. It provides a JavaFx WebView and adds an optional
@@ -685,7 +685,7 @@ public class JavaFxBrowserViewer extends Composite {
 
 		// create 'home' action
 		ToolItem home = new ToolItem(toolbar, SWT.NONE);
-		home.setImage(Images.getImage(Images.IMG_NAV_HOME));
+		home.setImage(BrowserImages.getImage(BrowserImages.IMG_NAV_HOME));
 		home.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

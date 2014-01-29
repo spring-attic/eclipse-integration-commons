@@ -20,9 +20,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.browser.WebBrowserEditorInput;
+import org.eclipse.ui.statushandlers.StatusManager;
+import org.springsource.ide.eclipse.commons.browser.BrowserPlugin;
 import org.springsource.ide.eclipse.commons.browser.IBrowserToEclipseFunction;
-import org.springsource.ide.eclipse.commons.core.StatusHandler;
-import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
 
 public class OpenJavaFxBrowserFunction implements IBrowserToEclipseFunction {
 
@@ -31,14 +31,15 @@ public class OpenJavaFxBrowserFunction implements IBrowserToEclipseFunction {
 		try {
 			WebBrowserEditorInput input = new WebBrowserEditorInput(new URL(url), SWT.NONE, url);
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.openEditor(input, JavaFxBrowser.EDITOR_ID);
+					.openEditor(input, JavaFxBrowserEditor.EDITOR_ID);
 		}
 		catch (MalformedURLException e) {
-			StatusHandler.log(new Status(IStatus.ERROR, GettingStartedActivator.PLUGIN_ID, "Bad page url: " + url, e));
+			StatusManager.getManager().handle(
+					new Status(IStatus.ERROR, BrowserPlugin.PLUGIN_ID, "Bad page url: " + url, e));
 		}
 		catch (PartInitException e) {
-			StatusHandler.log(new Status(IStatus.ERROR, GettingStartedActivator.PLUGIN_ID,
-					"Could not find brwoser editor extension", e));
+			StatusManager.getManager().handle(
+					new Status(IStatus.ERROR, BrowserPlugin.PLUGIN_ID, "Could not find brwoser editor extension", e));
 		}
 	}
 }

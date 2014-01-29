@@ -29,7 +29,7 @@ public interface IEclipseToBrowserFunction {
 
 		Map<String, String> literalArguments = new HashMap<String, String>();
 
-		private Callback client;
+		private Callback callback;
 
 		public String getDynamicArgumentValue(String id) {
 			return null;
@@ -45,8 +45,8 @@ public interface IEclipseToBrowserFunction {
 		}
 
 		public void notifyIfReady() {
-			if (client != null) {
-				client.ready(this);
+			if (callback != null) {
+				callback.ready(this);
 			}
 		}
 
@@ -56,7 +56,7 @@ public interface IEclipseToBrowserFunction {
 
 		@Override
 		public void setCallback(Callback client) {
-			this.client = client;
+			this.callback = client;
 			notifyIfReady();
 		}
 

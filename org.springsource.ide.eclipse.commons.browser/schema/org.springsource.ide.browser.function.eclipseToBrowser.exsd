@@ -107,7 +107,7 @@ Important note: urlExpressions should be as specific as possible, as the extensi
          <attribute name="dynamic" type="boolean">
             <annotation>
                <documentation>
-                  True if the value is provided by the implementing class. Otherwise, the id value is used.
+                  True if the value is provided by the implementing class. Otherwise, the literal value is used.
                </documentation>
             </annotation>
          </attribute>

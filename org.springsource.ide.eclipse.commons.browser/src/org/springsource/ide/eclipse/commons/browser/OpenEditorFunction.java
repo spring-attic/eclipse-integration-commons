@@ -16,8 +16,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.part.NullEditorInput;
-import org.springsource.ide.eclipse.commons.core.StatusHandler;
-import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivator;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 public class OpenEditorFunction implements IBrowserToEclipseFunction {
 
@@ -29,7 +28,7 @@ public class OpenEditorFunction implements IBrowserToEclipseFunction {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(NULL_EDITOR, editorId);
 		}
 		catch (PartInitException e) {
-			StatusHandler.log(new Status(IStatus.ERROR, GettingStartedActivator.PLUGIN_ID,
+			StatusManager.getManager().handle(new Status(IStatus.ERROR, BrowserPlugin.PLUGIN_ID,
 					"Could not find editor extension " + editorId, e));
 		}
 	}
