@@ -56,7 +56,8 @@
   2. Add Xtext update site to 'Available Update Sites' : http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/
   3. From the efx Update Site Install the "e(fx)clipse - IDE - Kepler" (or equivalent) feature.
 
-  If installed properly, you should see a "JavaFx" library with an attached jar in the org.springsource.ide.eclipse.commons.gettingstarted (to be moved) project.  
+  If installed properly, you should see a "jfxrt.jar" under org.springsource.ide.eclipse.commons.gettingstarted 
+  "Plugin Dependencies" and compile errors this plugin should disapear.
 
   4. Add the following vm arguments to your Eclipse Runtime(s). (This is only necessary for self-hosted execution. You should not need to modify your config.ini file.)
 
