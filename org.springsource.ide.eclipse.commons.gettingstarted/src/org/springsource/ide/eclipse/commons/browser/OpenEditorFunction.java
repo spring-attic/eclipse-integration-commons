@@ -21,16 +21,12 @@ import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivat
 
 public class OpenEditorFunction implements IBrowserToEclipseFunction {
 
+	public final static NullEditorInput NULL_EDITOR = new NullEditorInput();
+
 	@Override
 	public void call(String editorId) {
 		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.openEditor(new NullEditorInput() {
-						@Override
-						public boolean equals(Object obj) {
-							return true;
-						}
-					}, editorId);
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(NULL_EDITOR, editorId);
 		}
 		catch (PartInitException e) {
 			StatusHandler.log(new Status(IStatus.ERROR, GettingStartedActivator.PLUGIN_ID,
