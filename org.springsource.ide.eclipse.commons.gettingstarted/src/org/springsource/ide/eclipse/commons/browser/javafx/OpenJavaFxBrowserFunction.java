@@ -16,6 +16,7 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.SWT;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.browser.WebBrowserEditorInput;
@@ -28,7 +29,7 @@ public class OpenJavaFxBrowserFunction implements IBrowserToEclipseFunction {
 	@Override
 	public void call(String url) {
 		try {
-			WebBrowserEditorInput input = new WebBrowserEditorInput(new URL(url));
+			WebBrowserEditorInput input = new WebBrowserEditorInput(new URL(url), SWT.NONE, url);
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 					.openEditor(input, JavaFxBrowser.EDITOR_ID);
 		}

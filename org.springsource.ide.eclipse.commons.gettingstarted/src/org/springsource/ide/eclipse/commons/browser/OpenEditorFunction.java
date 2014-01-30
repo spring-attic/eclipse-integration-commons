@@ -1,9 +1,9 @@
 /*******************************************************************************
  * Copyright (c) 2014 Pivotal Software, Inc. and others.
- * All rights reserved. This program and the accompanying materials are made 
- * available under the terms of the Eclipse Public License v1.0 
- * (http://www.eclipse.org/legal/epl-v10.html), and the Eclipse Distribution 
- * License v1.0 (http://www.eclipse.org/org/documents/edl-v10.html). 
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v1.0
+ * (http://www.eclipse.org/legal/epl-v10.html), and the Eclipse Distribution
+ * License v1.0 (http://www.eclipse.org/org/documents/edl-v10.html).
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -25,7 +25,12 @@ public class OpenEditorFunction implements IBrowserToEclipseFunction {
 	public void call(String editorId) {
 		try {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.openEditor(new NullEditorInput(), editorId);
+					.openEditor(new NullEditorInput() {
+						@Override
+						public boolean equals(Object obj) {
+							return true;
+						}
+					}, editorId);
 		}
 		catch (PartInitException e) {
 			StatusHandler.log(new Status(IStatus.ERROR, GettingStartedActivator.PLUGIN_ID,
