@@ -27,20 +27,6 @@
   Milestone builds: http://dist.springsource.com/milestone/TOOLS/eclipse-integration-commons/  
   Release builds: http://dist.springsource.com/release/TOOLS/eclipse-integration-commons/
   
-### JavaFx Setup
-
-  The browser projects use JavaFx to implement the dashboard and other managed html views. To build these, you'll need to have the e(fx)clipse tooling installed.
-  
-  1. Add e(fx)clipse Update site: http://download.eclipse.org/efxclipse/updates-nightly/site
-  2. Add Xtext update site: http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/
-  3. Install the "e(fx)clipse - IDE - Kepler" (or equivalent) feature.
-
-  If installed properly, you should see a "JavaFx" library with an attached jar in the org.springsource.ide.eclipse.commons.gettingstarted (to be moved) project.  
-
-  4. Add the following vm arguments to your Eclipse Runtime(s). (This is only necessary for self-hosted execution. You should not need to modify your config.ini file.)
-
-      -Dosgi.framework.extensions=org.eclipse.fx.osgi
-  
 ## Questions and bug reports:
 
   If you have a question that Google can't answer, the best way is to go to the forum:
@@ -60,6 +46,31 @@
   Just clone the repo and import the projects into an Eclipse workspace. The easiest way to ensure
   that your target platform contains all the necessary dependencies, install a CI build into
   your target platform and proceed.
+  
+### JavaFx Setup
+
+  As of 3.5.0.M2 commons contains some code that leverages JavaFX to implement the dashboard and other 
+  managed html views. To build these inside Eclipse, you'll need to have the e(fx)clipse tooling installed.
+  
+  1. Add e(fx)clipse Update site to 'Available Update Sites': http://download.eclipse.org/efxclipse/updates-nightly/site
+  2. Add Xtext update site to 'Available Update Sites' : http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/
+  3. From the efx Update Site Install the "e(fx)clipse - IDE - Kepler" (or equivalent) feature.
+
+  If installed properly, you should see a "jfxrt.jar" under org.springsource.ide.eclipse.commons.gettingstarted 
+  "Plugin Dependencies" and compile errors this plugin should disapear.
+
+  4. Add the following vm arguments to your Eclipse Runtime(s). (This is only necessary for self-hosted execution. You should not need to modify your config.ini file.)
+
+      -Dosgi.framework.extensions=org.eclipse.fx.osgi
+
+### Test dependencies
+
+If you are not interested in building/running JUnit tests in your development environment then you can skip this step and just close/ignore any xxx.xxx.test plugins that have errors in them.
+
+If you want to build and run tests inside of Eclipse then you'll need to add a few more things to your target platform:
+
+   - TODO: fill this in
+
 
 ## Building Eclipse Integration Common Components
   

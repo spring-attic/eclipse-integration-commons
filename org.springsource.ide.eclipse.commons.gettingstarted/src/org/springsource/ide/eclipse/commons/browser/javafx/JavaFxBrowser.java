@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.browser.javafx;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -78,7 +81,6 @@ public class JavaFxBrowser extends EditorPart {
 				public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 					setName(newValue);
 					setPartName(newValue);
-					browser.getEngine().titleProperty().removeListener(this);
 				}
 			});
 		}
@@ -92,6 +94,14 @@ public class JavaFxBrowser extends EditorPart {
 								browserManager = new JavaFxBrowserManager();
 							}
 							browserManager.setClient(getBrowserViewer().getBrowser());
+							if (getEditorInput() instanceof WebBrowserEditorInput) {
+								String url = getBrowserViewer().getURL();
+								try {
+									setInput(new WebBrowserEditorInput(new URL(url), SWT.NONE, url));
+								} catch (MalformedURLException e) {
+									throw new RuntimeException(e);
+								}
+							}
 						}
 					}
 				});

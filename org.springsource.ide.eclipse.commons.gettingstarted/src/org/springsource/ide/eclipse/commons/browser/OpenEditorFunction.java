@@ -1,9 +1,9 @@
 /*******************************************************************************
  * Copyright (c) 2014 Pivotal Software, Inc. and others.
- * All rights reserved. This program and the accompanying materials are made 
- * available under the terms of the Eclipse Public License v1.0 
- * (http://www.eclipse.org/legal/epl-v10.html), and the Eclipse Distribution 
- * License v1.0 (http://www.eclipse.org/org/documents/edl-v10.html). 
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v1.0
+ * (http://www.eclipse.org/legal/epl-v10.html), and the Eclipse Distribution
+ * License v1.0 (http://www.eclipse.org/org/documents/edl-v10.html).
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -21,11 +21,12 @@ import org.springsource.ide.eclipse.commons.gettingstarted.GettingStartedActivat
 
 public class OpenEditorFunction implements IBrowserToEclipseFunction {
 
+	public final static NullEditorInput NULL_EDITOR = new NullEditorInput();
+
 	@Override
 	public void call(String editorId) {
 		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.openEditor(new NullEditorInput(), editorId);
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(NULL_EDITOR, editorId);
 		}
 		catch (PartInitException e) {
 			StatusHandler.log(new Status(IStatus.ERROR, GettingStartedActivator.PLUGIN_ID,
