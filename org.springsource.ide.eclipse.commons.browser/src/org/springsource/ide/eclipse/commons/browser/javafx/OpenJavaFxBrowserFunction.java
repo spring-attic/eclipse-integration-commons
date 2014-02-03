@@ -30,7 +30,7 @@ public class OpenJavaFxBrowserFunction implements IBrowserToEclipseFunction {
 		try {
 			WebBrowserEditorInput input = new WebBrowserEditorInput(new URL(url));
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.openEditor(input, JavaFxBrowser.EDITOR_ID);
+					.openEditor(input, JavaFxBrowserEditor.EDITOR_ID);
 		}
 		catch (MalformedURLException e) {
 			StatusManager.getManager().handle(

@@ -32,9 +32,9 @@ import org.eclipse.ui.part.EditorPart;
  * @author Kris De Volder
  * @author Miles Parker
  */
-public class JavaFxBrowser extends EditorPart {
+public class JavaFxBrowserEditor extends EditorPart {
 
-	public static final String EDITOR_ID = "org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowser";
+	public static final String EDITOR_ID = "org.springsource.ide.eclipse.commons.browser.Editor";
 
 	/**
 	 * The URL that will be displayed in this Dashboard webpage.

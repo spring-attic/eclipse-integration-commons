@@ -17,10 +17,10 @@ import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.springsource.ide.eclipse.commons.browser.javafx.JavaFxBrowser;
+import org.springsource.ide.eclipse.commons.browser.javafx.JavaFxBrowserEditor;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardReopener;
 
-public class WelcomeDashboard extends JavaFxBrowser {
+public class WelcomeDashboard extends JavaFxBrowserEditor {
 
 	private static final String WELCOME_PAGE_URI = "platform:/plugin/org.springsource.ide.eclipse.commons.gettingstarted/resources/welcome";
 

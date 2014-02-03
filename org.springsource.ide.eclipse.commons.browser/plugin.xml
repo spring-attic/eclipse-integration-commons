@@ -8,12 +8,24 @@
  
 	<extension point="org.eclipse.ui.editors">
 		<editor
-			class="org.springsource.ide.eclipse.commons.browser.javafx.JavaFxBrowser"
+			class="org.springsource.ide.eclipse.commons.browser.javafx.JavaFxBrowserEditor"
 			icon="icons/spring_browser.png"
-			id="org.springsource.ide.eclipse.commons.javafx.browser.JavaFxBrowser"
+			id="org.springsource.ide.eclipse.commons.browser.Editor"
 			name="Browser">
 		</editor>
 	</extension>
+     <extension
+           point="org.eclipse.ui.views">
+        <view
+              allowMultiple="true"
+              category="org.springframework.ide.eclipse.ui.views"
+              class="org.springsource.ide.eclipse.commons.browser.javafx.JavaFxBrowserView"
+              icon="icons/spring_browser.png"
+              id="org.springsource.ide.eclipse.commons.browser.View"
+              name="Browser View"
+              restorable="true">
+        </view>
+     </extension>
 	    <extension
           point="org.springsource.ide.browser.function.browserToEclipse">
        <function
