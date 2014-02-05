@@ -55,6 +55,12 @@
   1. Add e(fx)clipse Update site to 'Available Update Sites': http://download.eclipse.org/efxclipse/updates-nightly/site
   2. Add Xtext update site to 'Available Update Sites' : http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/
   3. From the efx Update Site Install the "e(fx)clipse - IDE - Kepler" (or equivalent) feature.
+  
+  If experiencing difficulty installing efx with above update sites. Try using efx release compatible with your version of Eclipse instead of efx nightly sites.
+  E.g. for Eclipse 4.3 (Kepler) use these sites:
+ 
+     - http://download.eclipse.org/efxclipse/updates-released/0.9.0/site
+     - http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/
 
   If installed properly, you should see a "jfxrt.jar" under org.springsource.ide.eclipse.commons.gettingstarted 
   "Plugin Dependencies" and compile errors this plugin should disapear.
