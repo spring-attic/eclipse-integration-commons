@@ -12,6 +12,7 @@ package org.springsource.ide.eclipse.commons.gettingstarted.dashboard;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -27,10 +28,25 @@ public class WelcomeDashboard extends JavaFxBrowserEditor {
 	public WelcomeDashboard() throws URISyntaxException, IOException {
 		DashboardReopener.ensure();
 		setName("Welcome");
-		URL fileURL = FileLocator.toFileURL(new URL(WELCOME_PAGE_URI));
-		File contentInstance = DashboardCopier.getCopy(new File(fileURL.toURI()), new NullProgressMonitor());
+		File file = getWelcomeFile();
+		File contentInstance = DashboardCopier.getCopy(file, new NullProgressMonitor());
 		File welcomeHtml = new File(contentInstance, "index.html");
 		setHomeUrl(welcomeHtml.toURI().toString());
+	}
+
+	private File getWelcomeFile() throws IOException, MalformedURLException, URISyntaxException {
+		URL fileURL = FileLocator.toFileURL(new URL(WELCOME_PAGE_URI));
+		File file;
+		try {
+			file = new File(fileURL.toURI());
+		} catch (URISyntaxException e) {
+			//https://issuetracker.springsource.com/browse/STS-3712
+			//Actually this is expected because FileLocator is buggy and returns urls with illegal
+			// chars like spaces in them without properly encoding them.
+			//So... proceed assuming the 'file' portion of the url is unencoded.
+			file = new File(fileURL.getFile());
+		}
+		return file;
 	}
 
 	@Override
