@@ -264,7 +264,9 @@
 		<repository>
 			<id>javafx</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/efxclipse/runtime-nightly/site/</url>
+			<url>http://download.eclipse.org/efxclipse/updates-released/0.9.0/site</url>
+			<!--  Don't use the niglty site as below because that contains dependencies on things only available in e44 (luna) -->
+			<!--  <url>http://download.eclipse.org/efxclipse/runtime-nightly/site/</url> -->
 		</repository>
 
 		<repository>
