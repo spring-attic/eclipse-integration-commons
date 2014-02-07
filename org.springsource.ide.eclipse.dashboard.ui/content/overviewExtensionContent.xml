@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <introContent>
-	<extensionContent id="com.springsource.sts.ide" name="SpringSource Tool Suite"
+	<extensionContent id="com.springsource.sts.ide" name="Spring Tool Suite Dashboard"
 		style="overview.css" path="overview/@">
 		<group id="content-group" style-id="content-group">
-			<link label="SpringSource Tool Suite Overview"
+			<link label="Spring Tool Suite Dashboard"
 				url="http://org.eclipse.ui.intro/runAction?pluginId=org.springsource.ide.eclipse.dashboard.ui&amp;class=org.springsource.ide.eclipse.dashboard.ui.actions.ShowDashboardAction&amp;id=com.springsource.sts.ide.ui.action.dashboard"
 				id="sts-overview" style-id="content-link">
-				<text>See the SpringSource Tool Suite dashboard</text>
+				<text>See the Tool Suite Dashboard</text>
 			</link>
 		</group>
 	</extensionContent>

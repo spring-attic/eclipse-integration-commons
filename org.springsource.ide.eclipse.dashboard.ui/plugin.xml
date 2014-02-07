@@ -22,13 +22,6 @@
             content="content/overviewExtensionContent.xml">
       	</configExtension>
    	</extension>
-
-	
-
-	<extension point="org.eclipse.ui.views">
-		<category name="SpringSource Tool Suite" id="com.springsource.sts.ide.ui.dashboard">
-		</category>
-	</extension>
 	
 	<extension point="org.eclipse.mylyn.tasks.core.templates">
 		<repository addAutomatically="true" anonymous="false"
@@ -42,12 +35,6 @@
 		</repository>
 	</extension>
 	
-	<extension point="org.eclipse.ui.newWizards">
-		<category id="com.springsource.sts.category"
-			name="SpringSource Tool Suite">
-		</category>
-	</extension>
-
 	<extension point="org.eclipse.mylyn.tasks.bugs.support">
 		<category description="Commercial support"
 			id="org.eclipse.mylyn.tasks.bugs.commercial" name="Commercial Support"
@@ -178,7 +165,8 @@
            allPopups="false"
            locationURI="toolbar:org.eclipse.ui.main.toolbar">
         <toolbar
-              id="org.springsource.ide.eclipse.dashboard.ui.toolbar1">
+              id="org.springsource.ide.eclipse.dashboard.ui.toolbar1"
+              label="Spring Tool Suite Dashboard">
            <command
                  commandId="org.springsource.ide.eclipse.dashboard.ui.showDashboard"
                  icon="icons/view16/spring.png"
