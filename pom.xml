@@ -99,8 +99,8 @@
 		<dist.target></dist.target>
 		<dist.properties>dist.properties</dist.properties>
 
-		<dist.pathpostfix>nightly/${dist.target}</dist.pathpostfix>
-		<dist.path>${dist.type}/${dist.key}/${dist.project}/${dist.pathpostfix}</dist.path>
+		<dist.pathpostfix>nightly</dist.pathpostfix>
+		<dist.path>${dist.type}/${dist.key}/${dist.project}/${dist.pathpostfix}/${dist.target}</dist.path>
 
 		<skip.source.check>true</skip.source.check>
 
@@ -182,12 +182,12 @@
 					<layout>p2</layout>
 					<url>http://download.eclipse.org/technology/swtbot/snapshots</url>
 				</repository>
+				<repository>
+					<id>javafx</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/efxclipse/runtime-nightly/site/</url>
+				</repository>
 			</repositories>
-			<repository>
-				<id>javafx</id>
-				<layout>p2</layout>
-				<url>http://download.eclipse.org/efxclipse/runtime-nightly/site/</url>
-			</repository>
 		</profile>
 		
 
