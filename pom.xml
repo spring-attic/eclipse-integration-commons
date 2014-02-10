@@ -158,6 +158,39 @@
 		</profile>
 
 		<profile>
+			<id>e43</id>
+			<properties>
+				<dist.target>e4.3</dist.target>
+				<dist.platform.name>Kepler</dist.platform.name>
+				<dist.platform.id>kepler</dist.platform.id>
+				<dist.platform.version>4.3</dist.platform.version>
+				<package.qualifierPrefix>e43</package.qualifierPrefix>
+			</properties>
+			<repositories>
+				<repository>
+					<id>platform</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/eclipse/updates/4.3/</url>
+				</repository>
+				<repository>
+					<id>juno</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/releases/kepler/</url>
+				</repository>
+				<repository>
+					<id>swtbot</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/technology/swtbot/snapshots</url>
+				</repository>
+				<repository>
+					<id>javafx</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/efxclipse/updates-released/0.9.0/site</url>
+				</repository>
+			</repositories>
+		</profile>
+		
+		<profile>
 			<id>e44</id>
 			<properties>
 				<dist.target>e4.4</dist.target>
