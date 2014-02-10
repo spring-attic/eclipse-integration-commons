@@ -99,7 +99,7 @@
 		<dist.target></dist.target>
 		<dist.properties>dist.properties</dist.properties>
 
-		<dist.pathpostfix>nightly</dist.pathpostfix>
+		<dist.pathpostfix>nightly/${dist.target}</dist.pathpostfix>
 		<dist.path>${dist.type}/${dist.key}/${dist.project}/${dist.pathpostfix}</dist.path>
 
 		<skip.source.check>true</skip.source.check>
@@ -148,56 +148,34 @@
 					<layout>p2</layout>
 					<url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/</url>
 				</repository>
+				<repository>
+					<id>javafx</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/efxclipse/updates-released/0.9.0/site</url>
+				</repository>
+
 			</repositories>
 		</profile>
 
 		<profile>
-			<id>e42</id>
+			<id>e44</id>
 			<properties>
-				<dist.target>e4.2</dist.target>
-				<dist.platform.name>Juno</dist.platform.name>
-				<dist.platform.id>juno</dist.platform.id>
-				<dist.platform.version>4.2</dist.platform.version>
-				<package.qualifierPrefix>e42</package.qualifierPrefix>
+				<dist.target>e4.4</dist.target>
+				<dist.platform.name>Luna</dist.platform.name>
+				<dist.platform.id>luna</dist.platform.id>
+				<dist.platform.version>4.4</dist.platform.version>
+				<package.qualifierPrefix>e44</package.qualifierPrefix>
 			</properties>
 			<repositories>
 				<repository>
 					<id>platform</id>
 					<layout>p2</layout>
-					<url>http://download.eclipse.org/eclipse/updates/4.2/</url>
+					<url>http://download.eclipse.org/eclipse/updates/4.4/</url>
 				</repository>
 				<repository>
 					<id>juno</id>
 					<layout>p2</layout>
-					<url>http://download.eclipse.org/releases/juno/</url>
-				</repository>
-				<repository>
-					<id>swtbot</id>
-					<layout>p2</layout>
-					<url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/</url>
-				</repository>
-			</repositories>
-		</profile>
-		
-		<profile>
-			<id>e43</id>
-			<properties>
-				<dist.target>e4.3</dist.target>
-				<dist.platform.name>Kepler</dist.platform.name>
-				<dist.platform.id>kepler</dist.platform.id>
-				<dist.platform.version>4.3</dist.platform.version>
-				<package.qualifierPrefix>e43</package.qualifierPrefix>
-			</properties>
-			<repositories>
-				<repository>
-					<id>platform</id>
-					<layout>p2</layout>
-					<url>http://download.eclipse.org/eclipse/updates/4.3/</url>
-				</repository>
-				<repository>
-					<id>juno</id>
-					<layout>p2</layout>
-					<url>http://download.eclipse.org/releases/kepler/</url>
+					<url>http://download.eclipse.org/releases/luna/</url>
 				</repository>
 				<repository>
 					<id>swtbot</id>
@@ -205,6 +183,11 @@
 					<url>http://download.eclipse.org/technology/swtbot/snapshots</url>
 				</repository>
 			</repositories>
+			<repository>
+				<id>javafx</id>
+				<layout>p2</layout>
+				<url>http://download.eclipse.org/efxclipse/runtime-nightly/site/</url>
+			</repository>
 		</profile>
 		
 
@@ -259,14 +242,6 @@
 			<id>mylyn</id>
 			<layout>p2</layout>
 			<url>http://download.eclipse.org/mylyn/releases/3.7</url>
-		</repository>
-
-		<repository>
-			<id>javafx</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/efxclipse/updates-released/0.9.0/site</url>
-			<!--  Don't use the niglty site as below because that contains dependencies on things only available in e44 (luna) -->
-			<!--  <url>http://download.eclipse.org/efxclipse/runtime-nightly/site/</url> -->
 		</repository>
 
 		<repository>
