@@ -126,7 +126,7 @@ public class LaunchUtils {
 		}
 	}
 
-	private static List<ILaunch> getLaunches(ILaunchConfiguration launchConf) {
+	public static List<ILaunch> getLaunches(ILaunchConfiguration launchConf) {
 		ILaunch[] all = DebugPlugin.getDefault().getLaunchManager().getLaunches();
 		ArrayList<ILaunch> selected = new ArrayList<ILaunch>();
 		for (ILaunch l : all) {
