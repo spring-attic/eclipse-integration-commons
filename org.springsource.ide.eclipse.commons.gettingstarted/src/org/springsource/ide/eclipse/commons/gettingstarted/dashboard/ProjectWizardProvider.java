@@ -27,7 +27,7 @@ public class ProjectWizardProvider extends IEclipseToBrowserFunction.Extension {
 
 	private static final String GROOVY_WIZARD_ID = "org.codehaus.groovy.eclipse.ui.groovyProjectWizard";
 
-	private static final String SPRING_WIZARD_ID = "com.springsource.sts.wizard.template";
+	private static final String SPRING_WIZARD_ID = "org.springsource.ide.eclipse.commons.gettingstarted.wizard.boot.NewSpringBootWizard";
 
 	private static final String JAVA_WIZARD_ID = "org.eclipse.jdt.ui.wizards.JavaProjectWizard";
 
