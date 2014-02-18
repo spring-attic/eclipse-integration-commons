@@ -184,4 +184,17 @@
      </handler>
   </extension>
 
+ 
+	<extension point="org.eclipse.ui.actionSets">
+		<actionSet id="com.springsource.sts.ide.ui.actionSet.workbench"
+			label="SpringSource Tool Suite" visible="true">
+			<action
+				class="org.springsource.ide.eclipse.dashboard.ui.actions.ShowDashboardAction"
+				icon="icons/view16/spring.png" id="com.springsource.sts.ide.ui.action.dashboard"
+				label="Dashboard" menubarPath="help/group.intro" style="push">
+			</action>
+		</actionSet>
+	</extension>
+ 
+
 </plugin>
