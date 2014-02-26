@@ -9,7 +9,7 @@
       <page
             class="org.springsource.ide.eclipse.commons.ui.CommonsPreferencePage"
             id="org.springsource.ide.eclipse.commons.preferencePage"
-            name="SpringSource">
+            name="Spring">
          <keywordReference
                id="org.springsource.ide.eclipse.commons.ui.tips.keyword">
          </keywordReference>
