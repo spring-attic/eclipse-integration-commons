@@ -1,9 +1,9 @@
 open_source_license.txt
 
-Eclipse Integration Commons 3.4.0 GA
+Eclipse Integration Commons 3.5.0 GA
 
 =================================================================
-GoPivotal makes available all content in this download ("Content"). 
+Pivotal makes available all content in this download ("Content"). 
 Unless otherwise indicated below, the Content is provided to you under 
 the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). 
 A copy of the EPL is available in the file called license.txt. For 
@@ -22,7 +22,6 @@ the copyright notice(s) and the full text of the license associated with each co
 
 
 
-
 SECTION 1: BSD-STYLE, MIT-STYLE, OR SIMILAR STYLE LICENSES
 
    >>> org.aopalliance-1.0.0
@@ -34,23 +33,24 @@ SECTION 1: BSD-STYLE, MIT-STYLE, OR SIMILAR STYLE LICENSES
 SECTION 2: Apache License, V2.0
 
    >>> org.apache.commons.logging-1.1.1
-   >>> org.springframework.aop-4.0.0.m1
-   >>> org.springframework.beans-4.0.0.m1
-   >>> org.springframework.context-4.0.0.m1
-   >>> org.springframework.context.support-4.0.0.m1
-   >>> org.springframework.core-4.0.0.m1
-   >>> org.springframework.data.core-1.6.0
-   >>> org.springframework.expression-4.0.0.m1
-   >>> org.springframework.jdbc-4.0.0.m1
-   >>> org.springframework.jms-4.0.0.m1
-   >>> org.springframework.orm-4.0.0.m1
-   >>> org.springframework.oxm-4.0.0.m1
+   >>> org.springframework.aop-4.0.2
+   >>> org.springframework.beans-4.0.2
+   >>> org.springframework.context-4.0.2
+   >>> org.springframework.context.support-4.0.2
+   >>> org.springframework.core-4.0.2
+   >>> org.springframework.data.core-1.7.0
+   >>> org.springframework.expression-4.0.2
+   >>> org.springframework.jdbc-4.0.2
+   >>> org.springframework.jms-4.0.2
+   >>> org.springframework.orm-4.0.2
+   >>> org.springframework.oxm-4.0.2
    >>> org.springframework.roo.wrapping.json-simple-1.1.0
-   >>> org.springframework.transaction-4.0.0.m1
+   >>> org.springframework.transaction-4.0.2
    >>> org.springframework.uaa.client-1.0.3
-   >>> org.springframework.web-4.0.0.m1
-   >>> org.springframework.web.servlet-4.0.0.m1
+   >>> org.springframework.web-4.0.2
+   >>> org.springframework.web.servlet-4.0.2
    >>> org.springsource.util.common-2.0.0
+   >>> spring-loaded-1.1.0
 
 
 
@@ -63,20 +63,36 @@ SECTION 3: Common Development and Distribution License, V1.0
 SECTION 4: Eclipse Public License, V1.0
 
    >>> com.google.protobuf-2.4.0
+   >>> com.vmware.vfabric.ide.eclipse.tcserver.core-3.5.0
+   >>> com.vmware.vfabric.ide.eclipse.tcserver.insight.ui-3.5.0
+   >>> com.vmware.vfabric.ide.eclipse.tcserver.livegraph-3.5.0
+   >>> com.vmware.vfabric.ide.eclipse.tcserver.reloading-3.5.0
+   >>> com.vmware.vfabric.ide.eclipse.tcserver.ui-3.5.0
    >>> edu.emory.mathcs.backport-3.1.0
    >>> javax.activation-1.1.0
+   >>> javax.annotation-1.2.0
    >>> javax.el-2.2.0
    >>> javax.jms-1.1.0
    >>> javax.mail-1.4.0
    >>> javax.xml.stream-1.0.1
    >>> javax.xml.ws-2.1.0
+   >>> org.apache.commons.codec-1.3.0
    >>> org.apache.commons.codec-1.6.0
    >>> org.apache.commons.collections-3.2.0
    >>> org.apache.commons.io-2.0.1
-   >>> org.apache.httpcomponents.httpclient-4.2.5
-   >>> org.apache.httpcomponents.httpcore-4.2.4
+   >>> org.apache.httpcomponents.httpclient-4.1.2
+   >>> org.apache.httpcomponents.httpclient-4.2.6
+   >>> org.apache.httpcomponents.httpcore-4.1.4
+   >>> org.apache.httpcomponents.httpcore-4.2.5
    >>> org.codehaus.jackson.core-1.6.0
    >>> org.codehaus.jackson.mapper-1.6.0
+   >>> org.eclipse.fx.core-0.9.0
+   >>> org.eclipse.fx.core-1.0.0
+   >>> org.eclipse.fx.javafx-2.2.0
+   >>> org.eclipse.fx.osgi-0.9.0
+   >>> org.eclipse.fx.osgi-1.0.0
+   >>> org.eclipse.fx.osgi.util-0.9.0
+   >>> org.eclipse.fx.osgi.util-1.0.0
 
 
 
@@ -87,7 +103,6 @@ APPENDIX. Standard License Files
    >>> Apache License, V2.0
 
    >>> Common Development and Distribution License, V1.0
-
 
 
 
@@ -149,7 +164,7 @@ This product includes/uses software(s) developed by 'an unknown organization'
 - Unnamed - logkit: logkit: jar: 1.0.1
 
 
->>> org.springframework.aop-4.0.0.m1
+>>> org.springframework.aop-4.0.2
 
 Copyright 2002-2007 the original author or authors.
 
@@ -162,7 +177,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 See the License for the specific language governing permissions and limitations under the License.
 
 
->>> org.springframework.beans-4.0.0.m1
+>>> org.springframework.beans-4.0.2
 
 Copyright 2002-2007 the original author or authors.
 
@@ -174,7 +189,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 See the License for the specific language governing permissions and limitations under the License.
 
 
->>> org.springframework.context-4.0.0.m1
+>>> org.springframework.context-4.0.2
 
 Copyright 2002-2008 the original author or authors.
 
@@ -187,7 +202,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 See the License for the specific language governing permissions and limitations under the License.
 
 
->>> org.springframework.context.support-4.0.0.m1
+>>> org.springframework.context.support-4.0.2
 
 Copyright 2002-2008 the original author or authors.
 
@@ -198,7 +213,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 See the License for the specific language governing permissions and limitations under the License.
 
 
->>> org.springframework.core-4.0.0.m1
+>>> org.springframework.core-4.0.2
 
 Copyright 2002-2008 the original author or authors.
 
@@ -211,7 +226,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 See the License for the specific language governing permissions and limitations under the License.
 
 
->>> org.springframework.data.core-1.6.0
+>>> org.springframework.data.core-1.7.0
 
 Copyright (c) 2011 by the original author(s).
 
@@ -228,7 +243,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 
->>> org.springframework.expression-4.0.0.m1
+>>> org.springframework.expression-4.0.2
 
 Copyright 2002-2009 the original author or authors.
 
@@ -241,7 +256,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 See the License for the specific language governing permissions and limitations under the License.
 
 
->>> org.springframework.jdbc-4.0.0.m1
+>>> org.springframework.jdbc-4.0.2
 
 Copyright 2002-2009 the original author or authors.
 
@@ -254,7 +269,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 See the License for the specific language governing permissions and limitations under the License.
 
 
->>> org.springframework.jms-4.0.0.m1
+>>> org.springframework.jms-4.0.2
 
 Copyright 2002-2009 the original author or authors.
 
@@ -271,7 +286,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 
->>> org.springframework.orm-4.0.0.m1
+>>> org.springframework.orm-4.0.2
 
 Copyright 2002-2011 the original author or authors.
 
@@ -284,7 +299,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 See the License for the specific language governing permissions and limitations under the License.
 
 
->>> org.springframework.oxm-4.0.0.m1
+>>> org.springframework.oxm-4.0.2
 
 Copyright 2002-2011 the original author or authors.
 
@@ -301,7 +316,7 @@ See the License for the specific language governing permissions and limitations 
 License: Apache 2.0
 
 
->>> org.springframework.transaction-4.0.0.m1
+>>> org.springframework.transaction-4.0.2
 
 Copyright 2002-2006 the original author or authors.
 
@@ -341,7 +356,7 @@ Other software is used by Spring UAA as follows:
 * Base64 (http://iharder.net/base64) is used for Base64 encoding and decoding. It has been formally granted to the public domain.
 
 
->>> org.springframework.web-4.0.0.m1
+>>> org.springframework.web-4.0.2
 
 Copyright 2002-2011 the original author or authors.
 
@@ -353,7 +368,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
 See the License for the specific language governing permissions and limitations under the License.
 
 
->>> org.springframework.web.servlet-4.0.0.m1
+>>> org.springframework.web.servlet-4.0.2
 
 Copyright 2007 the original author or authors.
 
@@ -383,6 +398,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 
+>>> spring-loaded-1.1.0
+
+Copyright (c) 2012 VMware, Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.    You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0 
+ 
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+
 --------------- SECTION 3: Common Development and Distribution License, V1.0 ----------
 
 Common Development and Distribution License, V1.0 is applicable to the following component(s).
@@ -390,7 +416,7 @@ Common Development and Distribution License, V1.0 is applicable to the following
 
 >>> javax.annotation-1.1.1
 
-[PLEASE NOTE:  GOPIVOTAL, INC. ELECTS TO USE AND DISTRIBUTE THIS COMPONENT UNDER THE TERMS OF THE CDDL 1.0. PLEASE SEE THE APPENDIX TO REVIEW THE FULL TEXT OF CDDL 1.0. THE ORIGINAL LICENSE TERMS ARE REPRODUCED BELOW ONLY AS A REFERENCE.] 
+[PLEASE NOTE:  PIVOTAL SOFTWARE, INC. ELECTS TO USE AND DISTRIBUTE THIS COMPONENT UNDER THE TERMS OF THE CDDL 1.0. PLEASE SEE THE APPENDIX TO REVIEW THE FULL TEXT OF CDDL 1.0. THE ORIGINAL LICENSE TERMS ARE REPRODUCED BELOW ONLY AS A REFERENCE.] 
 
 License: CDDL 1.0
 
@@ -430,6 +456,71 @@ http://www.opensource.org/licenses/mit-license.php
 Examples and documentation as well as updated source code for Objenesis is available at 
 http://objenesis.org/
 .
+
+
+>>> com.vmware.vfabric.ide.eclipse.tcserver.core-3.5.0
+
+About Pivotal tc Server Integration for Eclipse
+About Pivotal tc Server Integration for Eclipse
+March 12, 2014
+Abstract
+This feature provides Eclipse integration for Pivotal tc Server.
+License
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Third Party Content
+The Content includes items that have been sourced from third parties, as set out in the file called "open_source_license.txt."
+
+
+>>> com.vmware.vfabric.ide.eclipse.tcserver.insight.ui-3.5.0
+
+About Pivotal tc Server Integration for Eclipse
+About Pivotal tc Server Integration for Eclipse
+March 12, 2014
+Abstract
+This feature provides Eclipse integration for Pivotal tc Server.
+License
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Third Party Content
+The Content includes items that have been sourced from third parties, as set out in the file called "open_source_license.txt."
+
+
+>>> com.vmware.vfabric.ide.eclipse.tcserver.livegraph-3.5.0
+
+About Pivotal tc Server Integration for Eclipse
+About Pivotal tc Server Integration for Eclipse
+March 12, 2014
+Abstract
+This feature provides Eclipse integration for Pivotal tc Server.
+License
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Third Party Content
+The Content includes items that have been sourced from third parties, as set out in the file called "open_source_license.txt."
+
+
+>>> com.vmware.vfabric.ide.eclipse.tcserver.reloading-3.5.0
+
+About Pivotal tc Server Integration for Eclipse
+About Pivotal tc Server Integration for Eclipse
+March 12, 2014
+Abstract
+This feature provides Eclipse integration for Pivotal tc Server.
+License
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Third Party Content
+The Content includes items that have been sourced from third parties, as set out in the file called "open_source_license.txt."
+
+
+>>> com.vmware.vfabric.ide.eclipse.tcserver.ui-3.5.0
+
+About Pivotal tc Server Integration for Eclipse
+About Pivotal tc Server Integration for Eclipse
+March 12, 2014
+Abstract
+This feature provides Eclipse integration for Pivotal tc Server.
+License
+Pivotal Software, Inc. (Pivotal) makes available all content in this download ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available in the file called license.txt. For purposes of the EPL, "Program" will mean the Content.
+Third Party Content
+The Content includes items that have been sourced from third parties, as set out in the file called "open_source_license.txt."
 
 
 >>> edu.emory.mathcs.backport-3.1.0
@@ -481,6 +572,32 @@ http://www.apache.org/licenses/
 .
 The source for the javax.activation bundle is available on the Apache Geronimo website at 
 http://geronimo.apache.org/
+.
+
+
+>>> javax.annotation-1.2.0
+
+About
+About This Content
+January 02, 2014
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
+http://www.eclipse.org
+.
+Third Party Content
+The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
+javax.annotation
+The plug-in includes software developed by Sun as part of the Glassfish project.
+Your use of the library code is subject to the terms and conditions of the Common Development and Distribution License("CDDL") license. A copy of the Common Development and Distribution License is contained in the file 
+LICENSE_CDDL.txt
+ and is also available at 
+http://glassfish.java.net/public/CDDL+GPL.html
+.
+Original binaries and source are available from the 
+Glassfish website
 .
 
 
@@ -544,7 +661,7 @@ Oracle website
 >>> javax.mail-1.4.0
 
 About
-
+<
 About This Content
 June 08, 2007
 License
@@ -619,6 +736,37 @@ LICENSE.txt
  and is also available at 
 http://www.apache.org/licenses/LICENSE-2.0
 The source for the javax.xml.ws bundle is available on the Apache Geronimo website at http://geronimo.apache.org/.
+
+
+>>> org.apache.commons.codec-1.3.0
+
+About
+About This Content
+May 30, 2008
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at http://www.eclipse.org.
+
+Third Party Content
+
+(ADDITIONAL LICENSE INFORMATION)
+
+The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
+
+
+> Apache 2.0
+
+Apache Commons Codec 1.3
+This code is licensed under the Apache License v2.0 and can be found at 
+http://www.apache.org/licenses/LICENSE-2.0.txt
+. (
+local copy
+)
+Original binaries and source are available from the 
+Apache Commons Codec website
+.
 
 
 >>> org.apache.commons.codec-1.6.0
@@ -728,7 +876,7 @@ http://commons.apache.org/io/
 .
 
 
->>> org.apache.httpcomponents.httpclient-4.2.5
+>>> org.apache.httpcomponents.httpclient-4.1.2
 
 About
 About This Content
@@ -740,10 +888,6 @@ http://www.eclipse.org/legal/epl-v10.html
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
 http://www.eclipse.org
 .
-
-ADDITIONAL LICENSE INFORMATION:
-
-
 Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
 HttpClient 4.1
@@ -761,7 +905,7 @@ Apache HttpClient website
 .
 
 
->>> org.apache.httpcomponents.httpcore-4.2.4
+>>> org.apache.httpcomponents.httpclient-4.2.6
 
 About
 About This Content
@@ -773,14 +917,68 @@ http://www.eclipse.org/legal/epl-v10.html
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
 http://www.eclipse.org
 .
-
-ADDITIONAL LICENSE INFORMATION:
-
 Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
-HttpCore 4.2
+HttpClient 4.1
 The plug-in includes software developed by The Apache Software Foundation as part of the HttpComponents project.
-This project contains annotations derived from JCIP-ANNOTATIONS Copyright (c) 2005 Brian Goetz and Tim Peierls. See http://www.jcip.net.
+Your use of the HttpClient code is subject to the terms and conditions of the Apache Software License 2.0. A copy of the license is contained in the file 
+LICENSE.txt
+ and is also available at 
+http://www.apache.org/licenses/LICENSE-2.0.html
+.
+The names "HttpClient" and "Apache Software Foundation" must not be used to endorse or promote products derived from this software without prior written permission. For written permission, please contact 
+apache@apache.org
+.
+Original binaries and source are available from the 
+Apache HttpClient website
+.
+
+
+>>> org.apache.httpcomponents.httpcore-4.1.4
+
+About
+About This Content
+May 30, 2008
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
+http://www.eclipse.org
+.
+Third Party Content
+The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
+HttpCore 4.1
+The plug-in includes software developed by The Apache Software Foundation as part of the HttpComponents project.
+Your use of the HttpCore code is subject to the terms and conditions of the Apache Software License 2.0. A copy of the license is contained in the file 
+LICENSE.txt
+ and is also available at 
+http://www.apache.org/licenses/LICENSE-2.0.html
+.
+The names "HttpCore" and "Apache Software Foundation" must not be used to endorse or promote products derived from this software without prior written permission. For written permission, please contact 
+apache@apache.org
+.
+Original binaries and source are available from the 
+Apache HttpComponents website
+.
+
+
+>>> org.apache.httpcomponents.httpcore-4.2.5
+
+About
+About This Content
+May 30, 2008
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
+http://www.eclipse.org
+.
+Third Party Content
+The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
+HttpCore 4.1
+The plug-in includes software developed by The Apache Software Foundation as part of the HttpComponents project.
 Your use of the HttpCore code is subject to the terms and conditions of the Apache Software License 2.0. A copy of the license is contained in the file 
 LICENSE.txt
  and is also available at 
@@ -854,6 +1052,104 @@ NOTICE
  file is included with the Content in accordance with 4d of the Apache License, Version 2.0.
 Jackson including its source is available from 
 http://jackson.codehaus.org/
+.
+
+
+>>> org.eclipse.fx.core-0.9.0
+
+About
+About This Content
+June 5, 2006
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
+http://www.eclipse.org
+.
+
+
+>>> org.eclipse.fx.core-1.0.0
+
+About
+About This Content
+June 5, 2006
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
+http://www.eclipse.org
+.
+
+
+>>> org.eclipse.fx.javafx-2.2.0
+
+About
+About This Content
+June 5, 2006
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
+http://www.eclipse.org
+.
+
+
+>>> org.eclipse.fx.osgi-0.9.0
+
+About
+About This Content
+June 5, 2006
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
+http://www.eclipse.org
+.
+
+
+>>> org.eclipse.fx.osgi-1.0.0
+
+About
+About This Content
+June 5, 2006
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
+http://www.eclipse.org
+.
+
+
+>>> org.eclipse.fx.osgi.util-0.9.0
+
+About
+About This Content
+June 5, 2006
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
+http://www.eclipse.org
+.
+
+
+>>> org.eclipse.fx.osgi.util-1.0.0
+
+About
+About This Content
+June 5, 2006
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
+http://www.eclipse.org
 .
 
 
@@ -1608,15 +1904,15 @@ source code and/or modifications to source code to be made
 available (as would be noted above), you may obtain a copy of
 the source code corresponding to the binaries for such open
 source components and modifications thereto, if any, (the
-"Source Files"), by downloading the Source Files from VMware's website at
-http://www.vmware.com/download/open_source.html, or by sending a request, 
-with your name and address to: GoPivotal, Inc., 1900 S. Norfolk Street #125, 
-San Mateo, CA 94403, Attention: General Counsel. All such requests should 
-clearly specify: OPEN SOURCE FILES REQUEST,
-Attention General Counsel. GoPivotal shall mail a copy of the
+"Source Files"), by downloading the Source Files from Pivotal website at
+(http://www.gopivotal.com/open-source),or by sending a request, 
+with your name and address to: Pivotal Software Inc.3496 Deer Creek Rd, 
+Palo Alto, CA 94304,Attention: General Counsel. 
+All such requests should clearly specify: OPEN SOURCE FILES REQUEST,
+Attention General Counsel. Pivotal shall mail a copy of the
 Source Files to you on a CD or equivalent physical medium. This
 offer to obtain a copy of the Source Files is valid for three
-years from the date you acquired this Software product. Alternatively, the 
-Source Files may accompany the GoPivotal product.
+years from the date you acquired this Software product. 
+Alternatively, the Source Files may accompany the Pivotal product.
 
-[ECLIPSECOMMONS340GASS092613]
+[ECLIPSECOMMONS350GASS030714]
