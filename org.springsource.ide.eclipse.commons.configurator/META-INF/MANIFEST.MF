@@ -5,8 +5,7 @@ Bundle-SymbolicName: org.springsource.ide.eclipse.commons.configurator;singleton
 Bundle-Version: 3.5.0.qualifier
 Bundle-Activator: org.springsource.ide.eclipse.commons.internal.configurator.Activator
 Bundle-Vendor: Pivotal Software, Inc.
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.ui,
+Require-Bundle: org.eclipse.ui,
  org.eclipse.debug.core,
  org.eclipse.wst.server.core,
  org.eclipse.wst.server.ui,
@@ -27,3 +26,11 @@ Export-Package: org.springsource.ide.eclipse.commons.configurator,
  org.springsource.ide.eclipse.commons.internal.configurator.ui;x-internal:=true
 Bundle-ClassPath: lib/,
  .
+Import-Package: org.eclipse.core.runtime,
+ org.eclipse.core.runtime.jobs,
+ org.eclipse.core.runtime.preferences,
+ org.eclipse.osgi.service.datalocation,
+ org.eclipse.osgi.service.resolver,
+ org.eclipse.osgi.util,
+ org.osgi.framework,
+ org.osgi.service.prefs

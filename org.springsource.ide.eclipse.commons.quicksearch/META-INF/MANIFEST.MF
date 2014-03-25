@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.springsource.ide.eclipse.commons.quicksearch;singleton:
 Bundle-Version: 3.5.0.qualifier
 Bundle-Activator: org.springsource.ide.eclipse.commons.quicksearch.ui.QuickSearchActivator
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.ui.ide,
  org.eclipse.core.expressions,
@@ -19,3 +18,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: Pivotal Software, Inc.
 Bundle-Localization: plugin
 Export-Package: org.springsource.ide.eclipse.commons.quicksearch.core.priority
+Import-Package: org.eclipse.core.runtime,
+ org.eclipse.core.runtime.jobs,
+ org.eclipse.core.runtime.preferences,
+ org.osgi.framework,
+ org.osgi.service.prefs

@@ -7,7 +7,6 @@ Bundle-Activator: org.springsource.ide.eclipse.commons.gettingstarted.GettingSta
 Bundle-Vendor: Pivotal Software, Inc.
 Require-Bundle: 
  com.sun.syndication,
- org.eclipse.core.runtime,
  org.apache.commons.io,
  org.apache.commons.lang,
  org.apache.commons.codec,
@@ -35,3 +34,7 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.springsource.ide.eclipse.commons.gettingstarted,
  org.springsource.ide.eclipse.commons.gettingstarted.dashboard
 Eclipse-BundleShape: dir
+Import-Package: org.eclipse.core.runtime,
+ org.eclipse.osgi.service.datalocation,
+ org.eclipse.osgi.util,
+ org.osgi.framework

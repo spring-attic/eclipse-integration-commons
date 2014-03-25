@@ -7,9 +7,13 @@ Bundle-Vendor: Pivotal Software, Inc.
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.springsource.ide.eclipse.commons.content.core.ContentPlugin
-Require-Bundle: org.eclipse.core.runtime,
- org.springsource.ide.eclipse.commons.core,
+Require-Bundle: org.springsource.ide.eclipse.commons.core,
  org.eclipse.core.resources
 Export-Package: org.springsource.ide.eclipse.commons.content.core,
  org.springsource.ide.eclipse.commons.content.core.util,
  org.springsource.ide.eclipse.commons.internal.content.core;x-friends:="org.springsource.ide.eclipse.commons.tests"
+Import-Package: org.eclipse.core.runtime,
+ org.eclipse.core.runtime.jobs,
+ org.eclipse.osgi.service.resolver,
+ org.eclipse.osgi.util,
+ org.osgi.framework

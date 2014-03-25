@@ -7,7 +7,6 @@ Bundle-Activator: org.springsource.ide.eclipse.commons.browser.BrowserPlugin
 Bundle-Vendor: Pivotal Software, Inc.
 Require-Bundle: 
  org.apache.commons.lang,
- org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.ui.browser,
  org.eclipse.fx.javafx;bundle-version="2.2.0",
@@ -17,3 +16,5 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.springsource.ide.eclipse.commons.browser,
  org.springsource.ide.eclipse.commons.browser.javafx
 Eclipse-BundleShape: dir
+Import-Package: org.eclipse.core.runtime,
+ org.osgi.framework
