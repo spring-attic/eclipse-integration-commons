@@ -26,7 +26,7 @@ import org.springsource.ide.eclipse.dashboard.internal.ui.editors.UpdateNotifica
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 
-public class FeedMonitor implements IStartup {
+public class FeedMonitor {
 
 	public static final String RESOURCE_DASHBOARD_FEEDS_BLOGS = "dashboard.feeds.blogs";
 
@@ -46,7 +46,7 @@ public class FeedMonitor implements IStartup {
 
 	private List<IFeedListener> listeners = new ArrayList<IFeedListener>();
 
-	public void earlyStartup() {
+	private FeedMonitor() {
 		IPreferenceStore prefStore = IdeUiPlugin.getDefault().getPreferenceStore();
 		long lastUpdateLong = prefStore.getLong(IIdeUiConstants.PREF_FEED_ENTRY_LAST_UPDATE_DISPLAYED);
 		lastUpdated = new Date(lastUpdateLong);
@@ -60,8 +60,6 @@ public class FeedMonitor implements IStartup {
 		});
 
 		initializeFeeds();
-
-		instance = this;
 	}
 
 	private void initializeFeeds() {
@@ -106,7 +104,10 @@ public class FeedMonitor implements IStartup {
 		}
 	}
 
-	public static FeedMonitor getInstance() {
+	public static synchronized FeedMonitor getInstance() {
+		if (instance==null) {
+			instance = new FeedMonitor();
+		}
 		return instance;
 	}
 

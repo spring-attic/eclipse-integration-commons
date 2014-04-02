@@ -146,12 +146,13 @@
 			id="com.springsource.sts.ide.ui.pageFactory.BugReport">
 		</pageFactory>
 	</extension>
-  <extension
+<!-- Now uses Lazy initialization instead of early startup. See https://issuetracker.springsource.com/browse/STS-3755
+     <extension
         point="org.eclipse.ui.startup">
      <startup
            class="org.springsource.ide.eclipse.dashboard.internal.ui.feeds.FeedMonitor">
      </startup>
-  </extension>
+  </extension> -->
   <extension
         point="org.eclipse.ui.commands">
      <command
