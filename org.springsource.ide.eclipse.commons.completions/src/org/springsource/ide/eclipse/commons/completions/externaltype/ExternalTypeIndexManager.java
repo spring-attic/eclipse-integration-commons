@@ -11,6 +11,9 @@
 package org.springsource.ide.eclipse.commons.completions.externaltype;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -112,8 +115,6 @@ public class ExternalTypeIndexManager {
 	 * Read the extension point.
 	 */
 	private static synchronized List<ExternalTypeDiscoveryFactory> getFactories() {
-		//TODO: natures info not utilized at the moment. Use it to 
-		// avoid instantiation of factories we know are not applicable to project of interest.
 		if (factories==null) {
 			IExtensionRegistry registry = Platform.getExtensionRegistry();
 			IConfigurationElement[] confEls = registry.getConfigurationElementsFor(TYPE_SOURCES_EXTENSION_POINT);
@@ -132,6 +133,9 @@ public class ExternalTypeIndexManager {
 						CompletionsActivator.log(e);
 					}
 				}
+			}
+			if (factories==null || factories.isEmpty()) {
+				factories = Collections.emptyList();
 			}
 		}
 		return factories;
