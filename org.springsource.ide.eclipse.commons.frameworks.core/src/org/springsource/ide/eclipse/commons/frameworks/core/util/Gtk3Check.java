@@ -8,7 +8,7 @@
  * Contributors:
  *   Kris De Volder - Initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.browser.javafx;
+package org.springsource.ide.eclipse.commons.frameworks.core.util;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.Vector;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWiring;
-import org.springsource.ide.eclipse.commons.browser.BrowserPlugin;
+import org.springsource.ide.eclipse.commons.frameworks.core.FrameworkCoreActivator;
 
 public class Gtk3Check {
 
@@ -63,7 +63,7 @@ public class Gtk3Check {
 			//No problems determining loaded libs, and gtk3 lib not found!
 			return false;
 		} catch (Throwable e) {
-			BrowserPlugin.log(e);
+			FrameworkCoreActivator.log(e);
 			//Something went wrong determining if GTK3 is present.
 			//We must assume the worst to avoid potential JVM crash.
 			return true;

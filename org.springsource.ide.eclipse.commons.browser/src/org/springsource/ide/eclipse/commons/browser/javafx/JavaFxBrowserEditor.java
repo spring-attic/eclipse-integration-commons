@@ -28,6 +28,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.browser.WebBrowserEditorInput;
 import org.eclipse.ui.part.EditorPart;
+import org.springsource.ide.eclipse.commons.frameworks.core.util.Gtk3Check;
 
 /**
  * An editor that displays the contents of a webpage using JavaFx WebView.

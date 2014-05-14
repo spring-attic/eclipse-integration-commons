@@ -23,7 +23,8 @@ Require-Bundle: org.eclipse.jface.text,
  org.eclipse.core.expressions,
  org.eclipse.ui.workbench.texteditor,
  com.sun.syndication,
- org.jdom
+ org.jdom,
+ org.springsource.ide.eclipse.commons.frameworks.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.springsource.ide.eclipse.dashboard.internal.ui,

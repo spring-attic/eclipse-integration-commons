@@ -63,6 +63,7 @@ import org.eclipse.ui.internal.browser.Messages;
 import org.eclipse.ui.internal.browser.ToolbarLayout;
 import org.eclipse.ui.internal.browser.WebBrowserPreference;
 import org.springsource.ide.eclipse.commons.browser.BrowserImages;
+import org.springsource.ide.eclipse.commons.frameworks.core.util.Gtk3Check;
 
 /**
  * A Web browser widget. It provides a JavaFx WebView and adds an optional

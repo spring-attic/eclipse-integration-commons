@@ -28,4 +28,5 @@ Import-Package: org.eclipse.core.internal.runtime,
  org.eclipse.core.runtime.jobs,
  org.eclipse.core.runtime.preferences,
  org.osgi.framework,
+ org.osgi.framework.wiring,
  org.osgi.service.prefs

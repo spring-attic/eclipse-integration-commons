@@ -36,6 +36,7 @@ import org.springsource.ide.eclipse.commons.core.ResourceProvider.Property;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardEditorInputFactory;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardMainPage;
 import org.springsource.ide.eclipse.dashboard.ui.actions.ShowDashboardAction;
+import org.springsource.ide.eclipse.commons.frameworks.core.util.Gtk3Check;
 
 /**
  * Note: Bundle activation is triggered by Mylyn's tasks ui startup due to
@@ -182,7 +183,8 @@ public class IdeUiPlugin extends AbstractUIPlugin {
 	}
 
 	public boolean useNewDashboard(IProgressMonitor mon) {
-		return supportsNewDashboard(mon) && !IdeUiPlugin.getDefault().getPreferenceStore().getBoolean(IIdeUiConstants.PREF_USE_OLD_DASHOARD);
+		return supportsNewDashboard(mon) && !IdeUiPlugin.getDefault().getPreferenceStore().getBoolean(IIdeUiConstants.PREF_USE_OLD_DASHOARD)
+				&& !Gtk3Check.isGTK3;
 	}
 	
 	private void migrateBlogFeeds() {
