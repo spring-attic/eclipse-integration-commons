@@ -37,6 +37,12 @@ import org.eclipse.ui.part.EditorPart;
  */
 public class JavaFxBrowserEditor extends EditorPart {
 
+	static {
+		if (Gtk3Check.isGTK3) {
+			throw new UnsupportedOperationException("JavaFX doesn't work with GTK3");
+		}
+	}
+
 	public static final String EDITOR_ID = "org.springsource.ide.eclipse.commons.browser.Editor";
 
 	/**

@@ -92,6 +92,14 @@ import org.springsource.ide.eclipse.commons.browser.BrowserImages;
  */
 @SuppressWarnings("restriction")
 public class JavaFxBrowserViewer extends Composite {
+
+	static {
+		if (Gtk3Check.isGTK3) {
+			throw new UnsupportedOperationException("JavaFX doesn't work with GTK3");
+		}
+	}
+
+
 	/**
 	 * Style parameter (value 1) indicating that the URL and Go button will be
 	 * on the local toolbar.

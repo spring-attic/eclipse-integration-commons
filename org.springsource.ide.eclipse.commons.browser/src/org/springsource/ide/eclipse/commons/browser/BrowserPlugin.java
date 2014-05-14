@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.browser;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -64,4 +66,9 @@ public class BrowserPlugin extends AbstractUIPlugin {
 	public static BrowserPlugin getDefault() {
 		return plugin;
 	}
+
+	public static void log(Throwable e) {
+		getDefault().getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, "Unexpected exception", e));
+	}
+
 }

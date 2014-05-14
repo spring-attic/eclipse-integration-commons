@@ -18,3 +18,4 @@ Export-Package: org.springsource.ide.eclipse.commons.browser,
 Eclipse-BundleShape: dir
 Import-Package: org.eclipse.core.runtime,
  org.osgi.framework
+ org.osgi.framework.wiring
