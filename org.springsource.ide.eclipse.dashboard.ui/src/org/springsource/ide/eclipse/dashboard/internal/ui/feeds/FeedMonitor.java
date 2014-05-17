@@ -1,7 +1,17 @@
+/*******************************************************************************
+ * Copyright (c) 2012 - 2014 Pivotal Software, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Pivotal Software, Inc. - initial API and implementation
+ *******************************************************************************/
 package org.springsource.ide.eclipse.dashboard.internal.ui.feeds;
 
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,11 +19,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.ui.IStartup;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
@@ -45,11 +56,34 @@ public class FeedMonitor {
 	private List<UpdateNotification> updates;
 
 	private List<IFeedListener> listeners = new ArrayList<IFeedListener>();
+	
+	private AggregateFeedJob blogFeedJob = null;
+	
+	private AggregateFeedJob newsFeedJob = null;
 
 	private FeedMonitor() {
 		IPreferenceStore prefStore = IdeUiPlugin.getDefault().getPreferenceStore();
 		long lastUpdateLong = prefStore.getLong(IIdeUiConstants.PREF_FEED_ENTRY_LAST_UPDATE_DISPLAYED);
 		lastUpdated = new Date(lastUpdateLong);
+		
+		prefStore.addPropertyChangeListener(new IPropertyChangeListener() {			
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				if (IIdeUiConstants.PREF_UPDATE_DASHBOARD_NEWS_FEED.equals(event.getProperty())) {
+					initNewsFeedUpdates();
+				}				
+			}
+		});
+		
+		ResourceProvider.getInstance().addPropertyChangeListener(new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(java.beans.PropertyChangeEvent evt) {
+				if (RESOURCE_DASHBOARD_FEEDS_BLOGS.equals(evt.getPropertyName())) {
+					initBlogFeedUpdates();
+				}
+			}
+		});
 
 		addListener(new IFeedListener() {
 
@@ -59,48 +93,64 @@ public class FeedMonitor {
 			}
 		});
 
-		initializeFeeds();
+		initBlogFeedUpdates();
+		initNewsFeedUpdates();
 	}
 
-	private void initializeFeeds() {
-		{
-			final Map<String, String> springMap = new HashMap<String, String>();
-			String[] urls = ResourceProvider.getUrls(RESOURCE_DASHBOARD_FEEDS_BLOGS);
-			for (String url : urls) {
-				springMap.put(url, null);
-			}
-			final AggregateFeedJob feedJob = new AggregateFeedJob(springMap, RESOURCE_DASHBOARD_FEEDS_BLOGS);
-			feedJob.addJobChangeListener(new JobChangeAdapter() {
+
+	private void initBlogFeedUpdates() {
+		final Map<String, String> springMap = new HashMap<String, String>();
+		String[] urls = ResourceProvider.getUrls(RESOURCE_DASHBOARD_FEEDS_BLOGS);
+		for (String url : urls) {
+			springMap.put(url, null);
+		}
+		if (blogFeedJob != null) {
+			blogFeedJob.cancel();
+		}
+		if (!springMap.isEmpty()) {
+			blogFeedJob = new AggregateFeedJob(springMap, RESOURCE_DASHBOARD_FEEDS_BLOGS);
+			blogFeedJob.setSystem(true);
+			blogFeedJob.addJobChangeListener(new JobChangeAdapter() {
 
 				@Override
 				public void done(IJobChangeEvent event) {
-					Map<SyndEntry, SyndFeed> entryToFeed = feedJob.getFeedReader().getFeedsWithEntries();
+					Map<SyndEntry, SyndFeed> entryToFeed = blogFeedJob.getFeedReader().getFeedsWithEntries();
 					Set<SyndEntry> retrieveFeedEntries = entryToFeed.keySet();
 					newFeedItems = false;
 					feedEntries = new HashSet<SyndEntry>(retrieveFeedEntries);
 					checkFeedsUpToDate();
-					update(feedJob.getFeedName());
-					feedJob.schedule(FEED_POLLING_RATE);
+					update(blogFeedJob.getFeedName());
+					if (event.getResult().getSeverity() != IStatus.CANCEL) {
+						blogFeedJob.schedule(FEED_POLLING_RATE);
+					}
 				}
 			});
-			feedJob.schedule();
+			blogFeedJob.schedule();
 		}
-
-		{
+	}
+	
+	private void initNewsFeedUpdates() {
+		if (newsFeedJob != null) {
+			newsFeedJob.cancel();
+		}
+		if (IdeUiPlugin.getDefault().getPreferenceStore().getBoolean(IIdeUiConstants.PREF_UPDATE_DASHBOARD_NEWS_FEED)) {
 			Map<String, String> updateMap = new HashMap<String, String>();
 			updateMap.put(ResourceProvider.getUrl(RESOURCE_DASHBOARD_FEEDS_UPDATE), null);
-			final AggregateFeedJob updatesJob = new AggregateFeedJob(updateMap, RESOURCE_DASHBOARD_FEEDS_UPDATE);
-			updatesJob.addJobChangeListener(new JobChangeAdapter() {
-
+			newsFeedJob = new AggregateFeedJob(updateMap, RESOURCE_DASHBOARD_FEEDS_UPDATE);
+			newsFeedJob.setSystem(true);
+			newsFeedJob.addJobChangeListener(new JobChangeAdapter() {
+	
 				@Override
 				public void done(IJobChangeEvent event) {
-					updates = new ArrayList<UpdateNotification>(updatesJob
+					updates = new ArrayList<UpdateNotification>(newsFeedJob
 							.getNotifications());
-					update(updatesJob.getFeedName());
-					updatesJob.schedule(FEED_POLLING_RATE);
+					update(newsFeedJob.getFeedName());
+					if (event.getResult().getSeverity() != IStatus.CANCEL) {
+						newsFeedJob.schedule(FEED_POLLING_RATE);
+					}
 				}
 			});
-			updatesJob.schedule();
+			newsFeedJob.schedule();
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -98,6 +98,8 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 	private Button showOnStartupButton;
 
 	private Button useOldDashboardButton;
+	
+	private Button updateNewsFeed;
 
 	@Override
 	protected Control createContents(Composite parent) {
@@ -107,6 +109,8 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 		createShowOnStartupButton(composite);
 
 		createUseOldDasboardButton(composite);
+		
+		createUpdateNewsFeedButton(composite);
 
 		for (PropertyEditor editor : editors) {
 			Label label = editor.createLabel(composite);
@@ -143,7 +147,14 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 		});
 		updateDashboardWarning();
 	}
-
+	
+	private void createUpdateNewsFeedButton(Composite composite) {
+		updateNewsFeed = new Button(composite, SWT.CHECK);
+		updateNewsFeed.setText("News Feed Updates");
+		GridDataFactory.fillDefaults().span(2, 1).applyTo(updateNewsFeed);
+		updateNewsFeed.setSelection(getPreferenceStore().getBoolean(IIdeUiConstants.PREF_UPDATE_DASHBOARD_NEWS_FEED));
+	}
+	
 	private boolean getUseOldDashboard() {
 		String value = getPreferenceStore().getString(IIdeUiConstants.PREF_USE_OLD_DASHOARD);
 		if (value == null) {
@@ -185,6 +196,8 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 				IIdeUiConstants.PREF_OPEN_DASHBOARD_STARTUP));
 		useOldDashboardButton.setSelection(getPreferenceStore()
 				.getDefaultBoolean(IIdeUiConstants.PREF_USE_OLD_DASHOARD));
+		updateNewsFeed.setSelection(getPreferenceStore().getDefaultBoolean(
+				IIdeUiConstants.PREF_UPDATE_DASHBOARD_NEWS_FEED));
 		for (PropertyEditor editor : editors) {
 			editor.performDefaults();
 		}
@@ -199,6 +212,7 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 			editor.performOk();
 		}
 		setBoolean(getPreferenceStore(), IIdeUiConstants.PREF_USE_OLD_DASHOARD, useOldDashboardButton.getSelection());
+		setBoolean(getPreferenceStore(), IIdeUiConstants.PREF_UPDATE_DASHBOARD_NEWS_FEED, updateNewsFeed.getSelection());
 		return super.performOk();
 	}
 

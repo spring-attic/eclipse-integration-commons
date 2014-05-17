@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2013 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -215,6 +215,9 @@ public class ResourceProvider {
 		if (value == null) {
 			throw new RuntimeException(NLS.bind(
 					"No URL found for key: ''{0}''", key));
+		}
+		if (value.isEmpty()) {
+			return new String[0];
 		}
 
 		// Post process the urls to replace UUID and version number placeholders

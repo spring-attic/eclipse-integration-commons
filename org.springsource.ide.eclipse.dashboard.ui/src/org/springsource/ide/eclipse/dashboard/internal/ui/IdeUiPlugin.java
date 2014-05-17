@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2013 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -114,6 +114,7 @@ public class IdeUiPlugin extends AbstractUIPlugin {
 		store.setDefault(IIdeUiConstants.PREF_OPEN_DASHBOARD_STARTUP, IIdeUiConstants.DEFAULT_OPEN_DASHBOARD_STARTUP);
 		store.setDefault(IIdeUiConstants.PREF_USE_OLD_DASHOARD, IIdeUiConstants.DEFAULT_PREF_USE_OLD_DASHOARD);
 		store.setDefault(IIdeUiConstants.PREF_IO_BLOGFEED_MIGRATION, false);
+		store.setDefault(IIdeUiConstants.PREF_UPDATE_DASHBOARD_NEWS_FEED, true);
 	}
 
 	public static IdeUiPlugin getDefault() {
