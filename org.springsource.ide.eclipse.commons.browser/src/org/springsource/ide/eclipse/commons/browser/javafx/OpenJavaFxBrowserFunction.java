@@ -20,18 +20,24 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.browser.WebBrowserEditorInput;
+import org.eclipse.ui.internal.browser.WebBrowserPreference;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.springsource.ide.eclipse.commons.browser.BrowserPlugin;
 import org.springsource.ide.eclipse.commons.browser.IBrowserToEclipseFunction;
 
+@SuppressWarnings("restriction")
 public class OpenJavaFxBrowserFunction implements IBrowserToEclipseFunction {
 
 	@Override
 	public void call(String url) {
 		try {
-			WebBrowserEditorInput input = new WebBrowserEditorInput(new URL(url), SWT.NONE, url);
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.openEditor(input, JavaFxBrowserEditor.EDITOR_ID);
+			if (WebBrowserPreference.getBrowserChoice() == WebBrowserPreference.EXTERNAL) {
+				PlatformUI.getWorkbench().getBrowserSupport().createBrowser(null).openURL(new URL(url));
+			} else {
+				WebBrowserEditorInput input = new WebBrowserEditorInput(new URL(url), SWT.NONE, url);
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+						.openEditor(input, JavaFxBrowserEditor.EDITOR_ID);
+			}
 		}
 		catch (MalformedURLException e) {
 			StatusManager.getManager().handle(
