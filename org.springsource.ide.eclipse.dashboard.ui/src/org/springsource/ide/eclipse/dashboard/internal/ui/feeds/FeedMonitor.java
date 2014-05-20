@@ -43,7 +43,7 @@ public class FeedMonitor {
 
 	public static final String RESOURCE_DASHBOARD_FEEDS_UPDATE = "dashboard.feeds.update";
 
-	private final static int FEED_POLLING_RATE = 5 * 60 * 1000; // 5 Minutes
+	private final static int FEED_POLLING_RATE = 60 * 60 * 1000; // 60 Minutes
 
 	private Date lastUpdated;
 
