@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2013 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ public interface IIdeUiConstants {
 
 	public static final String PREF_OPEN_DASHBOARD_STARTUP = IdeUiPlugin.PLUGIN_ID + "dashboard.startup";
 	public static final String PREF_USE_OLD_DASHOARD = IdeUiPlugin.PLUGIN_ID + "dashboard.use.old";
+	public static final String PREF_UPDATE_DASHBOARD_NEWS_FEED = IdeUiPlugin.PLUGIN_ID + "dashboard.news.update";
 
 
 	// public static final String PREF_LAST_READ_NEW_NOTEWORTHY_SIZE =
