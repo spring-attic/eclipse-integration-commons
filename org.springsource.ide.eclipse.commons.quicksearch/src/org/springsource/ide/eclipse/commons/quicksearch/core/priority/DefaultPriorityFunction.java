@@ -10,7 +10,14 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.quicksearch.core.priority;
 
+import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.springsource.ide.eclipse.commons.quicksearch.core.preferences.QuickSearchPreferences;
 
 /**
@@ -34,8 +41,8 @@ public class DefaultPriorityFunction extends PriorityFunction {
 	 * be ignored.
 	 */
 	public String[] ignoredExtensions = {
-		".gif", ".exe", ".png", ".jpg", ".zip", ".jar", ".svg", ".psd", "~",
-		".GIF", ".EXE", ".PNG", ".JPG", ".ZIP", ".JAR", ".SVG", ".PSD",
+		".class", ".gif", ".exe", ".png", ".jpg", ".zip", ".jar", ".svg", ".psd", "~",
+		".CLASS", ".GIF", ".EXE", ".PNG", ".JPG", ".ZIP", ".JAR", ".SVG", ".PSD",
 		".pdf", ".p12", ".odt", ".odp", ".doc", ".pptx", ".ppt", ".bin", ".docx", ".xls", ".xlsx",
 		".PDF", ".P12", ".ODT", ".ODP", ".DOC", ".PPTX", ".PPT", ".BIN", ".DOCX", ".XLS", ".XLSX"
 	};
@@ -55,11 +62,16 @@ public class DefaultPriorityFunction extends PriorityFunction {
 	public String[] ignoredNames = {
 		"bin", "target", "build"
 	};
+	
+	public Set<IResource> ignoredResources = null;
 
 	@Override
 	public double priority(IResource r) {
 		if (r!=null && r.isAccessible()) {
 			if (ignoreDerived && r.isDerived()) {
+				return PRIORITY_IGNORE;
+			}
+			if (ignoredResources!=null && ignoredResources.contains(r)) {
 				return PRIORITY_IGNORE;
 			}
 			String name = r.getName();
@@ -99,5 +111,42 @@ public class DefaultPriorityFunction extends PriorityFunction {
 		if (pref!=null) {
 			this.ignoredPrefixes = pref;
 		}
+		computeIgnoredFolders();
+	}
+
+	/**
+	 * We want to avoid searchin the same files / folders twice in cases where users have 'overlapping projects'.
+	 * I.e a project contains folders that are actually correspond to other projects also imported in the workspace.
+	 * <p>
+	 * See https://issuetracker.springsource.com/browse/STS-3783
+	 * <p>
+	 * This method computes a set of folders to ignore.
+	 */
+	private void computeIgnoredFolders() {
+		//TODO: Hopefully this won't take too long to compute. Otherwise we may need to look at ways of caching it.
+		// it probably doesn't change that often.
+		IProject[] allprojects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		for (IProject p : allprojects) {
+			if (p.isAccessible()) {
+				URI location = p.getLocationURI();
+				if (location!=null) {
+					IContainer[] containers = ResourcesPlugin.getWorkspace().getRoot().findContainersForLocationURI(location);
+					if (containers!=null) {
+						for (IContainer folder : containers) {
+							if (!folder.equals(p)) {
+								ignore(folder);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void ignore(IContainer folder) {
+		if (ignoredResources==null) {
+			ignoredResources = new HashSet<IResource>();
+		}
+		ignoredResources.add(folder);
 	}
 }
