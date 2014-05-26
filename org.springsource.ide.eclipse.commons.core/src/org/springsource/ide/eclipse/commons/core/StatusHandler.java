@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.core;
 
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
 
@@ -22,7 +23,11 @@ import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
 public class StatusHandler {
 
 	public static void log(IStatus status) {
-		CorePlugin.getDefault().getLog().log(status);
+		CorePlugin plugin = CorePlugin.getDefault();
+		if (plugin!=null) {
+			ILog log = plugin.getLog();
+			log.log(status);
+		}
 	}
 
 }
