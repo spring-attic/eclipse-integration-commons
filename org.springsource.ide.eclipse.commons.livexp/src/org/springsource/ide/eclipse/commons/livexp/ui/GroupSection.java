@@ -13,6 +13,7 @@ package org.springsource.ide.eclipse.commons.livexp.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -38,6 +39,8 @@ public class GroupSection extends WizardPageSection {
 	 * Setting it to true will make it re-appear.
 	 */
 	public final LiveVariable<Boolean> isVisible = new LiveVariable<Boolean>(true);
+
+	private int columns = 1; //one columnby default
 
 	/**
 	 * If title is null then it creates a normal composite without a box around it. Otherwise
@@ -93,6 +96,7 @@ public class GroupSection extends WizardPageSection {
 			//Create a normal composite. No box
 			final Composite composite = new Composite(page, SWT.NONE);
 			composite.setLayout(createLayout());
+
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(composite);
 			return composite;
 		}
@@ -100,10 +104,15 @@ public class GroupSection extends WizardPageSection {
 
 	/**
 	 * Factory method that creates the layout for the group. Subclass may overide to change how
-	 * components in the group are layed out. Default just creates a 1 column GridLayout
+	 * components in the group are layed out. Default creates a girdlayout with specified number of
+	 * columns of equals width
 	 */
 	protected GridLayout createLayout() {
-		return new GridLayout(1, false);
+		GridLayout layout = new GridLayout(this.columns, true);
+		if (groupTitle==null) {
+			layout.marginWidth = 0;
+		}
+		return layout;
 	}
 	
 	@Override
@@ -112,6 +121,12 @@ public class GroupSection extends WizardPageSection {
 			s.dispose();
 		}
 		super.dispose();
+	}
+
+	public GroupSection columns(int i) {
+		Assert.isLegal(i>=1);
+		this.columns = i;
+		return this;
 	}
 	
 }
