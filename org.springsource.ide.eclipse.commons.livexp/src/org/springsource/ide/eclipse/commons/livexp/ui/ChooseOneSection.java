@@ -14,8 +14,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -25,7 +23,6 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -97,7 +94,7 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 		final ListViewer tv = new ListViewer(composite, SWT.SINGLE|SWT.BORDER|SWT.V_SCROLL);
 		grab.applyTo(tv.getList());
 		tv.setContentProvider(new ContentProvider());
-		tv.setLabelProvider(new LabelProvider());
+		tv.setLabelProvider(new SimpleLabelProvider());
 		tv.setInput(validChoices);
 		chosen.addListener(new ValueListener<T>() {
 			public void gotValue(LiveExpression<T> exp, T value) {
@@ -141,35 +138,6 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 		public Object[] getElements(Object inputElement) {
 			return validChoices;
 		}
-	}
-	
-	public class LabelProvider implements ILabelProvider {
-
-		public void addListener(ILabelProviderListener listener) {
-		}
-
-		public void dispose() {
-		}
-
-		public boolean isLabelProperty(Object element, String property) {
-			return false;
-		}
-
-		public void removeListener(ILabelProviderListener listener) {
-		}
-
-		public Image getImage(Object element) {
-			//no image
-			return null;
-		}
-
-		public String getText(Object element) {
-			if (element instanceof Ilabelable) {
-				return ((Ilabelable) element).getLabel();
-			}
-			return ""+element;
-		}
-
 	}
 
 	
