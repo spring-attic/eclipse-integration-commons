@@ -39,6 +39,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
+import org.springsource.ide.eclipse.commons.frameworks.core.FrameworkCoreActivator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarker;
@@ -463,8 +464,17 @@ public class StsTestUtil {
 	 */
 	public static void waitForDisplay() {
 		if (inUIThread()) {
-			while (Display.getDefault().readAndDispatch()) {
-				// do nothing
+			try {
+				while (Display.getDefault().readAndDispatch()) {
+					// do nothing
+				}
+			} catch (Throwable e) {
+				// in e 44 this is throwing exceptions... a lot. Log them in case they contain
+				// some valuable hints... but move along. These errors happen because some component
+				// probably unrelated to our tests misbehaved. I suspect GTK3 may be causing
+				// NPEs and other errors in the Eclipse UI code, for example. These errors seem
+				// to propagate out of the 'readAndDispatch' call on e44.
+				FrameworkCoreActivator.log(e);
 			}
 		}
 	}
