@@ -1172,7 +1172,27 @@ public class DashboardMainPage extends AbstractDashboardPage implements Property
 							// make sure the entries are sorted correctly
 							Collections.sort(notifications, new Comparator<UpdateNotification>() {
 								public int compare(UpdateNotification o1, UpdateNotification o2) {
-									return o2.getEntry().getPublishedDate().compareTo(o1.getEntry().getPublishedDate());
+									return getDate(o2).compareTo(getDate(o1));
+								}
+
+								/**
+								 * Make sure 'date' is never null so we have something to pass to 
+								 * 'compare'.
+								 * <p>
+								 * See https://issuetracker.springsource.com/browse/STS-3844
+								 */
+								private Date getDate(UpdateNotification o) {
+									if (o!=null) {
+										SyndEntry e = o.getEntry();
+										if (e!=null) {
+											Date d = e.getPublishedDate();
+											if (d!=null) {
+												return d;
+											}
+										}
+									}
+									//Treat anything that has no date as very very old.
+									return new Date(0);
 								}
 							});
 
