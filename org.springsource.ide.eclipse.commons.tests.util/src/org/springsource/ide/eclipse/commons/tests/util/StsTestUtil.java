@@ -474,7 +474,7 @@ public class StsTestUtil {
 				// probably unrelated to our tests misbehaved. I suspect GTK3 may be causing
 				// NPEs and other errors in the Eclipse UI code, for example. These errors seem
 				// to propagate out of the 'readAndDispatch' call on e44.
-				FrameworkCoreActivator.log(e);
+				// FrameworkCoreActivator.log(e);
 			}
 		}
 	}
