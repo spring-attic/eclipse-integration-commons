@@ -150,7 +150,7 @@ public class ManagedTestSuite extends TestSuite {
 
 		private DumpThreadTask task;
 
-		private final Timer timer = new Timer(true);
+		private Timer timer = new Timer(true);
 
 		public void addError(Test test, Throwable t) {
 			System.err.println("[ERROR]");
@@ -192,7 +192,14 @@ public class ManagedTestSuite extends TestSuite {
 			Thread testThread = Thread.currentThread();
 			System.err.println("Running " + test.toString());
 			task = new DumpThreadTask(test, testThread);
-			timer.scheduleAtFixedRate(task, DELAY, DELAY);
+			try {
+				timer.scheduleAtFixedRate(task, DELAY, DELAY);
+			} catch (IllegalStateException e) {
+				//No idea where, who or why, but timer gets 'canceled'.
+				// We'll need a new one
+				timer = new Timer(true);
+				timer.scheduleAtFixedRate(task, DELAY, DELAY);
+			}
 		}
 
 	}

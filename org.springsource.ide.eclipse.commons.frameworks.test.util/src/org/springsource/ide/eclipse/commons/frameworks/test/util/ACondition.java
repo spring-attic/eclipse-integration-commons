@@ -57,6 +57,7 @@ public abstract class ACondition {
 		long startTime = System.currentTimeMillis();
 		long endTime = startTime + timeout;
 		boolean result = false;
+		StsTestUtil.waitForDisplay(); //Make sure this gets called at least once to avoid 'UI thread starvation'.
 		while (!(result = doTest()) && System.currentTimeMillis() < endTime) {
 			StsTestUtil.waitForDisplay(); // Avoids UI deadlock by allowing UI to process events.
 			try {
