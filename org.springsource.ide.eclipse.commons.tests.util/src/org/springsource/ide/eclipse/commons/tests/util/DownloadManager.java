@@ -139,15 +139,15 @@ public class DownloadManager {
 	 * and the download will be tried again. (for a limited number of times)
 	 */
 	public void doWithDownload(URI target, DownloadRequestor action) throws Exception {
-		int tries = 2; // try at most X times
+		int tries = 4; // try at most X times
 		Exception e = null;
 		File downloadedFile = null;
 		do {
 			tries--;
-			downloadedFile = downloadFile(target);
 			try {
+				downloadedFile = downloadFile(target);
 				action.exec(downloadedFile);
-				return; // action succeeded without exceptions
+				return; // action and download succeeded without exceptions
 			} catch (Exception caught) {
 				caught.printStackTrace();
 				//Presume the cache may be corrupt!
@@ -156,7 +156,7 @@ public class DownloadManager {
 				e = caught;
 			}
 		} while (tries>0);
-		//Can only get here if action failed to execute on downloaded file...
+		//Can only get here if action or download failed...
 		//thus, e can not be null.
 		throw e;
 	}
