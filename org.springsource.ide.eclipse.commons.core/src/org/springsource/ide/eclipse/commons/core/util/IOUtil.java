@@ -15,7 +15,7 @@ import java.io.InputStream;
 
 public class IOUtil {
 
-	private static final int BUF_SIZE = 0;
+	private static final int BUF_SIZE = 1024;
 
 	/**
 	 * Consume all data in an input stream, discdaring the data and closing the stream upon completion.
