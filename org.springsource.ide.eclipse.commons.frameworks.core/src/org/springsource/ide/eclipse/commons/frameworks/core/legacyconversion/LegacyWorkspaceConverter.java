@@ -53,7 +53,7 @@ public class LegacyWorkspaceConverter extends AbstractLegacyConverter implements
         
         IStatus result = new MultiStatus(FrameworkCoreActivator.PLUGIN_ID, 0, statuses, 
                 "Result of converting legacy STS 2.x workspace preferences to 3.x", null); //$NON-NLS-1$
-        FrameworkCoreActivator.getDefault().getLog().log(result);
+ //       FrameworkCoreActivator.getDefault().getLog().log(result);
         if (result.isOK()) {
             PREFERENCE_STORE.setValue(LEGACY_MIGRATION_ALREADY_DONE, true);
         }
