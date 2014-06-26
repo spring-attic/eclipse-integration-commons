@@ -152,7 +152,10 @@ public class DownloadManager {
 				caught.printStackTrace();
 				//Presume the cache may be corrupt!
 				System.out.println("Delete corrupt download: "+downloadedFile);
-				downloadedFile.delete();
+				//downloaded file may be null if download failed, rather than its processing:
+				if (downloadedFile!=null) {
+					downloadedFile.delete();
+				}
 				e = caught;
 			}
 		} while (tries>0);
