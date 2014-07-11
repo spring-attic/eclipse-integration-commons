@@ -22,7 +22,7 @@ import org.springsource.ide.eclipse.commons.core.preferences.StsProperties;
 public interface IIdeUiConstants {
 
 	public static final boolean DEFAULT_OPEN_DASHBOARD_STARTUP = true;
-	public static final boolean DEFAULT_PREF_USE_OLD_DASHOARD = !StsProperties.getInstance().get("sts.new.dashboard.enabled", false);
+	public static final boolean DEFAULT_PREF_USE_OLD_DASHOARD = true;
 
 	public static final String LABEL_SPRINGSOURCE_ANALYSES = "My Runtime Error Analyses";
 

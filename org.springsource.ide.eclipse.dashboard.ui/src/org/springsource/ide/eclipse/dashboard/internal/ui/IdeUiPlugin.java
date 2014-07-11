@@ -61,12 +61,12 @@ public class IdeUiPlugin extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		migrateBlogFeeds();
 		
 		// avoid cyclic startup dependency on org.eclipse.mylyn.tasks.ui
 		Job startupJob = new UIJob("Spring Tool Suite Initialization") {
 			@Override
 			public IStatus runInUIThread(IProgressMonitor monitor) {
+				migrateBlogFeeds();
 				Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
 						IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
