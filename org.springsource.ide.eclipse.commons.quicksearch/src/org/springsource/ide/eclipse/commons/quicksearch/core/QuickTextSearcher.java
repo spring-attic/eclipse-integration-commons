@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.quicksearch.core;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Iterator;

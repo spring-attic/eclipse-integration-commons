@@ -224,8 +224,9 @@ public class StsProperties {
 		//     dashboard tab instead of the html page title (title tends to be too long).
 		//  - XXX.url.external is defined that url will always be openened in an external browser.
 
-		//Switch to enable new dash
-		props.put("sts.new.dashboard.enabled", "true");
+		//Switch to enable new dash (This switch no longer works as of STS 3.6.1 and is just set
+		// statically by IIdeUiConstants.PREF_USE_OLD_DASHOARD
+		//props.put("sts.new.dashboard.enabled", "true");
 
 		//Forum:
 		props.put("sts.forum.url", "http://forum.springsource.org/forumdisplay.php?32-SpringSource-Tool-Suite");

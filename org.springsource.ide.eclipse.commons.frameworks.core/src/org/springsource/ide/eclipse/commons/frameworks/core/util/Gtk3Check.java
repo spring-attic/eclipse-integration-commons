@@ -54,7 +54,7 @@ public class Gtk3Check {
 			ClassLoader cl = bw.getClassLoader();
 			List<String> libs = getNativeLibs(cl);
 			for (String lib : libs) {
-				System.out.println(lib);
+//				System.out.println(lib);
 				//TODO: not sure how good this check is. Could library exist under a different name?
 				if (lib.contains("swt-pi3-gtk")) {
 					return true;
