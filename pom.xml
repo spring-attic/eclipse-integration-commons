@@ -218,7 +218,7 @@
 				<repository>
 					<id>javafx</id>
 					<layout>p2</layout>
-					<url>http://download.eclipse.org/efxclipse/runtime-nightly/site/</url>
+					<url>http://download.eclipse.org/efxclipse/updates-released/1.0.0/site</url>
 				</repository>
 			</repositories>
 		</profile>
