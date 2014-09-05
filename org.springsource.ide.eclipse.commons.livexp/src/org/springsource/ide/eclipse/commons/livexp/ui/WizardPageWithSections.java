@@ -20,6 +20,11 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -63,7 +68,15 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 	 */
 	public void createControl(Composite parent) {
 		GridDataFactory.fillDefaults().grab(true,true).applyTo(parent);
-		Composite page = new Composite(parent, SWT.NONE);
+		
+		ScrolledComposite scroller = new PackedScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL);
+//		Display display = Display.getCurrent();
+//		Color blue = display.getSystemColor(SWT.COLOR_BLUE);
+//		scroller.setBackground(blue);
+//		scroller.setExpandHorizontal(true);
+//		scroller.setExpandVertical(true);
+		Composite page = new Composite(scroller, SWT.NONE);
+		scroller.setContent(page);
         GridLayout layout = new GridLayout(1, false);
         layout.marginHeight = 12;
         layout.marginWidth = 12;
@@ -76,6 +89,8 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
         validator.addListener(this);
         setControl(page);
         page.pack(true);
+        scroller.setMinSize(page.getSize());
+        scroller.setSize(page.getSize());
         if (getContainer().getCurrentPage()!=null) { // Otherwise an NPE will ensue when updating buttons. Buttons depend on current page so that is logical.
 	        getContainer().updateButtons();
 	        getContainer().updateMessage();
