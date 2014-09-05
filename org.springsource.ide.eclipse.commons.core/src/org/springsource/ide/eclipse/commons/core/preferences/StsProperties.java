@@ -214,7 +214,7 @@ public class StsProperties {
 		// matter what).
 
 		props.put("spring.site.url", "http://spring.io");
-		props.put("spring.initializr.form.url", "http://start.spring.io/");
+		props.put("spring.initializr.form.url", "http://start.spring.io/sts");
 		props.put("spring.initializr.download.url", "http://start.spring.io/starter.zip");
 		//note: 'spring.initializr.download.url' is no longer used since STS 3.6.0. Instead
 		// the download url is obtained by parsing the form at spring.initializr.form.url
