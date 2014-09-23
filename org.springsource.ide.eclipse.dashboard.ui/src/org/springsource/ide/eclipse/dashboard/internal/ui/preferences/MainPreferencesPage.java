@@ -95,8 +95,6 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 
 	private List<PropertyEditor> editors;
 
-	private Button showOnStartupButton;
-
 	private Button useOldDashboardButton;
 	
 	private Button updateNewsFeed;
@@ -105,8 +103,6 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 	protected Control createContents(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(2, false));
-
-		createShowOnStartupButton(composite);
 
 		createUseOldDasboardButton(composite);
 		
@@ -168,13 +164,6 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 		return !useNew;
 	}
 
-	private void createShowOnStartupButton(Composite composite) {
-		showOnStartupButton = new Button(composite, SWT.CHECK);
-		showOnStartupButton.setText("Show Dashboard On Startup");
-		GridDataFactory.fillDefaults().span(2, 1).applyTo(showOnStartupButton);
-		showOnStartupButton.setSelection(getPreferenceStore().getBoolean(IIdeUiConstants.PREF_OPEN_DASHBOARD_STARTUP));
-	}
-
 	@Override
 	protected IPreferenceStore doGetPreferenceStore() {
 		return IdeUiPlugin.getDefault().getPreferenceStore();
@@ -192,8 +181,6 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 
 	@Override
 	protected void performDefaults() {
-		showOnStartupButton.setSelection(getPreferenceStore().getDefaultBoolean(
-				IIdeUiConstants.PREF_OPEN_DASHBOARD_STARTUP));
 		useOldDashboardButton.setSelection(getPreferenceStore()
 				.getDefaultBoolean(IIdeUiConstants.PREF_USE_OLD_DASHOARD));
 		updateNewsFeed.setSelection(getPreferenceStore().getDefaultBoolean(
@@ -207,7 +194,6 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 
 	@Override
 	public boolean performOk() {
-		getPreferenceStore().setValue(IIdeUiConstants.PREF_OPEN_DASHBOARD_STARTUP, showOnStartupButton.getSelection());
 		for (PropertyEditor editor : editors) {
 			editor.performOk();
 		}
