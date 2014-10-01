@@ -66,7 +66,7 @@ public class ChooseMultipleSection<T extends Ilabelable> extends WizardPageSecti
         layout.numColumns = 2;
         layout.marginWidth = 0;
         composite.setLayout(layout);
-        GridDataFactory grab = GridDataFactory.fillDefaults().grab(true, true);//.hint(SWT.DEFAULT, 150);
+        GridDataFactory grab = GridDataFactory.fillDefaults().grab(true, true).hint(SWT.DEFAULT, UIConstants.SCROLLABLE_LIST_HEIGTH);
         grab.applyTo(composite);
         composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		

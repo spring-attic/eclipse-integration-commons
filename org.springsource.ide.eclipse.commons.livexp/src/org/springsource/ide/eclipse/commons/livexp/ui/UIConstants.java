@@ -25,4 +25,6 @@ public class UIConstants {
 	
 	public static final int DIALOG_WIDTH_HINT = 310;
 
+	public static final int SCROLLABLE_LIST_HEIGTH = 200;
+
 }
