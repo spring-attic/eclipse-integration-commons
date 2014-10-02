@@ -87,7 +87,7 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 			label.setText(labelText);
 			GridDataFactory.fillDefaults()
 			.align(SWT.CENTER, SWT.BEGINNING)
-			.hint(UIConstants.FIELD_LABEL_WIDTH_HINT, SWT.DEFAULT)
+			.hint(UIConstants.fieldLabelWidthHint(label), SWT.DEFAULT)
 			.applyTo(label);
 		}
 

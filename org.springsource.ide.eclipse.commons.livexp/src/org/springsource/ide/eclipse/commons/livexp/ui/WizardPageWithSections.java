@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -86,6 +87,7 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 			validator.addChild(section.getValidator());
 		}
         validator.addListener(this);
+        Dialog.applyDialogFont(page);
         page.pack(true);
         scroller.setMinSize(page.getSize());
 //        scroller.setSize(page.getSize());

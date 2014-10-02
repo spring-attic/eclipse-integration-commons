@@ -79,7 +79,7 @@ public class StringFieldSection extends WizardPageSection {
         Label label = new Label(projectGroup, SWT.NONE);
         label.setText(labelText);
         GridDataFactory.fillDefaults()
-        	.hint(FIELD_LABEL_WIDTH_HINT, SWT.DEFAULT)
+        	.hint(UIConstants.fieldLabelWidthHint(label), SWT.DEFAULT)
         	.align(SWT.BEGINNING, SWT.CENTER)
         	.applyTo(label);
         

@@ -76,6 +76,7 @@ public abstract class DialogWithSections
 			validator.addChild(section.getValidator());
 		}
         validator.addListener(this);
+        applyDialogFont(page);
         return page;
 	}
 

@@ -198,7 +198,7 @@ public class ProjectLocationSection extends WizardPageSection {
 		locationLabel.setText("Location");
 		GridDataFactory.fillDefaults()
 			.align(SWT.BEGINNING, SWT.CENTER)
-			.hint(UIConstants.FIELD_LABEL_WIDTH_HINT, SWT.DEFAULT)
+			.hint(UIConstants.fieldLabelWidthHint(locationLabel), SWT.DEFAULT)
 			.applyTo(locationLabel);
 
 		// project location entry field
