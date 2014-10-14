@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.CompositeImageDescriptor;
 import org.eclipse.mylyn.commons.core.StatusHandler;
 import org.eclipse.mylyn.internal.tasks.ui.TasksUiPlugin;
@@ -47,6 +48,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IPartListener;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
@@ -58,6 +62,7 @@ import org.eclipse.ui.internal.forms.widgets.BusyIndicator;
 import org.eclipse.ui.internal.forms.widgets.FormHeading;
 import org.eclipse.ui.internal.forms.widgets.TitleRegion;
 import org.springsource.ide.eclipse.commons.ui.UiUtil;
+import org.springsource.ide.eclipse.dashboard.internal.ui.IIdeUiConstants;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 import org.springsource.ide.eclipse.dashboard.internal.ui.discovery.DashboardExtensionsPage;
 import org.springsource.ide.eclipse.dashboard.ui.AbstractDashboardPage;
@@ -228,6 +233,8 @@ public class MultiPageDashboardEditor extends SharedHeaderFormEditor {
 	private Image headerImage;
 
 	private DashboardMainPage mainPage;
+
+	private IPartListener partListener;
 
 	public MultiPageDashboardEditor() {
 		DashboardReopener.ensure();
@@ -422,8 +429,43 @@ public class MultiPageDashboardEditor extends SharedHeaderFormEditor {
 	public void init(IEditorSite site, IEditorInput editorInput) throws PartInitException {
 		setSite(site);
 		setInput(editorInput);
+		site.getPage().addPartListener(this.partListener = new IPartListener() {
+			
+			@Override
+			public void partOpened(IWorkbenchPart part) {
+			}
+			
+			@Override
+			public void partDeactivated(IWorkbenchPart part) {
+			}
+			
+			@Override
+			public void partClosed(IWorkbenchPart part) {
+				if (MultiPageDashboardEditor.this==part) {
+					IPreferenceStore prefs = IdeUiPlugin.getDefault().getPreferenceStore();
+					prefs.setValue(IIdeUiConstants.PREF_OPEN_DASHBOARD_STARTUP, false);
+					disposeListeners();
+				}
+			}
+			
+			@Override
+			public void partBroughtToTop(IWorkbenchPart part) {
+			}
+			
+			@Override
+			public void partActivated(IWorkbenchPart part) {
+			}
+		});
 	}
 
+	private void disposeListeners() {
+		IWorkbenchPage page = getSite().getPage();
+		if (page!=null && partListener!=null) {
+			page.removePartListener(partListener);
+		}
+		partListener = null;
+	}
+	
 	@Override
 	public boolean isDirty() {
 		return false;
