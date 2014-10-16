@@ -56,6 +56,7 @@ public class DownloadManager {
 	private boolean deleteCacheOnDispose = false;
 	private boolean allowUIThread = false;
 	private int retries = 5; //5 retries by default
+	private long retryInterval = 0; //no wait between retries by default.
 
 	public DownloadManager(DownloadService downloader, File cacheDir) throws IOException {
 		if (cacheDir==null) {
@@ -188,6 +189,9 @@ public class DownloadManager {
 				//System.out.println("Delete corrupt download: "+downloadedFile);
 				downloadedFile.delete();
 				e = caught;
+				if (tries>0 && retryInterval>0) {
+					Thread.sleep(retryInterval);
+				}
 			}
 		} while (tries>0);
 		//Can only get here if action failed to execute on downloaded file...
@@ -214,6 +218,24 @@ public class DownloadManager {
 		return this;
 	}
 
+	/**
+	 * Sets the time in milliseconds to wait between retries. The default is 0 meaning no
+	 * wait.
+	 * 
+	 * @since 3.6.3
+	 */
+	public void setRetryInterval(long retryInterval) {
+		Assert.isLegal(retryInterval>=0);
+		this.retryInterval = retryInterval;
+	}
+
+	/**
+	 * @since 3.6.3
+	 */
+	public long getRetryInterval(long retryInterval) {
+		return retryInterval;
+	}
+	
 	public File getCacheDir() {
 		return cacheDirectory;
 	}
