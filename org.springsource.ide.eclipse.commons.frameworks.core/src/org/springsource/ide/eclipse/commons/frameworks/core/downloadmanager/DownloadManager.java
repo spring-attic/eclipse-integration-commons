@@ -195,6 +195,9 @@ public class DownloadManager {
 		throw e;
 	}
 
+	/**
+ 	 * @since 3.6.3
+	 */
 	public int getRetries() {
 		return retries;
 	}
@@ -202,6 +205,8 @@ public class DownloadManager {
 	/**
 	 * Sets the maximum number of times DownloadManager will retry to fetch
 	 * a failed download.
+	 * 
+	 * @since 3.6.3
 	 */
 	public DownloadManager setRetries(int r) {
 		Assert.isLegal(r>0);
