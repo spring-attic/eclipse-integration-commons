@@ -55,6 +55,7 @@ public class DownloadManager {
 	private final DownloadService downloader;
 	private boolean deleteCacheOnDispose = false;
 	private boolean allowUIThread = false;
+	private int retries = 5; //5 retries by default
 
 	public DownloadManager(DownloadService downloader, File cacheDir) throws IOException {
 		if (cacheDir==null) {
@@ -172,7 +173,7 @@ public class DownloadManager {
 	 * and the download will be tried again. (for a limited number of times)
 	 */
 	public void doWithDownload(DownloadableItem target, DownloadRequestor action) throws Exception {
-		int tries = 5; // try at most X times
+		int tries = getRetries(); // try at most X times
 		Exception e = null;
 		File downloadedFile = null;
 		do {
@@ -192,6 +193,20 @@ public class DownloadManager {
 		//Can only get here if action failed to execute on downloaded file...
 		//thus, e can not be null.
 		throw e;
+	}
+
+	public int getRetries() {
+		return retries;
+	}
+	
+	/**
+	 * Sets the maximum number of times DownloadManager will retry to fetch
+	 * a failed download.
+	 */
+	public DownloadManager setRetries(int r) {
+		Assert.isLegal(r>0);
+		this.retries = r;
+		return this;
 	}
 
 	public File getCacheDir() {
