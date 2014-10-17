@@ -28,7 +28,7 @@ import org.springsource.ide.eclipse.commons.internal.ui.editors.UpdateNotificati
 
 /**
  * Runs all automated tests for STS IDE.
- * 
+ *
  * @author Steffen Pingel
  * @author Tomasz Zarna
  */
@@ -41,7 +41,8 @@ import org.springsource.ide.eclipse.commons.internal.ui.editors.UpdateNotificati
 		ResourceProviderTest.class, //
 		CommandHistoryTest.class, //
 		UpdateNotificationTest.class, //
-		TipOfTheDayTests.class //
+		TipOfTheDayTests.class, //
+		DownloadManagerTests.class //
 })
 public class AllIdeTests {
 

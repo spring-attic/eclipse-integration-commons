@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.swt.widgets.Display;
+import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
 import org.springsource.ide.eclipse.commons.frameworks.core.FrameworkCoreActivator;
 import org.springsource.ide.eclipse.commons.frameworks.core.util.FileUtil;
 
@@ -55,7 +56,7 @@ public class DownloadManager {
 	private final DownloadService downloader;
 	private boolean deleteCacheOnDispose = false;
 	private boolean allowUIThread = false;
-	private int retries = 5; //5 retries by default
+	private int tries = 5; //5 retries by default
 	private long retryInterval = 0; //no wait between retries by default.
 
 	public DownloadManager(DownloadService downloader, File cacheDir) throws IOException {
@@ -174,20 +175,23 @@ public class DownloadManager {
 	 * and the download will be tried again. (for a limited number of times)
 	 */
 	public void doWithDownload(DownloadableItem target, DownloadRequestor action) throws Exception {
-		int tries = getRetries(); // try at most X times
-		Exception e = null;
+		int tries = getTries(); // try at most X times
+		Throwable e = null;
 		File downloadedFile = null;
 		do {
 			tries--;
-			downloadedFile = downloadFile(target);
 			try {
+				downloadedFile = downloadFile(target);
 				action.exec(downloadedFile);
 				return; // action succeeded without exceptions
-			} catch (Exception caught) {
+			} catch (Throwable caught) {
 				caught.printStackTrace();
 				//Presume the cache may be corrupt!
 				//System.out.println("Delete corrupt download: "+downloadedFile);
-				downloadedFile.delete();
+				if (downloadedFile!=null) {
+					downloadedFile.delete();
+					downloadedFile = null;
+				}
 				e = caught;
 				if (tries>0 && retryInterval>0) {
 					Thread.sleep(retryInterval);
@@ -196,25 +200,28 @@ public class DownloadManager {
 		} while (tries>0);
 		//Can only get here if action failed to execute on downloaded file...
 		//thus, e can not be null.
-		throw e;
+		throw ExceptionUtil.exception(e);
 	}
 
 	/**
  	 * @since 3.6.3
 	 */
-	public int getRetries() {
-		return retries;
+	public int getTries() {
+		return tries;
 	}
 	
 	/**
-	 * Sets the maximum number of times DownloadManager will retry to fetch
-	 * a failed download.
+	 * Sets the maximum number of times DownloadManager will try and retyr to fetch
+	 * a failed download. Note that the first try also counts. So if 'tries' is
+	 * set to 3 then a failed download will be retried upto 2 times. I.e. one
+	 * try and then 2 retries.
 	 * 
 	 * @since 3.6.3
 	 */
-	public DownloadManager setRetries(int r) {
-		Assert.isLegal(r>0);
-		this.retries = r;
+	public DownloadManager setTries(int r) {
+		//Setting to 0 is not sensible because it would mean to just fail without even trying.
+		Assert.isLegal(r>1); 
+		this.tries = r;
 		return this;
 	}
 
