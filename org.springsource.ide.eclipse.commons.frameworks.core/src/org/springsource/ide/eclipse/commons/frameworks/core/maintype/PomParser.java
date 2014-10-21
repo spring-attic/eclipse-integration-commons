@@ -69,11 +69,6 @@ class PomParser {
 		}
 	}
 
-	private static InputStream open(IFile file) throws CoreException {
-		return file.getContents(true);
-	}
-
-
 	public String getProperty(String name) {
 		Map<String, String> props = getProperties();
 		return props.get(name);
