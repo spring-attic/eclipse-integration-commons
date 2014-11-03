@@ -142,6 +142,11 @@ public class StsTestUtil {
 	}
 
 	public static void cleanUpProjects() throws CoreException {
+		closeAllEditors();
+		deleteAllProjects();
+	}
+
+	public static void closeAllEditors() {
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (window != null) {
 			IWorkbenchPage page = window.getActivePage();
@@ -149,7 +154,6 @@ public class StsTestUtil {
 				page.closeAllEditors(false);
 			}
 		}
-		deleteAllProjects();
 	}
 
 	/**
