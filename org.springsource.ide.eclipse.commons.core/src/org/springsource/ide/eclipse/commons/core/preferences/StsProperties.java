@@ -214,10 +214,13 @@ public class StsProperties {
 		// matter what).
 
 		props.put("spring.site.url", "http://spring.io");
-		props.put("spring.initializr.form.url", "http://start.spring.io/sts");
+		props.put("spring.initializr.form.url", "http://start.spring.io/sts"); //Legacy no longer used as of version 3.6.3
 		props.put("spring.initializr.download.url", "http://start.spring.io/starter.zip");
 		//note: 'spring.initializr.download.url' is no longer used since STS 3.6.0. Instead
 		// the download url is obtained by parsing the form at spring.initializr.form.url
+
+		props.put("spring.initializr.json.url", "http://start.spring.io");
+		props.put("spring.initializr.json.contentType", "application/json");
 
 		//Urls used in the dashboard. For each XXX.url=... property, if
 		//  - XXX.url.label is defined that label will be used for the corresponding
