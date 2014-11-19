@@ -184,8 +184,11 @@ public class DownloadManager {
 				downloadedFile = downloadFile(target);
 				action.exec(downloadedFile);
 				return; // action succeeded without exceptions
+			} catch (UIThreadDownloadDisallowed caught) {
+				//No sense retrying this as it will just fail again... 
+				throw caught;
 			} catch (Throwable caught) {
-				caught.printStackTrace();
+				FrameworkCoreActivator.log(caught);
 				//Presume the cache may be corrupt!
 				//System.out.println("Delete corrupt download: "+downloadedFile);
 				if (downloadedFile!=null) {
