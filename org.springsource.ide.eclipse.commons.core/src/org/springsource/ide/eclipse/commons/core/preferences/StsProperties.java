@@ -220,7 +220,6 @@ public class StsProperties {
 		// the download url is obtained by parsing the form at spring.initializr.form.url
 
 		props.put("spring.initializr.json.url", "http://start.spring.io");
-		props.put("spring.initializr.json.contentType", "application/json");
 
 		//Urls used in the dashboard. For each XXX.url=... property, if
 		//  - XXX.url.label is defined that label will be used for the corresponding
