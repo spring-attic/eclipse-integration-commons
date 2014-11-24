@@ -26,6 +26,7 @@ import java.io.Reader;
 public class LineReader {
 	
 	private static final int EXPECTED_LINE_LENGTH = 160;
+	private static final int MAX_LINE_LENGTH = 400;
 	
 	private BufferedReader input;
 
@@ -74,6 +75,7 @@ public class LineReader {
 
 	public String readLine() throws IOException {
 		lineOffset = offset; //remember start of line
+		int maxOffset = offset + MAX_LINE_LENGTH;
 		//Read text until we see either a CR, CR LF or LF.
 		int c = read();
 		if (c==-1) {
@@ -83,6 +85,9 @@ public class LineReader {
 		while (c!='\r' && c!='\n' && c!=-1) {
 			line.append((char)c);
 			c = read();
+			if (offset>maxOffset) {
+				throw new IOException("Very long lines of text. Minified file?");
+			}
 		}
 		//Last char read was some kind of line terminator. But only read first char of it.
 		if (c=='\r') {
