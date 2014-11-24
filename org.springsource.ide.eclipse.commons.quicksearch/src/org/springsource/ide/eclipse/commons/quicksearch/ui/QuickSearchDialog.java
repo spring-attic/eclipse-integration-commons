@@ -25,6 +25,7 @@ import java.util.List;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -197,13 +198,24 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			return new String(chars);
 		}
 		
+		protected String currentFileInfo(IFile currentFile, int animate) {
+			if (currentFile!=null) {
+				String path = currentFile.getFullPath().toString();
+				if (path.length()<=30) {
+					return path;
+				}
+				return "..."+path.substring(path.length()-30);
+			}
+			return dots(animate);
+		}
+		
 		@Override
 		public IStatus runInUIThread(IProgressMonitor mon) {
 			if (!mon.isCanceled()) {
 				if (searcher==null || searcher.isDone()) {
 					progressLabel.setText("");
 				} else {
-					progressLabel.setText("Searching"+dots(animate));
+					progressLabel.setText("Searching"+currentFileInfo(searcher.getCurrentFile(), animate));
 					animate = (animate+1)%4;
 					this.schedule(333);
 				}

@@ -59,6 +59,12 @@ public class QuickTextSearcher {
 	private int maxResults = 200;
 	
 	/**
+	 * While searching in a file, this field will be set. This can be used to show the name
+	 * of the 'current file' in the progress area of the quicksearch dialog.
+	 */
+	private IFile currentFile = null;
+	
+	/**
 	 * Retrieves the current result limit.
 	 */
 	public int getMaxResults() {
@@ -85,7 +91,6 @@ public class QuickTextSearcher {
 
 	private final class SearchInFilesWalker extends ResourceWalker {
 
-		
 		@Override
 		protected void visit(IFile f, IProgressMonitor mon) {
 			if (checkCanceled(mon)) {
@@ -94,6 +99,7 @@ public class QuickTextSearcher {
 			
 
 			LineReader lr = null;
+			currentFile = f;
 			try {
 				lr = new LineReader(new InputStreamReader(f.getContents(true), f.getCharset()));
 				String line = null;
@@ -114,6 +120,7 @@ public class QuickTextSearcher {
 				}
 			} catch (Exception e) {
 			} finally {
+				currentFile = null;
 				if (lr != null) {
 					lr.close();
 				}
@@ -283,6 +290,10 @@ public class QuickTextSearcher {
 			walker.cancel();
 			walker = null;
 		}
+	}
+
+	public IFile getCurrentFile() {
+		return currentFile;
 	}
 
 }
