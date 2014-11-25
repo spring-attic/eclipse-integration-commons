@@ -211,7 +211,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		
 		@Override
 		public IStatus runInUIThread(IProgressMonitor mon) {
-			if (!mon.isCanceled()) {
+			if (!mon.isCanceled() && progressLabel!=null && !progressLabel.isDisposed()) {
 				if (searcher==null || searcher.isDone()) {
 					progressLabel.setText("");
 				} else {
