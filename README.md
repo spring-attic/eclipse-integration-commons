@@ -91,6 +91,10 @@ If you want to build and run tests inside of Eclipse then you'll need to add a f
   The Eclipse Integration Common Components project uses Maven Tycho to do continuous integration
   builds and to produce p2 repos and update sites. To build the project yourself, you can execute:
 
+  `mvn -Pe44 -Dmaven.test.skip=true clean install`
+  
+  or
+  
   `mvn -Pe37 -Dmaven.test.skip=true clean install`
 
 ## Contributing
