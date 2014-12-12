@@ -84,5 +84,46 @@
        </action>
     </actionSet>
  </extension>
- 
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="org.springsource.ide.eclipse.commons.ui.handlers.RelaunchHandler"
+            commandId="org.springsource.ide.eclipse.commons.ui.relaunch">
+      </handler>
+      <handler
+            class="org.springsource.ide.eclipse.commons.ui.handlers.StopHandler"
+            commandId="org.springsource.ide.eclipse.commons.ui.stop">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="org.springsource.ide.eclipse.common.ui.commands"
+            name="SpringSource Tools">
+      </category>
+      <command
+            categoryId="org.springsource.ide.eclipse.common.ui.commands"
+            description="Relaunch last launched application"
+            id="org.springsource.ide.eclipse.commons.ui.relaunch"
+            name="Relaunch Application">
+      </command>
+      <command
+            categoryId="org.springsource.ide.eclipse.common.ui.commands"
+            description="Stop last launched application"
+            id="org.springsource.ide.eclipse.commons.ui.stop"
+            name="Stop Application">
+      </command>
+   </extension>
+<extension point="org.eclipse.ui.commandImages">
+       <image
+          commandId="org.springsource.ide.eclipse.commons.ui.relaunch"
+          icon="icons/launch/term_restart.gif"
+          disabledIcon="icons/launch/term_restart_disabled.gif"/>
+       <image
+          commandId="org.springsource.ide.eclipse.commons.ui.stop"
+          disabledIcon="icons/launch/stop_disabled.gif"
+          icon="icons/launch/stop.gif">
+       </image>
+</extension>
+
 </plugin>
