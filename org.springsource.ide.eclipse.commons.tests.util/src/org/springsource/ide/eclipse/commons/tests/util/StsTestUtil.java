@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.tests.util;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -424,7 +426,9 @@ public class StsTestUtil {
 			throws CoreException, IOException {
 		// copy files in project from source workspace to target workspace
 		String targetWorkspacePath = getWorkspaceRoot().getLocation().toFile().getCanonicalPath();
-		copyDirectory(new File(sourceWorkspacePath, projectName), new File(targetWorkspacePath, projectName));
+		File sourceProjectPath = new File(sourceWorkspacePath, projectName);
+		assertTrue("Doesn't exist: "+sourceProjectPath, sourceProjectPath.exists());
+		copyDirectory(sourceProjectPath, new File(targetWorkspacePath, projectName));
 
 		// create project
 		final IProject project = getWorkspaceRoot().getProject(projectName);
