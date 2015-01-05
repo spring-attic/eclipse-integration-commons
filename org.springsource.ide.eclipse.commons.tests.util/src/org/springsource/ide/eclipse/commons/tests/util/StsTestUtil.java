@@ -149,7 +149,14 @@ public class StsTestUtil {
 	}
 
 	public static void closeAllEditors() {
-		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		IWorkbenchWindow window = null;
+		try {
+			window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		} catch (Exception e) {
+			//ignore: happens if workbinch not created yet.
+			// in that case there's no editors to close either so
+			// this is okay.
+		}
 		if (window != null) {
 			IWorkbenchPage page = window.getActivePage();
 			if (page != null) {
