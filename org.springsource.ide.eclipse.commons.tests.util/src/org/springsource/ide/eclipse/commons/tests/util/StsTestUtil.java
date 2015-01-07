@@ -790,7 +790,7 @@ public class StsTestUtil {
         return sourceFolder.createPackageFragment(name, false, null);
     }
 
-    public static void buildProject(IJavaProject javaProject) throws Throwable {
+    public static void buildProject(IJavaProject javaProject) throws Exception {
         javaProject.getProject().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
         assertNoErrors(javaProject.getProject());
         performDummySearch(javaProject);
