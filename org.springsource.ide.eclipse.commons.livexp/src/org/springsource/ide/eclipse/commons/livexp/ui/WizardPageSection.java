@@ -10,17 +10,26 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
+import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
+import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
+import org.springsource.ide.eclipse.commons.livexp.core.Validator;
+
 
 /**
  * @author Kris De Volder
  */
-public abstract class WizardPageSection extends PageSection {
+public abstract class WizardPageSection extends PageSection implements Disposable {
 
 	public WizardPageSection(IPageWithSections owner) {
 		super(owner);
 	}
 
 	public void dispose() {
+	}
+	
+	@Override
+	public LiveExpression<ValidationResult> getValidator() {
+		return Validator.OK;
 	}
 
 }

@@ -132,41 +132,4 @@ public abstract class LiveExpression<V> {
 		};
 	}
 
-//	/**
-//	 * Chain togeter LiveExpresion computations. Works like monadic bind operation.
-//	 */
-//	public <T> LiveExpression<T> bind(final Bindable<V,T> f) {
-//		//fv is used to hold the last result of applying function f to the receiver's
-//		// value. It is reapplied whenever the receiver value changes.
-//		final LiveVariable<LiveExpression<T>> fv = new LiveVariable<LiveExpression<T>>();
-//		this.addListener(new ValueListener<V>() {
-//			public void gotValue(LiveExpression<V> exp, V value) {
-//				fv.setValue(f.apply(value));
-//			}
-//		});
-//		return new JoinedExp(fv);
-//	}
-//
-//	/**
-//	 * Implements a 'mondadic' style join operations that converst a LiveExp<LiveExp<T>> into
-//	 * a LiveExp<T>
-//	 *
-//	 */
-//	private static class JoinedExp<T> extends LiveVariable<T> {
-//		
-//		private LiveExpression<LiveExpression<T>> mmx;
-//		private LiveExpression<T> listener = null;
-//
-//		public JoinedExp(LiveExpression<LiveExpression<T>> mmx) {
-//			this.mmx = mmx;
-//			mmx.addListener(new ValueListener<LiveExpression<T>>() {
-//				public void gotValue(LiveExpression<LiveExpression<T>> exp, LiveExpression<T> value) {
-//					if (listener!=null)
-//				}
-//			});
-//		}
-//
-//	}
-
-
 }

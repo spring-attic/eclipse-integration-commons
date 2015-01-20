@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.runtime.IStatus;
 
 /**
@@ -22,24 +19,20 @@ import org.eclipse.core.runtime.IStatus;
  * 
  * @author Kris De Volder
  */
-public class CompositeValidator extends LiveExpression<ValidationResult> implements ValueListener<ValidationResult> {
+public class CompositeValidator extends CompositeExpression<ValidationResult> {
 
 	public CompositeValidator() {
 		super(ValidationResult.OK);
 	}
 
-	private List<LiveExpression<ValidationResult>> elements = new ArrayList<LiveExpression<ValidationResult>>();
-	
 	public CompositeValidator addChild(LiveExpression<ValidationResult> child) {
-		elements.add(child);
-		child.addListener(this);
-		return this;
+		return (CompositeValidator) super.addChild(child);
 	}
 	
 	@Override
 	protected ValidationResult compute() {
 		ValidationResult worst = ValidationResult.OK;
-		for (LiveExpression<ValidationResult> v : elements) {
+		for (LiveExpression<ValidationResult> v : getChildren()) {
 			ValidationResult r = v.getValue();
 			if (r!=null && r.status>worst.status) {
 				worst = r;
@@ -51,9 +44,4 @@ public class CompositeValidator extends LiveExpression<ValidationResult> impleme
 		}
 		return worst;
 	}
-
-	public void gotValue(LiveExpression<ValidationResult> exp, ValidationResult value) {
-		refresh();
-	}
-
 }

@@ -44,6 +44,7 @@ import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
  * 
  * @author Kris De Volder
  */
+@SuppressWarnings("restriction")
 public class MainTypeFinder {
 
 	private static MainTypeFinder instance;
