@@ -35,13 +35,13 @@ import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 public class ChooseMultipleSection<T extends Ilabelable> extends WizardPageSection {
 
 	private static final boolean DEBUG = (""+Platform.getLocation()).contains("kdvolder");
-	
+
 	private String labelText;
 	private Ilabelable[] validChoices;
 	private LiveSet<T> chosen;
 	private LiveExpression<ValidationResult> validator;
 
-	public ChooseMultipleSection(IPageWithSections owner, 
+	public ChooseMultipleSection(IPageWithSections owner,
 			String labelText,
 			T[] validChoices,
 			LiveSet<T> chosen,
@@ -69,21 +69,21 @@ public class ChooseMultipleSection<T extends Ilabelable> extends WizardPageSecti
         GridDataFactory grab = GridDataFactory.fillDefaults().grab(true, true).hint(SWT.DEFAULT, UIConstants.SCROLLABLE_LIST_HEIGTH);
         grab.applyTo(composite);
         composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
+
 		Label label = new Label(composite, SWT.NONE);
 		label.setText(labelText);
 		GridDataFactory.fillDefaults()
 			.align(SWT.CENTER, SWT.BEGINNING)
 			.hint(UIConstants.fieldLabelWidthHint(label), SWT.DEFAULT)
 			.applyTo(label);
-		
+
 		CheckboxTableViewer tv = CheckboxTableViewer.newCheckList(composite, SWT.BORDER);
 		grab.applyTo(tv.getTable());
 		tv.setContentProvider(new ContentProvider());
 		tv.setLabelProvider(new LabelProvider());
 		tv.setInput(validChoices);
 		tv.setCheckedElements(chosen.getValues().toArray());
-		
+
 		tv.addCheckStateListener(new ICheckStateListener() {
 			public void checkStateChanged(CheckStateChangedEvent event) {
 				@SuppressWarnings("unchecked")
@@ -96,7 +96,7 @@ public class ChooseMultipleSection<T extends Ilabelable> extends WizardPageSecti
 				}
 			}
 		});
-		
+
 		if (DEBUG) {
 			chosen.addListener(new ValueListener<Set<T>>() {
 				public void gotValue(LiveExpression<Set<T>> exp, Set<T> value) {
@@ -108,7 +108,7 @@ public class ChooseMultipleSection<T extends Ilabelable> extends WizardPageSecti
 				}
 			});
 		}
-		
+
 	}
 
 	class ContentProvider implements IStructuredContentProvider {
@@ -120,7 +120,7 @@ public class ChooseMultipleSection<T extends Ilabelable> extends WizardPageSecti
 			return validChoices;
 		}
 	}
-	
+
 	public class LabelProvider implements ILabelProvider {
 
 		public void addListener(ILabelProviderListener listener) {
@@ -147,10 +147,5 @@ public class ChooseMultipleSection<T extends Ilabelable> extends WizardPageSecti
 			}
 			return ""+element;
 		}
-
 	}
-
-	
-	
-	
 }
