@@ -43,8 +43,6 @@ import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.springframework.ide.eclipse.uaa.IUaa;
-import org.springframework.ide.eclipse.uaa.UaaPlugin;
 
 /**
  * Prints the name of each test to System.err when it started and dumps a stack
@@ -53,11 +51,6 @@ import org.springframework.ide.eclipse.uaa.UaaPlugin;
  * @author Kris De Volder
  */
 public class ManagedTestSuite extends TestSuite {
-
-	static {
-		System.out.println("Setting UAA privacy level to 'LIMITED_DATA'");
-		UaaPlugin.getUAA().setPrivacyLevel(IUaa.LIMITED_DATA);
-	}
 
 	private class DumpThreadTask extends TimerTask {
 

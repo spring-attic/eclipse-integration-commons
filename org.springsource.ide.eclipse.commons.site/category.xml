@@ -16,13 +16,6 @@
 	<category-def name="Core / Eclipse Integration Commons" label="Core / Eclipse Integration Commons"/>
 	<category-def name="Resources / Eclipse Integration Commons" label="Resources / Eclipse Integration Commons"/>
 
-	<!-- UAA -->
-	<feature
-		url="org.springframework.ide.eclipse.uaa.feature_3.6.4.qualifier.jar"
-		id="org.springframework.ide.eclipse.uaa.feature" version="3.6.4.qualifier">
-		<category name="Core / Eclipse Integration Commons" />
-	</feature>
-
 	<feature
 		url="org.springsource.ide.eclipse.commons_3.6.4.qualifier.jar"
 		id="org.springsource.ide.eclipse.commons" version="3.6.4.qualifier">
@@ -45,13 +38,6 @@
 	<feature
 		url="org.springsource.ide.eclipse.commons.test_3.6.4.qualifier.jar"
 		id="org.springsource.ide.eclipse.commons.test" version="3.6.4.qualifier">
-	</feature>
-
-	<!-- Resources -->
-	<feature
-		url="org.springframework.ide.eclipse.uaa.feature.source_3.6.4.qualifier.jar"
-		id="org.springframework.ide.eclipse.uaa.feature.source" version="3.6.4.qualifier">
-		<category name="Resources / Eclipse Integration Commons" />
 	</feature>
 	
 	<!-- third-party dependencies -->
@@ -127,7 +113,6 @@
 	<bundle id="org.springframework.web" version="0.0.0"/>
 	<bundle id="org.springframework.web.source" version="0.0.0"/>
 
-	<bundle id="org.springframework.uaa.client" version="0.0.0"/>
 	<bundle id="org.springframework.roo.wrapping.bcpg-jdk15" version="0.0.0"/>
 	<bundle id="org.springframework.roo.wrapping.bcprov-jdk15" version="0.0.0"/>
 	<bundle id="org.springframework.roo.wrapping.json-simple" version="0.0.0"/>

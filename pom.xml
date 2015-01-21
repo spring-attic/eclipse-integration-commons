@@ -44,10 +44,6 @@
 		<module>org.springsource.ide.eclipse.commons.ui</module>
 		<module>org.springsource.ide.eclipse.commons.livexp</module>
 		<module>org.springsource.ide.eclipse.commons.completions</module>
-
-		<module>org.springframework.ide.eclipse.uaa</module>
-		<module>org.springframework.ide.eclipse.uaa.feature</module>
-		<module>org.springframework.ide.eclipse.uaa.feature.source</module>
 	</modules>
 
 	<!-- Common Configuration -->
