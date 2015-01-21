@@ -26,7 +26,6 @@ public abstract class LiveExpression<V> {
 	 */
 	protected V value;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public LiveExpression(V initialValue) {
 		this.value = initialValue;
 	}
