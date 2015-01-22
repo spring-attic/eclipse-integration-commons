@@ -14,7 +14,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: Pivotal Software, Inc.
 Export-Package: org.springsource.ide.eclipse.commons.livexp.core,
  org.springsource.ide.eclipse.commons.livexp.core.validators,
- org.springsource.ide.eclipse.commons.livexp.ui
+ org.springsource.ide.eclipse.commons.livexp.ui,
+ org.springsource.ide.eclipse.commons.livexp.util
 Import-Package: org.eclipse.core.runtime,
  org.eclipse.core.runtime.jobs,
  org.eclipse.osgi.util,
