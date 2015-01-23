@@ -10,17 +10,19 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
+import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.swt.widgets.Shell;
 
 /**
  * Abstraction for the 'owner' of a UI 'Section' on a some page. This is so that we can
  * reuse UI widgetry more easily across different kinds of UI contexts (e.g. both on
  * a preferences page and a launch config editor.
- * 
+ *
  * @author Kris De Volder
  */
 public interface IPageWithSections {
 
 	Shell getShell();
+	IRunnableContext getRunnableContext();
 
 }

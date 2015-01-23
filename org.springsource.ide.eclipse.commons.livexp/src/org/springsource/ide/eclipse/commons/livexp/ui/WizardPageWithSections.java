@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -44,12 +45,12 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 	/**
 	 * A delay used for posting status messages to the dialog area after a status update happens.
 	 * This is to get rid of spurious message that only appear for a fraction of a second as
-	 * internal some auto updating states in models are inconsistent. E.g. in new boot project wizard 
+	 * internal some auto updating states in models are inconsistent. E.g. in new boot project wizard
 	 * when project name is entered it is temporarily inconsistent with default project location until
 	 * that project location itself is update in response to the change event from the project name.
 	 * If the project location validator runs before the location update, a spurious validation error
 	 * temporarily results.
-	 * 
+	 *
 	 * Note: this is a hacky solution. It would be better if the LiveExp framework solved this by
 	 * tracking and scheduling refreshes based on the depedency graph. Thus it might guarantee
 	 * that the validator never sees the inconsistent state because it is refreshed last.
@@ -63,13 +64,13 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 	private List<WizardPageSection> sections = null;
 	private CompositeValidator validator;
 	private UIJob updateJob;
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
 	public void createControl(Composite parent) {
 		GridDataFactory.fillDefaults().grab(true,true).applyTo(parent);
-		
+
 		ScrolledComposite scroller = new PackedScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL);
 		Display display = Display.getCurrent();
 		Color blue = display.getSystemColor(SWT.COLOR_BLUE);
@@ -98,24 +99,24 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 	        getContainer().updateMessage();
         }
 	}
-	
+
 	protected synchronized List<WizardPageSection> getSections() {
 		if (sections==null) {
 			sections = createSections();
 		}
 		return sections;
 	}
-	
+
 	/**
 	 * This method should be implemented to generate the contents of the page.
 	 */
 	protected abstract List<WizardPageSection> createSections();
-	
+
 	public void gotValue(LiveExpression<ValidationResult> exp, final ValidationResult status) {
 //		setPageComplete(status.isOk()); //Don't delay this, never allow clicking finish button if state not consistent.
 		scheduleUpdateJob();
 	}
-	
+
 	private synchronized void scheduleUpdateJob() {
 		Shell shell = getShell();
 		if (shell!=null) {
@@ -152,4 +153,8 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 		}
 	}
 
+	@Override
+	public IRunnableContext getRunnableContext() {
+		return getContainer();
+	}
 }

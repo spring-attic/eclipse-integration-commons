@@ -4,23 +4,24 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
 import org.springsource.ide.eclipse.commons.livexp.core.CompositeValidator;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPreferencePage;
-
 /**
  * An abstract super class to more easily create preferences pages composed of modular sections.
  * Each section encapsulates its own widgetry and validation logic.
- * 
+ *
  * @author Kris De Volder
  */
 public abstract class PreferencePageWithSections extends PreferencePage implements IWorkbenchPreferencePage, ValueListener<ValidationResult>, IPageWithSections {
@@ -53,7 +54,7 @@ public abstract class PreferencePageWithSections extends PreferencePage implemen
         validator.addListener(this);
         return page;
 	}
-	
+
 	@Override
 	public boolean performOk() {
 		for (PrefsPageSection section : getSections()) {
@@ -62,10 +63,10 @@ public abstract class PreferencePageWithSections extends PreferencePage implemen
 				return false;
 			}
 		}
-		//We reach here only when all sections performOK returned true 
+		//We reach here only when all sections performOK returned true
 		return true;
 	}
-	
+
 	private synchronized List<PrefsPageSection> getSections() {
 		if (sections==null) {
 			sections = createSections();
@@ -95,5 +96,9 @@ public abstract class PreferencePageWithSections extends PreferencePage implemen
 			setMessage(status.msg, IMessageProvider.NONE);
 		}
 	}
-	
+
+	public IRunnableContext getRunnableContext() {
+		//TODO: can we do something more specific for preferences page?
+		return PlatformUI.getWorkbench().getProgressService();
+	}
 }

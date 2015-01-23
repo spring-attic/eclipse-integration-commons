@@ -14,7 +14,6 @@ import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.Validator;
 
-
 /**
  * @author Kris De Volder
  */
@@ -26,7 +25,7 @@ public abstract class WizardPageSection extends PageSection implements Disposabl
 
 	public void dispose() {
 	}
-	
+
 	@Override
 	public LiveExpression<ValidationResult> getValidator() {
 		return Validator.OK;

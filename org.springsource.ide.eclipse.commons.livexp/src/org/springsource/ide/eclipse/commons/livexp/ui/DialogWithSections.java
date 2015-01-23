@@ -16,16 +16,19 @@ import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
+import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
 import org.springsource.ide.eclipse.commons.livexp.Activator;
@@ -36,13 +39,13 @@ import org.springsource.ide.eclipse.commons.livexp.core.Validator;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 
 /**
- * Single page dialog with status bar and ok cancel buttons capable of hosting 
+ * Single page dialog with status bar and ok cancel buttons capable of hosting
  * {@link PageSection}s.
- * 
+ *
  * @author Kris De Volder
  */
-public abstract class DialogWithSections 
-	extends TitleAreaDialog 
+public abstract class DialogWithSections
+	extends TitleAreaDialog
 	implements ValueListener<ValidationResult>, IPageWithSections, IPageWithOkButton
 {
 
@@ -54,7 +57,7 @@ public abstract class DialogWithSections
 		this.title = title;
 		this.model = model;
 	}
-	
+
 	public void create() {
 		super.create();
 		setTitle(title);
@@ -63,7 +66,7 @@ public abstract class DialogWithSections
 	protected Control createDialogArea(Composite parent) {
 //		readSettings();
 		Composite page = (Composite) super.createDialogArea(parent);
-		
+
 //		GridDataFactory.fillDefaults().grab(true,true).applyTo(parent);
 //		Composite page = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout(1, false);
@@ -83,30 +86,30 @@ public abstract class DialogWithSections
 	/**
 	 * A delay used for posting status messages to the dialog area after a status update happens.
 	 * This is to get rid of spurious message that only appear for a fraction of a second as
-	 * some auto updating states in models are inconsistent. E.g. in new boot project wizard 
+	 * some auto updating states in models are inconsistent. E.g. in new boot project wizard
 	 * when project name is entered it is temporarily inconsistent with default project location until
 	 * that project location itself is updated in response to the change event from the project name.
 	 * If the project location validator runs before the location update, a spurious validation error
 	 * temporarily results.
-	 * 
+	 *
 	 * Note: this is a hacky solution. It would be better if the LiveExp framework solved this by
 	 * tracking and scheduling refreshes based on the depedency graph. Thus it might guarantee
 	 * that the validator never sees the inconsistent state because it is refreshed last.
 	 */
 	private static final long MESSAGE_DELAY = 250;
 
-	
+
 	private List<WizardPageSection> sections = null;
 	private CompositeValidator validator;
 	private UIJob updateJob;
-	
+
 	protected synchronized List<WizardPageSection> getSections() {
 		if (sections==null) {
 			sections = safeCreateSections();
 		}
 		return sections;
 	}
-	
+
 	private List<WizardPageSection> safeCreateSections() {
 		try {
 			return createSections();
@@ -126,11 +129,11 @@ public abstract class DialogWithSections
 	protected List<WizardPageSection> createSections() throws CoreException {
 		//This default implementation is meant to be overridden
 		return Arrays.asList(
-				(WizardPageSection)new CommentSection(this, "Override DialogWithSections.createSections() to provide real content."),
+				new CommentSection(this, "Override DialogWithSections.createSections() to provide real content."),
 				new ValidatorSection(Validator.alwaysError("Subclass must implement validation logic"), this)
 		);
 	}
-	
+
 	/**
 	 * Convert ValidationResult into an Eclipse IStatus object.
 	 */
@@ -141,11 +144,11 @@ public abstract class DialogWithSections
 			return new Status(value.status, Activator.PLUGIN_ID , value.msg);
 		}
 	}
-	
+
 	public void gotValue(LiveExpression<ValidationResult> exp, final ValidationResult status) {
 		scheduleUpdateJob();
 	}
-	
+
 	private synchronized void scheduleUpdateJob() {
 		Shell shell = getShell();
 		if (shell!=null) {
@@ -164,7 +167,7 @@ public abstract class DialogWithSections
 			updateJob.schedule(MESSAGE_DELAY);
 		}
 	}
-	
+
 	private void updateStatus(ValidationResult status) {
 		boolean enableOk = true;
 		if (status==null || status.isOk()) {
@@ -183,13 +186,13 @@ public abstract class DialogWithSections
 		for (WizardPageSection s : sections) {
 			s.dispose();
 		}
-	}	
+	}
 
 	@Override
 	protected void cancelPressed() {
 		super.cancelPressed();
 	}
-	
+
 	@Override
 	protected final void okPressed() {
 		super.okPressed();
@@ -213,4 +216,9 @@ public abstract class DialogWithSections
 		return false;
 	}
 
+
+	@Override
+	public IRunnableContext getRunnableContext() {
+		return PlatformUI.getWorkbench().getProgressService();
+	}
 }

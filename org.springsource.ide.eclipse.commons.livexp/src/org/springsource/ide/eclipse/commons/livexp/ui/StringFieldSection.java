@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
-import static org.springsource.ide.eclipse.commons.livexp.ui.UIConstants.FIELD_LABEL_WIDTH_HINT;
-
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -28,24 +26,24 @@ import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 
 public class StringFieldSection extends WizardPageSection {
-	
-	/// options 
+
+	/// options
 	private String labelText; //what text to use for the label of the field
 	private String tooltip = null; // what text to use for tooltip
-	
-	/// model elements 
+
+	/// model elements
 	private final LiveVariable<String> variable;
 	private final LiveExpression<ValidationResult> validator;
-	
+
 	/// UI elements
 	private Text text;
 
-	
+
 	//////////////////////////////
 
-	public StringFieldSection(IPageWithSections owner, 
+	public StringFieldSection(IPageWithSections owner,
 			String labelText,
-			LiveVariable<String> variable, 
+			LiveVariable<String> variable,
 			LiveExpression<ValidationResult> validator) {
 		super(owner);
 		this.labelText = labelText;
@@ -82,7 +80,7 @@ public class StringFieldSection extends WizardPageSection {
         	.hint(UIConstants.fieldLabelWidthHint(label), SWT.DEFAULT)
         	.align(SWT.BEGINNING, SWT.CENTER)
         	.applyTo(label);
-        
+
         text = new Text(projectGroup, SWT.BORDER);
         GridData data = new GridData(GridData.FILL_HORIZONTAL);
         data.widthHint = UIConstants.FIELD_TEXT_AREA_WIDTH;
@@ -105,7 +103,7 @@ public class StringFieldSection extends WizardPageSection {
 				}
 			}
 		});
-        
+
         if (tooltip!=null) {
         	label.setToolTipText(tooltip);
         	text.setToolTipText(tooltip);
@@ -116,5 +114,5 @@ public class StringFieldSection extends WizardPageSection {
 		this.tooltip = string;
 		return this;
 	}
-	
+
 }

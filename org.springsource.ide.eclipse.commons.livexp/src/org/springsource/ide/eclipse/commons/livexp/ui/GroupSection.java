@@ -30,10 +30,10 @@ import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 public class GroupSection extends WizardPageSection {
 
 	List<WizardPageSection> sections;
-	
+
 	private CompositeValidator validator;
 	private String groupTitle;
-	
+
 	/**
 	 * Setting isVisible to false will make this group disappear.
 	 * Setting it to true will make it re-appear.
@@ -55,7 +55,7 @@ public class GroupSection extends WizardPageSection {
 				sections.add(s);
 			}
 		}
-		
+
 		validator = new CompositeValidator();
 		for (WizardPageSection s : sections) {
 			validator.addChild(s.getValidator());
@@ -75,7 +75,7 @@ public class GroupSection extends WizardPageSection {
 		}
 		isVisible.addListener(new ValueListener<Boolean>() {
 			public void gotValue(LiveExpression<Boolean> exp, Boolean isVisible) {
-				group.setVisible(isVisible); 
+				group.setVisible(isVisible);
 				GridData layout = (GridData) group.getLayoutData();
 				layout.exclude = !isVisible;
 				group.setLayoutData(layout);
@@ -103,8 +103,8 @@ public class GroupSection extends WizardPageSection {
 	}
 
 	/**
-	 * Factory method that creates the layout for the group. Subclass may overide to change how
-	 * components in the group are layed out. Default creates a girdlayout with specified number of
+	 * Factory method that creates the layout for the group. Subclass may override to change how
+	 * components in the group are layed out. Default creates a gridlayout with specified number of
 	 * columns of equals width
 	 */
 	protected GridLayout createLayout() {
@@ -114,7 +114,7 @@ public class GroupSection extends WizardPageSection {
 		}
 		return layout;
 	}
-	
+
 	@Override
 	public void dispose() {
 		for (WizardPageSection s : sections) {
@@ -128,5 +128,5 @@ public class GroupSection extends WizardPageSection {
 		this.columns = i;
 		return this;
 	}
-	
+
 }
