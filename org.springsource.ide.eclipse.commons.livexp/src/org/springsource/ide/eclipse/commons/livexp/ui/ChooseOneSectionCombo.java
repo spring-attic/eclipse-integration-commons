@@ -93,7 +93,11 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 
 		options.addListener(new ValueListener<T[]>() {
 			public void gotValue(org.springsource.ide.eclipse.commons.livexp.core.LiveExpression<T[]> exp, T[] value) {
-				combo.setItems(getLabels());
+				if (combo!=null) {
+					String oldText = combo.getText();
+					combo.setItems(getLabels()); //This will clear the selection sometimes
+					combo.setText(oldText);
+				}
 			};
 		});
 		if (inputParser==null) {
