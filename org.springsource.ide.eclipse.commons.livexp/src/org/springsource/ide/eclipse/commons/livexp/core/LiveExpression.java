@@ -18,9 +18,9 @@ import org.eclipse.core.runtime.ListenerList;
  * interested parties can subscribe to be notified when the value of the expression changes.
  */
 public abstract class LiveExpression<V> {
-	
+
 	private ListenerList fListeners = new ListenerList();
- 
+
 	/**
 	 * The last computed value of the expression.
 	 */
@@ -57,7 +57,7 @@ public abstract class LiveExpression<V> {
 		}
 	}
 
-	/** 
+	/**
 	 * Declare that this liveExpression depends on some other live expression. This ensures
 	 * that this expression will be refreshed if the value of the other expression changes.
 	 */
@@ -93,21 +93,21 @@ public abstract class LiveExpression<V> {
 		fListeners.add(l);
 		l.gotValue(this, value);
 	}
-	
+
 	public void removeListener(ValueListener<V> l) {
 		fListeners.remove(l);
 	}
 
 	public static <V> LiveExpression<V> constant(final V value) {
 		//TODO: Constant expression can be implemented more efficiently they do not need really any of the
-		// super class infrastructure since the value of a constant can never change. 
+		// super class infrastructure since the value of a constant can never change.
 		return new LiveExpression<V>(value) {
-			
+
 			@Override
 			protected V compute() {
 				return value;
 			}
-			
+
 			@Override
 			public void addListener(ValueListener<V> l) {
 				l.gotValue(this, value);
@@ -119,7 +119,7 @@ public abstract class LiveExpression<V> {
 				//Ignore all listeners we will never notify anyone since
 				//constants can't change
 			}
-			
+
 			/* (non-Javadoc)
 			 * @see org.springsource.ide.eclipse.gradle.core.util.expression.LiveExpression#refresh()
 			 */

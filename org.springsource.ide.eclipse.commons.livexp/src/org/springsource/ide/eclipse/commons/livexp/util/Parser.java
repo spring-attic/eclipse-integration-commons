@@ -17,4 +17,13 @@ package org.springsource.ide.eclipse.commons.livexp.util;
  */
 public interface Parser<T> {
 	T parse(String text);
+
+	/**
+	 * The 'identity' function can be used as trivial Parser<String>
+	 */
+	public static final Parser<String> IDENTITY = new Parser<String>() {
+		public String parse(String text) {
+			return text;
+		};
+	};
 }

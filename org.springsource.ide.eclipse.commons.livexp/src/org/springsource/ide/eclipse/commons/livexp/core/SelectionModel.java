@@ -38,4 +38,8 @@ public class SelectionModel<T> {
 		this(selection, Validator.OK);
 	}
 
+	public SelectionModel() {
+		this(new LiveVariable<T>());
+	}
+
 }

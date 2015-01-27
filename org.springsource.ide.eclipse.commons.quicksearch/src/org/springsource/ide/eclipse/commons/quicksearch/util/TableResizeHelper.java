@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2013 GoPivotal, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * GoPivotal, Inc. - initial API and implementation
+ *******************************************************************************/
 package org.springsource.ide.eclipse.commons.quicksearch.util;
 
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.ListDialogField.ColumnsDescription;
@@ -13,7 +23,7 @@ import org.eclipse.swt.widgets.TableColumn;
  * Resizes table columns such that columns fit the table width. The table is
  * initially resized when the resize is enabled, and its columns continue being
  * resized automatically as the user resizes the table.
- * 
+ *
  */
 public class TableResizeHelper {
 
@@ -54,7 +64,7 @@ public class TableResizeHelper {
 //		}
 		resizeTableColumns(width, tableViewer.getTable());
 	}
-	
+
 	protected void resizeTableColumns(int tableWidth, Table table) {
 		TableColumn[] tableColumns = table.getColumns();
 
@@ -69,7 +79,7 @@ public class TableResizeHelper {
 		}
 
 		TableColumn lastColumn = tableColumns[tableColumns.length - 1];
-		int newWidth = (tableWidth - total) + lastColumn.getWidth(); 
+		int newWidth = (tableWidth - total) + lastColumn.getWidth();
 		if (newWidth>0) {
 			lastColumn.setWidth(newWidth);
 		}

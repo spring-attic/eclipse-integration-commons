@@ -26,6 +26,8 @@ import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 import org.springsource.ide.eclipse.commons.livexp.util.Parser;
 
+import static org.springsource.ide.eclipse.commons.livexp.ui.UIConstants.*;
+
 /**
  * Wizard section to choose one element from list of elements. Uses a pulldown Combo box to allow selecting
  * an element.
@@ -34,27 +36,22 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 
 	private final SelectionModel<T> selection;
 	private final String label; //Descriptive Label for this section
-	private T[] options; //The elements to choose from
+	private LiveExpression<T[]> options; //The elements to choose from
 
 	/**
 	 * For a combo that allows text edits, a textInputParser must be provided to convert
 	 * the input text into a selection value.
 	 */
 	private Parser<T> inputParser = null;
-	//TODO: actually edit support isn't implemented yet.
 
-	/**
-	 * Create a ChooseOneSectionCombo with lazy options. You must either override the 'computeOptions' method
-	 * if you use this constructor.
-	 */
-	public ChooseOneSectionCombo(IPageWithSections owner, String label, SelectionModel<T> selection) {
+	public ChooseOneSectionCombo(IPageWithSections owner, String label, SelectionModel<T> selection, T[] options) {
+		this(owner, label, selection, LiveExpression.constant(options));
+	}
+
+	public ChooseOneSectionCombo(IPageWithSections owner, String label, SelectionModel<T> selection, LiveExpression<T[]> options) {
 		super(owner);
 		this.label = label;
 		this.selection = selection;
-	}
-
-	public ChooseOneSectionCombo(IPageWithSections owner, String label, SelectionModel<T> selection, T[] options) {
-		this(owner, label, selection);
 		this.options = options;
 	}
 
@@ -92,13 +89,20 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
         	.align(SWT.BEGINNING, SWT.CENTER)
         	.applyTo(fieldNameLabel);
 
-		final Combo combo = new Combo(field, SWT.READ_ONLY);
+		final Combo combo = new Combo(field, inputParser==null?SWT.READ_ONLY:SWT.NONE);
 
-		combo.setItems(getLabels());
-		GridDataFactory.fillDefaults().applyTo(combo);
+		options.addListener(new ValueListener<T[]>() {
+			public void gotValue(org.springsource.ide.eclipse.commons.livexp.core.LiveExpression<T[]> exp, T[] value) {
+				combo.setItems(getLabels());
+			};
+		});
+		if (inputParser==null) {
+			GridDataFactory.fillDefaults().applyTo(combo);
+		} else {
+			GridDataFactory.fillDefaults().hint(FIELD_TEXT_AREA_WIDTH, SWT.DEFAULT).applyTo(combo);
+		}
 
 		combo.addModifyListener(new ModifyListener() {
-			//@Override
 			public void modifyText(ModifyEvent e) {
 				handleModifyText(combo);
 			}
@@ -124,35 +128,47 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 
 	private void handleModifyText(final Combo combo) {
 		int selected = combo.getSelectionIndex();
-		if (selected>=0) {
-			selection.selection.setValue(getOptions()[selected]);
+		T[] options = getOptionsArray();
+		if (options!=null && selected>=0 && selected<options.length) {
+			selection.selection.setValue(getOptionsArray()[selected]);
 		} else {
-			selection.selection.setValue(null);
+			selection.selection.setValue(parse(combo.getText()));
 		}
 	}
 
-	/**
-	 * Clients that can't provide the available options in the constructor can instead
-	 * override this method which will be called the first time the
-	 * options are required (i.e. when UI widgets are being created).
-	 */
-	protected T[] computeOptions() {
+	private T parse(String text) {
+		try {
+			if (inputParser!=null) {
+				return inputParser.parse(text);
+			}
+		} catch (Exception e) {
+			//ignore unparsable input
+		}
 		return null;
 	}
 
 	private String[] getLabels() {
-		String[] labels = new String[getOptions().length];
+		String[] labels = new String[getOptionsArray().length];
 		for (int i = 0; i < labels.length; i++) {
-			labels[i] = labelProvider.getText(getOptions()[i]);
+			labels[i] = labelProvider.getText(getOptionsArray()[i]);
 		}
 		return labels;
 	}
 
-	private T[] getOptions() {
-		if (options==null) {
-			options = computeOptions();
-		}
+	private T[] getOptionsArray() {
+		return options.getValue();
+	}
+
+	public LiveExpression<T[]> getOptions() {
 		return options;
 	}
 
+	/**
+	 * Convenience method that returns the options cast to LiveVariable. This method
+	 * will throw an {@link ClassCastException} if the options were not provided
+	 * via a LiveVariable.
+	 */
+	public LiveVariable<T[]> getOptionsVar() {
+		return (LiveVariable<T[]>) options;
+	}
 }
