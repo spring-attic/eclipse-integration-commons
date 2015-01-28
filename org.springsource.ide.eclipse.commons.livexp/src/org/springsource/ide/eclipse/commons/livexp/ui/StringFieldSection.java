@@ -11,6 +11,7 @@
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -64,13 +65,7 @@ public class StringFieldSection extends WizardPageSection {
 	public void createContents(Composite page) {
         // project specification group
         Composite projectGroup = new Composite(page, SWT.NONE);
-        GridLayout layout = new GridLayout();
-        layout.numColumns = 2;
-//        layout.marginBottom = 0;
-//        layout.marginTop = 0;
-//        layout.marginLeft = 0;
-//        layout.marginRight = 0;
-        layout.marginWidth = 0;
+        GridLayout layout = GridLayoutFactory.fillDefaults().numColumns(2).margins(0,2).create();
         projectGroup.setLayout(layout);
         projectGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
