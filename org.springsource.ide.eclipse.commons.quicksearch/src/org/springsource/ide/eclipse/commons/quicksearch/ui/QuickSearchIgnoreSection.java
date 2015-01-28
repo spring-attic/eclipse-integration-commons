@@ -82,7 +82,7 @@ public class QuickSearchIgnoreSection extends PrefsPageSection {
 	private DefaultPriorityFunction defaultPriorityFun = new DefaultPriorityFunction();
 
 	private class IgnoreListField extends PrefsPageSection {
-		private static final int HEIGHT_HINT = 40; //TODO: compute based on font size. 3 / 4 lines of text
+		private static final int HEIGHT_HINT = 60; //TODO: compute based on font size. 3 / 4 lines of text
 		private static final int FIELD_INDENT = 30;
 		Label label;
 		Text text;
