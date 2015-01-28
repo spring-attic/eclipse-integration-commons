@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2013, 2015 Pivotal Software, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ * Pivotal Software, Inc. - initial API and implementation
+ *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
 import java.util.List;
@@ -10,6 +20,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
@@ -41,7 +53,7 @@ public abstract class PreferencePageWithSections extends PreferencePage implemen
 
 	@Override
 	protected Control createContents(Composite parent) {
-		Composite page = new Composite(parent, SWT.NONE);
+		final Composite page = new Composite(parent, SWT.NONE);
         GridLayout layout = new GridLayout(1, false);
         layout.marginHeight = 1;
         layout.marginWidth = 1;
@@ -52,6 +64,21 @@ public abstract class PreferencePageWithSections extends PreferencePage implemen
 			validator.addChild(section.getValidator());
 		}
         validator.addListener(this);
+
+        //Listener below is workaround for a layout glitch. Seems
+        // we occasionally need to trigger an additional 'layout'
+        // the first time the page is drawn. Otherwise widgets
+        // aren't properly layed out until the page is
+        // being resized.
+        Listener listener = new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				page.getShell().layout(true, true);
+				page.getShell().redraw();
+				page.removeListener(event.type, this);
+			}
+		};
+		page.addListener(SWT.Paint, listener);
         return page;
 	}
 
