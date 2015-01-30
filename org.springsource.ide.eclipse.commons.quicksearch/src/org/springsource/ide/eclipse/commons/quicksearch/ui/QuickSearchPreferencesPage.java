@@ -21,9 +21,8 @@ public class QuickSearchPreferencesPage extends PreferencePageWithSections {
 	@Override
 	protected List<PrefsPageSection> createSections() {
 		List<PrefsPageSection> sections = new ArrayList<PrefsPageSection>();
-		sections.add(
-				new QuickSearchIgnoreSection(this)
-		);
+		sections.add(new QuickSearchIgnoreSection(this));
+		sections.add(new MaxLineLengthSection(this));
 		return sections;
 	}
 

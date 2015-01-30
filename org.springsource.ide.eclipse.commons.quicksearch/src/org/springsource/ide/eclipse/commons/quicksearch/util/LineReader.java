@@ -20,27 +20,34 @@ import java.io.Reader;
  * track of character position while reading. This is needed to
  * ease translation from line-relative offsets into stream-relative
  * offsets.
- * 
+ *
  * @author Kris De Volder
  */
 public class LineReader {
-	
+
 	private static final int EXPECTED_LINE_LENGTH = 160;
-	private static final int MAX_LINE_LENGTH = 400;
-	
+	public static final int DEFAULT_MAX_LINE_LENGTH = 1000;
+
 	private BufferedReader input;
 
-	//This simple implementation just wraps a BufferedReader and StringBuilder 
-	//to do the buffering and String building. 
+	//This simple implementation just wraps a BufferedReader and StringBuilder
+	//to do the buffering and String building.
 	//It may be more efficient to implement our own buffering like BufferedReader
 	//does.
-	
+
 	public LineReader(Reader reader) {
-		input = buffered(reader);
+		this(reader, DEFAULT_MAX_LINE_LENGTH);
 	}
-	
+
+	public LineReader(Reader reader, int maxLineLength) {
+		input = buffered(reader);
+		MAX_LINE_LENGTH = maxLineLength;
+	}
+
+
 	private StringBuilder line = new StringBuilder(EXPECTED_LINE_LENGTH);
-	
+
+	private final int MAX_LINE_LENGTH;
 	private int lineOffset = -1; //Start pos of last line read.
 	private int offset = 0; //position of next char in input.
 	private int mark = 0; //mark offset in underlying stream
@@ -125,7 +132,7 @@ public class LineReader {
 			return -1;
 		}
 	}
-	
+
 	/**
 	 * @return The offset of the start of the last line read relative to beginning of the stream; or -1 if
 	 * no line has been read yet.

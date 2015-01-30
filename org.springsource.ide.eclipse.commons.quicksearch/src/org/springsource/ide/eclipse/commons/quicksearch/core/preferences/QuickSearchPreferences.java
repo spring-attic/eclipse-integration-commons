@@ -14,21 +14,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.springsource.ide.eclipse.commons.quicksearch.util.LineReader;
 
 /**
  * Helper class to access the QuickSearch Preferences.
- * 
+ *
  * @author Kris De Volder
  */
 public class QuickSearchPreferences {
-	
-	//Keys used to fetch 'raw' preferences values from the preferences store. 
+
+	//Keys used to fetch 'raw' preferences values from the preferences store.
 	public static final String IGNORED_EXTENSIONS = "ignored.extensions";
 	public static final String IGNORED_NAMES = "ignored.names";
 	public static final String IGNORED_PREFIXES = "ignored.prefixes";
-	
+	public static final String MAX_LINE_LEN = "LineReader.MAX_LINE_LEN";
+
 	private IEclipsePreferences store;
-	
+
 	public QuickSearchPreferences(IEclipsePreferences store) {
 		this.store = store;
 	}
@@ -40,13 +42,17 @@ public class QuickSearchPreferences {
 	public String[] getIgnoredExtensions() {
 		return getAndParseStringList(IGNORED_EXTENSIONS);
 	}
-	
+
 	public String[] getIgnoredPrefixes() {
 		return getAndParseStringList(IGNORED_PREFIXES);
 	}
-	
+
 	public String[] getIgnoredNames() {
 		return getAndParseStringList(IGNORED_NAMES);
+	}
+
+	public int getMaxLineLen() {
+		return store.getInt(MAX_LINE_LEN, LineReader.DEFAULT_MAX_LINE_LENGTH);
 	}
 
 	private String[] getAndParseStringList(String key) {
@@ -61,7 +67,7 @@ public class QuickSearchPreferences {
 	 * Takes a raw string list as entered in the prefs page input field and parses it.
 	 * <p>
 	 * Commas and newline are treated as 'separators' between elements. Further, any trailing
-	 * and leading whitespace is stripped from individual elements and empty strings are silently 
+	 * and leading whitespace is stripped from individual elements and empty strings are silently
 	 * dropped.
 	 */
 	private String[] parseStringList(String raw) {
@@ -75,5 +81,6 @@ public class QuickSearchPreferences {
 		}
 		return list.toArray(new String[list.size()]);
 	}
+
 
 }

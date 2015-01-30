@@ -120,19 +120,19 @@ import org.springsource.ide.eclipse.commons.quicksearch.util.TableResizeHelper;
 /**
  * Shows a list of items to the user with a text entry field for a string
  * pattern used to filter the list of items.
- * 
+ *
  * @since 3.3
  */
 @SuppressWarnings({ "rawtypes", "restriction", "unchecked" })
 public class QuickSearchDialog extends SelectionStatusDialog {
-	
+
 	public static final Styler HIGHLIGHT_STYLE = org.eclipse.search.internal.ui.text.DecoratingFileSearchLabelProvider.HIGHLIGHT_STYLE;
 
-	
+
 //	public class ScrollListener implements SelectionListener {
-//		
+//
 //		ScrollBar scrollbar;
-//		
+//
 //		public ScrollListener(ScrollBar scrollbar) {
 //			this.scrollbar = scrollbar;
 //			scrollbar.addSelectionListener(this);
@@ -144,18 +144,18 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 //		}
 //
 //		private int oldPercent = 0;
-//		
+//
 //		private void processEvent(SelectionEvent e) {
 //			int min = scrollbar.getMinimum();
 //			int max = scrollbar.getMaximum();
 //			int val = scrollbar.getSelection();
 //			int thumb = scrollbar.getThumb();
-//			
+//
 //			int total = max - min; //Total range of the scrollbar
 //			int end = val+thumb; //The bottom of visible region
 //			int belowEnd = max - end; //Size of area that is below the current visible area.
-//			int percent = (belowEnd*100)/total; // size in percentage of total area that is below visible area. 
-//			
+//			int percent = (belowEnd*100)/total; // size in percentage of total area that is below visible area.
+//
 //			System.out.println("==== scroll event ===");
 //			System.out.println("min: "+min +"  max: "+max);
 //			System.out.println("val: "+val +"  thum: "+thumb);
@@ -174,7 +174,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 //			processEvent(e);
 //		}
 //	}
-	
+
 	private UIJob refreshJob = new UIJob("Refresh") {
 		@Override
 		public IStatus runInUIThread(IProgressMonitor monitor) {
@@ -182,14 +182,14 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			return Status.OK_STATUS;
 		}
 	};
-	
+
 	/**
 	 * Job that shows a simple busy indicator while a search is active.
 	 * The job must be scheduled when a search starts/resumes. It periodically checks the
 	 */
 	private UIJob progressJob =  new UIJob("Refresh") {
 		int animate = 0; // number of dots to display.
-		
+
 		protected String dots(int animate) {
 			char[] chars = new char[animate];
 			for (int i = 0; i < chars.length; i++) {
@@ -197,7 +197,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			}
 			return new String(chars);
 		}
-		
+
 		protected String currentFileInfo(IFile currentFile, int animate) {
 			if (currentFile!=null) {
 				String path = currentFile.getFullPath().toString();
@@ -208,7 +208,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			}
 			return dots(animate);
 		}
-		
+
 		@Override
 		public IStatus runInUIThread(IProgressMonitor mon) {
 			if (!mon.isCanceled() && progressLabel!=null && !progressLabel.isDisposed()) {
@@ -235,7 +235,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	};
 
 	private static final Color GREY = Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY);
-	
+
 	private final StyledCellLabelProvider LINE_TEXT_LABEL_PROVIDER = new StyledCellLabelProvider() {
 		@Override
 		public void update(ViewerCell cell) {
@@ -272,7 +272,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			}
 			super.update(cell);
 		}
-		
+
 //		public String getToolTipText(Object element) {
 //			LineItem item = (LineItem) element;
 //			if (item!=null) {
@@ -280,7 +280,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 //			}
 //			return "";
 //		};
-		
+
 //		public String getText(Object _item) {
 //			if (_item!=null) {
 //				LineItem item = (LineItem) _item;
@@ -288,17 +288,17 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 //			}
 //			return "?";
 //		};
-	};	
-	
+	};
+
 	private static final String DIALOG_SETTINGS = QuickSearchDialog.class.getName()+".DIALOG_SETTINGS";
-	
+
 	private static final String DIALOG_BOUNDS_SETTINGS = "DialogBoundsSettings"; //$NON-NLS-1$
 
 	private static final String DIALOG_HEIGHT = "DIALOG_HEIGHT"; //$NON-NLS-1$
 	private static final String DIALOG_WIDTH = "DIALOG_WIDTH"; //$NON-NLS-1$
 	private static final String DIALOG_COLUMNS = "COLUMN_WIDTHS";
 	private static final String DIALOG_SASH_WEIGHTS = "SASH_WEIGHTS";
-	
+
 	private static final String DIALOG_LAST_QUERY = "LAST_QUERY";
 	private static final String CASE_SENSITIVE = "CASE_SENSITIVE";
 	private static final boolean CASE_SENSITIVE_DEFAULT = true;
@@ -347,7 +347,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
-
+	private final int MAX_LINE_LEN;
 
 	private IHandlerActivation showViewHandler;
 
@@ -369,7 +369,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	/**
 	 * Creates a new instance of the class.
-	 * 
+	 *
 	 * @param window.getShell()
 	 *           shell to parent the dialog on
 	 * @param multi
@@ -383,11 +383,12 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		this.multi = false;
 		contentProvider = new ContentProvider();
 		selectionMode = NONE;
+		MAX_LINE_LEN = QuickSearchActivator.getDefault().getPreferences().getMaxLineLen();
 	}
 
 //	/**
 //	 * Returns the label decorator for selected items in the list.
-//	 * 
+//	 *
 //	 * @return the label decorator for selected items in the list
 //	 */
 //	private ILabelDecorator getListSelectionLabelDecorator() {
@@ -396,7 +397,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 //
 //	/**
 //	 * Sets the label decorator for selected items in the list.
-//	 * 
+//	 *
 //	 * @param listSelectionLabelDecorator
 //	 *           the label decorator for selected items in the list
 //	 */
@@ -408,7 +409,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 //	/**
 //	 * Returns the item list label provider.
-//	 * 
+//	 *
 //	 * @return the item list label provider
 //	 */
 //	private ItemsListLabelProvider getItemsListLabelProvider() {
@@ -421,7 +422,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.window.Window#create()
 	 */
 	public void create() {
@@ -430,7 +431,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	}
 
 	/**
-	 * Restores dialog using persisted settings. 
+	 * Restores dialog using persisted settings.
 	 */
 	protected void restoreDialog(IDialogSettings settings) {
 		try {
@@ -442,7 +443,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 				pattern.setText(lastSearch);
 				pattern.setSelection(0, lastSearch.length());
 			}
-			
+
 			if (settings.getArray(DIALOG_COLUMNS)!=null) {
 				String[] columnWidths = settings.getArray(DIALOG_COLUMNS);
 				Table table = list.getTable();
@@ -458,7 +459,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 					}
 				}
 			}
-			
+
 			if (settings.getArray(DIALOG_SASH_WEIGHTS)!=null) {
 				String[] _weights = settings.getArray(DIALOG_SASH_WEIGHTS);
 				int[] weights = new int[_weights.length];
@@ -496,11 +497,11 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			applyFilter();
 		}
 	}
-	
-	
+
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.window.Window#close()
 	 */
 	public boolean close() {
@@ -527,7 +528,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	/**
 	 * Stores dialog settings.
-	 * 
+	 *
 	 * @param settings
 	 *           settings used to store dialog
 	 */
@@ -557,7 +558,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	/**
 	 * Create a new header which is labelled by headerLabel.
-	 * 
+	 *
 	 * @param parent
 	 * @return Label the label of the header
 	 */
@@ -585,7 +586,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 		createViewMenu(header);
 		header.setLayoutData(gd);
-		
+
 		refreshHeaderLabel();
 		return headerLabel;
 	}
@@ -598,7 +599,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	/**
 	 * Create the labels for the list and the progress. Return the list label.
-	 * 
+	 *
 	 * @param parent
 	 * @return Label
 	 */
@@ -677,7 +678,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	/**
 	 * Fills the menu of the dialog.
-	 * 
+	 *
 	 * @param menuManager
 	 *           the menu manager
 	 */
@@ -699,7 +700,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
      * Hook that allows to add actions to the context menu.
 	 * <p>
 	 * Subclasses may extend in order to add other actions.</p>
-     * 
+     *
      * @param menuManager the context menu manager
      * @since 3.5
      */
@@ -743,7 +744,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 //	/**
 //	 * Creates an extra content area, which will be located above the details.
-//	 * 
+//	 *
 //	 * @param parent
 //	 *           parent to create the dialog widgets in
 //	 * @return an extra content area
@@ -752,7 +753,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
@@ -781,7 +782,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		});
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		pattern.setLayoutData(gd);
-		
+
 		final Label listLabel = createLabels(content);
 
 		sashForm = new SashForm(content, SWT.VERTICAL);
@@ -789,10 +790,10 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 		list = new TableViewer(sashForm, (multi ? SWT.MULTI : SWT.SINGLE) |
 				SWT.FULL_SELECTION | SWT.BORDER | SWT.V_SCROLL | SWT.VIRTUAL);
-//		ColumnViewerToolTipSupport.enableFor(list, ToolTip.NO_RECREATE); 
-		
+//		ColumnViewerToolTipSupport.enableFor(list, ToolTip.NO_RECREATE);
+
 		list.getTable().setHeaderVisible(true);
-		list.getTable().setLinesVisible(true); 
+		list.getTable().setLinesVisible(true);
 		list.getTable().getAccessible().addAccessibleListener(
 				new AccessibleAdapter() {
 					public void getName(AccessibleEvent e) {
@@ -805,7 +806,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		list.setContentProvider(contentProvider);
 //		new ScrollListener(list.getTable().getVerticalBar());
 //		new SelectionChangedListener(list);
-		
+
 		TableViewerColumn col = new TableViewerColumn(list, SWT.RIGHT);
 		col.setLabelProvider(LINE_NUMBER_LABEL_PROVIDER);
 		col.getColumn().setText("Line");
@@ -818,9 +819,9 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		col.getColumn().setText("Path");
 		col.setLabelProvider(LINE_FILE_LABEL_PROVIDER);
 		col.getColumn().setWidth(150);
-		
+
 		new TableResizeHelper(list).enableResizing();
-		
+
 		//list.setLabelProvider(getItemsListLabelProvider());
 		list.setInput(new Object[0]);
 		list.setItemCount(contentProvider.getNumberOfElements());
@@ -892,7 +893,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 			}
 		});
-		
+
 		createDetailsArea(sashForm);
 		sashForm.setWeights(new int[] {5,1});
 
@@ -919,26 +920,26 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		return dialogArea;
 	}
 
-	
+
 	private void createDetailsArea(Composite parent) {
 		details = new StyledText(parent, SWT.MULTI+SWT.READ_ONLY+SWT.BORDER+SWT.H_SCROLL);
 		details.setFont(JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT));
 //		GridDataFactory.fillDefaults().grab(true, false).applyTo(details);
-		
-		
+
+
 //		details = new SourceViewer(parent, null, SWT.READ_ONLY+SWT.MULTI+SWT.BORDER);
 //		details.getTextWidget().setText("Line 1\nLine 2\nLine 3\nLine 4\nLine 5");
 //		details.setEditable(false);
-//		
+//
 //		IPreferenceStore prefs = EditorsPlugin.getDefault().getPreferenceStore();
 //		TextSourceViewerConfiguration sourceViewerConf = new TextSourceViewerConfiguration(prefs);
 //		details.configure(sourceViewerConf);
-//		
+//
 //		GridDataFactory.fillDefaults().grab(true, false).applyTo(details);
 //		Font font= JFaceResources.getFont(PreferenceConstants.EDITOR_TEXT_FONT);
 //		details.getTextWidget().setFont(font);
-		
-		
+
+
 		list.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				refreshDetails();
@@ -952,7 +953,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		});
 	}
 
-	
+
 	// Dumber version just using the a 'raw' StyledText widget.
 	private void refreshDetails() {
 		if (details!=null && list!=null && !list.getTable().isDisposed()) {
@@ -978,11 +979,11 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 							//Presumably line number is past the end of document.
 							//ignore.
 						}
-	
+
 						StyledString styledString = highlightMatches(document.get(start, end-start));
 						details.setText(styledString.getString());
 						details.setStyleRanges(styledString.getStyleRanges());
-	
+
 						return;
 					} catch (BadLocationException e) {
 					}
@@ -1011,11 +1012,11 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * Helper function to highlight all the matches for the current query in a given piece
 	 * of text.
-	 * 
+	 *
 	 * @return StyledString instance.
 	 */
 	private StyledString highlightMatches(String visibleText) {
@@ -1026,7 +1027,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		}
 		return styledText;
 	}
-	
+
 // Version using sourceviewer
 //	private void refreshDetails() {
 //		if (details!=null && list!=null && !list.getTable().isDisposed()) {
@@ -1049,7 +1050,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 //						//ignore.
 //					}
 //					details.setDocument(document, start, end-start);
-//					
+//
 //					String visibleText = document.get(start, end-start);
 //					List<TextRange> matches = getQuery().findAll(visibleText);
 //					Region visibleRegion = new Region(start, end-start);
@@ -1059,7 +1060,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 //						presentation.addStyleRange(new StyleRange(m.start+start, m.len, null, YELLOW));
 //					}
 //					details.changeTextPresentation(presentation, true);
-//					
+//
 //					return;
 //				} catch (BadLocationException e) {
 //				}
@@ -1083,7 +1084,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	/**
 	 * Handle selection in the items list by updating labels of selected and
 	 * unselected items and refresh the details field using the selection.
-	 * 
+	 *
 	 * @param selection
 	 *           the new selection
 	 */
@@ -1096,7 +1097,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.window.Dialog#getDialogBoundsSettings()
 	 */
 	protected IDialogSettings getDialogBoundsSettings() {
@@ -1112,7 +1113,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	/**
 	 * Returns the dialog settings. Returned object can't be null.
-	 * 
+	 *
 	 * @return return dialog settings for this dialog
 	 */
 	protected IDialogSettings getDialogSettings() {
@@ -1123,7 +1124,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			settings = IDEWorkbenchPlugin.getDefault().getDialogSettings()
 					.addNewSection(DIALOG_SETTINGS);
 		}
-		
+
 		return settings;
 	}
 
@@ -1143,12 +1144,12 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			}
 			//sb.setSelection((int) Math.floor(oldScroll*sb.getMaximum()));
 		}
-//			
+//
 // The code below attempts to preserve selection, but it also messes up the
 // scroll position (reset to 0) in the common case where selection is first element
 // and more elements are getting added as I scroll down to bottom of list.
-//			
-//			
+//
+//
 //			list.getTable().deselectAll();
 //
 //			list.setItemCount(contentProvider.getNumberOfElements());
@@ -1181,7 +1182,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.ui.dialogs.SelectionStatusDialog#computeResult()
 	 */
 	protected void computeResult() {
@@ -1216,7 +1217,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * Sets the initial pattern used by the filter. This text is copied into the
 	 * selection input on the dialog. A full selection is used in the pattern
 	 * input field.
-	 * 
+	 *
 	 * @param text
 	 *           initial pattern for the filter
 	 * @see QuickSearchDialog#FULL_SELECTION
@@ -1229,7 +1230,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * Sets the initial pattern used by the filter. This text is copied into the
 	 * selection input on the dialog. The <code>selectionMode</code> is used
 	 * to choose selection type for the input field.
-	 * 
+	 *
 	 * @param text
 	 *           initial pattern for the filter
 	 * @param selectionMode
@@ -1244,7 +1245,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	/**
 	 * Gets initial pattern.
-	 * 
+	 *
 	 * @return initial pattern, or <code>null</code> if initial pattern is not
 	 *        set
 	 */
@@ -1254,7 +1255,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	/**
 	 * Returns the current selection.
-	 * 
+	 *
 	 * @return the current selection
 	 */
 	protected StructuredSelection getSelectedItems() {
@@ -1263,7 +1264,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 				.getSelection();
 
 		List selectedItems = selection.toList();
-		
+
 		return new StructuredSelection(selectedItems);
 	}
 
@@ -1271,7 +1272,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * Validates the item. When items on the items list are selected or
 	 * deselected, it validates each item in the selection and the dialog status
 	 * depends on all validations.
-	 * 
+	 *
 	 * @param item
 	 *           an item to be checked
 	 * @return status of the dialog to be set
@@ -1282,7 +1283,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	/**
 	 * Creates an instance of a filter.
-	 * 
+	 *
 	 * @return a filter for items on the items list. Can be <code>null</code>,
 	 *        no filtering will be applied then, causing no item to be shown in
 	 *        the list.
@@ -1301,7 +1302,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		if (this.searcher==null) {
 			if (!newFilter.isTrivial()) {
 				//Create the QuickTextSearcher with the inital query.
-				this.searcher = new QuickTextSearcher(newFilter, context.createPriorityFun(), new QuickTextSearchRequestor() {
+				this.searcher = new QuickTextSearcher(newFilter, context.createPriorityFun(), MAX_LINE_LEN, new QuickTextSearchRequestor() {
 					@Override
 					public void add(LineItem match) {
 						contentProvider.add(match);
@@ -1333,11 +1334,11 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			progressJob.schedule();
 		}
 	}
-	
+
 
 	/**
 	 * Returns name for then given object.
-	 * 
+	 *
 	 * @param item
 	 *           an object from the content provider. Subclasses should pay
 	 *           attention to the passed argument. They should either only pass
@@ -1353,7 +1354,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	/**
 	 * Collects filtered elements. Contains one synchronized, sorted set for
-	 * collecting filtered elements. 
+	 * collecting filtered elements.
 	 * Implementation of <code>ItemsFilter</code> is used to filter elements.
 	 * The key function of filter used in to filtering is
 	 * <code>matchElement(Object item)</code>.
@@ -1393,7 +1394,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 		/**
 		 * Adds filtered item.
-		 * 
+		 *
 		 * @param match
 		 */
 		public void add(LineItem match) {
@@ -1409,10 +1410,10 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 //		/**
 //		 * Removes items from history and refreshes the view.
-//		 * 
+//		 *
 //		 * @param item
 //		 *           to remove
-//		 * 
+//		 *
 //		 * @return removed item
 //		 */
 //		public Object removeHistoryElement(Object item) {
@@ -1432,7 +1433,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 //		/**
 //		 * Adds item to history and refresh view.
-//		 * 
+//		 *
 //		 * @param item
 //		 *           to add
 //		 */
@@ -1452,10 +1453,10 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 //		/**
 //		 * Sets/unsets given item as duplicate.
-//		 * 
+//		 *
 //		 * @param item
 //		 *           item to change
-//		 * 
+//		 *
 //		 * @param isDuplicate
 //		 *           duplicate flag
 //		 */
@@ -1470,7 +1471,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 //		/**
 //		 * Indicates whether given item is a duplicate.
-//		 * 
+//		 *
 //		 * @param item
 //		 *           item to check
 //		 * @return <code>true</code> if item is duplicate
@@ -1481,7 +1482,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
 		 */
 		public Object[] getElements(Object inputElement) {
@@ -1494,7 +1495,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
 		 */
 		public void dispose() {
@@ -1502,7 +1503,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
 		 *     java.lang.Object, java.lang.Object)
 		 */
@@ -1511,7 +1512,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.eclipse.jface.viewers.ILazyContentProvider#updateElement(int)
 		 */
 		public void updateElement(int index) {
@@ -1529,7 +1530,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * be done using an {@link ItemsFilter}. This control should only be
 	 * accessed for listeners that wish to handle events that do not affect
 	 * filtering such as custom traversal.
-	 * 
+	 *
 	 * @return Control or <code>null</code> if the pattern control has not
 	 *        been created.
 	 */
