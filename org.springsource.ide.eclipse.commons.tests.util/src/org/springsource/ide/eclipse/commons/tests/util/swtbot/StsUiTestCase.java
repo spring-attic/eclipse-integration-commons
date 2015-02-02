@@ -12,7 +12,6 @@ package org.springsource.ide.eclipse.commons.tests.util.swtbot;
 
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.swt.finder.SWTBotTestCase;
