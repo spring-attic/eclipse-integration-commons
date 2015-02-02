@@ -143,7 +143,7 @@ public class StsTestUtil {
 		return writer.toString().replace("\\s+\\n", "\\n");
 	}
 
-	public static void cleanUpProjects() throws CoreException {
+	public static void cleanUpProjects() throws Exception {
 		closeAllEditors();
 		deleteAllProjects();
 	}
@@ -235,14 +235,37 @@ public class StsTestUtil {
 		return file;
 	}
 
-	public static void deleteAllProjects() throws CoreException {
+	public static void deleteAllProjects() throws Exception {
 		IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		for (IProject project : allProjects) {
 			project.refreshLocal(IResource.DEPTH_INFINITE, null);
 			project.close(null);
-			deleteResource(project, true);
+			deleteProject(project);
 		}
 		getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, null);
+	}
+
+	private static void deleteProject(IProject project) throws Exception {
+		int retryCount = 10; // wait 1 minute at most
+		Exception lastException = null;
+		while (project.exists() && --retryCount >= 0) {
+			waitForManualBuild();
+			waitForAutoBuild();
+			try {
+				project.delete(true, true, new NullProgressMonitor());
+				lastException = null;
+			} catch (Exception e) {
+				lastException = e;
+				try {
+					Thread.sleep(1000);
+				}
+				catch (InterruptedException e1) {
+				}
+			}
+		}
+		if (lastException!=null) {
+			throw lastException;
+		}
 	}
 
 	/**

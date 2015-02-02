@@ -38,7 +38,7 @@ public abstract class StsUiTestCase extends SWTBotTestCase {
 	private final String defaultKbLayout = SWTBotPreferences.KEYBOARD_LAYOUT;
 
 	@After
-	public void after() throws CoreException {
+	public void after() throws Exception {
 		cleanUp();
 	}
 
@@ -47,7 +47,7 @@ public abstract class StsUiTestCase extends SWTBotTestCase {
 		setUp();
 	}
 
-	protected void cleanUp() throws CoreException {
+	protected void cleanUp() throws Exception {
 		List<? extends SWTBotEditor> editors = bot.editors();
 		for (SWTBotEditor editor : editors) {
 			editor.close();
