@@ -40,7 +40,7 @@
 		id="org.springsource.ide.eclipse.commons.test" version="3.6.4.qualifier">
 	</feature>
 	
-	<feature id="org.eclipse.fx.runtime.min.feature" version="1.2.0"/>
+	<feature id="org.eclipse.fx.runtime.min.feature" version="0.0.0"/>
 
 	<!-- third-party dependencies -->
 	<bundle id="com.springsource.util.common" version="0.0.0"/>
