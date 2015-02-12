@@ -11,6 +11,10 @@
 package org.springsource.ide.eclipse.commons.tests.util;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -45,6 +49,28 @@ public abstract class StsTestCase extends TestCase {
 
 	protected String getSourceWorkspacePath() {
 		return StsTestUtil.getSourceWorkspacePath(getBundleName());
+	}
+
+	public static <T> void assertElements(T[] actual, T... expect) {
+		assertElements(Arrays.asList(actual), expect);
+	}
+
+	public static <T> void assertElements(Collection<T> actual, T... expect) {
+		Set<T> expectedSet = new HashSet<T>(Arrays.asList(expect));
+
+		for (T propVal : actual) {
+			if (!expectedSet.remove(propVal)) {
+				fail("Unexpected element: "+propVal);
+			}
+		}
+
+		if (!expectedSet.isEmpty()) {
+			StringBuilder missing = new StringBuilder();
+			for (T propVal : expectedSet) {
+				missing.append(propVal+"\n");
+			}
+			fail("Missing elements: \n"+missing);
+		}
 	}
 
 	@Override
