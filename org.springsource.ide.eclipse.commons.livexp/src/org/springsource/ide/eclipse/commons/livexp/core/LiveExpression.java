@@ -19,6 +19,9 @@ import org.eclipse.core.runtime.ListenerList;
  */
 public abstract class LiveExpression<V> {
 
+	public static final LiveExpression<Boolean> TRUE = constant(true);
+	public static final LiveExpression<Boolean> FALSE = constant(false);
+
 	private ListenerList fListeners = new ListenerList();
 
 	/**
