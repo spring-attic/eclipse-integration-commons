@@ -70,6 +70,7 @@
 								<checksum file="${dist.full.path}" algorithm="MD5" fileext=".md5" />
 
 								<echo message="=== deploy params ================"/>
+								
 								<echo message="dist.accessKey=${dist.accessKey}"/>
 								<echo message="dist.bucket=${dist.bucket}"/>
 								<echo message="dist.path=${dist.path}"/>
