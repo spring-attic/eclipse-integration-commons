@@ -227,6 +227,43 @@
 			</modules>
 		</profile>
 		
+		<profile>
+			<id>e45</id>
+			<properties>
+				<dist.target>e4.5</dist.target>
+				<dist.platform.name>Mars</dist.platform.name>
+				<dist.platform.id>mars</dist.platform.id>
+				<dist.platform.version>4.5</dist.platform.version>
+				<package.qualifierPrefix>e45</package.qualifierPrefix>
+			</properties>
+			<repositories>
+				<repository>
+					<id>platform</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/eclipse/updates/4.5/</url>
+				</repository>
+				<repository>
+					<id>mars</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/releases/mars/</url>
+				</repository>
+				<repository>
+					<id>swtbot</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/technology/swtbot/snapshots</url>
+				</repository>
+				<repository>
+					<id>javafx</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/efxclipse/updates-released/1.2.0/site</url>
+				</repository>
+			</repositories>
+			<modules>
+				<module>org.springsource.ide.eclipse.dashboard-feature-e44</module>
+				<module>org.springsource.ide.eclipse.commons.site-e44</module>
+			</modules>
+		</profile>
+		
 
 		<profile>
 			<id>build.springsource.com</id>
