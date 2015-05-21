@@ -21,7 +21,8 @@ Export-Package: org.springsource.ide.eclipse.commons.frameworks.core,
  org.springsource.ide.eclipse.commons.frameworks.core.internal.plugins,
  org.springsource.ide.eclipse.commons.frameworks.core.legacyconversion,
  org.springsource.ide.eclipse.commons.frameworks.core.maintype,
- org.springsource.ide.eclipse.commons.frameworks.core.util
+ org.springsource.ide.eclipse.commons.frameworks.core.util,
+ org.springsource.ide.eclipse.commons.frameworks.core.workspace
 Bundle-Localization: plugin
 Import-Package: org.eclipse.core.internal.runtime,
  org.eclipse.core.runtime,
