@@ -12,7 +12,9 @@ package org.springsource.ide.eclipse.commons.livexp.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -23,23 +25,19 @@ import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
  * to. At the moment only coarse grained change events are produced. I.e. there
  * is just one event for "the Set has changed".
  * <p>
- * To allow more efficient incemental processing, clients may be interested in 
+ * To allow more efficient incemental processing, clients may be interested in
  * just knowing about individual elements getting added / removed.
  * This is not yet supported.
- * 
- * TODO: moved to commons. Remove this one and use the one in commons instead.
  */
 public class LiveSet<T> extends LiveExpression<Set<T>> {
-	
-	//TODO: move to commons.
-	
+
 	/**
 	 * To be able to efficiently check that backing collection has changed.
 	 * This assumes the backing collection is owned by the instance and it isn't
 	 * mutated externally.
 	 */
 	private boolean dirty = false;
-	
+
 	public LiveSet() {
 		this(new HashSet<T>());
 	}
@@ -62,14 +60,14 @@ public class LiveSet<T> extends LiveExpression<Set<T>> {
 			dirty = false;
 		}
 		//Note... we are being careful here to put the 'changed' call outside synch block.
-		// only keep locks for short time while maniping the collection  / dirty state. 
+		// only keep locks for short time while maniping the collection  / dirty state.
 		// but notify listeners without holding on to the lock while listeneres are
 		// doing their thing (which could be anything... and lead to deadlocks otherwise!)
 		if (wasDirty) {
 			changed();
 		}
 	}
-	
+
 	@Override
 	protected Set<T> compute() {
 		throw new Error("Shouldn't be reachable because refresh is overridden");
@@ -94,7 +92,7 @@ public class LiveSet<T> extends LiveExpression<Set<T>> {
 		//Carefull... this leads to 'change' call, so must have released monitor before calling!
 		refresh();
 	}
-	
+
 	public void remove(T name) {
 		synchronized (this) {
 			if (!value.contains(name)) {
@@ -107,11 +105,11 @@ public class LiveSet<T> extends LiveExpression<Set<T>> {
 		}
 		refresh();
 	}
-	
+
 	/**
 	 * Gets the current elements in the set as a list. The returned collection
 	 * is a copy of the backing collection. So it is safe to work with this
-	 * collection while other threads continue to make changes to the 
+	 * collection while other threads continue to make changes to the
 	 * liveset.
 	 */
 	public synchronized List<T> getValues() {
@@ -140,6 +138,32 @@ public class LiveSet<T> extends LiveExpression<Set<T>> {
 			}
 		}
 		refresh();
+	}
+
+	/**
+	 * Replaces current elements with newElements. This is more efficient than
+	 * using individual add/remove calls as it only generates at most one 'changed'
+	 * event at the end of applying all the changes (if any).
+	 */
+	public void replaceAll(Collection<T> newElements) {
+		synchronized (this) {
+			//Remove any old elements that should no longer be there
+			Iterator<T> iter = value.iterator();
+			while (iter.hasNext()) {
+				T oldElement = iter.next();
+				if (!newElements.contains(oldElement)) {
+					iter.remove();
+					dirty = true;
+				}
+			}
+
+			//Add any missing new Elements
+			for (T newElement : newElements) {
+				dirty = value.add(newElement) || dirty;
+			}
+		}
+
+		refresh(); //refreshes (if dirty)
 	}
 
 }
