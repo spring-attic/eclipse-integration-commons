@@ -8,7 +8,7 @@
  * Contributors:
  * GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.quicksearch.util;
+package org.springsource.ide.eclipse.commons.ui;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.events.ControlEvent;
@@ -24,11 +24,7 @@ import org.eclipse.swt.widgets.TableColumn;
  * resized automatically as the user resizes the table.
  *
  */
-@Deprecated
 public class TableResizeHelper {
-
-	//TODO: remove this deprecated class. Use the identical copy here instead:
-	// org.springsource.ide.eclipse.commons.ui.TableResizeHelper
 
 	private final TableViewer tableViewer;
 
