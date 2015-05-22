@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Pivotal, Inc.
+ * Copyright (c) 2015 Pivotal, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,11 +18,9 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.OperationCanceledException;
 
 /**
- * @author John Schneider
  * @author Kris De Volder
  */
 public class ProjectOpenCloseListenerManager implements IResourceChangeListener {
@@ -33,13 +31,15 @@ public class ProjectOpenCloseListenerManager implements IResourceChangeListener 
 	}
 
 	private IWorkspace workspace;
-	private ListenerList listeners = null;
+	private ProjectOpenCloseListener listener;
 
-	public ProjectOpenCloseListenerManager(IWorkspace workspace) {
+	public ProjectOpenCloseListenerManager(IWorkspace workspace, ProjectOpenCloseListener listener) {
 		this.workspace = workspace;
+		this.listener = listener;
+		this.workspace.addResourceChangeListener(this);
 	}
 
-	//@Override
+	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
 		try {
 			if (event.getType() == IResourceChangeEvent.PRE_CLOSE || event.getType() == IResourceChangeEvent.PRE_DELETE) {
@@ -83,41 +83,18 @@ public class ProjectOpenCloseListenerManager implements IResourceChangeListener 
 	}
 
 	private void projectClosed(final IProject project) {
-		for (Object l : listeners.getListeners()) {
-			((ProjectOpenCloseListener)l).projectClosed(project);
-		}
+		listener.projectClosed(project);
 	}
 
 	private void projectOpened(final IProject project) {
-		for (Object l : listeners.getListeners()) {
-			((ProjectOpenCloseListener)l).projectOpened(project);
-		}
+		listener.projectOpened(project);
 	}
 
-	public synchronized void add(ProjectOpenCloseListener l) {
-		if (listeners==null) {
-			listeners = new ListenerList();
-			workspace.addResourceChangeListener(this);
-		}
-		listeners.add(l);
-	}
-
-	public synchronized void remove(ProjectOpenCloseListener l) {
-		if (listeners!=null) {
-			listeners.remove(l);
-			if (listeners.isEmpty()) {
-				workspace.removeResourceChangeListener(this);
-				listeners = null;
-			}
+	public void dispose() {
+		if (listener!=null) {
+			workspace.removeResourceChangeListener(this);
+			listener = null;
 		}
 	}
-
-	public int countListeners() {
-		if (listeners!=null) {
-			return listeners.getListeners().length;
-		}
-		return 0;
-	}
-
 
 }

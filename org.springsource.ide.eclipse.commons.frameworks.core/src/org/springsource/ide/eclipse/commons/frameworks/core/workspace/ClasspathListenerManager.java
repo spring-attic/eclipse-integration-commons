@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.core.workspace;
 
-import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.IJavaElement;
@@ -46,7 +45,7 @@ public class ClasspathListenerManager {
 				break;
 			case IJavaElement.JAVA_PROJECT:
 				if (isClasspathChanged(delta.getFlags())) {
-					notifyListeners((IJavaProject)el);
+					listener.classpathChanged((IJavaProject)el);
 				}
 				break;
 			default:
@@ -68,27 +67,18 @@ public class ClasspathListenerManager {
 		}
 	}
 
+	private ClasspathListener listener;
+	private MyListener myListener;
 
-	private ListenerList listeners = null;
-
-	public synchronized void add(ClasspathListener l) {
-		if (listeners==null) {
-			listeners = new ListenerList();
-			JavaCore.addElementChangedListener(new MyListener(), ElementChangedEvent.POST_CHANGE);
-		}
-		listeners.add(l);
+	public ClasspathListenerManager(ClasspathListener listener) {
+		this.listener = listener;
+		JavaCore.addElementChangedListener(myListener=new MyListener(), ElementChangedEvent.POST_CHANGE);
 	}
 
-	public void remove(ClasspathListener l) {
-		if (listeners!=null) {
-			listeners.remove(l);
-		}
-	}
-
-	private void notifyListeners(IJavaProject el) {
-		for (Object _l : listeners.getListeners()) {
-			ClasspathListener l = (ClasspathListener) _l;
-			l.classpathChanged(el);
+	public void dispose() {
+		if (myListener!=null) {
+			JavaCore.removeElementChangedListener(myListener);
+			myListener = null;
 		}
 	}
 
