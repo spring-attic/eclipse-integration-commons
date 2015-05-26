@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
@@ -24,15 +25,21 @@ import org.eclipse.debug.ui.DebugUITools;
 
 public class LaunchUtils {
 
+	private static final boolean DEBUG = (""+Platform.getLocation()).contains("kdvolder");
+
+	private static void debug(String string) {
+		if (DEBUG) {
+			System.out.println(string);
+		}
+	}
+
 	/**
 	 * Execute some code as soon as a given list of launches are all terminated. If the launches are
 	 * already terminated then the code is executed synchronously, otherwise it is executed asynchronously when
 	 * a termination event is received.
-	 *
-	 * WARNING: the collection is destroyed in the process (elements are removed when they are terminated).
 	 */
 	public static void whenTerminated(List<ILaunch> launches, Runnable runnable) {
-		new WhenTerminated(launches, runnable);
+		new WhenTerminated(new ArrayList<ILaunch>(launches), runnable);
 	}
 
 	private static class WhenTerminated implements IDebugEventSetListener {
