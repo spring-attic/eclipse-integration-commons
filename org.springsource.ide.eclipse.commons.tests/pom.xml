@@ -26,6 +26,13 @@
 					<testClass>org.springsource.ide.eclipse.commons.tests.AllIdeTests</testClass>
 					<argLine>-Xmx512m</argLine>
 				</configuration>
+	            <dependencies>
+	              <dependency>
+	                <type>eclipse-plugin</type>
+	                <artifactId>org.eclipse.equinox.event</artifactId>
+	                <version>0.0.0</version>
+	              </dependency>
+	            </dependencies>
 			</plugin>
 
 			<plugin>
