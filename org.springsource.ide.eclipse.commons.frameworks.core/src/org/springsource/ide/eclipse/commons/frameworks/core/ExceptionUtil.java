@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.core;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -102,7 +105,7 @@ public class ExceptionUtil {
 	}
 
 	public static final IStatus OK_STATUS = status(IStatus.OK, "");
-	
+
 	public static Exception exception(Throwable e) {
 		if (e instanceof Exception) {
 			return (Exception)e;
@@ -113,6 +116,21 @@ public class ExceptionUtil {
 
 	public static RuntimeException unchecked(Exception e) {
 		return new RuntimeException(e);
+	}
+
+	public static String stacktrace() {
+		return stacktrace(new Exception("Stacktrace"));
+	}
+
+	public static String stacktrace(Exception exception) {
+		ByteArrayOutputStream dump = new ByteArrayOutputStream();
+		PrintStream out = new PrintStream(dump);
+		try {
+			exception.printStackTrace(out);
+		} finally {
+			out.close();
+		}
+		return dump.toString();
 	}
 
 }
