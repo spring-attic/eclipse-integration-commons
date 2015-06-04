@@ -75,8 +75,6 @@
 		<signing.skip>true</signing.skip>
 		<signing.alias>pivotal</signing.alias>
 		<signing.keystore>~/.keytool/pivotal.jks</signing.keystore>
-		<signing.store.password>${STORE_PASSWORD}</signing.store.password>
-		<signing.key.password>${KEY_PASSWORD}</signing.key.password>
 
 		<!-- Common Properties -->
 		<dist.name>Eclipse Integration Commons</dist.name>
