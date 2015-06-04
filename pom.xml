@@ -493,8 +493,8 @@
 					<storepass>${signing.store.password}</storepass>
 					<keypass>${signing.key.password}</keypass>
 					<arguments>
-						<argument>-sigalg</argument><argument>SHA256withRSA</argument>
-						<argument>-digestalg</argument><argument>SHA-256</argument>
+						<argument>-sigalg</argument><argument>SHA1withRSA</argument>
+						<argument>-digestalg</argument><argument>SHA1</argument>
 					</arguments>
 				</configuration>
 			</plugin>
