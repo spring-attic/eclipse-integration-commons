@@ -11,14 +11,21 @@
 package org.springsource.ide.eclipse.commons.livexp.core;
 
 public class OrExpression extends CompositeExpression<Boolean> {
-	
+
 	public OrExpression() {
 		super(false);
 	}
 
+	public OrExpression(LiveExpression<Boolean>... children) {
+		this();
+		for (LiveExpression<Boolean> c : children) {
+			addChild(c);
+		}
+	}
+
 	@Override
 	protected Boolean compute() {
-		//TODO: could be smarter about how we manage dependencies on 
+		//TODO: could be smarter about how we manage dependencies on
 		// our children. As soon as value is computed we really only depend
 		// on changes to the first n children used during the computation.
 		for (LiveExpression<Boolean> c : getChildren()) {
@@ -38,5 +45,5 @@ public class OrExpression extends CompositeExpression<Boolean> {
 		}
 		return false;
 	}
-	
+
 }
