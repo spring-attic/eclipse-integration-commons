@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2015 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -60,6 +60,7 @@ import org.springsource.ide.eclipse.commons.ui.IIdeUiStartup;
  * @author Christian Dupuis
  * @author Terry Denney
  * @author Leo Dos Santos
+ * @author Martin Lippert
  */
 @SuppressWarnings("restriction")
 public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContext, IConfigurator {
@@ -131,7 +132,7 @@ public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContex
 	/**
 	 * Returns true if <code>name</code> matches the expected constraints
 	 * expressed by the other parameters.
-	 * 
+	 *
 	 * @param name the name of the directory on disk
 	 * @param path the expected path prefix
 	 * @param versionRange the expected version range
@@ -317,8 +318,20 @@ public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContex
 
 	public File getSystemLocation() {
 		File file = getFileFromLocation(Platform.getInstallLocation());
+
 		if (file != null && file.getParentFile() != null) {
-			return file.getParentFile();
+
+			// check new OSX app layout and select the parent folder outside of
+			// the .app directory instead of a folder inside of the .app folder
+			if (Platform.OS_MACOSX.equals(Platform.getOS()) && file.getPath().contains(".app")
+					&& file.getParentFile().getParentFile() != null
+					&& file.getParentFile().getParent().endsWith(".app")
+					&& file.getParentFile().getParentFile().getParentFile() != null) {
+				return file.getParentFile().getParentFile().getParentFile();
+			}
+			else {
+				return file.getParentFile();
+			}
 		}
 		return null;
 	}
