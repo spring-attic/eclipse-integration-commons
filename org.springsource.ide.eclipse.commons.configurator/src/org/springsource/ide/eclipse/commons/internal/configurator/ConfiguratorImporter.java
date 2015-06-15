@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -321,17 +323,22 @@ public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContex
 
 		if (file != null && file.getParentFile() != null) {
 
+			File systemLocation = file.getParentFile();
+
 			// check new OSX app layout and select the parent folder outside of
 			// the .app directory instead of a folder inside of the .app folder
-			if (Platform.OS_MACOSX.equals(Platform.getOS()) && file.getPath().contains(".app")
-					&& file.getParentFile().getParentFile() != null
-					&& file.getParentFile().getParent().endsWith(".app")
-					&& file.getParentFile().getParentFile().getParentFile() != null) {
-				return file.getParentFile().getParentFile().getParentFile();
+			if (Platform.OS_MACOSX.equals(Platform.getOS())) {
+				Pattern pattern = Pattern.compile("(.+)/.*\\.app/Contents");
+				Matcher m = pattern.matcher(systemLocation.getAbsolutePath());
+				if (m.find()) {
+					File auxFile = new File(m.group(1));
+					if (auxFile.exists()) {
+						systemLocation = auxFile;
+					}
+				}
 			}
-			else {
-				return file.getParentFile();
-			}
+
+			return systemLocation;
 		}
 		return null;
 	}
