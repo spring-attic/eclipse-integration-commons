@@ -12,13 +12,10 @@ package org.springsource.ide.eclipse.commons.livexp.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 
 /**
  * Similar to a 'live variable' but represents a set of values that can be listened
