@@ -10,9 +10,6 @@
             class="org.springsource.ide.eclipse.commons.ui.CommonsPreferencePage"
             id="org.springsource.ide.eclipse.commons.preferencePage"
             name="Spring">
-         <keywordReference
-               id="org.springsource.ide.eclipse.commons.ui.tips.keyword">
-         </keywordReference>
       </page>
       <page
             category="org.springsource.ide.eclipse.commons.preferencePage"
@@ -45,10 +42,6 @@
 	</extension>
  <extension
        point="org.eclipse.ui.keywords">
-    <keyword
-          id="org.springsource.ide.eclipse.commons.ui.tips.keyword"
-          label="tip tips spring tool">
-    </keyword>
     <keyword
           id="org.springsource.ide.eclipse.commons.ui.global_prefs.keyword"
           label="global curator preferences curated spring tool">
