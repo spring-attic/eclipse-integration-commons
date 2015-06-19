@@ -32,17 +32,17 @@ import org.springsource.ide.eclipse.commons.quicksearch.core.priority.PrioriTree
 import org.springsource.ide.eclipse.commons.quicksearch.core.priority.PriorityFunction;
 
 /**
- * An instance of this class groups together some logic to inform the 
+ * An instance of this class groups together some logic to inform the
  * quicksearch dialog about 'search context'. I.e. things such as the
  * current selection and open editors when the dialog is opened.
  * <p>
  * This contextual information is used to inform the PriorityFunction
  * for the search process.
- * 
+ *
  * @author Kris De Volder
  */
 public class QuickSearchContext {
-	
+
 	/**
 	 * We remember the last result of getOpenFiles in here. This is so that we can return this
 	 * if we are having trouble to compute the open files. Sometimes we may not be able to
@@ -50,13 +50,13 @@ public class QuickSearchContext {
 	 * a stale list of files than nothing at all.
 	 */
 	private static Collection<IFile> lastOpenFiles = Arrays.asList(); //Empty list to start with.
-	
+
 	private IWorkbenchWindow window;
-	
+
 	public QuickSearchContext(IWorkbenchWindow window) {
 		this.window = window;
 	}
-	
+
 	/**
 	 * Create a walker priority function based on the current 'context'.
 	 */
@@ -64,18 +64,18 @@ public class QuickSearchContext {
 		PrioriTree priorities = PrioriTree.create();
 		priorities.configure(QuickSearchActivator.getDefault().getPreferences());
 		try {
-// TODO: This is not working correctly right now, if the selected resources are containers / folders. 
+// TODO: This is not working correctly right now, if the selected resources are containers / folders.
 // The PrioriTree only assigns a priority to the folder itself, but not to its children.
 // So open editors will automatically take priority over the children of selected projects.
 // To fix, PrioriTree will need a mechanism to assign priorities to children.
-// If doing so, care must be taken not to accidentally assign priorities to ignored 
+// If doing so, care must be taken not to accidentally assign priorities to ignored
 // resources.
-			
+
 			Collection<IResource> selectedResources = getSelectedResources();
 			for (IResource r : selectedResources) {
 				priorities.setPriority(r.getFullPath(), 3*PriorityFunction.PRIORITY_INTERESTING);
 			}
-			
+
 			IFile currentFile = getActiveFile();
 			if (currentFile!=null) {
 				//Current file is more interesting than other open files
@@ -103,13 +103,18 @@ public class QuickSearchContext {
 						try {
 							IEditorInput input = editor.getEditorInput();
 							if (input!=null) {
-								IFile file = (IFile) input.getAdapter(IFile.class);
+								IFile file = input.getAdapter(IFile.class);
 								if (file != null) {
 								    files.add(file);
 								}
 							}
 						} catch (PartInitException e) {
-							QuickSearchActivator.log(e);
+							//Ignore silently. See: https://issuetracker.springsource.com/browse/STS-4156
+							//Rationale: Whatever may be the reason we can't obtain a 'input' for the editor.
+							//It likely means there's no text to search in that editor, so it is safe to ignore
+							//without loss of functionality to the quicksearch engine.
+
+							//QuickSearchActivator.log(e);
 						}
 					}
 					lastOpenFiles = files;
@@ -120,7 +125,7 @@ public class QuickSearchContext {
 		} finally {
 		}
 	}
-	
+
 	/**
 	 * Gets the IFile that is currently open in the active editor.
 	 * @return IFile or null if there is no current editor or the editor isn't associated to a file.
@@ -132,13 +137,13 @@ public class QuickSearchContext {
 			if (editor!=null) {
 				IEditorInput input = editor.getEditorInput();
 				if (input!=null) {
-					return (IFile) input.getAdapter(IFile.class);
+					return input.getAdapter(IFile.class);
 				}
 			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Get a Collection of selected resources from the active selection if that selection is
 	 * a Structured selection (e.g. in navigator or project/package explorer)
@@ -155,7 +160,7 @@ public class QuickSearchContext {
 						resources.add((IResource) e);
 					} else if (e instanceof IAdaptable) {
 						IAdaptable ae = (IAdaptable) e;
-						IResource r = (IResource) ae.getAdapter(IResource.class);
+						IResource r = ae.getAdapter(IResource.class);
 						if (r!=null) {
 							resources.add(r);
 						}
