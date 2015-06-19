@@ -194,16 +194,16 @@ public class StsProperties {
 
 	private InputStream uriStream(URI uri, IProgressMonitor mon) throws CoreException, MalformedURLException, IOException {
 		if (isHangingBug()) {
+			//Bug: using HttpUtil causes a hang. So instead we use a simple URLConnection here.
 			return new HttpClientTransportService().stream(uri, mon);
-//			//Bug: using HttpUtil causes a hang. So instead we use a simple URLConnection here. This doesn't
-//			// provide the same level of completeness (i.e. proxy authentication is not supported yet)
-//			//But at least it doesn't hang.
-//			URLConnectionFactory cf = URLConnectionFactory.getDefault();
-//			URLConnection conn = cf.createConnection(uri.toURL());
-//			return conn.getInputStream();
-
 		} else {
-			return HttpUtil.stream(uri, mon);
+			try {
+				return HttpUtil.stream(uri, mon);
+			} catch (Exception e) {
+				//Bug: on e45 when called 'too early' this throws an NPE.
+				// So instead we use a simple URLConnection here.
+				return new HttpClientTransportService().stream(uri, mon);
+			}
 		}
 	}
 
