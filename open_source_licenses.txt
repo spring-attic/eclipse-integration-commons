@@ -1,6 +1,6 @@
 open_source_license.txt
 
-Eclipse Integration Commons 3.6.0 GA
+Eclipse Integration Commons 3.7.0 GA
 
 
 =================================================================
@@ -23,7 +23,6 @@ the copyright notice(s) and the full text of the license associated with each co
 
 
 
-
 SECTION 1: BSD-STYLE, MIT-STYLE, OR SIMILAR STYLE LICENSES
 
    >>> org.aopalliance-1.0.0
@@ -35,33 +34,28 @@ SECTION 1: BSD-STYLE, MIT-STYLE, OR SIMILAR STYLE LICENSES
 SECTION 2: Apache License, V2.0
 
    >>> org.apache.commons.logging-1.1.1
-   >>> org.springframework.aop-4.0.2
-   >>> org.springframework.beans-4.0.2
-   >>> org.springframework.context-4.0.2
-   >>> org.springframework.context.support-4.0.2
-   >>> org.springframework.core-4.0.2
-   >>> org.springframework.data.core-1.7.0
-   >>> org.springframework.expression-4.0.2
-   >>> org.springframework.jdbc-4.0.2
-   >>> org.springframework.jms-4.0.2
-   >>> org.springframework.orm-4.0.2
-   >>> org.springframework.oxm-4.0.2
+   >>> org.apache.httpcomponents.httpclient-4.3.6
+   >>> org.apache.httpcomponents.httpcore-4.3.3
+   >>> org.springframework.aop-4.1.4
+   >>> org.springframework.beans-4.1.4
+   >>> org.springframework.context-4.1.4
+   >>> org.springframework.context.support-4.1.4
+   >>> org.springframework.core-4.1.4
+   >>> org.springframework.data.core-1.9.1
+   >>> org.springframework.expression-4.1.4
+   >>> org.springframework.jdbc-4.1.4
+   >>> org.springframework.jms-4.1.4
+   >>> org.springframework.orm-4.1.4
+   >>> org.springframework.oxm-4.1.4
    >>> org.springframework.roo.wrapping.json-simple-1.1.0
-   >>> org.springframework.transaction-4.0.2
-   >>> org.springframework.uaa.client-1.0.3
-   >>> org.springframework.web-4.0.2
-   >>> org.springframework.web.servlet-4.0.2
+   >>> org.springframework.transaction-4.1.4
+   >>> org.springframework.web-4.1.4
+   >>> org.springframework.web.servlet-4.1.4
    >>> org.springsource.util.common-2.0.0
 
 
 
-SECTION 3: Common Development and Distribution License, V1.0
-
-   >>> javax.annotation-1.1.1
-
-
-
-SECTION 4: Eclipse Public License, V1.0
+SECTION 3: Eclipse Public License, V1.0
 
    >>> com.google.protobuf-2.4.0
    >>> edu.emory.mathcs.backport-3.1.0
@@ -72,23 +66,15 @@ SECTION 4: Eclipse Public License, V1.0
    >>> javax.mail-1.4.0
    >>> javax.xml.stream-1.0.1
    >>> javax.xml.ws-2.1.0
-   >>> org.apache.commons.codec-1.3.0
    >>> org.apache.commons.codec-1.6.0
    >>> org.apache.commons.collections-3.2.0
    >>> org.apache.commons.io-2.0.1
-   >>> org.apache.httpcomponents.httpclient-4.1.2
-   >>> org.apache.httpcomponents.httpclient-4.2.6
-   >>> org.apache.httpcomponents.httpcore-4.1.4
-   >>> org.apache.httpcomponents.httpcore-4.2.5
    >>> org.codehaus.jackson.core-1.6.0
    >>> org.codehaus.jackson.mapper-1.6.0
-   >>> org.eclipse.fx.core-0.9.0
-   >>> org.eclipse.fx.core-1.0.0
+   >>> org.eclipse.fx.core-1.2.0
    >>> org.eclipse.fx.javafx-2.2.0
-   >>> org.eclipse.fx.osgi-0.9.0
-   >>> org.eclipse.fx.osgi-1.0.0
-   >>> org.eclipse.fx.osgi.util-0.9.0
-   >>> org.eclipse.fx.osgi.util-1.0.0
+   >>> org.eclipse.fx.osgi-1.2.0
+   >>> org.eclipse.fx.osgi.util-1.2.0
 
 
 
@@ -97,7 +83,7 @@ APPENDIX. Standard License Files
    >>> Eclipse Public License, V1.0
 
    >>> Apache License, V2.0
-
+   
    >>> Common Development and Distribution License, V1.0
 
 
@@ -160,151 +146,355 @@ This product includes/uses software(s) developed by 'an unknown organization'
 - Unnamed - logkit: logkit: jar: 1.0.1
 
 
->>> org.springframework.aop-4.0.2
-
-Copyright 2002-2007 the original author or authors.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
-
-You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
-See the License for the specific language governing permissions and limitations under the License.
-
-
->>> org.springframework.beans-4.0.2
-
-Copyright 2002-2007 the original author or authors.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
-
-You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
-See the License for the specific language governing permissions and limitations under the License.
-
-
->>> org.springframework.context-4.0.2
-
-Copyright 2002-2008 the original author or authors.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
-
-You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
-See the License for the specific language governing permissions and limitations under the License.
-
-
->>> org.springframework.context.support-4.0.2
-
-Copyright 2002-2008 the original author or authors.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
-
-You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and limitations under the License.
-
-
->>> org.springframework.core-4.0.2
-
-Copyright 2002-2008 the original author or authors.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
-
-You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
-See the License for the specific language governing permissions and limitations under the License.
-
-
->>> org.springframework.data.core-1.7.0
-
-Copyright (c) 2011 by the original author(s).
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-
->>> org.springframework.expression-4.0.2
-
-Copyright 2002-2009 the original author or authors.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
-
-You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
-See the License for the specific language governing permissions and limitations under the License.
-
-
->>> org.springframework.jdbc-4.0.2
-
-Copyright 2002-2009 the original author or authors.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
-
-You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
-See the License for the specific language governing permissions and limitations under the License.
-
-
->>> org.springframework.jms-4.0.2
-
-Copyright 2002-2009 the original author or authors.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-
->>> org.springframework.orm-4.0.2
-
-Copyright 2002-2011 the original author or authors.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
-
-You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
-See the License for the specific language governing permissions and limitations under the License.
-
-
->>> org.springframework.oxm-4.0.2
-
-Copyright 2002-2011 the original author or authors.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
-
-You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
-See the License for the specific language governing permissions and limitations under the License.
+>>> org.apache.httpcomponents.httpclient-4.3.6
+
+About
+About This Content
+November 21, 2014
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
+http://www.eclipse.org
+.
+Third Party Content
+The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
+HttpClient 4.3
+The plug-in includes software developed by The Apache Software Foundation as part of the HttpComponents project.
+Your use of the HttpClient code is subject to the terms and conditions of the Apache Software License 2.0. A copy of the license is contained in the file 
+LICENSE.txt
+ and is also available at 
+http://www.apache.org/licenses/LICENSE-2.0.html
+.
+The names "HttpClient" and "Apache Software Foundation" must not be used to endorse or promote products derived from this software without prior written permission. For written permission, please contact 
+apache@apache.org
+.
+Original binaries and source are available from the 
+Apache HttpClient website
+.
+
+
+>>> org.apache.httpcomponents.httpcore-4.3.3
+
+About
+About This Content
+November 21, 2014
+License
+The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
+http://www.eclipse.org/legal/epl-v10.html
+. For purposes of the EPL, "Program" will mean the Content.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
+http://www.eclipse.org
+.
+Third Party Content
+The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
+HttpCore 4.3
+The plug-in includes software developed by The Apache Software Foundation as part of the HttpComponents project.
+Your use of the HttpCore code is subject to the terms and conditions of the Apache Software License 2.0. A copy of the license is contained in the file 
+LICENSE.txt
+ and is also available at 
+http://www.apache.org/licenses/LICENSE-2.0.html
+.
+The names "HttpCore" and "Apache Software Foundation" must not be used to endorse or promote products derived from this software without prior written permission. For written permission, please contact 
+apache@apache.org
+.
+Original binaries and source are available from the 
+Apache HttpComponents website
+.
+
+
+>>> org.springframework.aop-4.1.4
+
+Spring Framework 4.1.4.RELEASE
+Copyright (c) 2002-2014 Pivotal Software, Inc.
+
+This product is licensed to you under the Apache License, Version 2.0
+(the "License"). You may not use this product except in compliance with
+the License.
+
+This product may include a number of subcomponents with separate
+copyright notices and license terms. Your use of the source code for
+these subcomponents is subject to the terms and conditions of the
+subcomponent's license, as noted in the license.txt file.
+
+
+=======================================================================
+
+SPRING FRAMEWORK 4.1.4.RELEASE SUBCOMPONENTS:
+
+Spring Framework 4.1.4.RELEASE includes a number of subcomponents
+with separate copyright notices and license terms. The product that
+includes this file does not necessarily use all the open source
+subcomponents referred to below. Your use of the source
+code for these subcomponents is subject to the terms and
+conditions of the following licenses.
+
+
+>>> ASM 4.0 (org.ow2.asm:asm:4.0, org.ow2.asm:asm-commons:4.0):
+
+Copyright (c) 2000-2011 INRIA, France Telecom
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+1. Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holders nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGE.
+
+Copyright (c) 1999-2009, OW2 Consortium <http://www.ow2.org/>
+
+
+>>> CGLIB 3.0 (cglib:cglib:3.0):
+
+Per the LICENSE file in the CGLIB JAR distribution downloaded from
+http://sourceforge.net/projects/cglib/files/cglib3/3.0/cglib-3.0.jar/download,
+CGLIB 3.0 is licensed under the Apache License, version 2.0, the text of which
+is included above.
+
+
+>>> org.springframework.beans-4.1.4
+
+/*
+* Copyright 2002-2014 the original author or authors.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+
+>>> org.springframework.context-4.1.4
+
+/*
+* Copyright 2002-2014 the original author or authors.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+
+
+>>> org.springframework.context.support-4.1.4
+
+/*
+* Copyright 2002-2014 the original author or authors.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+
+>>> org.springframework.core-4.1.4
+
+/*
+* Copyright 2002-2014 the original author or authors.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+
+ADDITIONAL LICENSE INFORMATION:
+
+> BSD
+
+spring-core-4.1.4.RELEASE-sources.jar/ org/ springframework/ asm/ Attribute.java
+
+* ASM: a very small and fast Java bytecode manipulation framework
+* Copyright (c) 2000-2011 INRIA, France Telecom
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
+* are met:
+* 1. Redistributions of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+* 2. Redistributions in binary form must reproduce the above copyright
+* notice, this list of conditions and the following disclaimer in the
+* documentation and/or other materials provided with the distribution.
+* 3. Neither the name of the copyright holders nor the names of its
+* contributors may be used to endorse or promote products derived from
+* this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+* ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+* LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+* SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+* INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+* CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+* THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+
+>>> org.springframework.data.core-1.9.1
+
+Spring Data Commons 1.9.1
+Copyright (c) [2010-2014] Pivotal Software, Inc.
+
+This product is licensed to you under the Apache License, Version 2.0 (the "License").
+You may not use this product except in compliance with the License.
+
+This product may include a number of subcomponents with
+separate copyright notices and license terms. Your use of the source
+code for the these subcomponents is subject to the terms and
+conditions of the subcomponent's license, as noted in the LICENSE file.
+
+
+>>> org.springframework.expression-4.1.4
+
+/*
+* Copyright 2002-2014 the original author or authors.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+
+
+>>> org.springframework.jdbc-4.1.4
+
+Copyright 2002-2012 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+
+
+>>> org.springframework.jms-4.1.4
+
+Copyright 2002-2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+
+
+>>> org.springframework.orm-4.1.4
+
+
+ * Copyright 2002-2012 the original author or authors.
+
+ *
+
+ * Licensed under the Apache License, Version 2.0 (the ""License"");
+
+ * you may not use this file except in compliance with the License.
+
+ * You may obtain a copy of the License at
+
+ *
+
+ *      http://www.apache.org/licenses/LICENSE-2.0
+
+ *
+
+ * Unless required by applicable law or agreed to in writing, software
+
+ * distributed under the License is distributed on an ""AS IS"" BASIS,
+
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+ * See the License for the specific language governing permissions and
+
+ * limitations under the License.
+
+
+
+>>> org.springframework.oxm-4.1.4
+
+Copyright 2002-2012 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
 
 
 >>> org.springframework.roo.wrapping.json-simple-1.1.0
@@ -312,69 +502,55 @@ See the License for the specific language governing permissions and limitations 
 License: Apache 2.0
 
 
->>> org.springframework.transaction-4.0.2
+>>> org.springframework.transaction-4.1.4
 
-Copyright 2002-2006 the original author or authors.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-
->>> org.springframework.uaa.client-1.0.3
-
-Spring User Agent Analysis (UAA) is copyright (C) 2010 SpringSource
-Inc. All Rights Reserved.
+Copyright 2002-2012 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
 
 
-All parts of UAA except the "server" module are licensed under the
-Apache Software License, version 2.0:
+>>> org.springframework.web-4.1.4
 
-     http://www.apache.org/licenses/LICENSE-2.0.html. 
-
-The "server" module is commercial/proprietary to VMware and all rights 
-are reserved. The "server" module consists of all files under the 
-"server" directory and its sub-directories. The "client" module does not require the "server" module and thus the "client" module can be freely redistributed under the aforementioned Apache Software License.
-
-Other software is used by Spring UAA as follows:
-
-* Google Protocol Buffers for Java (http://code.google.com/p/protobuf) is used for encoding and decoding objects into an optimised wire format. This library is licensed under the New BSD License.
-
-
-* Base64 (http://iharder.net/base64) is used for Base64 encoding and decoding. It has been formally granted to the public domain.
-
-
->>> org.springframework.web-4.0.2
-
-Copyright 2002-2011 the original author or authors.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
-You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
-See the License for the specific language governing permissions and limitations under the License.
+Copyright 2002-2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
 
 
->>> org.springframework.web.servlet-4.0.2
+>>> org.springframework.web.servlet-4.1.4
 
-Copyright 2007 the original author or authors.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
-
-You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
-See the License for the specific language governing permissions and limitations under the License.
+Copyright 2002-2012 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
 
 
 >>> org.springsource.util.common-2.0.0
@@ -394,19 +570,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 
---------------- SECTION 3: Common Development and Distribution License, V1.0 ----------
-
-Common Development and Distribution License, V1.0 is applicable to the following component(s).
-
-
->>> javax.annotation-1.1.1
-
-[PLEASE NOTE:  PIVOTAL SOFTWARE, INC. ELECTS TO USE AND DISTRIBUTE THIS COMPONENT UNDER THE TERMS OF THE CDDL 1.0. PLEASE SEE THE APPENDIX TO REVIEW THE FULL TEXT OF CDDL 1.0. THE ORIGINAL LICENSE TERMS ARE REPRODUCED BELOW ONLY AS A REFERENCE.] 
-
-License: CDDL 1.0
-
-
---------------- SECTION 4: Eclipse Public License, V1.0 ----------
+--------------- SECTION 3: Eclipse Public License, V1.0 ------------
 
 Eclipse Public License, V1.0 is applicable to the following component(s).
 
@@ -658,37 +822,6 @@ http://www.apache.org/licenses/LICENSE-2.0
 The source for the javax.xml.ws bundle is available on the Apache Geronimo website at http://geronimo.apache.org/.
 
 
->>> org.apache.commons.codec-1.3.0
-
-About
-About This Content
-May 30, 2008
-License
-The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
-. For purposes of the EPL, "Program" will mean the Content.
-If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at http://www.eclipse.org.
-
-Third Party Content
-
-(ADDITIONAL LICENSE INFORMATION)
-
-The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
-
-
-> Apache 2.0
-
-Apache Commons Codec 1.3
-This code is licensed under the Apache License v2.0 and can be found at 
-http://www.apache.org/licenses/LICENSE-2.0.txt
-. (
-local copy
-)
-Original binaries and source are available from the 
-Apache Commons Codec website
-.
-
-
 >>> org.apache.commons.codec-1.6.0
 
 About
@@ -796,122 +929,6 @@ http://commons.apache.org/io/
 .
 
 
->>> org.apache.httpcomponents.httpclient-4.1.2
-
-About
-About This Content
-May 30, 2008
-License
-The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
-. For purposes of the EPL, "Program" will mean the Content.
-If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
-.
-Third Party Content
-The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
-HttpClient 4.1
-The plug-in includes software developed by The Apache Software Foundation as part of the HttpComponents project.
-Your use of the HttpClient code is subject to the terms and conditions of the Apache Software License 2.0. A copy of the license is contained in the file 
-LICENSE.txt
- and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0.html
-.
-The names "HttpClient" and "Apache Software Foundation" must not be used to endorse or promote products derived from this software without prior written permission. For written permission, please contact 
-apache@apache.org
-.
-Original binaries and source are available from the 
-Apache HttpClient website
-.
-
-
->>> org.apache.httpcomponents.httpclient-4.2.6
-
-About
-About This Content
-May 30, 2008
-License
-The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
-. For purposes of the EPL, "Program" will mean the Content.
-If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
-.
-Third Party Content
-The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
-HttpClient 4.1
-The plug-in includes software developed by The Apache Software Foundation as part of the HttpComponents project.
-Your use of the HttpClient code is subject to the terms and conditions of the Apache Software License 2.0. A copy of the license is contained in the file 
-LICENSE.txt
- and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0.html
-.
-The names "HttpClient" and "Apache Software Foundation" must not be used to endorse or promote products derived from this software without prior written permission. For written permission, please contact 
-apache@apache.org
-.
-Original binaries and source are available from the 
-Apache HttpClient website
-.
-
-
->>> org.apache.httpcomponents.httpcore-4.1.4
-
-About
-About This Content
-May 30, 2008
-License
-The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
-. For purposes of the EPL, "Program" will mean the Content.
-If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
-.
-Third Party Content
-The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
-HttpCore 4.1
-The plug-in includes software developed by The Apache Software Foundation as part of the HttpComponents project.
-Your use of the HttpCore code is subject to the terms and conditions of the Apache Software License 2.0. A copy of the license is contained in the file 
-LICENSE.txt
- and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0.html
-.
-The names "HttpCore" and "Apache Software Foundation" must not be used to endorse or promote products derived from this software without prior written permission. For written permission, please contact 
-apache@apache.org
-.
-Original binaries and source are available from the 
-Apache HttpComponents website
-.
-
-
->>> org.apache.httpcomponents.httpcore-4.2.5
-
-About
-About This Content
-May 30, 2008
-License
-The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
-. For purposes of the EPL, "Program" will mean the Content.
-If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
-.
-Third Party Content
-The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
-HttpCore 4.1
-The plug-in includes software developed by The Apache Software Foundation as part of the HttpComponents project.
-Your use of the HttpCore code is subject to the terms and conditions of the Apache Software License 2.0. A copy of the license is contained in the file 
-LICENSE.txt
- and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0.html
-.
-The names "HttpCore" and "Apache Software Foundation" must not be used to endorse or promote products derived from this software without prior written permission. For written permission, please contact 
-apache@apache.org
-.
-Original binaries and source are available from the 
-Apache HttpComponents website
-.
-
-
 >>> org.codehaus.jackson.core-1.6.0
 
 About
@@ -975,21 +992,7 @@ http://jackson.codehaus.org/
 .
 
 
->>> org.eclipse.fx.core-0.9.0
-
-About
-About This Content
-June 5, 2006
-License
-The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
-. For purposes of the EPL, "Program" will mean the Content.
-If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
-.
-
-
->>> org.eclipse.fx.core-1.0.0
+>>> org.eclipse.fx.core-1.2.0
 
 About
 About This Content
@@ -1017,7 +1020,7 @@ http://www.eclipse.org
 .
 
 
->>> org.eclipse.fx.osgi-0.9.0
+>>> org.eclipse.fx.osgi-1.2.0
 
 About
 About This Content
@@ -1031,35 +1034,7 @@ http://www.eclipse.org
 .
 
 
->>> org.eclipse.fx.osgi-1.0.0
-
-About
-About This Content
-June 5, 2006
-License
-The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
-. For purposes of the EPL, "Program" will mean the Content.
-If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
-.
-
-
->>> org.eclipse.fx.osgi.util-0.9.0
-
-About
-About This Content
-June 5, 2006
-License
-The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
-. For purposes of the EPL, "Program" will mean the Content.
-If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
-.
-
-
->>> org.eclipse.fx.osgi.util-1.0.0
+>>> org.eclipse.fx.osgi.util-1.2.0
 
 About
 About This Content
@@ -1304,7 +1279,7 @@ to a jury trial in any resulting litigation.
 
 
 
---------------- SECTION 2: Apache License, V2.0 -----------
+--------------- SECTION 2: Apache License, V2.0 -------------
 
 Apache License 
 
@@ -1480,7 +1455,6 @@ asserted against, such Contributor by reason of your accepting any such
 warranty or additional liability.
 
 END OF TERMS AND CONDITIONS 
-
 
 
 --------------- SECTION 3: Common Development and Distribution License, V1.0 -----------
@@ -1815,7 +1789,6 @@ on an equitable basis. Nothing herein is intended or shall be deemed to
 constitute any admission of liability.
 
 
-
 ===========================================================================
 
 To the extent any open source components are licensed under the
@@ -1825,7 +1798,7 @@ available (as would be noted above), you may obtain a copy of
 the source code corresponding to the binaries for such open
 source components and modifications thereto, if any, (the
 "Source Files"), by downloading the Source Files from Pivotal's website at
-http://www.gopivotal.com/open-source, or by sending a request, 
+http://www.pivotal.io/open-source, or by sending a request, 
 with your name and address to: Pivotal Software, Inc., 3496 Deer Creek Rd, 
 Palo Alto, CA 94304, Attention: General Counsel. All such requests should 
 clearly specify: OPEN SOURCE FILES REQUEST, Attention General Counsel. 
@@ -1834,4 +1807,5 @@ This offer to obtain a copy of the Source Files is valid for three
 years from the date you acquired this Software product. 
 Alternatively, the Source Files may accompany the Pivotal product.
 
-[ECLIPSECOMMONS360GASS070714]
+
+[ECLIPSECOMMONS370GAKD061615]
