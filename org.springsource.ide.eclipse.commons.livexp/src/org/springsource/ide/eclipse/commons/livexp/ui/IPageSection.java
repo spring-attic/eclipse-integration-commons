@@ -19,7 +19,7 @@ import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
  */
 public interface IPageSection {
 
-	public abstract void createContents(Composite page);
-	public abstract LiveExpression<ValidationResult> getValidator();
+	public void createContents(Composite page);
+	public LiveExpression<ValidationResult> getValidator();
 
 }
