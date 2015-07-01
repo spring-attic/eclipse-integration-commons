@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Receptor Client
+Bundle-SymbolicName: org.springsource.ide.eclipse.commons.receptor.client
+Bundle-Version: 3.7.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: lib/receptor-client-0.0.1-SNAPSHOT.jar
+Export-Package: io.pivotal.receptor.actions,
+ io.pivotal.receptor.client,
+ io.pivotal.receptor.commands,
+ io.pivotal.receptor.events,
+ io.pivotal.receptor.support
+Import-Package: com.fasterxml.jackson.annotation,
+ com.fasterxml.jackson.core,
+ com.fasterxml.jackson.core.type,
+ com.fasterxml.jackson.databind,
+ com.fasterxml.jackson.databind.annotation,
+ org.apache.commons.logging,
+ org.springframework.core,
+ org.springframework.http,
+ org.springframework.http.client,
+ org.springframework.scheduling.concurrent,
+ org.springframework.util,
+ org.springframework.web.client

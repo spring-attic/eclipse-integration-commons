@@ -40,6 +40,9 @@
 		id="org.springsource.ide.eclipse.commons.test" version="3.7.0.qualifier">
 	</feature>
 	
+	<!-- rewrapped 'jar' bundles -->
+	<bundle id="org.springsource.ide.eclipse.commons.receptor.client" version="0.0.0"/>
+	
 	<!-- third-party dependencies -->
 	<bundle id="com.springsource.util.common" version="0.0.0"/>
 	<bundle id="com.springsource.util.common.source" version="0.0.0"/>
