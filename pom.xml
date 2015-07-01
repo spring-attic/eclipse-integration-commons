@@ -324,7 +324,9 @@
 			<!-- More recent needed for HttpComponents. Use of api URIBuilder (used 
 				only by new SpringBoot wizard) If we can replace with something else we can 
 				keep on using this older orbit site -->
-			<url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</url>
+			<!--  <url>http://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</url> -->
+			<!--  need recent orbit for receptor client dependencies:  -->
+			<url>http://download.eclipse.org/tools/orbit/downloads/drops/R20150519210750/repository/</url>
 			<!--  
 			    Remove: repsonsible for this bug? 
 			     <url>http://download.eclipse.org/tools/orbit/downloads/drops/I20131024145017/repository/</url>

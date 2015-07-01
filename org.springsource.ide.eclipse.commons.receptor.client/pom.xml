@@ -11,19 +11,6 @@
 	<packaging>eclipse-plugin</packaging>
 	<name>org.springsource.ide.eclipse.commons.receptor.client</name>
 
-	<repositories>
-		<!-- the rest of the build uses an ancient orbit, but we need more recent 
-			stuff here -->
-		<repository>
-			<id>orbit-R20150519210750</id>
-			<layout>p2</layout>
-			<!-- More recent needed for HttpComponents. Use of api URIBuilder (used 
-				only by new SpringBoot wizard) If we can replace with something else we can 
-				keep on using this older orbit site -->
-			<url>http://download.eclipse.org/tools/orbit/downloads/drops/R20150519210750/repository/</url>
-		</repository>
-	</repositories>
-
 	<build>
 		<plugins>
 			<plugin>
