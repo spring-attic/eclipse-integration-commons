@@ -4,7 +4,7 @@ Bundle-Name: Receptor Client
 Bundle-SymbolicName: org.springsource.ide.eclipse.commons.receptor.client
 Bundle-Version: 3.7.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Bundle-ClassPath: lib/receptor-client-0.0.1-SNAPSHOT.jar
+Bundle-ClassPath: lib/receptor-client-0.0.2-SNAPSHOT.jar
 Export-Package: io.pivotal.receptor.actions,
  io.pivotal.receptor.client,
  io.pivotal.receptor.commands,
