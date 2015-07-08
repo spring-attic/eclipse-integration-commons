@@ -23,7 +23,7 @@
       	</configExtension>
    	</extension>
 	
-	<extension point="org.eclipse.mylyn.tasks.core.templates">
+<!--	<extension point="org.eclipse.mylyn.tasks.core.templates">
 		<repository addAutomatically="true" anonymous="false"
 			characterEncoding="UTF-8" label="SpringSource" repositoryKind="jira"
 			urlNewAccount="https://issuetracker.springsource.com/secure/Signup!default.jspa"
@@ -33,9 +33,9 @@
 			urlNewAccount="http://jira.springsource.org/secure/Signup!default.jspa"
 			urlRepository="http://jira.springsource.org">
 		</repository>
-	</extension>
+	</extension> -->
 	
-	<extension point="org.eclipse.mylyn.tasks.bugs.support">
+<!--	<extension point="org.eclipse.mylyn.tasks.bugs.support">
 		<category description="Commercial support"
 			id="org.eclipse.mylyn.tasks.bugs.commercial" name="Commercial Support"
 			weight="500">
@@ -81,7 +81,7 @@
 			<property name="component" value="CLOUDFOUNDRY">
 			</property>
 		</mapping>
-	</extension>
+	</extension> -->
 
 	<extension point="com.springsource.sts.core.resources">
 		<propertyDefinition id="dashboard.bug.tracker"
