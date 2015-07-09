@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 GoPivotal, Inc.
+ * Copyright (c) 2013-2015 GoPivotal, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -66,6 +66,7 @@ public class TableResizeHelper {
 
 	protected void resizeTableColumns(int tableWidth, Table table) {
 		TableColumn[] tableColumns = table.getColumns();
+		int[] columnsOrder = table.getColumnOrder();
 
 		if (tableColumns.length == 0) {
 			return;
@@ -77,7 +78,7 @@ public class TableResizeHelper {
 			total += column.getWidth();
 		}
 
-		TableColumn lastColumn = tableColumns[tableColumns.length - 1];
+		TableColumn lastColumn = tableColumns[columnsOrder[columnsOrder.length - 1]];
 		int newWidth = (tableWidth - total) + lastColumn.getWidth();
 		if (newWidth>0) {
 			lastColumn.setWidth(newWidth);
