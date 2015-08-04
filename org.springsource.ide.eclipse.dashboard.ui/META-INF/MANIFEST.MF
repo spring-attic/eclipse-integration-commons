@@ -41,4 +41,4 @@ Import-Package: org.eclipse.core.runtime,
  org.eclipse.osgi.service.resolver,
  org.eclipse.osgi.util,
  org.osgi.framework,
- org.springframework.util;version="[4.0.0,4.2.0)"
+ org.springframework.util;version="[4.0.0,4.3.0)"
