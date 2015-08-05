@@ -134,4 +134,30 @@ public abstract class LiveExpression<V> {
 		};
 	}
 
+	/**
+	 * Filter liveexp value to elimante values that are not instances of a given class.
+	 * <p>
+	 * When target expression has a value is not an instance of the class then the
+	 * resulting expression's value is 'null' otherwise its value is the same as the
+	 * target expression.
+	 */
+	public <T> LiveExpression<T> filter(final Class<T> klass) {
+		final LiveExpression<V> target = this;
+		return new LiveExpression<T>() {
+			{
+				dependsOn(target);
+			}
+			@SuppressWarnings("unchecked")
+			@Override
+			protected T compute() {
+				V input = target.getValue();
+				if (klass.isInstance(input)) {
+					return (T) input;
+				} else {
+					return null;
+				}
+			}
+		};
+	}
+
 }
