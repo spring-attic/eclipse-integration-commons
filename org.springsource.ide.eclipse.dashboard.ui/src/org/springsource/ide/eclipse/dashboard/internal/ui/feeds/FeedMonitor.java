@@ -154,7 +154,7 @@ public class FeedMonitor {
 					}
 				}
 			});
-			newsFeedJob.schedule();
+			newsFeedJob.schedule(FEED_STARTUP_DELAY);
 		}
 	}
 
