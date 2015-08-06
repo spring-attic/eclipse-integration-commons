@@ -45,6 +45,8 @@ public class FeedMonitor {
 
 	private final static int FEED_POLLING_RATE = 60 * 60 * 1000; // 60 Minutes
 
+	private static final long FEED_STARTUP_DELAY = 15 * 1000; // Allow STS to startup before pulling feeds from the internet
+
 	private Date lastUpdated;
 
 	private static FeedMonitor instance;
@@ -125,7 +127,9 @@ public class FeedMonitor {
 					}
 				}
 			});
-			blogFeedJob.schedule();
+			//Add a delay for the initial feed fetch. The job, when run early during startup causes trouble:
+			// See https://issuetracker.springsource.com/browse/STS-4188
+			blogFeedJob.schedule(FEED_STARTUP_DELAY);
 		}
 	}
 	
