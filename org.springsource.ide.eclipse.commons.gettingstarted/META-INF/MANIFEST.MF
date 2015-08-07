@@ -28,7 +28,9 @@ Require-Bundle:
  org.springsource.ide.eclipse.commons.ui,
  org.springsource.ide.eclipse.dashboard.ui,
  org.springsource.ide.eclipse.commons.browser,
- org.springsource.ide.eclipse.commons.frameworks.ui
+ org.springsource.ide.eclipse.commons.frameworks.ui,
+ org.eclipse.core.jobs,
+ org.springsource.ide.eclipse.commons.frameworks.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.springsource.ide.eclipse.commons.gettingstarted,

@@ -17,7 +17,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -29,12 +32,19 @@ import org.springsource.ide.eclipse.commons.browser.javafx.JavaFxBrowserEditor;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IIdeUiConstants;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardReopener;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.core.runtime.jobs.Job;
+
+import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
+import org.springsource.ide.eclipse.commons.frameworks.core.util.JobUtil;
 
 public class WelcomeDashboard extends JavaFxBrowserEditor {
 
 	private static final String WELCOME_PAGE_URI = "platform:/plugin/org.springsource.ide.eclipse.commons.gettingstarted/resources/welcome";
 	private IEditorSite site;
 	private IPartListener partListener = null;
+	
+	private static final ISchedulingRule RULE = JobUtil.lightRule(WelcomeDashboard.class.getName());
 	
 	@Override
 	public void init(IEditorSite _site, IEditorInput input) throws PartInitException {
@@ -87,10 +97,36 @@ public class WelcomeDashboard extends JavaFxBrowserEditor {
 	public WelcomeDashboard() throws URISyntaxException, IOException {
 		DashboardReopener.ensure();
 		setName("Welcome");
-		File file = getWelcomeFile();
-		File contentInstance = DashboardCopier.getCopy(file, new NullProgressMonitor());
-		File welcomeHtml = new File(contentInstance, "index.html");
-		setHomeUrl(welcomeHtml.toURI().toString());
+		String loadingUrl = FileLocator.toFileURL(new URL(WELCOME_PAGE_URI)).toString()+"index.html";
+		setHomeUrl(loadingUrl);
+		Job job = new Job("Populate Welcome Dashboard") {
+			
+			int tries = 3;
+			
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					File file = getWelcomeFile();
+					File contentInstance = DashboardCopier.getCopy(file, new NullProgressMonitor());
+					File welcomeHtml = new File(contentInstance, "index.html");
+					setHomeUrl(welcomeHtml.toURI().toString());
+					setUrl(welcomeHtml.toURI().toString());
+					return Status.OK_STATUS;
+				} catch (Exception e) {
+					//Nasty excpetions sometime happen because trying to do this too early during startup
+					// when eclipse mars services aren't yet all up and running.
+					if (tries-->0) {
+						this.schedule(3000);
+						return Status.OK_STATUS;
+					} else {
+						return ExceptionUtil.status(e);
+					}
+				}
+			}
+		};
+		job.setRule(RULE);
+		job.setSystem(true);
+		job.schedule();
 	}
 
 	private File getWelcomeFile() throws IOException, MalformedURLException, URISyntaxException {

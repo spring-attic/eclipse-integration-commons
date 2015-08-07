@@ -13,12 +13,6 @@ package org.springsource.ide.eclipse.commons.browser.javafx;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker;
-import javafx.concurrent.Worker.State;
-import javafx.scene.web.WebView;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -29,6 +23,12 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.browser.WebBrowserEditorInput;
 import org.eclipse.ui.part.EditorPart;
 import org.springsource.ide.eclipse.commons.frameworks.core.util.Gtk3Check;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
+import javafx.concurrent.Worker.State;
+import javafx.scene.web.WebView;
 
 /**
  * An editor that displays the contents of a webpage using JavaFx WebView.
@@ -137,6 +137,20 @@ public class JavaFxBrowserEditor extends EditorPart {
 	 */
 	public void setHomeUrl(String url) {
 		this.homeUrl = url;
+	}
+
+	/**
+	 * Sets the url the browser to display immediately. If the browser's controls
+	 * have not yet been created then this does nothing.
+	 */
+	public void setUrl(final String url) {
+		if (browserViewer!=null) {
+			browserViewer.getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					browserViewer.setURL(url);
+				}
+			});
+		}
 	}
 
 	public String getName() {
