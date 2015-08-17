@@ -55,7 +55,7 @@ public class DownloadManager {
 	private final File cacheDirectory;
 	private final DownloadService downloader;
 	private boolean deleteCacheOnDispose = false;
-	private boolean allowUIThread = false;
+	private boolean allowUIThread = true;
 	private int tries = 5; //5 retries by default
 	private long retryInterval = 0; //no wait between retries by default.
 
@@ -146,7 +146,7 @@ public class DownloadManager {
 
 	/**
 	 * Get the local location of given item. Note that the item may or may not yet be downloaded so
-	 * there are no guarantees there is anything meaningful to be found there. 
+	 * there are no guarantees there is anything meaningful to be found there.
 	 */
 	public File getLocalLocation(DownloadableItem item) {
 		URL url = item.getURL();
@@ -185,7 +185,7 @@ public class DownloadManager {
 				action.exec(downloadedFile);
 				return; // action succeeded without exceptions
 			} catch (UIThreadDownloadDisallowed caught) {
-				//No sense retrying this as it will just fail again... 
+				//No sense retrying this as it will just fail again...
 				throw caught;
 			} catch (Throwable caught) {
 				FrameworkCoreActivator.log(caught);
@@ -212,18 +212,18 @@ public class DownloadManager {
 	public int getTries() {
 		return tries;
 	}
-	
+
 	/**
 	 * Sets the maximum number of times DownloadManager will try and retyr to fetch
 	 * a failed download. Note that the first try also counts. So if 'tries' is
 	 * set to 3 then a failed download will be retried upto 2 times. I.e. one
 	 * try and then 2 retries.
-	 * 
+	 *
 	 * @since 3.6.3
 	 */
 	public DownloadManager setTries(int r) {
 		//Setting to 0 is not sensible because it would mean to just fail without even trying.
-		Assert.isLegal(r>1); 
+		Assert.isLegal(r>1);
 		this.tries = r;
 		return this;
 	}
@@ -231,7 +231,7 @@ public class DownloadManager {
 	/**
 	 * Sets the time in milliseconds to wait between retries. The default is 0 meaning no
 	 * wait.
-	 * 
+	 *
 	 * @since 3.6.3
 	 */
 	public void setRetryInterval(long retryInterval) {
@@ -245,7 +245,7 @@ public class DownloadManager {
 	public long getRetryInterval(long retryInterval) {
 		return retryInterval;
 	}
-	
+
 	public File getCacheDir() {
 		return cacheDirectory;
 	}
@@ -267,7 +267,7 @@ public class DownloadManager {
 
 	/**
 	 * If this is false, an exception will be thrown if download is attempted on
-	 * the UI thread. The default value is false.
+	 * the UI thread. The default value is true.
 	 */
 	public DownloadManager allowUIThread(boolean allow) {
 		allowUIThread = allow;
