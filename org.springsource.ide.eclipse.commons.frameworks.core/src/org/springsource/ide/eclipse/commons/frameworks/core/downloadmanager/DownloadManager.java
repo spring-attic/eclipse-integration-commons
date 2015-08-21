@@ -55,7 +55,7 @@ public class DownloadManager {
 	private final File cacheDirectory;
 	private final DownloadService downloader;
 	private boolean deleteCacheOnDispose = false;
-	private boolean allowUIThread = true;
+	private boolean allowUIThread = false;
 	private int tries = 5; //5 retries by default
 	private long retryInterval = 0; //no wait between retries by default.
 
