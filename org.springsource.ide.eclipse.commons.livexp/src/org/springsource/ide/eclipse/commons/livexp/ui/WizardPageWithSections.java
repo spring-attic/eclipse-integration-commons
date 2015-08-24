@@ -22,15 +22,10 @@ import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.forms.widgets.SharedScrolledComposite;
 import org.eclipse.ui.progress.UIJob;
 import org.springsource.ide.eclipse.commons.livexp.core.CompositeValidator;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
@@ -40,7 +35,7 @@ import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 /**
  * @author Kris De Volder
  */
-public abstract class WizardPageWithSections extends WizardPage implements IPageWithSections, ValueListener<ValidationResult> {
+public abstract class WizardPageWithSections extends WizardPage implements IPageWithSections, Reflowable, ValueListener<ValidationResult> {
 
 	/**
 	 * A delay used for posting status messages to the dialog area after a status update happens.
@@ -64,6 +59,8 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 	private List<WizardPageSection> sections = null;
 	private CompositeValidator validator;
 	private UIJob updateJob;
+	private SharedScrolledComposite scroller;
+	private Composite page;
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
@@ -71,13 +68,14 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 	public void createControl(Composite parent) {
 		GridDataFactory.fillDefaults().grab(true,true).applyTo(parent);
 
-		ScrolledComposite scroller = new PackedScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL);
-		Display display = Display.getCurrent();
-		Color blue = display.getSystemColor(SWT.COLOR_BLUE);
-		scroller.setBackground(blue);
+		scroller = new SharedScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL) {};
+//		scroller.setWidthHint(500); // Avoid excessively wide dialogs
+//		Display display = Display.getCurrent();
+//		Color blue = display.getSystemColor(SWT.COLOR_BLUE);
+//		scroller.setBackground(blue);
 		scroller.setExpandHorizontal(true);
 		scroller.setExpandVertical(true);
-		Composite page = new Composite(scroller, SWT.NONE);
+		page = new Composite(scroller, SWT.NONE);
         GridLayout layout = new GridLayout(1, false);
         layout.marginHeight = 12;
         layout.marginWidth = 12;
@@ -90,7 +88,7 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
         validator.addListener(this);
         Dialog.applyDialogFont(page);
         page.pack(true);
-        scroller.setMinSize(page.getSize());
+//        scroller.setMinSize(page.getSize());
 //        scroller.setSize(page.getSize());
 		scroller.setContent(page);
         setControl(scroller);
@@ -98,6 +96,12 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 	        getContainer().updateButtons();
 	        getContainer().updateMessage();
         }
+	}
+
+	@Override
+	public boolean reflow() {
+		scroller.reflow(true);
+		return true;
 	}
 
 	protected synchronized List<WizardPageSection> getSections() {
