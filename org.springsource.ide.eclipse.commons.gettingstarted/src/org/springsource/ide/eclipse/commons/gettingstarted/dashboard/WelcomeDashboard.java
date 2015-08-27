@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Set;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -32,6 +33,10 @@ import org.springsource.ide.eclipse.commons.browser.javafx.JavaFxBrowserEditor;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IIdeUiConstants;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardReopener;
+import org.springsource.ide.eclipse.dashboard.internal.ui.feeds.FeedMonitor;
+
+import com.sun.syndication.feed.synd.SyndEntry;
+
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
 
@@ -45,7 +50,17 @@ public class WelcomeDashboard extends JavaFxBrowserEditor {
 	private IPartListener partListener = null;
 	
 	private static final ISchedulingRule RULE = JobUtil.lightRule(WelcomeDashboard.class.getName());
+	protected static final long RETRY_DELAY = 3000; // Retry after 3 seconds if feed not ready
+	protected static final long MAX_FEED_WAIT = 2 * 60 * 1000; // for max of 2 minutes then give up
 	
+	private static final boolean DEBUG = false;
+	
+	private static void debug(String string) {
+		if (DEBUG) {
+			System.out.println(string);
+		}
+ 	}
+
 	@Override
 	public void init(IEditorSite _site, IEditorInput input) throws PartInitException {
 		super.init(_site, input);
@@ -101,11 +116,17 @@ public class WelcomeDashboard extends JavaFxBrowserEditor {
 		setHomeUrl(loadingUrl);
 		Job job = new Job("Populate Welcome Dashboard") {
 			
-			int tries = 3;
+			int tries = (int) (MAX_FEED_WAIT / RETRY_DELAY);
 			
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
+					Set<SyndEntry> feedEntries = FeedMonitor.getInstance().getFeedEntries();
+					if (feedEntries==null || feedEntries.isEmpty()) {
+						throw new Exception("Feed not ready");
+					} else {
+						debug("# Feed entries: "+feedEntries.size());
+					}
 					File file = getWelcomeFile();
 					File contentInstance = DashboardCopier.getCopy(file, new NullProgressMonitor());
 					File welcomeHtml = new File(contentInstance, "index.html");
@@ -113,16 +134,19 @@ public class WelcomeDashboard extends JavaFxBrowserEditor {
 					setUrl(welcomeHtml.toURI().toString());
 					return Status.OK_STATUS;
 				} catch (Exception e) {
+					debug("Welcome Dash Setup failed: "+ExceptionUtil.getMessage(e));
 					//Nasty excpetions sometime happen because trying to do this too early during startup
 					// when eclipse mars services aren't yet all up and running.
 					if (tries-->0) {
-						this.schedule(3000);
+						debug("Retrying Welcome Dash Setup...");
+						this.schedule(RETRY_DELAY);
 						return Status.OK_STATUS;
 					} else {
 						return ExceptionUtil.status(e);
 					}
 				}
 			}
+
 		};
 		job.setRule(RULE);
 		job.setSystem(true);
