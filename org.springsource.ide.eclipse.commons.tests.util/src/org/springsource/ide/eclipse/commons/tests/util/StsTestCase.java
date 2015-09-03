@@ -94,4 +94,10 @@ public abstract class StsTestCase extends TestCase {
 				IFile file = project.getFile(new Path(path));
 				file.create(new StringInputStream(data), true, new NullProgressMonitor());
 			}
+
+	public static void assertContains(String needle, String haystack) {
+		if (haystack==null || !haystack.contains(needle)) {
+			fail("Not found: "+needle+"\n in \n"+haystack);
+		}
+	}
 }
