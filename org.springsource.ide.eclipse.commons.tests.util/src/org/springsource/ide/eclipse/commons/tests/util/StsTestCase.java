@@ -18,10 +18,14 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil.StringInputStream;
 
 /**
  * Derived from AbstractBeansCoreTestCase
@@ -79,4 +83,15 @@ public abstract class StsTestCase extends TestCase {
 		super.tearDown();
 	}
 
+	public static void createEmptyFile(IProject project, String path)
+			throws CoreException {
+				IFile file = project.getFile(new Path(path));
+				file.create(new StringInputStream(""), true, new NullProgressMonitor());
+			}
+
+	public static void createFile(IProject project, String path, String data)
+			throws CoreException {
+				IFile file = project.getFile(new Path(path));
+				file.create(new StringInputStream(data), true, new NullProgressMonitor());
+			}
 }
