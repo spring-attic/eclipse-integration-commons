@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.tests.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -25,6 +28,7 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.springsource.ide.eclipse.commons.frameworks.core.util.IOUtil;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil.StringInputStream;
 
 /**
@@ -94,6 +98,26 @@ public abstract class StsTestCase extends TestCase {
 				IFile file = project.getFile(new Path(path));
 				file.create(new StringInputStream(data), true, new NullProgressMonitor());
 			}
+
+	public static void fileReplace(IProject project, String path, String find, String replace) throws Exception {
+		IFile file = project.getFile(path);
+		assertTrue(file.exists());
+		String content = getContents(file);
+		content = content.replace(find, replace);
+		setContents(file, content);
+	}
+
+	public static void setContents(IFile file, String content) throws Exception {
+		byte[] bytes = content.getBytes(file.getCharset());
+		file.setContents(new ByteArrayInputStream(bytes), true, true, new NullProgressMonitor());
+	}
+
+	public static String getContents(IFile file) throws Exception {
+		InputStream is = file.getContents();
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		IOUtil.pipe(is, os);
+		return os.toString(file.getCharset());
+	}
 
 	public static void assertContains(String needle, String haystack) {
 		if (haystack==null || !haystack.contains(needle)) {
