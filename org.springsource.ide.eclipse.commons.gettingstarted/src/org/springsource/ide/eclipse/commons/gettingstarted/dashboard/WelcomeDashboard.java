@@ -114,6 +114,7 @@ public class WelcomeDashboard extends JavaFxBrowserEditor {
 		setName("Welcome");
 		String loadingUrl = FileLocator.toFileURL(new URL(WELCOME_PAGE_URI)).toString()+"index.html";
 		setHomeUrl(loadingUrl);
+		FeedMonitor.getInstance().refresh();
 		Job job = new Job("Populate Welcome Dashboard") {
 			
 			int tries = (int) (MAX_FEED_WAIT / RETRY_DELAY);
@@ -121,12 +122,6 @@ public class WelcomeDashboard extends JavaFxBrowserEditor {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
-					Set<SyndEntry> feedEntries = FeedMonitor.getInstance().getFeedEntries();
-					if (feedEntries==null || feedEntries.isEmpty()) {
-						throw new Exception("Feed not ready");
-					} else {
-						debug("# Feed entries: "+feedEntries.size());
-					}
 					File file = getWelcomeFile();
 					File contentInstance = DashboardCopier.getCopy(file, new NullProgressMonitor());
 					File welcomeHtml = new File(contentInstance, "index.html");

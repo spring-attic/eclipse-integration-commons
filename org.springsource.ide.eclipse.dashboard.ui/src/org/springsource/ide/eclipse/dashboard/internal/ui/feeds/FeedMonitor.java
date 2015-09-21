@@ -230,4 +230,10 @@ public class FeedMonitor {
 		listeners.remove(listener);
 	}
 
+
+	public void refresh() {
+		initBlogFeedUpdates();
+		initNewsFeedUpdates();
+	}
+
 }

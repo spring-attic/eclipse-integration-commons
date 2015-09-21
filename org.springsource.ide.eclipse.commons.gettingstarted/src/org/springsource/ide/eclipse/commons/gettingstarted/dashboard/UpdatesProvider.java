@@ -33,40 +33,34 @@ import com.sun.syndication.feed.synd.SyndEntry;
  */
 public class UpdatesProvider extends FeedProvider {
 
-	/**
-	 * @param manager
-	 */
 	public UpdatesProvider() {
 		super(FeedMonitor.RESOURCE_DASHBOARD_FEEDS_UPDATE);
 	}
 
 	@Override
-	public String getDynamicArgumentValue(String id) {
-		if (id.equals("html")) {
-			List<UpdateNotification> updates = FeedMonitor.getInstance().getUpdates();
-			if (updates == null) {
-				return null;
-			}
-			String html = "";
-			// make sure the entries are sorted correctly
-			Collections.sort(updates, new Comparator<UpdateNotification>() {
-				public int compare(UpdateNotification o1, UpdateNotification o2) {
-					if (o2.getEntry() != null && o2.getEntry().getPublishedDate() != null && o1.getEntry() != null) {
-						return o2.getEntry().getPublishedDate().compareTo(o1.getEntry().getPublishedDate());
-					}
-					return 0;
-				}
-			});
-
-			for (UpdateNotification notification : updates) {
-				String update = buildUpdate(notification);
-				if (!update.isEmpty()) {
-					html += update;
-				}
-			}
-			return html;
+	public String getFeedHtml() {
+		List<UpdateNotification> updates = FeedMonitor.getInstance().getUpdates();
+		if (updates == null || updates.isEmpty()) {
+			return null;
 		}
-		return null;
+		String html = "";
+		// make sure the entries are sorted correctly
+		Collections.sort(updates, new Comparator<UpdateNotification>() {
+			public int compare(UpdateNotification o1, UpdateNotification o2) {
+				if (o2.getEntry() != null && o2.getEntry().getPublishedDate() != null && o1.getEntry() != null) {
+					return o2.getEntry().getPublishedDate().compareTo(o1.getEntry().getPublishedDate());
+				}
+				return 0;
+			}
+		});
+
+		for (UpdateNotification notification : updates) {
+			String update = buildUpdate(notification);
+			if (!update.isEmpty()) {
+				html += update;
+			}
+		}
+		return html;
 	}
 
 	private String buildUpdate(UpdateNotification notification) {
@@ -90,7 +84,9 @@ public class UpdatesProvider extends FeedProvider {
 	 * isReady()
 	 */
 	@Override
-	public boolean isReady() {
-		return FeedMonitor.getInstance().getUpdates() != null;
+	public boolean isFeedReady() {
+		List<UpdateNotification> updates = FeedMonitor.getInstance().getUpdates();
+		return updates != null && !updates.isEmpty();
 	}
+
 }

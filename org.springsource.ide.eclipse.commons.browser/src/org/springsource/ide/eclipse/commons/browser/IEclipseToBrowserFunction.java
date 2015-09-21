@@ -11,9 +11,9 @@ import org.eclipse.core.runtime.IExecutableExtension;
 
 /**
  * Allows insertion of generic html into an element.
- * 
+ *
  * @author Miles Parker
- * 
+ *
  */
 public interface IEclipseToBrowserFunction {
 
@@ -46,7 +46,9 @@ public interface IEclipseToBrowserFunction {
 
 		public void notifyIfReady() {
 			if (callback != null) {
-				callback.ready(this);
+				if (isReady()) {
+					callback.ready(this);
+				}
 			}
 		}
 
@@ -79,7 +81,7 @@ public interface IEclipseToBrowserFunction {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.springsource.ide.eclipse.commons.browser.
 		 * IEclipseToBrowserFunctionCall#getFunctionCall(java.lang.String)
 		 */
@@ -90,7 +92,7 @@ public interface IEclipseToBrowserFunction {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.springsource.ide.eclipse.commons.browser.
 		 * IEclipseToBrowserFunctionCall#getArguments()
 		 */

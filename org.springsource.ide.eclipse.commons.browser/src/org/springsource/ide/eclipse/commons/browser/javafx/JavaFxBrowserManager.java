@@ -15,17 +15,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javafx.application.Platform;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import netscape.javascript.JSObject;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.CoreException;
@@ -38,6 +32,11 @@ import org.springsource.ide.eclipse.commons.browser.BrowserExtensions;
 import org.springsource.ide.eclipse.commons.browser.BrowserPlugin;
 import org.springsource.ide.eclipse.commons.browser.IBrowserToEclipseFunction;
 import org.springsource.ide.eclipse.commons.browser.IEclipseToBrowserFunction;
+
+import javafx.application.Platform;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import netscape.javascript.JSObject;
 
 /**
  *
@@ -120,39 +119,49 @@ public class JavaFxBrowserManager {
 		}
 	}
 
+	private void doCall(final IEclipseToBrowserFunction function) {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				JSObject js = (JSObject) getEngine().executeScript("window");
+				IEclipseToBrowserFunction provider = function;
+				if (provider!=null) {
+					String fname = provider.getFunctionName();
+					Object[] fargs = provider.getArguments();
+					js.call(fname, fargs);
+				}
+				getView().requestLayout();
+				getView().setVisible(true);
+				if (DEBUG) {
+					printPageHtml();
+				}
+			}
+		});
+	}
+
 	/**
 	 * Calls Javascript functions <i>to</i> the browser, refreshing the browser
-	 * when all calls have completed.
-	 * @param functions
+	 * after each call
 	 */
 	public void callOnBrowser(final Collection<IEclipseToBrowserFunction> functions) {
 		final Collection<IEclipseToBrowserFunction> waitingFunctions = new CopyOnWriteArrayList<IEclipseToBrowserFunction>();
 		IEclipseToBrowserFunction.Callback callback = new IEclipseToBrowserFunction.Callback() {
 			@Override
-			public void ready(IEclipseToBrowserFunction function) {
-				waitingFunctions.remove(function);
-				if (waitingFunctions.isEmpty() && !disposed) {
-					Platform.runLater(new Runnable() {
-						@Override
-						public void run() {
-							JSObject js = (JSObject) getEngine().executeScript("window");
-							for (IEclipseToBrowserFunction provider : functions) {
-								js.call(provider.getFunctionName(), (Object[]) provider.getArguments());
-							}
-							getView().requestLayout();
-							getView().setVisible(true);
-							if (DEBUG) {
-								printPageHtml();
-							}
-						}
-					});
+			public void ready(final IEclipseToBrowserFunction function) {
+				if (waitingFunctions.remove(function)) {
+					if (!disposed) {
+						doCall(function);
+					}
 				}
 			}
 		};
 		for (IEclipseToBrowserFunction function : functions) {
 			if (!function.isReady()) {
+				System.out.println("waiting for function: "+function);
 				waitingFunctions.add(function);
 				function.setCallback(callback);
+			} else {
+				doCall(function);
 			}
 		}
 		callback.ready(null);

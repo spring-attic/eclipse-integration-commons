@@ -126,39 +126,36 @@ public class BlogsProvider extends FeedProvider {
 	 * .Adapter#getDynamicArgumentValue(java.lang.String)
 	 */
 	@Override
-	public String getDynamicArgumentValue(String id) {
-		if (id.equals("html")) {
-			Set<SyndEntry> feedEntries = FeedMonitor.getInstance().getFeedEntries();
-			if (feedEntries == null) {
-				return null;
-			}
-			String html = "";
-			List<SyndEntry> sortedEntries = new ArrayList<SyndEntry>(feedEntries);
-			Collections.sort(sortedEntries, new Comparator<SyndEntry>() {
-				public int compare(SyndEntry o1, SyndEntry o2) {
-					Date o1Date = o1.getPublishedDate() != null ? o1.getPublishedDate() : o1.getUpdatedDate();
-					Date o2Date = o2.getPublishedDate() != null ? o2.getPublishedDate() : o2.getUpdatedDate();
-					if (o1Date == null && o2Date == null) {
-						return 0;
-					}
-					else if (o1Date == null) {
-						return -1;
-					}
-					else if (o2Date == null) {
-						return 1;
-					}
-					else {
-						return o2Date.compareTo(o1Date);
-					}
-				}
-			});
-
-			for (SyndEntry entry : sortedEntries) {
-				html += buildFeed(entry);
-			}
-			return html;
+	public String getFeedHtml() {
+		Set<SyndEntry> feedEntries = FeedMonitor.getInstance().getFeedEntries();
+		if (feedEntries == null || feedEntries.isEmpty()) {
+			return null;
 		}
-		return null;
+		String html = "";
+		List<SyndEntry> sortedEntries = new ArrayList<SyndEntry>(feedEntries);
+		Collections.sort(sortedEntries, new Comparator<SyndEntry>() {
+			public int compare(SyndEntry o1, SyndEntry o2) {
+				Date o1Date = o1.getPublishedDate() != null ? o1.getPublishedDate() : o1.getUpdatedDate();
+				Date o2Date = o2.getPublishedDate() != null ? o2.getPublishedDate() : o2.getUpdatedDate();
+				if (o1Date == null && o2Date == null) {
+					return 0;
+				}
+				else if (o1Date == null) {
+					return -1;
+				}
+				else if (o2Date == null) {
+					return 1;
+				}
+				else {
+					return o2Date.compareTo(o1Date);
+				}
+			}
+		});
+
+		for (SyndEntry entry : sortedEntries) {
+			html += buildFeed(entry);
+		}
+		return html;
 	}
 
 	private String trimText(String s) {
@@ -218,16 +215,10 @@ public class BlogsProvider extends FeedProvider {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springsource.ide.eclipse.commons.browser.IBrowserElementProvider#
-	 * isReady()
-	 */
 	@Override
-	public boolean isReady() {
-		return FeedMonitor.getInstance().getFeedEntries() != null;
+	public boolean isFeedReady() {
+		Set<SyndEntry> entries = FeedMonitor.getInstance().getFeedEntries();
+		return entries!=null && !entries.isEmpty();
 	}
 
 }
