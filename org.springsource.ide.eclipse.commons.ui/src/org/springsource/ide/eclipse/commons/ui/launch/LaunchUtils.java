@@ -11,8 +11,10 @@
 package org.springsource.ide.eclipse.commons.ui.launch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugEvent;
@@ -22,6 +24,7 @@ import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.DebugUITools;
+import org.springsource.ide.eclipse.commons.frameworks.core.util.ResolveableFuture;
 
 public class LaunchUtils {
 
@@ -40,6 +43,26 @@ public class LaunchUtils {
 	 */
 	public static void whenTerminated(List<ILaunch> launches, Runnable runnable) {
 		new WhenTerminated(new ArrayList<ILaunch>(launches), runnable);
+	}
+
+	/**
+	 * @return A future that resolves when a given launch is terminated
+	 */
+	public static Future<Void> whenTerminated(ILaunch l) {
+		return whenTerminated(Arrays.asList(l));
+	}
+
+	/**
+	 * @return A future that resolves when a list of launches are all terminated
+	 */
+	public static Future<Void> whenTerminated(List<ILaunch> launches) {
+		final ResolveableFuture<Void> done = new ResolveableFuture<Void>();
+		whenTerminated(launches, new Runnable() {
+			public void run() {
+				done.resolve(null);
+			}
+		});
+		return done;
 	}
 
 	private static class WhenTerminated implements IDebugEventSetListener {
