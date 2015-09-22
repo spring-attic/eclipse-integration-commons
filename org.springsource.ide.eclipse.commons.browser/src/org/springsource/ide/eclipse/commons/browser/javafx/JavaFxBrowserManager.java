@@ -157,7 +157,6 @@ public class JavaFxBrowserManager {
 		};
 		for (IEclipseToBrowserFunction function : functions) {
 			if (!function.isReady()) {
-				System.out.println("waiting for function: "+function);
 				waitingFunctions.add(function);
 				function.setCallback(callback);
 			} else {
