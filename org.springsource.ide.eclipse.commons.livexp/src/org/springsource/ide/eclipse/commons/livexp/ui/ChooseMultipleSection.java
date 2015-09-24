@@ -12,7 +12,6 @@ package org.springsource.ide.eclipse.commons.livexp.ui;
 
 import java.util.Set;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -34,7 +33,7 @@ import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 
 public class ChooseMultipleSection<T extends Ilabelable> extends WizardPageSection {
 
-	private static final boolean DEBUG = (""+Platform.getLocation()).contains("kdvolder");
+	private static final boolean DEBUG = false; //(""+Platform.getLocation()).contains("kdvolder");
 
 	private String labelText;
 	private Ilabelable[] validChoices;
