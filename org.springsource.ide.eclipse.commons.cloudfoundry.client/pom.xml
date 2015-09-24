@@ -7,8 +7,7 @@
 		<artifactId>org.springsource.ide.eclipse.commons.parent</artifactId>
 		<version>3.7.1-SNAPSHOT</version>
 	</parent>
-	<groupId>org.springframework.ide.eclipse</groupId>
-	<artifactId>org.springframework.ide.eclipse.cloudfoundry.client</artifactId>
+	<artifactId>org.springsource.ide.eclipse.commons.cloudfoundry.client</artifactId>
 	<packaging>eclipse-plugin</packaging>
 	
 	<properties>

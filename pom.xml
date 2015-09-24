@@ -43,7 +43,7 @@
 		<module>org.springsource.ide.eclipse.commons.completions</module>
 		
 		<module>org.springsource.ide.eclipse.commons.receptor.client</module>
-		<module>org.springframework.ide.eclipse.cloudfoundry.client</module>
+		<module>org.springsource.ide.eclipse.commons.cloudfoundry.client</module>
 	</modules>
 
 	<!-- Common Configuration -->

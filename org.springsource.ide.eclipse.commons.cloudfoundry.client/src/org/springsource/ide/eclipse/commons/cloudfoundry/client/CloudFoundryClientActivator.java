@@ -8,7 +8,7 @@
  * Contributors:
  *     Pivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springframework.ide.eclipse.cloudfoundry.client;
+package org.springsource.ide.eclipse.commons.cloudfoundry.client;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

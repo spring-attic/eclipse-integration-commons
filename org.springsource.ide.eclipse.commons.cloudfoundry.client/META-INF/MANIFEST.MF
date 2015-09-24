@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Spring IDE Cloud Foundry Client
-Bundle-SymbolicName: org.springframework.ide.eclipse.cloudfoundry.client;singleton:=true
+Bundle-SymbolicName: org.springsource.ide.eclipse.commons.cloudfoundry.client;singleton:=true
 Bundle-Version: 3.7.1.qualifier
-Bundle-Activator: org.springframework.ide.eclipse.cloudfoundry.client.CloudFoundryClientActivator
+Bundle-Activator: org.springsource.ide.eclipse.commons.cloudfoundry.client.CloudFoundryClientActivator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
@@ -45,4 +45,4 @@ Export-Package: org.cloudfoundry.client.lib,
  org.cloudfoundry.client.lib.rest,
  org.cloudfoundry.client.lib.tokens,
  org.cloudfoundry.client.lib.util,
- org.springframework.ide.eclipse.cloudfoundry.client
+ org.springsource.ide.eclipse.commons.cloudfoundry.client
