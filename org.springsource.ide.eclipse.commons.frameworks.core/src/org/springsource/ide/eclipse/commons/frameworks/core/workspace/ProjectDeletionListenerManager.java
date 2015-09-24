@@ -17,6 +17,14 @@ import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IWorkspace;
 
 /**
+ * An adapter/manager for a single listener interested in project deletions
+ * from the Eclipse workspace.
+ * <p>
+ * Create an instance of ProjectDeletionListenerManager and pass it a
+ * ProjectDeletionListener to attach it to the workspace.
+ * <p>
+ * To deregister the listener, dispose the manager.
+ *
  * @author Kris De Volder
  */
 public class ProjectDeletionListenerManager implements IResourceChangeListener {
