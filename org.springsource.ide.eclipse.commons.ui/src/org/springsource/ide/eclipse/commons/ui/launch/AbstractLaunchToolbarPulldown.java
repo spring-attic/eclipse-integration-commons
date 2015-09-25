@@ -12,6 +12,10 @@ package org.springsource.ide.eclipse.commons.ui.launch;
 
 import java.util.ArrayList;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -69,16 +73,20 @@ public abstract class AbstractLaunchToolbarPulldown implements IWorkbenchWindowP
 	@Override
 	public void run(IAction action) {
 		this.action = action;
-		LaunchList.Item l = launches.getLast();
+		final LaunchList.Item l = launches.getLast();
 		if (l!=null) {
-			try {
-				performOperation(l);
-			} catch (DebugException e) {
-				CorePlugin.log(e);
-				MessageDialog.openError(window.getShell(), "Error relaunching",
-						ExceptionUtil.getMessage(e)
-				);
-			}
+			Job job = new Job(getOperationName()) {
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					try {
+						performOperation(l);
+						return Status.OK_STATUS;
+					} catch (Exception e) {
+						return ExceptionUtil.status(e);
+					}
+				}
+			};
+			job.schedule();
 		} else {
 			MessageDialog.openError(window.getShell(), "No Processes Found",
 					"Couldn't "+getOperationName()+": no active processes"
