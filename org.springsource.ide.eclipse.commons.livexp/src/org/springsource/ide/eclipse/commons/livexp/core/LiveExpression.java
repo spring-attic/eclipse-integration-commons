@@ -25,16 +25,29 @@ public abstract class LiveExpression<V> {
 	private ListenerList fListeners = new ListenerList();
 
 	/**
+	 * An optional 'owner' for this expression. Useful when expressions
+	 * are part of a model, in which case listeners may want to discover
+	 * the owner of a LiveExpression to do something to/with the owner
+	 * (e.g. redraw it) when something inside it changes.
+	 */
+	protected final Object owner;
+
+	/**
 	 * The last computed value of the expression.
 	 */
 	protected V value;
 
-	public LiveExpression(V initialValue) {
+	public LiveExpression(V initialValue, Object owner) {
 		this.value = initialValue;
+		this.owner = owner;
+	}
+
+	public LiveExpression(V initialValue) {
+		this(initialValue, null);
 	}
 
 	public LiveExpression() {
-		// TODO Auto-generated constructor stub
+		this(null);
 	}
 
 	/**
@@ -158,6 +171,18 @@ public abstract class LiveExpression<V> {
 				}
 			}
 		};
+	}
+
+	public Object getOwner() {
+		return owner;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T getOwner(Class<T> cls) {
+		if (owner!=null && cls.isAssignableFrom(owner.getClass())) {
+			return (T) owner;
+		}
+		return null;
 	}
 
 }
