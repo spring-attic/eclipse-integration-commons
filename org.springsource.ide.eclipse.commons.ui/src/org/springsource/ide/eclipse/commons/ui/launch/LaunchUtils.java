@@ -24,7 +24,7 @@ import org.eclipse.debug.core.IDebugEventSetListener;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.DebugUITools;
-import org.springsource.ide.eclipse.commons.frameworks.core.util.ResolveableFuture;
+import org.springsource.ide.eclipse.commons.frameworks.core.async.ResolvableFuture;
 
 public class LaunchUtils {
 
@@ -56,7 +56,7 @@ public class LaunchUtils {
 	 * @return A future that resolves when a list of launches are all terminated
 	 */
 	public static Future<Void> whenTerminated(List<ILaunch> launches) {
-		final ResolveableFuture<Void> done = new ResolveableFuture<Void>();
+		final ResolvableFuture<Void> done = new ResolvableFuture<Void>();
 		whenTerminated(launches, new Runnable() {
 			public void run() {
 				done.resolve(null);
