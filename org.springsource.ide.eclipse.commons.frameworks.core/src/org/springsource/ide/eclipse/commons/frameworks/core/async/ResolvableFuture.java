@@ -8,7 +8,7 @@
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.frameworks.core.util;
+package org.springsource.ide.eclipse.commons.frameworks.core.async;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -20,8 +20,10 @@ import java.util.concurrent.TimeoutException;
  * A java.util.concurrent.Future which isn't created by some
  * executor, but rather just an object which is awaiting some kind
  * of event to resolve or reject it.
+ *
+ * @author Kris De Volder
  */
-public class ResolveableFuture<T> implements Future<T> {
+public class ResolvableFuture<T> implements Future<T>, Resolvable<T> {
 
 	private boolean isPending = true;
 	private Exception exception;
@@ -94,4 +96,5 @@ public class ResolveableFuture<T> implements Future<T> {
 			return value;
 		}
 	}
+
 }
