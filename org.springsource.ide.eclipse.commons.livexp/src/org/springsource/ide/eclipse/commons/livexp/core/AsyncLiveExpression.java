@@ -38,8 +38,12 @@ public abstract class AsyncLiveExpression<T> extends LiveExpression<T> {
 	private long refreshDelay = 0;
 
 	public AsyncLiveExpression(T initialValue) {
+		this(initialValue, "AsyncLiveExpression refresh");
+	}
+
+	public AsyncLiveExpression(T initialValue, String jobName) {
 		super(initialValue);
-		refreshJob = new Job("AsyncLiveExpression refresh") {
+		refreshJob = new Job(jobName) {
 			protected IStatus run(IProgressMonitor monitor) {
 				syncRefresh();
 				return Status.OK_STATUS;
