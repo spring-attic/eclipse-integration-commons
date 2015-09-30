@@ -82,10 +82,10 @@ public class QuickTextSearcher {
 	}
 
 	public QuickTextSearcher(QuickTextQuery query, PriorityFunction priorities, int maxLineLen, QuickTextSearchRequestor requestor) {
+		this.MAX_LINE_LEN = maxLineLen;
 		this.requestor = requestor;
 		this.query = query;
 		this.walker = createWalker(priorities);
-		this.MAX_LINE_LEN = maxLineLen;
 	}
 
 	private SearchInFilesWalker createWalker(PriorityFunction priorities) {
