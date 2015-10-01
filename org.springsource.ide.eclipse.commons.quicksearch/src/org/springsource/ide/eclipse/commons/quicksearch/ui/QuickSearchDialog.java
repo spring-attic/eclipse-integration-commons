@@ -67,6 +67,8 @@ import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -78,8 +80,10 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
@@ -223,19 +227,23 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		}
 	};
 
-	public static final ColumnLabelProvider LINE_NUMBER_LABEL_PROVIDER = new ColumnLabelProvider() {
-		public String getText(Object _item) {
-			if (_item!=null) {
-				LineItem item = (LineItem) _item;
-				return ""+item.getLineNumber();
+	public final StyledCellLabelProvider LINE_NUMBER_LABEL_PROVIDER = new StyledCellLabelProvider() {
+		@Override
+		public void update(ViewerCell cell) {
+			LineItem item = (LineItem) cell.getElement();
+			if (item!=null) {
+				cell.setText(""+item.getLineNumber());
+			} else {
+				cell.setText("?");
 			}
-			return "?";
+			cell.setImage(getBlankImage());
 		};
 	};
 
 	private static final Color GREY = Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY);
 
 	private final StyledCellLabelProvider LINE_TEXT_LABEL_PROVIDER = new StyledCellLabelProvider() {
+		
 		@Override
 		public void update(ViewerCell cell) {
 			LineItem item = (LineItem) cell.getElement();
@@ -247,11 +255,24 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 				cell.setText("");
 				cell.setStyleRanges(null);
 			}
+			cell.setImage(getBlankImage());
 			super.update(cell);
 		}
 	};
 
-	private static final StyledCellLabelProvider LINE_FILE_LABEL_PROVIDER = new StyledCellLabelProvider() {
+	private Image blankImage;
+
+	private Image getBlankImage() {
+		if (blankImage==null) {
+			blankImage = new Image(Display.getDefault(), 1, 1);
+//			GC gc = new GC(blankImage);
+//			gc.fillRectangle(0, 0, 16, 16);
+//			gc.dispose();
+		}
+		return blankImage;
+	}
+
+	private final StyledCellLabelProvider LINE_FILE_LABEL_PROVIDER = new StyledCellLabelProvider() {
 
 		@Override
 		public void update(ViewerCell cell) {
@@ -269,9 +290,10 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 				cell.setText("");
 				cell.setStyleRanges(null);
 			}
+			cell.setImage(getBlankImage());
 			super.update(cell);
 		}
-
+		
 //		public String getToolTipText(Object element) {
 //			LineItem item = (LineItem) element;
 //			if (item!=null) {
@@ -758,6 +780,12 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite dialogArea = (Composite) super.createDialogArea(parent);
+		
+		dialogArea.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				QuickSearchDialog.this.dispose();
+			}
+		});
 
 		Composite content = new Composite(dialogArea, SWT.NONE);
 		GridData gd = new GridData(GridData.FILL_BOTH);
@@ -805,7 +833,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		list.setContentProvider(contentProvider);
 //		new ScrollListener(list.getTable().getVerticalBar());
 //		new SelectionChangedListener(list);
-
+		
 		TableViewerColumn col = new TableViewerColumn(list, SWT.RIGHT);
 		col.setLabelProvider(LINE_NUMBER_LABEL_PROVIDER);
 		col.getColumn().setText("Line");
@@ -919,6 +947,13 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		return dialogArea;
 	}
 
+
+	protected void dispose() {
+		if (blankImage!=null) {
+			blankImage.dispose();
+			blankImage = null;
+		}
+	}
 
 	private void createDetailsArea(Composite parent) {
 		details = new StyledText(parent, SWT.MULTI+SWT.READ_ONLY+SWT.BORDER+SWT.H_SCROLL);
