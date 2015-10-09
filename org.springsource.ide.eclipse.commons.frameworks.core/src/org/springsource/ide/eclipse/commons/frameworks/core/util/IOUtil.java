@@ -11,11 +11,13 @@
 package org.springsource.ide.eclipse.commons.frameworks.core.util;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 public class IOUtil {
 
@@ -53,6 +55,16 @@ public class IOUtil {
 		} finally {
 			input.close();
 		}
+	}
+
+	public static String toString(InputStream input) throws Exception {
+		return toString(input, "UTF8");
+	}
+
+	private static String toString(InputStream input, String encoding) throws Exception {
+		ByteArrayOutputStream buf = new ByteArrayOutputStream();
+		pipe(input, buf);
+		return buf.toString(encoding);
 	}
 
 }
