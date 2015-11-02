@@ -14,6 +14,7 @@ package org.springsource.ide.eclipse.commons.livexp.ui;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.events.ExpansionEvent;
@@ -48,6 +49,7 @@ public class ExpandableSection extends WizardPageSection implements Disposable {
 	private IPageSection child;
 	private String title;
 	private LiveVariable<Boolean> expansionState = new LiveVariable<Boolean>(true);
+	private LiveVariable<Boolean> visibleState = new LiveVariable<Boolean>(true);
 
 	public ExpandableSection(IPageWithSections owner, String title, IPageSection expandableContent) {
 		super(owner);
@@ -83,6 +85,23 @@ public class ExpandableSection extends WizardPageSection implements Disposable {
 					boolean currentState = comp.isExpanded();
 					if (currentState!=newState) {
 						comp.setExpanded(newState);
+						reflow(owner, comp);
+					}
+				}
+			}
+		});
+
+		visibleState.addListener(new ValueListener<Boolean>() {
+			@Override
+			public void gotValue(LiveExpression<Boolean> exp, Boolean value) {
+				if (value!=null && comp!=null && !comp.isDisposed()) {
+					boolean newState = value;
+					boolean currentState = comp.isVisible();
+					if (currentState!=newState) {
+						comp.setVisible(newState);
+						GridData data = (GridData) comp.getLayoutData();
+						data.exclude = !newState;
+						reflow(owner, comp);
 					}
 				}
 			}
@@ -123,5 +142,16 @@ public class ExpandableSection extends WizardPageSection implements Disposable {
 			comp.getParent().layout(true);
 		}
 	}
+
+	public void setVisible(boolean reveal) {
+		this.visibleState.setValue(reveal);
+	}
+
+
+	@Override
+	public String toString() {
+		return "ExpandableSection("+title+")";
+	}
+
 
 }

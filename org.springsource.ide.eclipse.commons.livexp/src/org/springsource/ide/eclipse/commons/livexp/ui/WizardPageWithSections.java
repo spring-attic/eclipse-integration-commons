@@ -24,6 +24,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.widgets.SharedScrolledComposite;
 import org.eclipse.ui.progress.UIJob;
@@ -61,6 +62,7 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 	private UIJob updateJob;
 	private SharedScrolledComposite scroller;
 	private Composite page;
+	private UIJob reflowJob;
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
@@ -100,7 +102,19 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 
 	@Override
 	public boolean reflow() {
-		scroller.reflow(true);
+		if (reflowJob==null) {
+			reflowJob = new UIJob(Display.getDefault(), "Reflow Wizard Contents") {
+				@Override
+				public IStatus runInUIThread(IProgressMonitor monitor) {
+					if (scroller!=null && !scroller.isDisposed()) {
+						scroller.reflow(true);
+					}
+					return Status.OK_STATUS;
+				}
+			};
+			reflowJob.setSystem(true);
+		}
+		reflowJob.schedule();
 		return true;
 	}
 
