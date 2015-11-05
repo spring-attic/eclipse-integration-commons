@@ -10,13 +10,7 @@
 	<artifactId>org.springsource.ide.eclipse.commons.cloudfoundry.client</artifactId>
 	<packaging>eclipse-plugin</packaging>
 	
-	<properties>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
-		<encoding>UTF-8</encoding>
-	</properties>
-	
-    <build>
+	<build>
 		<plugins>
 
 			<plugin>
