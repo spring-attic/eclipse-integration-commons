@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.ui,
  org.springsource.ide.eclipse.commons.livexp
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: Pivotal Software, Inc.
 Bundle-Localization: plugin
 Export-Package: org.springsource.ide.eclipse.commons.quicksearch.core.priority
