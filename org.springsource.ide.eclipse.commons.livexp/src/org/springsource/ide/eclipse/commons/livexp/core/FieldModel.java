@@ -74,4 +74,13 @@ public abstract class FieldModel<T> {
 		return defaultValue;
 	}
 
+	public void setDefaultValue(T dflt) {
+		this.defaultValue = dflt;
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getName()+"("+getName()+")";
+	}
+
 }
