@@ -12,6 +12,7 @@ package org.springsource.ide.eclipse.commons.frameworks.core.util;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -65,6 +66,18 @@ public class IOUtil {
 		ByteArrayOutputStream buf = new ByteArrayOutputStream();
 		pipe(input, buf);
 		return buf.toString(encoding);
+	}
+
+	/**
+	 * Sick and tired of writing try-catch around close calls... If something can't close, it usually means it
+	 * was already closed, no longer exists etc. This method catches and ignores the exceptions.
+	 */
+	public static void close(Closeable closeable) {
+		try {
+			closeable.close();
+		} catch (IOException e) {
+			//ignore
+		}
 	}
 
 }
