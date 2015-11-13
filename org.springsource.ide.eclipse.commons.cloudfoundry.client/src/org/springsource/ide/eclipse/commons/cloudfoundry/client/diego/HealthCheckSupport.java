@@ -14,6 +14,7 @@ import java.util.UUID;
 
 import org.cloudfoundry.client.lib.CloudCredentials;
 import org.cloudfoundry.client.lib.CloudFoundryClient;
+import org.cloudfoundry.client.lib.CloudFoundryOperations;
 import org.cloudfoundry.client.lib.HttpProxyConfiguration;
 import org.cloudfoundry.client.lib.domain.CloudApplication;
 import org.springframework.web.client.RestTemplate;
@@ -54,7 +55,7 @@ public class HealthCheckSupport extends CfClientSideCart {
 		}
 	}
 
-	public HealthCheckSupport(CloudFoundryClient client, CloudInfoV2 cloudInfo, boolean trustSelfSigned, HttpProxyConfiguration httpProxyConfiguration) {
+	public HealthCheckSupport(CloudFoundryOperations client, CloudInfoV2 cloudInfo, boolean trustSelfSigned, HttpProxyConfiguration httpProxyConfiguration) {
 		super(client, cloudInfo, trustSelfSigned, httpProxyConfiguration);
 	}
 
@@ -80,7 +81,7 @@ public class HealthCheckSupport extends CfClientSideCart {
 		return cloudInfo.getCloudControllerUrl()+path;
 	}
 
-	public static HealthCheckSupport create(final CloudFoundryClient client, CloudCredentials creds, HttpProxyConfiguration proxyConf, boolean selfSigned) {
+	public static HealthCheckSupport create(final CloudFoundryOperations client, CloudCredentials creds, HttpProxyConfiguration proxyConf, boolean selfSigned) {
 		CloudInfoV2 cloudInfo = new CloudInfoV2(
 				creds,
 				client.getCloudControllerUrl(),
