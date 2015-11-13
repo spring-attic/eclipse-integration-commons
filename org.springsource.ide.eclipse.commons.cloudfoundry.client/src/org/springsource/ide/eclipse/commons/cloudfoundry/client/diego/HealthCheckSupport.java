@@ -13,13 +13,14 @@ package org.springsource.ide.eclipse.commons.cloudfoundry.client.diego;
 import java.util.UUID;
 
 import org.cloudfoundry.client.lib.CloudCredentials;
-import org.cloudfoundry.client.lib.CloudFoundryClient;
 import org.cloudfoundry.client.lib.CloudFoundryOperations;
 import org.cloudfoundry.client.lib.HttpProxyConfiguration;
 import org.cloudfoundry.client.lib.domain.CloudApplication;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -31,6 +32,7 @@ public class HealthCheckSupport extends CfClientSideCart {
 	public static final String HC_PORT = "port";
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
+	@JsonInclude(Include.NON_NULL)
 	public static class HealthCheck {
 
 		/**
