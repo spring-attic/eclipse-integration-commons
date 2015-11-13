@@ -63,8 +63,7 @@ public class HealthCheckSupport extends CfClientSideCart {
 		return RestUtils.createRestTemplate(httpProxyConfiguration, trustSelfSigned, /*disableRedirects*/false);
 	}
 
-	public String getHealthCheck(CloudApplication app) {
-		UUID guid = app.getMeta().getGuid();
+	public String getHealthCheck(UUID guid) {
 		HealthCheck summary = restTemplate.getForObject(url("/v2/apps/{guid}/summary"), HealthCheck.class, guid);
 		if (summary!=null) {
 			return summary.getHealthCheckType();
@@ -72,9 +71,17 @@ public class HealthCheckSupport extends CfClientSideCart {
 		return null;
 	}
 
-	public void setHealthCheck(CloudApplication app, String type) {
-		UUID guid = app.getMeta().getGuid();
+
+	public String getHealthCheck(CloudApplication app) {
+		return getHealthCheck(app.getMeta().getGuid());
+	}
+
+	public void setHealthCheck(UUID guid, String type) {
 		restTemplate.put(url("/v2/apps/{guid}"), new HealthCheck(type), guid);
+	}
+
+	public void setHealthCheck(CloudApplication app, String type) {
+		setHealthCheck(app.getMeta().getGuid(), type);
 	}
 
 	private String url(String path) {
