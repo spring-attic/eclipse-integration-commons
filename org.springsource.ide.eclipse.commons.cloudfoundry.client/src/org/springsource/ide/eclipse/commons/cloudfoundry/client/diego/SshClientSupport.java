@@ -36,7 +36,7 @@ public class SshClientSupport extends CfClientSideCart {
 	private String authorizationUrl;
 	private String sshClientId;
 
-	public SshClientSupport(CloudFoundryClient client, CloudInfoV2 cloudInfo, boolean trustSelfSigned, HttpProxyConfiguration httpProxyConfiguration) {
+	public SshClientSupport(CloudFoundryOperations client, CloudInfoV2 cloudInfo, boolean trustSelfSigned, HttpProxyConfiguration httpProxyConfiguration) {
 		super(client, cloudInfo, trustSelfSigned, httpProxyConfiguration);
 		this.authorizationUrl = cloudInfo.getAuthorizationUrl();
 		this.sshClientId = cloudInfo.getSshClientId();
@@ -81,7 +81,7 @@ public class SshClientSupport extends CfClientSideCart {
 		return cloudInfo.getSshHost();
 	}
 
-	public static SshClientSupport create(final CloudFoundryClient client, CloudCredentials creds, HttpProxyConfiguration proxyConf, boolean selfSigned) {
+	public static SshClientSupport create(final CloudFoundryOperations client, CloudCredentials creds, HttpProxyConfiguration proxyConf, boolean selfSigned) {
 		CloudInfoV2 cloudInfo = new CloudInfoV2(
 				creds,
 				client.getCloudControllerUrl(),

@@ -13,7 +13,7 @@ package org.springsource.ide.eclipse.commons.cloudfoundry.client.diego;
 import java.io.IOException;
 import java.net.URI;
 
-import org.cloudfoundry.client.lib.CloudFoundryClient;
+import org.cloudfoundry.client.lib.CloudFoundryOperations;
 import org.cloudfoundry.client.lib.HttpProxyConfiguration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequest;
@@ -29,9 +29,9 @@ public abstract class CfClientSideCart {
 	protected final AuthorizationHeaderProvider oauth;
 	protected final RestTemplate restTemplate;
 	protected final CloudInfoV2 cloudInfo;
-	protected final CloudFoundryClient client;
+	protected final CloudFoundryOperations client;
 
-	public CfClientSideCart(CloudFoundryClient client, CloudInfoV2 cloudInfo, boolean trustSelfSigned, HttpProxyConfiguration httpProxyConfiguration) {
+	public CfClientSideCart(CloudFoundryOperations client, CloudInfoV2 cloudInfo, boolean trustSelfSigned, HttpProxyConfiguration httpProxyConfiguration) {
 		this.cloudInfo = cloudInfo;
 		this.client = client;
 		this.oauth = authProvider(client);
@@ -41,7 +41,7 @@ public abstract class CfClientSideCart {
 		restTemplate.setRequestFactory(authorize(requestFactory));
 	}
 
-	private AuthorizationHeaderProvider authProvider(final CloudFoundryClient client) {
+	private AuthorizationHeaderProvider authProvider(final CloudFoundryOperations client) {
 		return new AuthorizationHeaderProvider() {
 			public String getAuthorizationHeader() {
 				OAuth2AccessToken token = client.login();
