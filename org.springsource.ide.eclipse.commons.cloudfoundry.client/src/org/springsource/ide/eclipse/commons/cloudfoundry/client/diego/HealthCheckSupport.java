@@ -30,6 +30,7 @@ public class HealthCheckSupport extends CfClientSideCart {
 
 	public static final String HC_NONE = "none";
 	public static final String HC_PORT = "port";
+	public static final String[] HC_ALL = {HC_NONE, HC_PORT};
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	@JsonInclude(Include.NON_NULL)
