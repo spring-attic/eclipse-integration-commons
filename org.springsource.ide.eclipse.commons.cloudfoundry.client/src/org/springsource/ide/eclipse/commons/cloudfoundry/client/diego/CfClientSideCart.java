@@ -60,5 +60,9 @@ public abstract class CfClientSideCart {
 			}
 		};
 	}
+	
+	protected String url(String path) {
+		return cloudInfo.getCloudControllerUrl()+path;
+	}
 
 }

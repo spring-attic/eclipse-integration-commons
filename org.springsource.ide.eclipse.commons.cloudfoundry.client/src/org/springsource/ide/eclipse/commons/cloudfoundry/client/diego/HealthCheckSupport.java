@@ -87,10 +87,6 @@ public class HealthCheckSupport extends CfClientSideCart {
 		setHealthCheck(app.getMeta().getGuid(), type);
 	}
 
-	private String url(String path) {
-		return cloudInfo.getCloudControllerUrl()+path;
-	}
-
 	public static HealthCheckSupport create(final CloudFoundryOperations client, CloudCredentials creds, HttpProxyConfiguration proxyConf, boolean selfSigned) {
 		CloudInfoV2 cloudInfo = new CloudInfoV2(
 				creds,
