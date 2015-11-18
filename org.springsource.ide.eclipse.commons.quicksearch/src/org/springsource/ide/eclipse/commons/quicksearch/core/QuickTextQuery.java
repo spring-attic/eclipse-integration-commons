@@ -20,8 +20,8 @@ import org.eclipse.jface.text.IRegion;
 
 
 /**
- * Represents something you can search for with a 'quick search' text searcher. 
- * 
+ * Represents something you can search for with a 'quick search' text searcher.
+ *
  * @author Kris De Volder
  */
 @SuppressWarnings("restriction")
@@ -45,7 +45,6 @@ public class QuickTextQuery {
 
 	private boolean caseSensitive;
 	private String orgPattern; //Original pattern case preserved even if search is case insensitive.
-	private Matcher matcher;
 	private Pattern pattern;
 
 	/**
@@ -54,7 +53,7 @@ public class QuickTextQuery {
 	public QuickTextQuery() {
 		this("", true);
 	}
-	
+
 	public QuickTextQuery(String substring, boolean caseSensitive) {
 		this.orgPattern = substring;
 		this.caseSensitive = caseSensitive;
@@ -81,19 +80,17 @@ public class QuickTextQuery {
 				appendSegment(segment, regexp);
 				regexp.append(".*");
 				break;
-// For now not supporting escapes with '\'.
-// If this code is enabled. Should also add special case code to deal with it
-// in isSubFilter method. The naive 'contains' test will be subtly broken for
-// patterns that end with '\' and '\*'  (one searches for a '\' and the other does not!).
-//			case '\\': 
-//				if (pos+1<=len) {
-//					char nextChar = patString.charAt(pos+1);
-//					if (nextChar=='*' || nextChar=='?') {
-//						segment.append(nextChar);
-//						pos++;
-//						break;
-//					}
-//				}
+			case '\\':
+				System.out.println("pos = "+pos);
+				System.out.println("len = "+len);
+				if (pos<len) {
+					char nextChar = patString.charAt(pos);
+					if (nextChar=='*' || nextChar=='?' || nextChar=='\\') {
+						segment.append(nextChar);
+						pos++;
+						break;
+					}
+				}
 			default:
 				//Char is 'nothing special'. Add it to segment that will be wrapped in 'quotes'
 				segment.append(c);
@@ -102,9 +99,10 @@ public class QuickTextQuery {
 		}
 		//Don't forget to process that last segment.
 		appendSegment(segment, regexp);
-		
+
 		this.pattern = Pattern.compile(regexp.toString(), caseSensitive?0:Pattern.CASE_INSENSITIVE);
-		this.matcher = pattern.matcher("");
+		System.out.println("pat = |"+pattern.pattern()+"|");
+//		this.matcher = pattern.matcher("");
 	}
 
 	private void appendSegment(StringBuilder segment, StringBuilder regexp) {
@@ -130,10 +128,10 @@ public class QuickTextQuery {
 	/**
 	 * Returns true if the other query is a specialisation of this query. I.e. any results matching the other
 	 * query must also match this query. If this method returns true then we can optimise the search for other
-	 * re-using already found results for this query. 
+	 * re-using already found results for this query.
 	 * <p>
 	 * If it is hard or impossible to decide whether other query is a specialisation of this query then this
-	 * method is allowed to 'punt' and just return false. However, the consequence of this is that the query 
+	 * method is allowed to 'punt' and just return false. However, the consequence of this is that the query
 	 * will be re-run instead of incrementally updated.
 	 */
 	public boolean isSubFilter(QuickTextQuery other) {
@@ -141,13 +139,26 @@ public class QuickTextQuery {
 			return false;
 		}
 		if (this.caseSensitive==other.caseSensitive) {
-			if (this.caseSensitive) {
-				return other.orgPattern.contains(this.orgPattern);
-			} else {
-				return other.orgPattern.toLowerCase().contains(this.orgPattern.toLowerCase());
-			}
+			boolean caseSensitive = this.caseSensitive;
+			String otherPat = normalize(other.orgPattern, caseSensitive);
+			String thisPat = normalize(this.orgPattern, caseSensitive);
+			return otherPat.contains(thisPat);
 		}
 		return false;
+	}
+
+	/**
+	 * Transforms a pattern string so we can use a simple 'substring' test to determine
+	 * whether one pattern is sub-pattern of the other.
+	 */
+	private String normalize(String pat, boolean caseSensitive) {
+		if (pat.endsWith("\\")) {
+			pat = pat + "\\";
+		}
+		if (!caseSensitive) {
+			pat = pat.toLowerCase();
+		}
+		return pat;
 	}
 
 	/**
@@ -159,17 +170,17 @@ public class QuickTextQuery {
 
 //	/**
 //	 * Same as matchItem except only takes the text of the item. This can
-//	 * be useful for efficient processing. In particular to avoid creating 
+//	 * be useful for efficient processing. In particular to avoid creating
 //	 * LineItem instances for non-matching lines.
 //	 */
 //	public synchronized boolean matchItem(String item) {
 //		matcher.reset(item);
 //		return matcher.find();
 //	}
-	
+
 	/**
 	 * Same as matchItem except only takes the text of the item. This can
-	 * be useful for efficient processing. In particular to avoid creating 
+	 * be useful for efficient processing. In particular to avoid creating
 	 * LineItem instances for non-matching lines.
 	 */
 	public boolean matchItem(String item) {
@@ -180,7 +191,7 @@ public class QuickTextQuery {
 	}
 
 	/**
-	 * A trivial query is one that either 
+	 * A trivial query is one that either
 	 *  - matches anything
 	 *  - matches nothing
 	 * In other words, if a query is 'trivial' then it returns either nothing or all the text in the scope
@@ -225,9 +236,9 @@ public class QuickTextQuery {
 			return ranges;
 		}
 	}
-	
+
 	public TextRange findFirst(String str) {
-		//TODO: more efficient implementation, just search the first one 
+		//TODO: more efficient implementation, just search the first one
 		// no need to find all matches then toss away everything except the
 		// first one.
 		List<TextRange> all = findAll(str);
@@ -236,7 +247,7 @@ public class QuickTextQuery {
 		}
 		return null;
 	}
-	
+
 	public String getPatternString() {
 		return orgPattern;
 	}
@@ -245,5 +256,5 @@ public class QuickTextQuery {
 		return caseSensitive;
 	}
 
-	
+
 }
