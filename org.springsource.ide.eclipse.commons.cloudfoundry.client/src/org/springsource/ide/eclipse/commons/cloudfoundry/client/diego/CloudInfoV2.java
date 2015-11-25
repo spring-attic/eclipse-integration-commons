@@ -79,7 +79,7 @@ public class CloudInfoV2 {
 				port = Integer.parseInt(pieces[1]);
 			}
 		}
-		if (host!=null || fingerPrint!=null) {
+		if (host!=null) {
 			return new SshHost(host, port, fingerPrint);
 		}
 		return null;
