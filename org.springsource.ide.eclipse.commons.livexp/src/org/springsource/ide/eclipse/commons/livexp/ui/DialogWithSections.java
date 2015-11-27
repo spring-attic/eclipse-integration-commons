@@ -22,12 +22,16 @@ import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.operation.IRunnableContext;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.widgets.SharedScrolledComposite;
 import org.eclipse.ui.progress.UIJob;
 import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
 import org.springsource.ide.eclipse.commons.livexp.Activator;
@@ -45,11 +49,11 @@ import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
  */
 public abstract class DialogWithSections
 	extends TitleAreaDialog
-	implements ValueListener<ValidationResult>, IPageWithSections, IPageWithOkButton
-{
+	implements ValueListener<ValidationResult>, IPageWithSections, IPageWithOkButton, Reflowable {
 
 	private String title;
 	private final OkButtonHandler model;
+	private SharedScrolledComposite scroller;
 
 	public DialogWithSections(String title, OkButtonHandler model, Shell shell) {
 		super(shell);
@@ -63,23 +67,58 @@ public abstract class DialogWithSections
 	}
 
 	protected Control createDialogArea(Composite parent) {
-//		readSettings();
-		Composite page = (Composite) super.createDialogArea(parent);
+		//	readSettings();
+		scroller = new SharedScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL) {};
+		scroller.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		//	GridDataFactory.fillDefaults()/*.grab(true, true)*/.applyTo(scroller);
+		//	scroller.setWidthHint(500); // Avoid excessively wide dialogs
+		//	Display display = Display.getCurrent();
+		//	Color blue = display.getSystemColor(SWT.COLOR_BLUE);
+		//	scroller.setBackground(blue);
+		scroller.setExpandHorizontal(true);
+		scroller.setExpandVertical(true);
+		Composite page = new Composite(scroller, SWT.NONE);
+		applyDialogFont(page);
 
-//		GridDataFactory.fillDefaults().grab(true,true).applyTo(parent);
-//		Composite page = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout(1, false);
-        layout.marginHeight = 12;
-        layout.marginWidth = 12;
-        page.setLayout(layout);
-        validator = new CompositeValidator();
-        for (PageSection section : getSections()) {
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginHeight = 12;
+		layout.marginWidth = 12;
+		page.setLayout(layout);
+		validator = new CompositeValidator();
+		for (PageSection section : getSections()) {
 			section.createContents(page);
 			validator.addChild(section.getValidator());
 		}
-        validator.addListener(this);
-        applyDialogFont(page);
-        return page;
+		validator.addListener(this);
+
+		page.pack(true);
+		scroller.setContent(page);
+
+		//    scroller.setMinWidth(600);
+		//    scroller.setMinHeight(400);
+		//    setControl(scroller);
+
+		return parent;
+	}
+
+	private UIJob reflowJob;
+
+	@Override
+	public boolean reflow() {
+		if (reflowJob==null) {
+			reflowJob = new UIJob(Display.getDefault(), "Reflow Wizard Contents") {
+				@Override
+				public IStatus runInUIThread(IProgressMonitor monitor) {
+					if (scroller!=null && !scroller.isDisposed()) {
+						scroller.reflow(true);
+					}
+					return Status.OK_STATUS;
+				}
+			};
+			reflowJob.setSystem(true);
+		}
+		reflowJob.schedule();
+		return true;
 	}
 
 	/**
@@ -118,7 +157,7 @@ public abstract class DialogWithSections
 					new CommentSection(this, "Dialog couldn't be created because of an unexpected error:+\n"+ExceptionUtil.getMessage(e)+"\n\n"
 							+ "Check the error log for details"),
 					new ValidatorSection(Validator.alwaysError(ExceptionUtil.getMessage(e)), this)
-			);
+					);
 		}
 	}
 
@@ -130,18 +169,7 @@ public abstract class DialogWithSections
 		return Arrays.asList(
 				new CommentSection(this, "Override DialogWithSections.createSections() to provide real content."),
 				new ValidatorSection(Validator.alwaysError("Subclass must implement validation logic"), this)
-		);
-	}
-
-	/**
-	 * Convert ValidationResult into an Eclipse IStatus object.
-	 */
-	private IStatus toStatus(ValidationResult value) {
-		if (value==null || value.isOk()) {
-			return Status.OK_STATUS;
-		} else {
-			return new Status(value.status, Activator.PLUGIN_ID , value.msg);
-		}
+				);
 	}
 
 	public void gotValue(LiveExpression<ValidationResult> exp, final ValidationResult status) {
@@ -156,8 +184,8 @@ public abstract class DialogWithSections
 					@Override
 					public IStatus runInUIThread(IProgressMonitor monitor) {
 						updateStatus(validator.getValue());
-//						IStatus status = toStatus(validator.getValue());
-//						updateStatus(status);
+						//					IStatus status = toStatus(validator.getValue());
+						//					updateStatus(status);
 						return Status.OK_STATUS;
 					}
 				};

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
@@ -46,6 +47,7 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 
 	public ChooseOneSectionCombo(IPageWithSections owner, String label, SelectionModel<T> selection, T[] options) {
 		this(owner, label, selection, LiveExpression.constant(options));
+		Assert.isNotNull(options);
 	}
 
 	public ChooseOneSectionCombo(IPageWithSections owner, String label, SelectionModel<T> selection, LiveExpression<T[]> options) {
