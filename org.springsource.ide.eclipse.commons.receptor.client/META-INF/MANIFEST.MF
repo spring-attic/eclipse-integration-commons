@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Receptor Client
 Bundle-SymbolicName: org.springsource.ide.eclipse.commons.receptor.client
-Bundle-Version: 3.7.2.qualifier
+Bundle-Version: 3.7.3.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: lib/receptor-client-0.0.2-SNAPSHOT.jar
 Export-Package: io.pivotal.receptor.actions,
