@@ -101,7 +101,6 @@ public class QuickTextQuery {
 		appendSegment(segment, regexp);
 
 		this.pattern = Pattern.compile(regexp.toString(), caseSensitive?0:Pattern.CASE_INSENSITIVE);
-		System.out.println("pat = |"+pattern.pattern()+"|");
 //		this.matcher = pattern.matcher("");
 	}
 
