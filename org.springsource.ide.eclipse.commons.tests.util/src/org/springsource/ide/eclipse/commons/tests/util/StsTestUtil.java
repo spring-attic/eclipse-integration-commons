@@ -564,37 +564,42 @@ public class StsTestUtil {
 	}
 
 	public static void assertNoErrors(IProject project) throws CoreException {
-		setAutoBuilding(false);
-		project.build(IncrementalProjectBuilder.CLEAN_BUILD, null);
-		project.build(IncrementalProjectBuilder.FULL_BUILD, null);
-		waitForManualBuild();
-		waitForAutoBuild();
+		boolean wasAutobuilding = isAutoBuilding();
+		try {
+			setAutoBuilding(false);
+			project.build(IncrementalProjectBuilder.CLEAN_BUILD, null);
+			project.build(IncrementalProjectBuilder.FULL_BUILD, null);
+			waitForManualBuild();
+			waitForAutoBuild();
 
-		IMarker[] problems = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
-		StringBuilder errors = new StringBuilder();
-		int errorCount = 0;
-		for (IMarker problem : problems) {
-			if (problem.getAttribute(IMarker.SEVERITY, 0) >= IMarker.SEVERITY_ERROR) {
-				errors.append(markerMessage(problem)+"\n");
-				errorCount++;
-				if (errorCount>=10) { //don't include hundreds of errors. 10 is reasonable
-					break;
+			IMarker[] problems = project.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+			StringBuilder errors = new StringBuilder();
+			int errorCount = 0;
+			for (IMarker problem : problems) {
+				if (problem.getAttribute(IMarker.SEVERITY, 0) >= IMarker.SEVERITY_ERROR) {
+					errors.append(markerMessage(problem)+"\n");
+					errorCount++;
+					if (errorCount>=10) { //don't include hundreds of errors. 10 is reasonable
+						break;
+					}
 				}
 			}
-		}
-		if (errorCount>0) {
-			IJavaProject javaproject = JavaCore.create(project);
-			ByteArrayOutputStream capture = new ByteArrayOutputStream();
-			PrintStream out = new PrintStream(capture);
-			try {
-				StsTestUtil.dumpClasspathInfo(javaproject, out);
-			} catch (Throwable e) {
-				out.append("Error dumping classpath: "+ExceptionUtil.getMessage(e));
-				//don't let problems getting classpath stop the test from printing error markers!
-				e.printStackTrace();
+			if (errorCount>0) {
+				IJavaProject javaproject = JavaCore.create(project);
+				ByteArrayOutputStream capture = new ByteArrayOutputStream();
+				PrintStream out = new PrintStream(capture);
+				try {
+					StsTestUtil.dumpClasspathInfo(javaproject, out);
+				} catch (Throwable e) {
+					out.append("Error dumping classpath: "+ExceptionUtil.getMessage(e));
+					//don't let problems getting classpath stop the test from printing error markers!
+					e.printStackTrace();
+				}
+				out.close();
+				Assert.fail("Expecting no problems but found: " + errors.toString() + "\n" + capture.toString());
 			}
-			out.close();
-			Assert.fail("Expecting no problems but found: " + errors.toString() + "\n" + capture.toString());
+		} finally {
+			setAutoBuilding(wasAutobuilding);
 		}
 	}
 
