@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -309,6 +310,18 @@ public class StsProperties {
 
 	public static StsProperties getInstance() {
 		return getInstance(new NullProgressMonitor());
+	}
+
+	public URL url(String prop) {
+		String s = get(prop);
+		try {
+			if (s!=null) {
+				return new URL(get(prop));
+			}
+		} catch (Exception e) {
+			CorePlugin.log(e);
+		}
+		return null;
 	}
 
 }
