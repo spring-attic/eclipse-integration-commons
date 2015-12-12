@@ -11,18 +11,20 @@
 package org.springsource.ide.eclipse.commons.livexp.core;
 
 import org.eclipse.core.runtime.ListenerList;
+import org.springsource.ide.eclipse.commons.livexp.ui.Disposable;
 
 /**
  * A 'live' expression is something that conceptually one would like to think of as an expression
  * that returns a value. However, this expression provides a listener-style interface so that
  * interested parties can subscribe to be notified when the value of the expression changes.
  */
-public abstract class LiveExpression<V> {
+public abstract class LiveExpression<V> implements Disposable, OnDispose {
 
 	public static final LiveExpression<Boolean> TRUE = constant(true);
 	public static final LiveExpression<Boolean> FALSE = constant(false);
 
 	private ListenerList fListeners = new ListenerList();
+	private ListenerList fDisposeHandlers = new ListenerList();
 
 	/**
 	 * An optional 'owner' for this expression. Useful when expressions
@@ -77,10 +79,16 @@ public abstract class LiveExpression<V> {
 	 * Declare that this liveExpression depends on some other live expression. This ensures
 	 * that this expression will be refreshed if the value of the other expression changes.
 	 */
-	public <O> LiveExpression<V> dependsOn(LiveExpression<O> other) {
-		other.addListener(new ValueListener<O>() {
+	public <O> LiveExpression<V> dependsOn(final LiveExpression<O> other) {
+		final ValueListener<O> listener = new ValueListener<O>() {
 			public void gotValue(LiveExpression<O> exp, O value) {
 				refresh();
+			}
+		};
+		other.addListener(listener);
+		onDispose(new DisposeListener() {
+			public <T extends Disposable> void disposed(T disposed) {
+				other.removeListener(listener);
 			}
 		});
 		return this;
@@ -183,6 +191,23 @@ public abstract class LiveExpression<V> {
 			return (T) owner;
 		}
 		return null;
+	}
+
+	@Override
+	public void dispose() {
+		if (fDisposeHandlers!=null) {
+			for (Object _handler : fDisposeHandlers.getListeners()) {
+				DisposeListener handler = (DisposeListener) _handler;
+				handler.disposed(this);
+			}
+			fDisposeHandlers = null;
+		}
+		fListeners = null;
+	}
+
+	@Override
+	public void onDispose(DisposeListener listener) {
+		fDisposeHandlers.add(listener);
 	}
 
 }
