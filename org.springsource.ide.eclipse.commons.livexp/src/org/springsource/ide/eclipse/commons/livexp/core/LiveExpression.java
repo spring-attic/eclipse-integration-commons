@@ -32,7 +32,7 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 	 * the owner of a LiveExpression to do something to/with the owner
 	 * (e.g. redraw it) when something inside it changes.
 	 */
-	protected final Object owner;
+	protected Object owner = null;
 
 	/**
 	 * The last computed value of the expression.
@@ -208,6 +208,10 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 	@Override
 	public void onDispose(DisposeListener listener) {
 		fDisposeHandlers.add(listener);
+	}
+
+	public void setOwner(Object owner) {
+		this.owner = owner;
 	}
 
 }
