@@ -12,6 +12,7 @@ package org.springsource.ide.eclipse.commons.ui.launch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -41,7 +42,7 @@ public class LaunchUtils {
 	 * already terminated then the code is executed synchronously, otherwise it is executed asynchronously when
 	 * a termination event is received.
 	 */
-	public static void whenTerminated(List<ILaunch> launches, Runnable runnable) {
+	public static void whenTerminated(Collection<ILaunch> launches, Runnable runnable) {
 		new WhenTerminated(new ArrayList<ILaunch>(launches), runnable);
 	}
 
