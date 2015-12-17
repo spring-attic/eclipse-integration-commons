@@ -37,22 +37,52 @@ import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
  * If the test method throws an exception this is treated the same as returning false.
  * If condition fails, we will try to rethrow a pertinent exception (typically the
  * exception thrown by the test method, the last time we tried to run it.
- * 
+ *
  * @author Kris De Volder
  */
 public abstract class ACondition {
-	
+
 	private String description = null;
-	
+
+	/**
+	 * This method is deprecated because it is a common problem that client calls it
+	 * and then forgets to call the waitFor method on the created instance. This results
+	 * in test code that looks like it is testing something but doesn't because the
+	 * asserts inside the ACondition are never actually executed.
+	 * <p>
+	 * Clients should instead call one of the constructor that takes a timeout
+	 * as a parameter (which does the to waitFor automatically).
+	 */
+	@Deprecated
 	public ACondition() {
 	}
-	
+
+	/**
+	 * This method is deprecated because it is a common problem that client calls it
+	 * and then forgets to call the waitFor method on the created instance. This results
+	 * in test code that looks like it is testing something but doesn't because the
+	 * asserts inside the ACondition are never actually executed.
+	 * <p>
+	 * Clients should instead call one of the constructor that takes a timeout
+	 * as a parameter (which does the to waitFor automatically).
+	 */
+	@Deprecated
 	public ACondition(String description) {
 		this.description = description;
 	}
 
+	public ACondition(long timeout) throws Exception {
+		this();
+		waitFor(timeout);
+	}
+
+	public ACondition(String description, long timeout) throws Exception {
+		this(description);
+		waitFor(timeout);
+	}
+
 	Throwable e = null;
-	
+
 	public void waitFor(long timeout) throws Exception {
 		long startTime = System.currentTimeMillis();
 		long endTime = startTime + timeout;
@@ -84,7 +114,7 @@ public abstract class ACondition {
 			System.out.println(description + " succeeded after: " + (System.currentTimeMillis() - startTime));
 		}
 	}
-	
+
 	private boolean doTest() {
 		boolean result = false;
 		try {
@@ -95,7 +125,7 @@ public abstract class ACondition {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Test something. If the method returns true, the test passes.
 	 * If it returns false or throws an exception the test fails (and will be
@@ -123,7 +153,7 @@ public abstract class ACondition {
 		}
 		throw new AssertionFailedError(msg.toString());
 	}
-	
+
 	public static String stateString(Job job) {
 		int state = job.getState();
 		switch (state) {
@@ -139,5 +169,5 @@ public abstract class ACondition {
 			return ""+state;
 		}
 	}
-	
+
 }
