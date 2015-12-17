@@ -83,6 +83,11 @@ public abstract class ACondition {
 
 	Throwable e = null;
 
+	/**
+	 * Deprecated. Use one of the constructors that accepts a timeout value and automatically
+	 * calls waitFor.
+	 */
+	@Deprecated
 	public void waitFor(long timeout) throws Exception {
 		long startTime = System.currentTimeMillis();
 		long endTime = startTime + timeout;
