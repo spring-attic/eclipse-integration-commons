@@ -16,7 +16,5 @@ import org.springsource.ide.eclipse.commons.livexp.ui.Disposable;
  * @author Kris De Volder
  */
 public interface DisposeListener {
-
-	public <T extends Disposable> void disposed(T disposed);
-
+	public void disposed(Disposable disposed);
 }

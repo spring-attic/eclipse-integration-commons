@@ -87,7 +87,7 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 		};
 		other.addListener(listener);
 		onDispose(new DisposeListener() {
-			public <T extends Disposable> void disposed(T disposed) {
+			public void disposed(Disposable disposed) {
 				other.removeListener(listener);
 			}
 		});
