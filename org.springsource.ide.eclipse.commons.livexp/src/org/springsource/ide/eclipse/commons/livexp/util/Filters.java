@@ -53,7 +53,7 @@ public class Filters {
 				dependsOn(f2);
 			}
 			protected Filter<T> compute() {
-				return Filters.compose(f1.getValue(), f2.getValue());
+				return compose(f1.getValue(), f2.getValue());
 			}
 		};
 	}

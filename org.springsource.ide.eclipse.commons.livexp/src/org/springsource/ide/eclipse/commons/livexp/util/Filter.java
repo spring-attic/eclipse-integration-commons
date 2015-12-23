@@ -12,13 +12,15 @@ package org.springsource.ide.eclipse.commons.livexp.util;
 
 /**
  * General interface for filtering elements.
- * 
+ *
+ * TODO: consider replacing all uses of this type with com.google.common.base.Predicate
+ *
  * @author Alex Boyko
  *
  * @param <T>
  */
 public interface Filter<T> {
-	
+
 	boolean accept(T t);
 
 }

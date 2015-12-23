@@ -13,6 +13,8 @@ package org.springsource.ide.eclipse.commons.livexp.core;
 import org.eclipse.core.runtime.ListenerList;
 import org.springsource.ide.eclipse.commons.livexp.ui.Disposable;
 
+import com.google.common.base.Function;
+
 /**
  * A 'live' expression is something that conceptually one would like to think of as an expression
  * that returns a value. However, this expression provides a listener-style interface so that
@@ -179,6 +181,20 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 				}
 			}
 		};
+	}
+
+	public <R> LiveExpression<R> apply(final Function<V,R> fun) {
+		final LiveExpression<V> target = this;
+		LiveExpression<R> result = new LiveExpression<R>() {
+			{
+				dependsOn(target);
+			}
+			@Override
+			protected R compute() {
+				return fun.apply(target.getValue());
+			}
+		};
+		return result;
 	}
 
 	public Object getOwner() {
