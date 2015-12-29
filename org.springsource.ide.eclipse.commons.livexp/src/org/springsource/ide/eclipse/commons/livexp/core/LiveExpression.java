@@ -121,7 +121,9 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 	}
 
 	public void removeListener(ValueListener<V> l) {
-		fListeners.remove(l);
+		if (fListeners!=null) {
+			fListeners.remove(l);
+		}
 	}
 
 	public static <V> LiveExpression<V> constant(final V value) {
