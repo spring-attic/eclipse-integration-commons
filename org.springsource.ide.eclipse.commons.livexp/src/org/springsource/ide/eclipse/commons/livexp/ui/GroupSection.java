@@ -28,9 +28,9 @@ import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 
-public class GroupSection extends WizardPageSection {
+public class GroupSection extends WizardPageSection implements CompositeSection {
 
-	List<WizardPageSection> sections;
+	List<IPageSection> sections;
 
 	private CompositeValidator validator;
 	private String groupTitle;
@@ -50,7 +50,7 @@ public class GroupSection extends WizardPageSection {
 	public GroupSection(IPageWithSections owner, String title, WizardPageSection... _sections) {
 		super(owner);
 		this.groupTitle = title;
-		this.sections = new ArrayList<WizardPageSection>();
+		this.sections = new ArrayList<IPageSection>();
 		for (WizardPageSection s : _sections) {
 			if (s!=null) {
 				sections.add(s);
@@ -58,7 +58,7 @@ public class GroupSection extends WizardPageSection {
 		}
 
 		validator = new CompositeValidator();
-		for (WizardPageSection s : sections) {
+		for (IPageSection s : sections) {
 			validator.addChild(s.getValidator());
 		}
 	}
@@ -71,7 +71,7 @@ public class GroupSection extends WizardPageSection {
 	@Override
 	public void createContents(Composite page) {
 		final Composite group = createComposite(page);
-		for (WizardPageSection s : sections) {
+		for (IPageSection s : sections) {
 			s.createContents(group);
 		}
 		isVisible.addListener(new ValueListener<Boolean>() {
@@ -120,8 +120,10 @@ public class GroupSection extends WizardPageSection {
 
 	@Override
 	public void dispose() {
-		for (WizardPageSection s : sections) {
-			s.dispose();
+		for (IPageSection s : sections) {
+			if (s instanceof Disposable) {
+				((Disposable)s).dispose();
+			}
 		}
 		super.dispose();
 	}
@@ -130,6 +132,11 @@ public class GroupSection extends WizardPageSection {
 		Assert.isLegal(i>=1);
 		this.columns = i;
 		return this;
+	}
+
+	@Override
+	public List<IPageSection> getChildren() {
+		return sections;
 	}
 
 }
