@@ -21,6 +21,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Shell;
 import org.springsource.ide.eclipse.commons.livexp.core.CompositeValidator;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
@@ -79,7 +80,10 @@ public class GroupSection extends WizardPageSection {
 				GridData layout = (GridData) group.getLayoutData();
 				layout.exclude = !isVisible;
 				group.setLayoutData(layout);
-				owner.getShell().layout(new Control[] {group});
+				Shell shell = owner.getShell();
+				if (shell!=null) {
+					shell.layout(new Control[] {group});
+				}
 			};
 		});
 	}
@@ -96,7 +100,6 @@ public class GroupSection extends WizardPageSection {
 			//Create a normal composite. No box
 			final Composite composite = new Composite(page, SWT.NONE);
 			composite.setLayout(createLayout());
-
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(composite);
 			return composite;
 		}
