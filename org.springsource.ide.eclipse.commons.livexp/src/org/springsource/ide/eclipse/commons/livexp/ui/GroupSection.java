@@ -28,9 +28,9 @@ import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 
-public class GroupSection extends WizardPageSection implements CompositeSection {
+public class GroupSection extends WizardPageSection {
 
-	List<IPageSection> sections;
+	List<WizardPageSection> sections;
 
 	private CompositeValidator validator;
 	private String groupTitle;
@@ -50,7 +50,7 @@ public class GroupSection extends WizardPageSection implements CompositeSection 
 	public GroupSection(IPageWithSections owner, String title, WizardPageSection... _sections) {
 		super(owner);
 		this.groupTitle = title;
-		this.sections = new ArrayList<IPageSection>();
+		this.sections = new ArrayList<WizardPageSection>();
 		for (WizardPageSection s : _sections) {
 			if (s!=null) {
 				sections.add(s);
@@ -58,7 +58,7 @@ public class GroupSection extends WizardPageSection implements CompositeSection 
 		}
 
 		validator = new CompositeValidator();
-		for (IPageSection s : sections) {
+		for (WizardPageSection s : sections) {
 			validator.addChild(s.getValidator());
 		}
 	}
@@ -71,7 +71,7 @@ public class GroupSection extends WizardPageSection implements CompositeSection 
 	@Override
 	public void createContents(Composite page) {
 		final Composite group = createComposite(page);
-		for (IPageSection s : sections) {
+		for (WizardPageSection s : sections) {
 			s.createContents(group);
 		}
 		isVisible.addListener(new ValueListener<Boolean>() {
@@ -120,10 +120,8 @@ public class GroupSection extends WizardPageSection implements CompositeSection 
 
 	@Override
 	public void dispose() {
-		for (IPageSection s : sections) {
-			if (s instanceof Disposable) {
-				((Disposable)s).dispose();
-			}
+		for (WizardPageSection s : sections) {
+			s.dispose();
 		}
 		super.dispose();
 	}
@@ -132,11 +130,6 @@ public class GroupSection extends WizardPageSection implements CompositeSection 
 		Assert.isLegal(i>=1);
 		this.columns = i;
 		return this;
-	}
-
-	@Override
-	public List<IPageSection> getChildren() {
-		return sections;
 	}
 
 }
