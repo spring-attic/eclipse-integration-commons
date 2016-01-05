@@ -46,7 +46,7 @@ public class GroupSection extends WizardPageSection {
 	 * If title is null then it creates a normal composite without a box around it. Otherwise
 	 * it creates a 'group' and uses the title as label for the group.
 	 */
-	public GroupSection(WizardPageWithSections owner, String title, WizardPageSection... _sections) {
+	public GroupSection(IPageWithSections owner, String title, WizardPageSection... _sections) {
 		super(owner);
 		this.groupTitle = title;
 		this.sections = new ArrayList<WizardPageSection>();
