@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.core;
 
+import org.springsource.ide.eclipse.commons.livexp.ui.Disposable;
 import org.springsource.ide.eclipse.commons.livexp.util.Filter;
 import org.springsource.ide.eclipse.commons.livexp.util.Filters;
 
@@ -18,7 +19,7 @@ import org.springsource.ide.eclipse.commons.livexp.util.Filters;
  *
  * @author Kris De Volder
  */
-public abstract class FilterBoxModel<T> {
+public abstract class FilterBoxModel<T> implements Disposable {
 
 	/**
 	 * Represents the text widget where user can type something.
@@ -44,6 +45,12 @@ public abstract class FilterBoxModel<T> {
 		return text;
 	}
 
+	public void dispose() {
+		if (filter!=null) {
+			filter.dispose();
+			filter = null;
+		}
+	}
 
 	protected abstract Filter<T> createFilterForInput(String text);
 }
