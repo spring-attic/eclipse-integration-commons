@@ -31,6 +31,9 @@ public class ExceptionUtil {
 	}
 
 	public static CoreException coreException(IStatus status) {
+		if (status==null) {
+			return coreException("Null status?");
+		}
 		Throwable e = status.getException();
 		if (e == null) {
 			return new CoreException(status);
