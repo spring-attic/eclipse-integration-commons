@@ -415,7 +415,7 @@ public class StsTestUtil {
 		return getResource(Path.ROOT.append(pathToFile));
 	}
 
-	static String getSourceWorkspacePath(String bundleName) {
+	public static String getSourceWorkspacePath(String bundleName) {
 		return getPluginDirectoryPath(bundleName) + java.io.File.separator + "workspace"; //$NON-NLS-1$
 	}
 
