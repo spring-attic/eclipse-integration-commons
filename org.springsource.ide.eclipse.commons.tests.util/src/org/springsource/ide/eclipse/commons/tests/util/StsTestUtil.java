@@ -106,22 +106,22 @@ public class StsTestUtil {
 	}
 
 	public static boolean isEclipseVersionAtLeast(Version minimalVersion) {
-		System.err.println("StsTestUtil: " + minimalVersion + " or later? ...");
+		//System.err.println("StsTestUtil: " + minimalVersion + " or later? ...");
 		boolean found = false;
 		try {
 			Bundle platformBundle = Platform.getBundle("org.eclipse.core.runtime");
-			System.err.println("org.eclipse.core.runtime bundle: " + platformBundle);
+			//System.err.println("org.eclipse.core.runtime bundle: " + platformBundle);
 			Version version = platformBundle.getVersion();
-			System.err.println("org.eclipse.core.runtime bundle version: " + version);
+			//System.err.println("org.eclipse.core.runtime bundle version: " + version);
 			if (version.compareTo(minimalVersion) >= 0) {
 				found = true;
 			}
 		}
 		catch (Throwable e) {
-			System.err.println("StsTestUtil: Couldn't determine Eclipse version");
+			//System.err.println("StsTestUtil: Couldn't determine Eclipse version");
 			e.printStackTrace(System.err);
 		}
-		System.err.println("StsTestUtil: " + minimalVersion + " or later? => " + found);
+		//System.err.println("StsTestUtil: " + minimalVersion + " or later? => " + found);
 		return found;
 	}
 
