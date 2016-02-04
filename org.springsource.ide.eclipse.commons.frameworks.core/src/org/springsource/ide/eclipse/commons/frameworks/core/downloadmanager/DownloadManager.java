@@ -81,6 +81,16 @@ public class DownloadManager {
 	}
 
 	/**
+	 * Deprecated use one of the other contructors (probably you want to use
+	 * the one that takes a {@link URLConnectionFactory} if you where using
+	 * this one.
+	 */
+	@Deprecated
+	public DownloadManager() throws IOException {
+		this(new URLConnectionFactory());
+	}
+
+	/**
 	 * Create a Default downloadmanager. This downloadmanager does not use authentication and
 	 * simply uses standard JavaApi to fetch url content.
 	 * <p>
@@ -90,8 +100,8 @@ public class DownloadManager {
 	 * DownloadManager created in this way will use a different cache dir anyway there isn't
 	 * much use leaving it around).
 	 */
-	public DownloadManager() throws IOException {
-		this(new SimpleDownloadService(), null);
+	public DownloadManager(URLConnectionFactory urlConnectionFactory) throws IOException {
+		this(new SimpleDownloadService(urlConnectionFactory), null);
 		this.deleteCacheOnDispose = true;
 	}
 
