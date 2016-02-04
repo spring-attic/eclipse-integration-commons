@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
-import org.springsource.ide.eclipse.commons.livexp.core.DisposeListener;
-
 public interface Disposable {
 
 	void dispose();

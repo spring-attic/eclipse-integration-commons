@@ -17,6 +17,8 @@ import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
+import org.springsource.ide.eclipse.commons.livexp.ui.Disposable;
+
 /**
  * An instance of this class provides a means to register
  * listeners that get notified when classpath for a IJavaProject
@@ -24,7 +26,7 @@ import org.eclipse.jdt.core.JavaCore;
  *
  * @author Kris De Volder
  */
-public class ClasspathListenerManager {
+public class ClasspathListenerManager implements Disposable {
 
 	public interface ClasspathListener {
 		public abstract void classpathChanged(IJavaProject jp);

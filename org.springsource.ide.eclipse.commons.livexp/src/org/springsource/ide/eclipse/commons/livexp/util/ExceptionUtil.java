@@ -8,7 +8,7 @@
  * Contributors:
  * Pivotal Software, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.frameworks.core;
+package org.springsource.ide.eclipse.commons.livexp.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -17,16 +17,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
+import org.springsource.ide.eclipse.commons.livexp.Activator;
 
 /**
  * Utility methods to convert exceptions into other types of exceptions, status
  * objects etc.
  *
- * Deprecated because this class was moved to livexp bundle. Use the moved class instead of this one.
- *
  * @author Kris De Volder
  */
-@Deprecated
 public class ExceptionUtil {
 
 	public static CoreException coreException(int severity, String msg) {
@@ -83,7 +81,7 @@ public class ExceptionUtil {
 	}
 
 	public static IStatus status(int severity, String msg) {
-		return new Status(severity, FrameworkCoreActivator.PLUGIN_ID, msg);
+		return new Status(severity, Activator.PLUGIN_ID, msg);
 	}
 
 	public static IStatus status(Throwable e) {
@@ -103,7 +101,7 @@ public class ExceptionUtil {
 				}
 			}
 		}
-		return new Status(severity, FrameworkCoreActivator.PLUGIN_ID, getMessage(e), e);
+		return new Status(severity, Activator.PLUGIN_ID, getMessage(e), e);
 	}
 
 	public static IStatus status(String msg) {

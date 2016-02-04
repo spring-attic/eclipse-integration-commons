@@ -12,18 +12,18 @@ package org.springsource.ide.eclipse.commons.livexp.core;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.IMessageProvider;
-import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
+import org.springsource.ide.eclipse.commons.livexp.util.ExceptionUtil;
 
 /**
- * A value representing the result of a wizard page validation. 
- * 
+ * A value representing the result of a wizard page validation.
+ *
  * @author Kris De Volder
  */
 public class ValidationResult {
-	
+
 	public final String msg;
-	public int status; 
-	
+	public int status;
+
 	private ValidationResult(int status, String msg) {
 		this.msg = msg;
 		this.status = status;
@@ -32,7 +32,7 @@ public class ValidationResult {
 		return status == IStatus.OK;
 	}
 	public static final ValidationResult OK = new ValidationResult(IStatus.OK, null);
-	
+
 	public static ValidationResult error(String msg) {
 		return new ValidationResult(IStatus.ERROR, msg);
 	}
@@ -42,14 +42,14 @@ public class ValidationResult {
 	public static ValidationResult info(String msg) {
 		return new ValidationResult(IStatus.INFO, msg);
 	}
-	
+
 	/**
 	 * Create a copy of a ValidationResult replacing the message
 	 */
 	public ValidationResult withMessage(String newMsg) {
 		return new ValidationResult(this.status, newMsg);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -91,18 +91,18 @@ public class ValidationResult {
 	public String toString() {
 		return "ValidationResult [msg=" + msg + ", status=" + status(status) + "]";
 	}
-	
+
 	private static String status(int s) {
 		switch (s) {
 		case IStatus.ERROR:
 			return "ERROR";
 		case IStatus.WARNING:
-			return "WARNING";	
+			return "WARNING";
 		default:
 			return ""+s;
 		}
 	}
-	
+
 	/**
 	 * Convert the status code of this validation results into an IMessageProvider status code.
 	 */
@@ -124,7 +124,7 @@ public class ValidationResult {
 			return IMessageProvider.ERROR;
 		}
 	}
-	
+
 	/**
 	 * Convert an Eclipse IStatus into a ValidationResult
 	 */
@@ -147,5 +147,5 @@ public class ValidationResult {
 			return new ValidationResult(status.getSeverity(), msg);
 		}
 	}
-	
+
 }
