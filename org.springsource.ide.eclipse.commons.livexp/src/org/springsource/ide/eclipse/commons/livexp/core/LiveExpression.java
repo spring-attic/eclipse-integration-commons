@@ -100,11 +100,13 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 	protected abstract V compute();
 
 	protected void changed() {
-		Object[] listeners = fListeners.getListeners();
-		for (Object _l : listeners) {
-			@SuppressWarnings("unchecked")
-			ValueListener<V> l = (ValueListener<V>) _l;
-			l.gotValue(this, value);
+		if (fListeners!=null) {
+			Object[] listeners = fListeners.getListeners();
+			for (Object _l : listeners) {
+				@SuppressWarnings("unchecked")
+				ValueListener<V> l = (ValueListener<V>) _l;
+				l.gotValue(this, value);
+			}
 		}
 	}
 
