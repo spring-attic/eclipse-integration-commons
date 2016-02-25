@@ -59,9 +59,15 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 	 */
 	public void refresh() {
 		//V oldValue = value;
-		V newValue = compute();
-		if (!equals(newValue, value)) {
-			value = newValue;
+		boolean changed = false;
+		synchronized (this) {
+			V newValue = compute();
+			if (!equals(newValue, value)) {
+				value = newValue;
+				changed = true;
+			}
+		}
+		if (changed) {
 			changed();
 		}
 	}
