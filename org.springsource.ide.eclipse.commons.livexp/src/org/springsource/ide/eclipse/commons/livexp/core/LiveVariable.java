@@ -46,4 +46,8 @@ public class LiveVariable<T> extends LiveExpression<T> {
 		refresh();
 	}
 
+	@Override
+	public String toString() {
+		return "LiveVariable("+getValue()+")";
+	}
 }
