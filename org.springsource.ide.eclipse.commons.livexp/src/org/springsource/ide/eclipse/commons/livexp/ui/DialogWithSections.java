@@ -59,6 +59,8 @@ public abstract class DialogWithSections
 		super(shell);
 		this.title = title;
 		this.model = model;
+		this.setHelpAvailable(false); // A better default for our dialogs since we don't provide a
+									// helpcontext in most (all!) of our dialogs anyhow.
 	}
 
 	public void create() {
