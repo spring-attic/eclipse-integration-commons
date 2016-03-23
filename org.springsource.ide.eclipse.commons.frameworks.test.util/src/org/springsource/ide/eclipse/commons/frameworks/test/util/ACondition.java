@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012-2016 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -173,6 +173,23 @@ public abstract class ACondition {
 		default:
 			return ""+state;
 		}
+	}
+
+	/**
+	 * A Java 8 friendlier way of using this class with a lambda.
+	 * <p>
+	 * Waits for some asserts to pass by periodically checking them until either:
+	 * a) the asserts all pass (i.e. asserter returns without throwing); or b)
+	 * the timeout is exceeded.
+	 */
+	public static void waitFor(String name, long timeout, final Asserter asserter) throws Exception {
+		new ACondition(name, timeout) {
+			@Override
+			public boolean test() throws Exception {
+				asserter.execute();
+				return true;
+			}
+		};
 	}
 
 }
