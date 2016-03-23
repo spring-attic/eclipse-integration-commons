@@ -183,7 +183,7 @@ public abstract class ACondition {
 	 * the timeout is exceeded.
 	 */
 	public static void waitFor(String name, long timeout, final Asserter asserter) throws Exception {
-		new ACondition(name, timeout) {
+		new ACondition("Wait for "+name, timeout) {
 			@Override
 			public boolean test() throws Exception {
 				asserter.execute();
