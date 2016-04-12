@@ -93,7 +93,7 @@
 		<dist.properties>dist.properties</dist.properties>
 
 		<dist.pathpostfix>nightly</dist.pathpostfix>
-		<dist.path>${dist.type}/${dist.key}/${dist.project}/${dist.pathpostfix}/${dist.target}</dist.path>
+		<dist.path>${dist.type}/${dist.key}/${dist.project}/${dist.pathpostfix}</dist.path>
 
 		<skip.source.check>true</skip.source.check>
 
@@ -263,7 +263,42 @@
 				<module>org.springsource.ide.eclipse.commons.site-e44</module>
 			</modules>
 		</profile>
-		
+		<profile>
+			<id>e46</id>
+			<properties>
+				<dist.target>e4.6</dist.target>
+				<dist.platform.name>Neon</dist.platform.name>
+				<dist.platform.id>neon</dist.platform.id>
+				<dist.platform.version>4.6</dist.platform.version>
+				<package.qualifierPrefix>e46</package.qualifierPrefix>
+			</properties>
+			<repositories>
+				<repository>
+					<id>platform</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/eclipse/updates/4.6/</url>
+				</repository>
+				<repository>
+					<id>mars</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/releases/neon/</url>
+				</repository>
+				<repository>
+					<id>swtbot</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/technology/swtbot/snapshots</url>
+				</repository>
+				<repository>
+					<id>javafx</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/efxclipse/updates-released/2.1.0/site/</url>
+				</repository>
+			</repositories>
+			<modules>
+				<module>org.springsource.ide.eclipse.dashboard-feature-e44</module>
+				<module>org.springsource.ide.eclipse.commons.site-e44</module>
+			</modules>
+		</profile>
 
 		<profile>
 			<id>build.springsource.com</id>
