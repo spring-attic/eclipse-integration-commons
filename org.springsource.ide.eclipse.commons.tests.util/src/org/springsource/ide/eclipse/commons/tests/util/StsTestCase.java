@@ -12,14 +12,14 @@ package org.springsource.ide.eclipse.commons.tests.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
-import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -30,6 +30,8 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.springsource.ide.eclipse.commons.frameworks.core.util.IOUtil;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil.StringInputStream;
+
+import junit.framework.TestCase;
 
 /**
  * Derived from AbstractBeansCoreTestCase
@@ -92,6 +94,21 @@ public abstract class StsTestCase extends TestCase {
 				IFile file = project.getFile(new Path(path));
 				file.create(new StringInputStream(""), true, new NullProgressMonitor());
 			}
+
+	public static IFile createFile(IProject project, String path, File data) throws IOException, CoreException {
+		InputStream stream = new FileInputStream(data);
+		try {
+			return createFile(project, path, stream);
+		} finally {
+			stream.close();
+		}
+	}
+
+	private static IFile createFile(IProject project, String path, InputStream stream) throws CoreException {
+		IFile file = project.getFile(new Path(path));
+		file.create(stream, true, new NullProgressMonitor());
+		return file;
+	}
 
 	public static IFile createFile(IProject project, String path, String data)
 			throws CoreException {
