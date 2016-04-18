@@ -11,6 +11,7 @@
 package org.springsource.ide.eclipse.commons.frameworks.core.async;
 
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -21,8 +22,11 @@ import java.util.concurrent.TimeoutException;
  * executor, but rather just an object which is awaiting some kind
  * of event to resolve or reject it.
  *
+ * Deprecated. Now that we have Java 8 you can use {@link CompletableFuture}
+ *
  * @author Kris De Volder
  */
+@Deprecated
 public class ResolvableFuture<T> implements Future<T>, Resolvable<T> {
 
 	private boolean isPending = true;
