@@ -80,4 +80,10 @@ public class IOUtil {
 		}
 	}
 
+	public static byte[] toBytes(InputStream stream) throws IOException {
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		pipe(stream, bytes);
+		return bytes.toByteArray();
+	}
+
 }
