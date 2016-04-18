@@ -93,10 +93,11 @@ public abstract class StsTestCase extends TestCase {
 				file.create(new StringInputStream(""), true, new NullProgressMonitor());
 			}
 
-	public static void createFile(IProject project, String path, String data)
+	public static IFile createFile(IProject project, String path, String data)
 			throws CoreException {
 				IFile file = project.getFile(new Path(path));
 				file.create(new StringInputStream(data), true, new NullProgressMonitor());
+				return file;
 			}
 
 	public static void fileReplace(IProject project, String path, String find, String replace) throws Exception {
