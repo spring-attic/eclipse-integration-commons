@@ -52,8 +52,7 @@ public class ExceptionUtil {
 	public static CoreException coreException(Throwable e) {
 		if (e instanceof CoreException) {
 			return (CoreException) e;
-		}
-		else {
+		} else {
 			return coreException(status(e));
 		}
 	}
@@ -84,14 +83,21 @@ public class ExceptionUtil {
 		return new Status(severity, Activator.PLUGIN_ID, msg);
 	}
 
+	public static IStatus status(Exception e, String message) {
+		if (message==null) {
+			return status(e);
+		}
+		return new Status(IStatus.ERROR, Activator.PLUGIN_ID, message, e);
+	}
+
 	public static IStatus status(Throwable e) {
+		if (e instanceof OperationCanceledException || e instanceof InterruptedException) {
+			return Status.CANCEL_STATUS;
+		}
 		return status(IStatus.ERROR, e);
 	}
 
 	public static IStatus status(int severity, Throwable e) {
-		if (e instanceof OperationCanceledException || e instanceof InterruptedException) {
-			return Status.CANCEL_STATUS;
-		}
 		if (e instanceof CoreException) {
 			IStatus status = ((CoreException) e).getStatus();
 			if (status != null && status.getSeverity() == severity) {
