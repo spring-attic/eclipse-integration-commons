@@ -12,6 +12,7 @@ package org.springsource.ide.eclipse.commons.livexp.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.concurrent.CancellationException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -90,8 +91,20 @@ public class ExceptionUtil {
 		return new Status(IStatus.ERROR, Activator.PLUGIN_ID, message, e);
 	}
 
+	public static boolean isCancelation(Throwable e) {
+		return (
+				e instanceof OperationCanceledException ||
+				e instanceof InterruptedException ||
+				e instanceof CancellationException ||
+				(
+						e instanceof CoreException &&
+						((CoreException)e).getStatus().getSeverity()==IStatus.CANCEL
+				)
+		);
+	}
+
 	public static IStatus status(Throwable e) {
-		if (e instanceof OperationCanceledException || e instanceof InterruptedException) {
+		if (isCancelation(e)) {
 			return Status.CANCEL_STATUS;
 		}
 		return status(IStatus.ERROR, e);
@@ -142,5 +155,4 @@ public class ExceptionUtil {
 		}
 		return dump.toString();
 	}
-
 }
