@@ -30,4 +30,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.springsource.ide.eclipse.commons.internal.ui.UiPlugin
 Import-Package: org.eclipse.core.runtime,
  org.eclipse.core.runtime.jobs,
+ org.eclipse.osgi.util,
  org.osgi.framework
