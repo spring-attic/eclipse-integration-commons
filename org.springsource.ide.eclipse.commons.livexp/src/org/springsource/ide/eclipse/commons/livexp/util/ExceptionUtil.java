@@ -50,6 +50,10 @@ public class ExceptionUtil {
 		return coreException(IStatus.ERROR, msg);
 	}
 
+	public static Throwable coreException(String msg, Throwable error) {
+		return new CoreException(status(error, msg));
+	}
+
 	public static CoreException coreException(Throwable e) {
 		if (e instanceof CoreException) {
 			return (CoreException) e;
@@ -84,7 +88,7 @@ public class ExceptionUtil {
 		return new Status(severity, Activator.PLUGIN_ID, msg);
 	}
 
-	public static IStatus status(Exception e, String message) {
+	public static IStatus status(Throwable e, String message) {
 		if (message==null) {
 			return status(e);
 		}
@@ -155,4 +159,5 @@ public class ExceptionUtil {
 		}
 		return dump.toString();
 	}
+
 }
