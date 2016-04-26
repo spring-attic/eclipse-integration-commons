@@ -119,4 +119,34 @@
        </image>
 </extension>
 
+   <!-- toggle line numbers -->
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            description="Toggle Line Numbers"
+            id="org.springframework.ide.eclipse.boot.dash.ToggleLineNumbers"
+            name="Toggle Line Numbers"
+            defaultHandler="org.springsources.ide.eclipse.commons.ui.linenumtoggle.ToggleLineNumbersHandler">
+          <state
+                id="org.eclipse.ui.commands.toggleState"
+                class="org.springsources.ide.eclipse.commons.ui.linenumtoggle.ToggleLineNumbersState">
+          </state>
+      </command>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.edit.text.actionSet.presentation">
+          <command
+                commandId="org.springframework.ide.eclipse.boot.dash.ToggleLineNumbers"
+                icon="icons/etool16/show_line_numbers.png"
+                label="Toggle Line Numbers"
+                style="toggle"
+                tooltip="Toggle line numbers in text editors">
+          </command>
+      </menuContribution>
+   </extension>
+
+
 </plugin>
