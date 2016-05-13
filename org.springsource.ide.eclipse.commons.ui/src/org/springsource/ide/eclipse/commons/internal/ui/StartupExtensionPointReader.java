@@ -18,8 +18,10 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.ui.IStartup;
 import org.eclipse.ui.internal.WorkbenchPlugin;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 import org.springsource.ide.eclipse.commons.ui.IIdeUiStartup;
 
@@ -35,6 +37,12 @@ public class StartupExtensionPointReader implements IStartup {
 	private static final String ELEMENT_STARTUP = "startup";
 
 	private static final String ELEMENT_CLASS = "class";
+
+	private static final String ANY_EDIT__BUNDLE_NAME = "de.loskutov.anyedit.AnyEditTools";
+
+    private static final String ANY_EDIT__PREF_ACTIVE_FILTERS_LIST = "activeContentFilterList";
+
+    private static final String YAML_FILTER = "*.yml";
 
 	public static void runStartupExtensions() {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
@@ -71,6 +79,20 @@ public class StartupExtensionPointReader implements IStartup {
 
 	public void earlyStartup() {
 		runStartupExtensions();
+		/**
+		 * TODO: Remove once AnyEditTools 2.6.2 or higher is out!
+		 */
+		initAnyEditPreferences();
+	}
+
+	private static void initAnyEditPreferences() {
+		if (Platform.getBundle(ANY_EDIT__BUNDLE_NAME) != null) {
+			ScopedPreferenceStore store = new ScopedPreferenceStore(InstanceScope.INSTANCE, ANY_EDIT__BUNDLE_NAME);
+			StringBuilder defaultExclusionList = new StringBuilder(store.getDefaultString(ANY_EDIT__PREF_ACTIVE_FILTERS_LIST));
+			if (defaultExclusionList.indexOf(YAML_FILTER) == -1) {
+				store.setDefault(ANY_EDIT__PREF_ACTIVE_FILTERS_LIST, defaultExclusionList.append(",").append(YAML_FILTER).toString());
+			}
+		}
 	}
 
 }
