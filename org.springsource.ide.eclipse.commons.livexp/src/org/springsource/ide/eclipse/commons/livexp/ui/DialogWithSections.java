@@ -47,8 +47,7 @@ import org.springsource.ide.eclipse.commons.livexp.util.ExceptionUtil;
  *
  * @author Kris De Volder
  */
-public abstract class DialogWithSections
-	extends TitleAreaDialog
+public abstract class DialogWithSections extends TitleAreaDialog
 	implements ValueListener<ValidationResult>, IPageWithSections, IPageWithOkButton, Reflowable {
 
 	private String title;
