@@ -35,13 +35,15 @@ import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 
 	private static final boolean DEBUG = (""+Platform.getLocation()).contains("kdvolder");
-	
+
 	private String labelText;
 	private Ilabelable[] validChoices;
 	private LiveVariable<T> chosen;
 	private LiveExpression<ValidationResult> validator;
 
-	public ChooseOneSection(IPageWithSections owner, 
+	private boolean vertical = false;
+
+	public ChooseOneSection(IPageWithSections owner,
 			String labelText,
 			T[] validChoices,
 			LiveVariable<T> chosen,
@@ -58,7 +60,7 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 	public LiveExpression<ValidationResult> getValidator() {
 		return validator;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private T getSingleSelection(ListViewer lv) {
 		if (lv!=null) {
@@ -69,13 +71,13 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public void createContents(Composite page) {
 
 		Composite composite = new Composite(page, SWT.NONE);
 		GridLayout layout = new GridLayout();
-		layout.numColumns = labelText==null?1:2;
+		layout.numColumns = (labelText==null||vertical)?1:2;
 		layout.marginWidth = 0;
 		composite.setLayout(layout);
 		GridDataFactory grab = GridDataFactory.fillDefaults().grab(true, true);//.hint(SWT.DEFAULT, 150);
@@ -85,10 +87,12 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 		if (labelText!=null) {
 			Label label = new Label(composite, SWT.NONE);
 			label.setText(labelText);
-			GridDataFactory.fillDefaults()
-			.align(SWT.CENTER, SWT.BEGINNING)
-			.hint(UIConstants.fieldLabelWidthHint(label), SWT.DEFAULT)
-			.applyTo(label);
+			if (!vertical) {
+				GridDataFactory.fillDefaults()
+				.align(SWT.CENTER, SWT.BEGINNING)
+				.hint(UIConstants.fieldLabelWidthHint(label), SWT.DEFAULT)
+				.applyTo(label);
+			}
 		}
 
 		final ListViewer tv = new ListViewer(composite, SWT.SINGLE|SWT.BORDER|SWT.V_SCROLL);
@@ -105,7 +109,7 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 				}
 			}
 		});
-		
+
 		if (DEBUG) {
 			chosen.addListener(new ValueListener<T>() {
 				public void gotValue(LiveExpression<T> exp, T value) {
@@ -113,13 +117,13 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 				}
 			});
 		}
-		
+
 		tv.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				chosen.setValue(getSingleSelection(tv));
 			}
 		});
-		
+
 		if (owner instanceof IPageWithOkButton) {
 			tv.addDoubleClickListener(new IDoubleClickListener() {
 				public void doubleClick(DoubleClickEvent event) {
@@ -127,7 +131,7 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 				}
 			});
 		}
-		
+
 	}
 
 	class ContentProvider implements IStructuredContentProvider {
@@ -140,7 +144,8 @@ public class ChooseOneSection<T extends Ilabelable> extends WizardPageSection {
 		}
 	}
 
-	
-	
-	
+	public ChooseOneSection<T> vertical() {
+		vertical = true;
+		return this;
+	}
 }
