@@ -25,7 +25,7 @@ public class CompletionsActivator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static CompletionsActivator plugin;
-	
+
 	/**
 	 * The constructor
 	 */
@@ -58,22 +58,20 @@ public class CompletionsActivator extends AbstractUIPlugin {
 	public static CompletionsActivator getDefault() {
 		return plugin;
 	}
-	
+
 	public static void log(Throwable exception) {
 		log(createErrorStatus("Error", exception));
 	}
-	
+
 	public static void log(IStatus status) {
 		getDefault().getLog().log(status);
 	}
-	
+
 	public static IStatus createErrorStatus(String message, Throwable exception) {
 		if (message == null) {
 			message = "";
 		}
 		return new Status(IStatus.ERROR, PLUGIN_ID, 0, message, exception);
 	}
-
-
 
 }
