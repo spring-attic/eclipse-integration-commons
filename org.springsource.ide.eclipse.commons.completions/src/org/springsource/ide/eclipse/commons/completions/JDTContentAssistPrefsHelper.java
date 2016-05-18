@@ -3,7 +3,10 @@ package org.springsource.ide.eclipse.commons.completions;
 import static org.eclipse.jdt.ui.PreferenceConstants.CODEASSIST_CATEGORY_ORDER;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.Assert;
@@ -28,40 +31,43 @@ public class JDTContentAssistPrefsHelper {
 			excluded.add(JAR_TYPE_SEARCH_CATEGORY_ID);
 			PreferenceConstants.setExcludedCompletionProposalCategories(excluded.toArray(new String[excluded.size()]));
 
-			String[] _order = getCompletionProposalCategoryOrder();
-			LinkedHashSet<String> order = new LinkedHashSet<>();
-			if (_order!=null) {
-				order.addAll(Arrays.asList(_order));
-				order.remove(JAR_TYPE_SEARCH_CATEGORY_ID);
-				setCompletionProposalCategoryOrder(order.toArray(new String[order.size()]));
+			Map<String,Integer> ranks = getCompletionProposalCategoryOrder();
+			Integer existingRank = ranks.get(JAR_TYPE_SEARCH_CATEGORY_ID);
+			if (existingRank != null) {
+				if (existingRank>=0xFFFF) {
+					//already disabled nothing to do
+					return;
+				} else {
+					ranks.put(JAR_TYPE_SEARCH_CATEGORY_ID, 0xFFFF+existingRank);
+				}
+			} else {
+				ranks.put(JAR_TYPE_SEARCH_CATEGORY_ID, 0xFFFF + 100);
 			}
+
+			setCompletionProposalCategoryOrder(ranks);
 		} catch (Exception e) {
 			CompletionsActivator.log(e);
 		}
 	}
 
-	private static String[] getCompletionProposalCategoryOrder() {
+	private static Map<String,Integer> getCompletionProposalCategoryOrder() {
 		String encodedPreference= PreferenceConstants.getPreference(CODEASSIST_CATEGORY_ORDER, null);
 		StringTokenizer tokenizer= new StringTokenizer(encodedPreference, "\0"); //$NON-NLS-1$
-		String[] result= new String[tokenizer.countTokens()];
-		for (int i= 0; i < result.length; i++)
-			result[i]= tokenizer.nextToken();
+		int count = tokenizer.countTokens();
+		Map<String, Integer> result = new HashMap<>();
+		for (int i= 0; i < count; i++) {
+			String pair = tokenizer.nextToken();
+			String[] pieces = pair.split(":");
+			result.put(pieces[0], Integer.parseInt(pieces[1]));
+		}
 		return result;
 	}
 
-	/**
-	 * Sets the completion proposal categories which are excluded from the
-	 * default proposal list and reloads the registry.
-	 *
-	 * @param categories the array with the IDs of the excluded categories
-	 * @see #CODEASSIST_EXCLUDED_CATEGORIES
-	 * @since 3.4
-	 */
-	public static void setCompletionProposalCategoryOrder(String[] categories) {
-		Assert.isLegal(categories != null);
-		StringBuffer buf= new StringBuffer(50 * categories.length);
-		for (int i= 0; i < categories.length; i++) {
-			buf.append(categories[i]);
+	public static void setCompletionProposalCategoryOrder(Map<String, Integer> ranks) {
+		Assert.isLegal(ranks != null);
+		StringBuffer buf= new StringBuffer(50 * ranks.size());
+		for (Entry<String, Integer> pair : ranks.entrySet()) {
+			buf.append(pair.getKey()+":"+pair.getValue());
 			buf.append('\0');
 		}
 		PreferenceConstants.getPreferenceStore().setValue(CODEASSIST_CATEGORY_ORDER, buf.toString());
