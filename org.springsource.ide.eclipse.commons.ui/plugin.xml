@@ -26,6 +26,9 @@
          point="org.eclipse.ui.startup">
       <startup
             class="org.springsource.ide.eclipse.commons.internal.ui.StartupExtensionPointReader"></startup>
+      <startup
+            class="org.springsource.ide.eclipse.commons.internal.ui.AnyEditToolsPrefsInitializer">
+      </startup>
    </extension>
 
 	<extension point="org.eclipse.wst.xml.core.catalogContributions">
