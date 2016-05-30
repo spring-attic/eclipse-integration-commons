@@ -96,7 +96,7 @@ public abstract class ACondition {
 		while (!(result = doTest()) && System.currentTimeMillis() < endTime) {
 			StsTestUtil.waitForDisplay(); // Avoids UI deadlock by allowing UI to process events.
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 			}
 		}
