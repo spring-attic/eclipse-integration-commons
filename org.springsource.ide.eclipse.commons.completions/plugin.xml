@@ -20,6 +20,22 @@
 		 <partition type="__java_string"/>
       </javaCompletionProposalComputer>
    </extension>
+   <extension
+         id="noprefixConstructorCompletions"
+         name="No Prefix Constructor Completiions"
+         point="org.eclipse.jdt.ui.javaCompletionProposalComputer">
+      <javaCompletionProposalComputer
+            activate="true"
+            categoryId="org.eclipse.jdt.ui.JavaAllCompletionProposalComputer"
+            class="org.springsource.ide.eclipse.commons.completions.constructors.NoPrefixConstructorProposalComputer">
+         <partition
+               type="__dftl_partition_content_type">
+         </partition>
+         <partition
+               type="__java_string">
+         </partition>
+      </javaCompletionProposalComputer>
+   </extension>
    
 <!--   
    <extension
