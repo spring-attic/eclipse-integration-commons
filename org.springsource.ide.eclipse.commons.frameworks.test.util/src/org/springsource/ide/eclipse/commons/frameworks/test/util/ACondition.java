@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.test.util;
 
-import junit.framework.AssertionFailedError;
-
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
+
+import junit.framework.AssertionFailedError;
 
 
 /**
@@ -102,7 +102,7 @@ public abstract class ACondition {
 		}
 		if (!result) {
 			//Try our best to create a 'nice' exception reflecting the reason for the test failure
-			System.err.println("ACondition timed out. Dumping current Thread stacks...\n" +
+			System.err.println("ACondition "+describe()+" timed out. Dumping current Thread stacks...\n" +
 					StsTestUtil.getStackDumps()
 			);
 			if (e!=null) {
@@ -118,6 +118,13 @@ public abstract class ACondition {
 		if (description!=null) {
 			System.out.println(description + " succeeded after: " + (System.currentTimeMillis() - startTime));
 		}
+	}
+
+	private String describe() {
+		if (description!=null) {
+			return "["+description+"]";
+		}
+		return "";
 	}
 
 	private boolean doTest() {
