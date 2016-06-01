@@ -41,7 +41,6 @@ import org.eclipse.jdt.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.internal.core.SearchableEnvironment;
 import org.eclipse.jdt.internal.core.search.BasicSearchEngine;
-import org.eclipse.jdt.internal.core.search.HierarchyScope;
 import org.eclipse.jdt.internal.core.search.IRestrictedAccessConstructorRequestor;
 import org.springsource.ide.eclipse.commons.completions.CompletionsActivator;
 
@@ -248,7 +247,7 @@ public class ConstructorCompletionEngine {
 			/*
 			 * Perform our own search for possible constructors on a hierarchy scope
 			 */
-			IJavaSearchScope hierarchyScope = new HierarchyScope(getEngineFieldValue("javaProject", IJavaProject.class), expectedType,  DefaultWorkingCopyOwner.PRIMARY, true, false, false);
+			IJavaSearchScope hierarchyScope = new ConstrainedHierarchyScope(getEngineFieldValue("javaProject", IJavaProject.class), expectedType,  DefaultWorkingCopyOwner.PRIMARY, true, false, false);
 			BasicSearchEngine basicEngine = new BasicSearchEngine();
 			/*
 			 * Search term is '*' meaning everything, i.e. any prefix
