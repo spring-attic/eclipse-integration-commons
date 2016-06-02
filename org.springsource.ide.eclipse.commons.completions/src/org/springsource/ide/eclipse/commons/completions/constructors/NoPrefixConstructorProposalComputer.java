@@ -51,13 +51,6 @@ public class NoPrefixConstructorProposalComputer implements IJavaCompletionPropo
 	
 	private static final long JAVA_CODE_ASSIST_TIMEOUT= Long.getLong("org.eclipse.jdt.ui.codeAssistTimeout", 5000).longValue(); // ms //$NON-NLS-1$
 
-	private final IProgressMonitor fTimeoutProgressMonitor;
-	
-	public NoPrefixConstructorProposalComputer() {
-		super();
-		fTimeoutProgressMonitor= createTimeoutProgressMonitor(JAVA_CODE_ASSIST_TIMEOUT);
-	}
-
 	@Override
 	public void sessionStarted() {
 		// Nothing to do	
@@ -75,7 +68,7 @@ public class NoPrefixConstructorProposalComputer implements IJavaCompletionPropo
 				 */
 				if (prefix.isEmpty() && isNewKeywordPreceeding(jdtContext) && jdtContext.getExpectedType() != null) {
 					List<ICompletionProposal> proposals = new ArrayList<>();
-					proposals.addAll(Arrays.asList(doComputeCompletionProposals(jdtContext, fTimeoutProgressMonitor)));
+					proposals.addAll(Arrays.asList(doComputeCompletionProposals(jdtContext, createTimeoutProgressMonitor(JAVA_CODE_ASSIST_TIMEOUT))));
 					return proposals;
 				}
 			} catch (BadLocationException e) {
