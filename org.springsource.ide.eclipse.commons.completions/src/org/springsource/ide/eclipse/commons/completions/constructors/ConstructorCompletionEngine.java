@@ -15,6 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jdt.core.CompletionRequestor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -41,6 +42,7 @@ import org.eclipse.jdt.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.internal.core.SearchableEnvironment;
 import org.eclipse.jdt.internal.core.search.BasicSearchEngine;
+import org.eclipse.jdt.internal.core.search.HierarchyScope;
 import org.eclipse.jdt.internal.core.search.IRestrictedAccessConstructorRequestor;
 import org.springsource.ide.eclipse.commons.completions.CompletionsActivator;
 
@@ -247,7 +249,7 @@ public class ConstructorCompletionEngine {
 			/*
 			 * Perform our own search for possible constructors on a hierarchy scope
 			 */
-			IJavaSearchScope hierarchyScope = new ConstrainedHierarchyScope(getEngineFieldValue("javaProject", IJavaProject.class), expectedType,  DefaultWorkingCopyOwner.PRIMARY, true, false, false);
+			IJavaSearchScope hierarchyScope = new HierarchyScope(getEngineFieldValue("javaProject", IJavaProject.class), expectedType,  DefaultWorkingCopyOwner.PRIMARY, true, false, false);
 			BasicSearchEngine basicEngine = new BasicSearchEngine();
 			/*
 			 * Search term is '*' meaning everything, i.e. any prefix
@@ -272,8 +274,14 @@ public class ConstructorCompletionEngine {
 				m.setAccessible(true);
 				m.invoke(engine, scope);
 			}
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException e) {
 			CompletionsActivator.log(e);
+		} catch (InvocationTargetException e) {
+			if (e.getCause() instanceof OperationCanceledException) {
+				throw (OperationCanceledException) e.getCause();
+			} else {
+				CompletionsActivator.log(e);
+			}
 		}
 	}
 

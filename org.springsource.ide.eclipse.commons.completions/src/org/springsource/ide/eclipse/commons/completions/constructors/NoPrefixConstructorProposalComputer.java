@@ -16,6 +16,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.CompletionProposal;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
@@ -23,6 +26,8 @@ import org.eclipse.jdt.internal.core.DefaultWorkingCopyOwner;
 import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.internal.core.SearchableEnvironment;
 import org.eclipse.jdt.internal.ui.text.java.FillArgumentNamesCompletionProposalCollector;
+import org.eclipse.jdt.ui.PreferenceConstants;
+import org.eclipse.jdt.ui.text.java.CompletionProposalCollector;
 import org.eclipse.jdt.ui.text.java.ContentAssistInvocationContext;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
@@ -43,6 +48,15 @@ import org.springsource.ide.eclipse.commons.completions.CompletionsActivator;
 public class NoPrefixConstructorProposalComputer implements IJavaCompletionProposalComputer{
 	
 	private static final String NEW_KEYWORD = "new";
+	
+	private static final long JAVA_CODE_ASSIST_TIMEOUT= Long.getLong("org.eclipse.jdt.ui.codeAssistTimeout", 5000).longValue(); // ms //$NON-NLS-1$
+
+	private final IProgressMonitor fTimeoutProgressMonitor;
+	
+	public NoPrefixConstructorProposalComputer() {
+		super();
+		fTimeoutProgressMonitor= createTimeoutProgressMonitor(JAVA_CODE_ASSIST_TIMEOUT);
+	}
 
 	@Override
 	public void sessionStarted() {
@@ -61,7 +75,7 @@ public class NoPrefixConstructorProposalComputer implements IJavaCompletionPropo
 				 */
 				if (prefix.isEmpty() && isNewKeywordPreceeding(jdtContext) && jdtContext.getExpectedType() != null) {
 					List<ICompletionProposal> proposals = new ArrayList<>();
-					proposals.addAll(Arrays.asList(doComputeCompletionProposals(jdtContext, monitor)));
+					proposals.addAll(Arrays.asList(doComputeCompletionProposals(jdtContext, fTimeoutProgressMonitor)));
 					return proposals;
 				}
 			} catch (BadLocationException e) {
@@ -116,11 +130,13 @@ public class NoPrefixConstructorProposalComputer implements IJavaCompletionPropo
 		/*
 		 * Setup completion proposals collector to gather constructors related proposals
 		 */
-		FillArgumentNamesCompletionProposalCollector collector = new FillArgumentNamesCompletionProposalCollector(context);
+		CompletionProposalCollector collector = createCollector(context);
+		
 		collector.setIgnored(CompletionProposal.ANONYMOUS_CLASS_CONSTRUCTOR_INVOCATION, false);
 		collector.setIgnored(CompletionProposal.CONSTRUCTOR_INVOCATION, false);
 		collector.setAllowsRequiredProposals(CompletionProposal.CONSTRUCTOR_INVOCATION, CompletionProposal.TYPE_REF, true);
 		collector.setAllowsRequiredProposals(CompletionProposal.ANONYMOUS_CLASS_CONSTRUCTOR_INVOCATION, CompletionProposal.TYPE_REF, true);
+		
 		try {
 			JavaProject javaProject = (JavaProject) context.getProject();
 			SearchableEnvironment searchableEnvironment = new SearchableEnvironment(javaProject, new ICompilationUnit[] { context.getCompilationUnit() });
@@ -135,8 +151,54 @@ public class NoPrefixConstructorProposalComputer implements IJavaCompletionPropo
 			engine.complete(cu, context.getInvocationOffset(), null, context.getExpectedType());
 		} catch (JavaModelException e) {
 			CompletionsActivator.log(e);
-		}		
+		} catch (OperationCanceledException e) {
+			/*
+			 * Timeout has occurred. This proposal computer took too much time
+			 */
+			CompletionsActivator.log(new Status(IStatus.WARNING, CompletionsActivator.PLUGIN_ID, "Constructor completion proposal timed out", e));
+		}
 		return collector.getJavaCompletionProposals();
+	}
+	
+	private CompletionProposalCollector createCollector(JavaContentAssistInvocationContext context) {
+		if (PreferenceConstants.getPreferenceStore().getBoolean(PreferenceConstants.CODEASSIST_FILL_ARGUMENT_NAMES))
+			return new FillArgumentNamesCompletionProposalCollector(context);
+		else
+			return new CompletionProposalCollector(context.getCompilationUnit(), true);
+	}
+	
+	private static IProgressMonitor createTimeoutProgressMonitor(final long timeout) {
+		return new IProgressMonitor() {
+
+			private long fEndTime;
+			
+			@Override
+			public void beginTask(String name, int totalWork) {
+				fEndTime= System.currentTimeMillis() + timeout;
+			}
+			@Override
+			public boolean isCanceled() {
+				return fEndTime <= System.currentTimeMillis();
+			}
+			@Override
+			public void done() {
+			}
+			@Override
+			public void internalWorked(double work) {
+			}
+			@Override
+			public void setCanceled(boolean value) {
+			}
+			@Override
+			public void setTaskName(String name) {
+			}
+			@Override
+			public void subTask(String name) {
+			}
+			@Override
+			public void worked(int work) {
+			}
+		};
 	}
 
 	@Override
