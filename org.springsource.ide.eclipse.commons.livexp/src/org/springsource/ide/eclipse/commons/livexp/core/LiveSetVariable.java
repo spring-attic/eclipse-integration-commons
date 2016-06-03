@@ -41,6 +41,10 @@ public class LiveSetVariable<T> extends ObservableSet<T> {
 	private boolean dirty = false;
 	private Set<T> backingCollection;
 
+	public LiveSetVariable() {
+		this(AsyncMode.SYNC);
+	}
+	
 	/**
 	 * Instantiate a LiveSet that uses a HashSet as a backing collection.
 	 */
