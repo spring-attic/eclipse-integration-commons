@@ -14,6 +14,7 @@ package org.springsource.ide.eclipse.commons.livexp.util;
  * General interface for filtering elements.
  *
  * TODO: consider replacing all uses of this type with com.google.common.base.Predicate
+ *       or even better maybe: java.util.function.Predicate
  *
  * @author Alex Boyko
  *
