@@ -12,6 +12,7 @@ package org.springsource.ide.eclipse.commons.livexp.core;
 
 import java.util.concurrent.Callable;
 
+import org.eclipse.core.runtime.Assert;
 import org.springsource.ide.eclipse.commons.livexp.Activator;
 
 import com.google.common.collect.ImmutableSet;
@@ -21,10 +22,42 @@ import com.google.common.collect.ImmutableSet;
  */
 public abstract class ObservableSet<T> extends AsyncLiveExpression<ImmutableSet<T>> {
 
-	/**
-	 * Deprecated use one of the constructors that controls synch versus async behavior explicitly.
-	 */
-	@Deprecated
+	public static class Builder<T> {
+		private ImmutableSet<T> initialValue = ImmutableSet.of();
+		private AsyncMode refreshMode = AsyncMode.SYNC;
+		private AsyncMode eventsMode = AsyncMode.SYNC;
+		private Callable<ImmutableSet<T>> computer = null;
+		
+		public Builder<T> events(AsyncMode eventsMode) {
+			this.eventsMode = eventsMode;
+			return this;
+		}
+		
+		public Builder<T> refresh(AsyncMode refreshMode) {
+			this.refreshMode = refreshMode;
+			return this;
+		}
+
+		public ObservableSet<T> build() {
+			Assert.isNotNull(computer, "'compute' function must be specified");
+			return new ObservableSet<T>(initialValue, refreshMode, eventsMode) {
+				protected ImmutableSet<T> compute() {
+					try {
+						return computer.call();
+					} catch (Exception e) {
+						Activator.log(e);
+						return getValues();
+					}
+				}
+			};
+		}
+
+		public Builder<T> compute(Callable<ImmutableSet<T>> computer) {
+			this.computer = computer;
+			return this;
+		}
+	}
+
 	public ObservableSet() {
 		//Make it synch as that is 'backwards' compatible. Just in case existing code expects it.
 		this(ImmutableSet.<T>of(), AsyncMode.SYNC, AsyncMode.SYNC);
@@ -83,6 +116,10 @@ public abstract class ObservableSet<T> extends AsyncLiveExpression<ImmutableSet<
 				}
 			}
 		};
+	}
+
+	public static <T> Builder<T> builder() {
+		return new Builder<T>();
 	}
 
 }
