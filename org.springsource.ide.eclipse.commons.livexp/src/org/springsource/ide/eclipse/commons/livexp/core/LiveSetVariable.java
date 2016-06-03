@@ -48,6 +48,10 @@ public class LiveSetVariable<T> extends ObservableSet<T> {
 		this(new HashSet<T>(), async);
 	}
 
+	public LiveSetVariable(Set<T> backingCollection) {
+		this(backingCollection, AsyncMode.SYNC);
+	}
+
 	/**
 	 * Instantiate a LiveSet with a specific backing collection. It is assumed that
 	 * the backing collection henceforth is owned by the LiveSet. Client code should
