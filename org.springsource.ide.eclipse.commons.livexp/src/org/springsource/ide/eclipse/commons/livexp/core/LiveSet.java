@@ -25,7 +25,8 @@ import java.util.Set;
  * To allow more efficient incemental processing, clients may be interested in
  * just knowing about individual elements getting added / removed.
  * This is not yet supported.
- */
+ * 
+ * @deprecated Use either {@link LiveSetVariable} (read+write) or {@link ObservableSet} (read-only)*/
 public class LiveSet<T> extends LiveExpression<Set<T>> {
 
 	/**
