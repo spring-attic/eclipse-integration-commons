@@ -24,6 +24,7 @@ import org.springsource.ide.eclipse.commons.livexp.core.FieldModel;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
+import org.springsource.ide.eclipse.commons.livexp.core.Validator;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 
 public class StringFieldSection extends WizardPageSection {
@@ -54,6 +55,10 @@ public class StringFieldSection extends WizardPageSection {
 
 	public StringFieldSection(IPageWithSections owner, FieldModel<String> f) {
 		this(owner, f.getLabel(), f.getVariable(), f.getValidator());
+	}
+
+	public StringFieldSection(IPageWithSections owner, String label, LiveVariable<String> f) {
+		this(owner, label, f, Validator.OK);
 	}
 
 	@Override
