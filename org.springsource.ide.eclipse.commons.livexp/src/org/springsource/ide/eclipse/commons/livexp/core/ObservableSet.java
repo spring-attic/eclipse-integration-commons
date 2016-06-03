@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.core;
 
-import org.springsource.ide.eclipse.commons.livexp.core.AsyncLiveExpression;
-import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
+import java.util.concurrent.Callable;
+
+import org.springsource.ide.eclipse.commons.livexp.Activator;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -66,6 +67,22 @@ public abstract class ObservableSet<T> extends AsyncLiveExpression<ImmutableSet<
 
 	public boolean contains(T e) {
 		return getValues().contains(e);
+	}
+
+	/**
+	 * A lambda-friendly way to create a ObservableSet from a 'compute' function.
+	 */
+	public static <T> ObservableSet<T> create(Callable<ImmutableSet<T>> computer) {
+		return new ObservableSet<T>() {
+			protected ImmutableSet<T> compute() {
+				try {
+					return computer.call();
+				} catch (Exception e) {
+					Activator.log(e);
+					return getValues();
+				}
+			}
+		};
 	}
 
 }
