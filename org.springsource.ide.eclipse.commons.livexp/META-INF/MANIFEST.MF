@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.jface,
  org.eclipse.ui.forms,
  com.google.guava;bundle-version="15.0.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: Pivotal Software, Inc.
 Export-Package: org.springsource.ide.eclipse.commons.livexp.core;uses:="com.google.common.base",
  org.springsource.ide.eclipse.commons.livexp.core.validators,
