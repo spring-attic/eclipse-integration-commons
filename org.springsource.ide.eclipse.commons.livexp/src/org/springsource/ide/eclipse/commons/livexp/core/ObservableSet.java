@@ -106,16 +106,8 @@ public abstract class ObservableSet<T> extends AsyncLiveExpression<ImmutableSet<
 	 * A lambda-friendly way to create a ObservableSet from a 'compute' function.
 	 */
 	public static <T> ObservableSet<T> create(Callable<ImmutableSet<T>> computer) {
-		return new ObservableSet<T>() {
-			protected ImmutableSet<T> compute() {
-				try {
-					return computer.call();
-				} catch (Exception e) {
-					Activator.log(e);
-					return getValues();
-				}
-			}
-		};
+		Builder<T> bldr = builder();
+		return bldr.compute(computer).build();
 	}
 
 	public static <T> Builder<T> builder() {
