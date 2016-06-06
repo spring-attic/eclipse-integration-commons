@@ -159,7 +159,7 @@ public class FluxJdtSearch {
 		if (scope==null) {
 			return Flux.empty();
 		}
-		FluxSearchRequestor requestor = new FluxSearchRequestor();
+		final FluxSearchRequestor requestor = new FluxSearchRequestor();
 		Job job = new Job("Search for "+pattern) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
