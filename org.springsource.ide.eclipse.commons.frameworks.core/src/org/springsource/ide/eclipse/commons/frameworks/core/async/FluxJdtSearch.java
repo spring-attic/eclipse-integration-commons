@@ -10,7 +10,11 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.core.async;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -29,6 +33,7 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jdt.core.search.SearchRequestor;
+import org.springsource.ide.eclipse.commons.frameworks.core.FrameworkCoreActivator;
 import org.springsource.ide.eclipse.commons.livexp.util.ExceptionUtil;
 
 import reactor.core.publisher.Flux;
@@ -103,13 +108,20 @@ public class FluxJdtSearch {
 	/**
 	 * Create a search scope that includes a given project and its dependencies.
 	 */
-	public static IJavaSearchScope searchScope(IJavaProject javaProject) throws JavaModelException {
+	public static IJavaSearchScope searchScope(IJavaProject javaProject, boolean includeBinaries) throws JavaModelException {
 		int includeMask =
-				IJavaSearchScope.APPLICATION_LIBRARIES |
 				IJavaSearchScope.REFERENCED_PROJECTS |
 				IJavaSearchScope.SOURCES;
+		if (includeBinaries) {
+			includeMask = includeMask | IJavaSearchScope.APPLICATION_LIBRARIES;
+		}
 		return SearchEngine.createJavaSearchScope(new IJavaElement[] {javaProject}, includeMask);
 	}
+
+	public static IJavaSearchScope searchScope(IJavaProject javaProject) throws JavaModelException {
+		return searchScope(javaProject, true);
+	}
+
 
 	/**
 	 * Implementation of {@link SearchRequestor} that emits search results to an {@link ReplayProcessor}
@@ -194,5 +206,24 @@ public class FluxJdtSearch {
 		Assert.isLegal(bufferSize > 0);
 	}
 
+	public static IJavaSearchScope workspaceScope(boolean includeBinaries) {
+		if (includeBinaries) {
+			return SearchEngine.createWorkspaceScope();
+		} else {
+			List<IJavaProject> projects = new ArrayList<>();
+			for (IProject p : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
+				try {
+					if (p.isAccessible() && p.hasNature(JavaCore.NATURE_ID)) {
+						IJavaProject jp = JavaCore.create(p);
+						projects.add(jp);
+					}
+				} catch (Exception e) {
+					FrameworkCoreActivator.log(e);
+				}
+			}
+			int includeMask = IJavaSearchScope.SOURCES;
+			return SearchEngine.createJavaSearchScope(projects.toArray(new IJavaElement[projects.size()]), includeMask);
+		}
+	}
 
 }
