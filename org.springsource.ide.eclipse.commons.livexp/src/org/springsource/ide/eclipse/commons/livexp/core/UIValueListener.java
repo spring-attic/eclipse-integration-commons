@@ -22,11 +22,11 @@ import org.eclipse.ui.progress.UIJob;
  * update or read widgets in the UI).
  */
 public abstract class UIValueListener<T> implements ValueListener<T> {
-	
+
 	private class NotifyingJob extends UIJob {
-		
+
 		LiveExpression<T> exp;
-		
+
 		public NotifyingJob(LiveExpression<T> exp) {
 			super("Notifying Job");
 			this.exp = exp;
@@ -38,11 +38,11 @@ public abstract class UIValueListener<T> implements ValueListener<T> {
 			uiGotValue(exp, exp.getValue());
 			return Status.OK_STATUS;
 		}
-		
+
 	}
 
 	private NotifyingJob job = null;
-	
+
 	/**
 	 * This method is final. Implement 'uiGotValue' instead.
 	 */
@@ -59,5 +59,17 @@ public abstract class UIValueListener<T> implements ValueListener<T> {
 	 * Subclasses should implement. This method will always be called in the UIThread.
 	 */
 	protected abstract void uiGotValue(LiveExpression<T> exp, T value);
+
+	/**
+	 * A Lambda-friendly way to creat {@link UIValueListener}
+	 */
+	public static <T> UIValueListener<T> from(ValueListener<T> l) {
+		return new UIValueListener<T>() {
+			@Override
+			protected void uiGotValue(LiveExpression<T> exp, T value) {
+				l.gotValue(exp, value);
+			}
+		};
+	}
 
 }
