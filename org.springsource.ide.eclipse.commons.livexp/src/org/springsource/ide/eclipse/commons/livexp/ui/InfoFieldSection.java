@@ -33,12 +33,16 @@ import org.springsource.ide.eclipse.commons.livexp.core.Validator;
 public class InfoFieldSection extends WizardPageSection {
 
 	private final String labelText;
-	private final String infoText;
+	private final LiveExpression<String> infoTextExp;
 
-	public InfoFieldSection(IPageWithSections owner, String label, String info) {
+	public InfoFieldSection(IPageWithSections owner, String label, LiveExpression<String> info) {
 		super(owner);
 		this.labelText = label;
-		this.infoText = info;
+		this.infoTextExp = info;
+	}
+
+	public InfoFieldSection(IPageWithSections owner, String label, String info) {
+		this(owner, label, LiveExpression.constant(info));
 	}
 
 	@Override
@@ -64,12 +68,17 @@ public class InfoFieldSection extends WizardPageSection {
         	.applyTo(label);
 
         Label info = new Label(composite, SWT.NONE);
-        info.setText(infoText);
+        info.setText(getInfoText());
         GridDataFactory.fillDefaults()
         	.grab(true, false)
         	.align(SWT.BEGINNING, SWT.BEGINNING)
         	.applyTo(info);
         
+	}
+
+	private String getInfoText() {
+		String v = infoTextExp.getValue();
+		return v==null ? "" : v;
 	}
 
 }
