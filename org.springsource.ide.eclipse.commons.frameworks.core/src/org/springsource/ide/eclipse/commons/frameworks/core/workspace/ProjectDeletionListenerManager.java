@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IWorkspace;
 
 /**
@@ -30,7 +31,7 @@ import org.eclipse.core.resources.IWorkspace;
 public class ProjectDeletionListenerManager implements IResourceChangeListener {
 
 	public interface ProjectDeletionListener {
-		void projectAboutToBeDeleted(IProject project);
+		void projectWasDeleted(IProject project);
 	}
 
 	private IWorkspace workspace;
@@ -39,15 +40,34 @@ public class ProjectDeletionListenerManager implements IResourceChangeListener {
 	public ProjectDeletionListenerManager(IWorkspace workspace, ProjectDeletionListener listener) {
 		this.workspace = workspace;
 		this.listener = listener;
-		this.workspace.addResourceChangeListener(this, IResourceChangeEvent.PRE_DELETE);
+		this.workspace.addResourceChangeListener(this, IResourceChangeEvent.POST_CHANGE);
 	}
 
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
-		IResource rsrc = event.getResource();
-		if (rsrc instanceof IProject) {
-			listener.projectAboutToBeDeleted((IProject) rsrc);
+		IResourceDelta _delta = event.getDelta();
+		if (_delta!=null) {
+			IResourceDelta[] children = _delta.getAffectedChildren();
+			if (children!=null) {
+				for (IResourceDelta delta : children) {
+					if (delta!=null) {
+						IResource rsrc = delta.getResource();
+						if (rsrc instanceof IProject) {
+							int kind = delta.getKind();
+							if (kind==IResourceDelta.REMOVED) {
+								if (!isRename(delta)) {
+									listener.projectWasDeleted((IProject) rsrc);
+								}
+							}
+						}
+					}
+				}
+			}
 		}
+	}
+
+	private boolean isRename(IResourceDelta delta) {
+		return 0!=(delta.getFlags()&IResourceDelta.MOVED_TO);
 	}
 
 	public void dispose() {
