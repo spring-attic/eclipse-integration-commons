@@ -17,7 +17,7 @@
  */
 package org.springsource.ide.eclipse.commons.cloudfoundry.client.diego;
 
-import static org.apache.http.conn.ssl.SSLSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER;
+import static org.apache.http.conn.ssl.SSLSocketFactory.*;
 
 import java.security.GeneralSecurityException;
 
@@ -65,7 +65,7 @@ public class RestUtils {
 
 		if (trustSelfSignedCerts) {
 			httpClientBuilder.setSslcontext(buildSslContext());
-			httpClientBuilder.setHostnameVerifier(BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+			httpClientBuilder.setHostnameVerifier(ALLOW_ALL_HOSTNAME_VERIFIER);
 		}
 		
 		if (disableRedirectHandling) {
