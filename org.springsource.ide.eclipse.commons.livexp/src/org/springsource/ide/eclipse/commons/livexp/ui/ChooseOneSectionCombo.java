@@ -29,6 +29,8 @@ import org.springsource.ide.eclipse.commons.livexp.util.Parser;
 
 import static org.springsource.ide.eclipse.commons.livexp.ui.UIConstants.*;
 
+import java.util.Objects;
+
 /**
  * Wizard section to choose one element from list of elements. Uses a pulldown Combo box to allow selecting
  * an element.
@@ -98,7 +100,7 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 				if (combo!=null) {
 					String oldText = combo.getText();
 					combo.setItems(getLabels()); //This will clear the selection sometimes
-					combo.setText(oldText);
+					combo_setText(combo, oldText);
 				}
 			};
 		});
@@ -120,7 +122,7 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 					// select the wrong element if more than one option
 					// has the same label text.
 					String newText = labelProvider.getText(newSelection);
-					combo.setText(newText);
+					combo_setText(combo, newText);
 					if (!combo.getText().equals(newText)) {
 						//widget rejected the selection. To avoid widget state
 						// and model state getting out-of-sync, refelct current
@@ -130,6 +132,17 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 				}
 			}
 		});
+	}
+
+	private void combo_setText(final Combo combo, String newText) {
+		if (combo!=null && !combo.isDisposed()) {
+			String oldText = combo.getText();
+			if (!Objects.equals(oldText, newText)) {
+				//Avoid setting the text if its already set to a equal value. This can cause strange effects by
+				// moving the cursor on some os-es. See https://issuetracker.springsource.com/browse/STS-4377
+				combo.setText(newText);
+			}
+		}
 	}
 
 	private void handleModifyText(final Combo combo) {
