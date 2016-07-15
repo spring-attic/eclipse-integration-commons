@@ -89,6 +89,7 @@ public abstract class ACondition {
 	 */
 	@Deprecated
 	public void waitFor(long timeout) throws Exception {
+		long SLEEP_FOR = Math.min(100, timeout/5);
 		long startTime = System.currentTimeMillis();
 		long endTime = startTime + timeout;
 		boolean result = false;
@@ -96,7 +97,7 @@ public abstract class ACondition {
 		while (!(result = doTest()) && System.currentTimeMillis() < endTime) {
 			StsTestUtil.waitForDisplay(); // Avoids UI deadlock by allowing UI to process events.
 			try {
-				Thread.sleep(100);
+				Thread.sleep(SLEEP_FOR);
 			} catch (InterruptedException e) {
 			}
 		}
