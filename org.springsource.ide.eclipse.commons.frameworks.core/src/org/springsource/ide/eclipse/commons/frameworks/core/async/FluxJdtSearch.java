@@ -38,7 +38,8 @@ import org.springsource.ide.eclipse.commons.livexp.util.ExceptionUtil;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.ReplayProcessor;
-import reactor.core.util.PlatformDependent;
+
+import reactor.util.concurrent.QueueSupplier;
 
 /**
  * Helper class to perform a search using Eclipse JDT search engine returning
@@ -73,7 +74,7 @@ public class FluxJdtSearch {
 	private IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
 	private SearchPattern pattern = null;
 	private SearchParticipant[] participants = new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()};
-	private int bufferSize = PlatformDependent.SMALL_BUFFER_SIZE;
+	private int bufferSize = QueueSupplier.SMALL_BUFFER_SIZE;
 	private boolean useSystemJob = false;
 	private int jobPriority = Job.INTERACTIVE;
 
