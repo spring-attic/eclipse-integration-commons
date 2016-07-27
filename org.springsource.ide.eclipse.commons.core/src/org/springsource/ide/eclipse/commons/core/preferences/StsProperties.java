@@ -272,7 +272,7 @@ public class StsProperties {
 
 		//Default version of spring boot, assumed when we need a version but can't determine it from the classpath of the project.
 		//Typically this should point to the latest version of spring-boot (the one used by spring-initialzr app).
-		props.put("spring.boot.default.version", "1.3.1.RELEASE");
+		props.put("spring.boot.default.version", "1.3.6.RELEASE");
 
 		return props;
 	}
