@@ -13,6 +13,7 @@ package org.springsource.ide.eclipse.commons.livexp.core;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.progress.UIJob;
 
 /**
@@ -47,12 +48,16 @@ public abstract class UIValueListener<T> implements ValueListener<T> {
 	 * This method is final. Implement 'uiGotValue' instead.
 	 */
 	public final void gotValue(final LiveExpression<T> exp, final T value) {
-		NotifyingJob job = this.job;
-		if (job == null || job.exp != exp) {
-			job = new NotifyingJob(exp);
-			this.job = job;
+		if (Display.getCurrent() == null) {
+			NotifyingJob job = this.job;
+			if (job == null || job.exp != exp) {
+				job = new NotifyingJob(exp);
+				this.job = job;
+			}
+			job.schedule();
+		} else {
+			uiGotValue(exp, value);
 		}
-		job.schedule();
 	}
 
 	/**
