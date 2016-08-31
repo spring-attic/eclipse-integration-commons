@@ -20,7 +20,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/spring-security-config-3.2.5.RELEASE.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/spring-security-core-3.2.5.RELEASE.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/spring-security-web-3.2.5.RELEASE.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/spring-security-oauth2-2.0.4.RELEASE.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring-security-oauth2-2.0.4.RELEASE.jar" sourcepath="/home/kdvolder/.m2/repository/org/springframework/security/oauth/spring-security-oauth2/2.0.4.RELEASE/spring-security-oauth2-2.0.4.RELEASE-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/spring-web-4.0.5.RELEASE.jar" sourcepath="/home/kdvolder/Desktop/Downloads/spring-web-4.0.5.RELEASE-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/spring-webmvc-4.0.5.RELEASE.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tomcat-embed-core-8.0.15.jar"/>
