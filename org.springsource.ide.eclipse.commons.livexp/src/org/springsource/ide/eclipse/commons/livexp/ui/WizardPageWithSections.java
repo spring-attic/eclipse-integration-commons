@@ -94,6 +94,7 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 //        scroller.setSize(page.getSize());
 		scroller.setContent(page);
         setControl(scroller);
+        reflow();
         if (getContainer().getCurrentPage()!=null) { // Otherwise an NPE will ensue when updating buttons. Buttons depend on current page so that is logical.
 	        getContainer().updateButtons();
 	        getContainer().updateMessage();

@@ -21,6 +21,23 @@ public abstract class Validator extends LiveExpression<ValidationResult> {
 		super(ValidationResult.OK);
 	}
 
+	public static Validator notEmpty(final LiveExpression<String> target, final String errorMessage) {
+		return new Validator() {
+			{
+				dependsOn(target);
+			}
+			@Override
+			protected ValidationResult compute() {
+				String v = target.getValue();
+				if (v==null || v.trim().isEmpty()) {
+					return ValidationResult.error(errorMessage);
+				} else {
+					return ValidationResult.OK;
+				}
+			}
+		};
+	}
+
 	public static <T> LiveExpression<ValidationResult> notNull(final LiveExpression<T> target, final String errorMessage) {
 		Validator v = new Validator() {
 			@Override

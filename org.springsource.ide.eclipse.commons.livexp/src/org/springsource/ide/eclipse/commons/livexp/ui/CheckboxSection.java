@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.springsource.ide.eclipse.commons.livexp.core.FieldModel;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
+import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.SelectionModel;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
@@ -40,6 +41,10 @@ public class CheckboxSection extends WizardPageSection {
 
 	public CheckboxSection(IPageWithSections owner, FieldModel<Boolean> model) {
 		this(owner, new SelectionModel<>(model.getVariable(), model.getValidator()), model.getLabel());
+	}
+
+	public CheckboxSection(IPageWithSections owner, LiveVariable<Boolean> model, String label) {
+		this(owner, new SelectionModel<>(model), label);
 	}
 
 	public CheckboxSection(IPageWithSections owner, SelectionModel<Boolean> model, String label) {
