@@ -39,47 +39,41 @@ public class StringFieldSection extends WizardPageSection {
 
 	/// UI elements
 	private Text text;
-	private boolean password;
-
+	private boolean password = false;
 
 	//////////////////////////////
 
 	public StringFieldSection(IPageWithSections owner,
 			String labelText,
 			LiveVariable<String> variable,
-			LiveExpression<ValidationResult> validator,
-			boolean passwordField) {
+			LiveExpression<ValidationResult> validator) {
 		super(owner);
 		this.labelText = labelText;
 		this.variable = variable;
 		this.validator = validator;
-		this.password = passwordField;
-	}
-
-	public StringFieldSection(IPageWithSections owner,
-			String labelText,
-			LiveVariable<String> variable,
-			LiveExpression<ValidationResult> validator) {
-		this(owner, labelText, variable, validator, false);
 	}
 
 	public StringFieldSection(IPageWithSections owner, FieldModel<String> f) {
 		this(owner, f.getLabel(), f.getVariable(), f.getValidator());
 	}
 
-	public StringFieldSection(IPageWithSections owner, String label, LiveVariable<String> f) {
-		this(owner, label, f, false);
-	}
-
-	public StringFieldSection(IPageWithSections owner, String label, LiveVariable<String> f, boolean passwordField) {
-		this(owner, label, f, Validator.OK, passwordField);
+	public StringFieldSection(IPageWithSections owner, 
+			String label, 
+			LiveVariable<String> variable
+	) {
+		this(owner, label, variable, Validator.OK);
 	}
 
 	@Override
 	public LiveExpression<ValidationResult> getValidator() {
 		return validator;
 	}
-
+	
+	public StringFieldSection setPassword(boolean enablePasswordBehavior) {
+		this.password = enablePasswordBehavior;
+		return this;
+	}
+	
 	@Override
 	public void createContents(Composite page) {
         // project specification group
