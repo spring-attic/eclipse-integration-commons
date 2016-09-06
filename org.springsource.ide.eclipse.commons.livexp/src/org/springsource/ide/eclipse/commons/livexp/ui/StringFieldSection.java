@@ -39,6 +39,7 @@ public class StringFieldSection extends WizardPageSection {
 
 	/// UI elements
 	private Text text;
+	private boolean password;
 
 
 	//////////////////////////////
@@ -46,11 +47,20 @@ public class StringFieldSection extends WizardPageSection {
 	public StringFieldSection(IPageWithSections owner,
 			String labelText,
 			LiveVariable<String> variable,
-			LiveExpression<ValidationResult> validator) {
+			LiveExpression<ValidationResult> validator,
+			boolean passwordField) {
 		super(owner);
 		this.labelText = labelText;
 		this.variable = variable;
 		this.validator = validator;
+		this.password = passwordField;
+	}
+
+	public StringFieldSection(IPageWithSections owner,
+			String labelText,
+			LiveVariable<String> variable,
+			LiveExpression<ValidationResult> validator) {
+		this(owner, labelText, variable, validator, false);
 	}
 
 	public StringFieldSection(IPageWithSections owner, FieldModel<String> f) {
@@ -58,7 +68,11 @@ public class StringFieldSection extends WizardPageSection {
 	}
 
 	public StringFieldSection(IPageWithSections owner, String label, LiveVariable<String> f) {
-		this(owner, label, f, Validator.OK);
+		this(owner, label, f, false);
+	}
+
+	public StringFieldSection(IPageWithSections owner, String label, LiveVariable<String> f, boolean passwordField) {
+		this(owner, label, f, Validator.OK, passwordField);
 	}
 
 	@Override
@@ -81,7 +95,7 @@ public class StringFieldSection extends WizardPageSection {
         	.align(SWT.BEGINNING, SWT.CENTER)
         	.applyTo(label);
 
-        text = new Text(projectGroup, SWT.BORDER);
+        text = new Text(projectGroup, SWT.BORDER | (password ? SWT.PASSWORD : 0));
         GridData data = new GridData(GridData.FILL_HORIZONTAL);
         data.widthHint = UIConstants.FIELD_TEXT_AREA_WIDTH;
         text.setLayoutData(data);
