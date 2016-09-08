@@ -106,8 +106,6 @@
 
 		<maven.test.error.ignore>true</maven.test.error.ignore>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
 		<encoding>UTF-8</encoding>
 	</properties>
 
