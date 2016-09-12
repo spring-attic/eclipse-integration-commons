@@ -18,7 +18,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.springframework.ide.eclipse.boot.core.BootActivator;
+import org.springsource.ide.eclipse.commons.livexp.Activator;
 
 /**
  * A section containing a single clickable button.
@@ -47,7 +47,7 @@ public class ButtonSection extends WizardPageSection {
 				try {
 					clickHandler.call();
 				} catch (Exception e) {
-					BootActivator.log(e);
+					Activator.log(e);
 				}
 			}
 
