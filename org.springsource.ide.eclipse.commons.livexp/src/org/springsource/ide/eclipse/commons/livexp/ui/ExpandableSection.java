@@ -66,8 +66,8 @@ public class ExpandableSection extends WizardPageSection implements Disposable {
 	public void createContents(final Composite page) {
 		final ExpandableComposite comp = new ExpandableComposite(page, SWT.NONE);
 
-		GridDataFactory.fillDefaults().grab(true, false).exclude(!visibleState.getValue()).applyTo(comp);
-		comp.setVisible(visibleState.getValue());
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(comp);
+
 		comp.setText(title);
 		comp.setLayout(new FillLayout());
 		comp.addExpansionListener(new IExpansionListener() {
@@ -97,13 +97,10 @@ public class ExpandableSection extends WizardPageSection implements Disposable {
 			public void gotValue(LiveExpression<Boolean> exp, Boolean value) {
 				if (value!=null && comp!=null && !comp.isDisposed()) {
 					boolean newState = value;
-					boolean currentState = comp.isVisible();
-					if (currentState!=newState) {
-						comp.setVisible(newState);
-						GridData data = (GridData) comp.getLayoutData();
-						data.exclude = !newState;
-						reflow(owner, comp);
-					}
+					comp.setVisible(newState);
+					GridData data = (GridData) comp.getLayoutData();
+					data.exclude = !newState;
+					reflow(owner, comp);
 				}
 			}
 		});
