@@ -43,6 +43,8 @@ public class GroupSection extends WizardPageSection {
 
 	private int columns = 1; //one columnby default
 
+	private boolean equalWidthColumns = true;
+
 	/**
 	 * If title is null then it creates a normal composite without a box around it. Otherwise
 	 * it creates a 'group' and uses the title as label for the group.
@@ -111,7 +113,7 @@ public class GroupSection extends WizardPageSection {
 	 * columns of equals width
 	 */
 	protected GridLayout createLayout() {
-		GridLayout layout = new GridLayout(this.columns, true);
+		GridLayout layout = new GridLayout(this.columns, equalWidthColumns);
 		if (groupTitle==null) {
 			layout.marginWidth = 0;
 		}
@@ -124,6 +126,12 @@ public class GroupSection extends WizardPageSection {
 			s.dispose();
 		}
 		super.dispose();
+	}
+
+	public GroupSection columns(int i, boolean equalWidth) {
+		columns(i);
+		this.equalWidthColumns = equalWidth;
+		return this;
 	}
 
 	public GroupSection columns(int i) {
