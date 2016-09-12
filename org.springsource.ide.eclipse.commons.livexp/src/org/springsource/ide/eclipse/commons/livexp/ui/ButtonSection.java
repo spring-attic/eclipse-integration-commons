@@ -28,7 +28,15 @@ import org.springsource.ide.eclipse.commons.livexp.Activator;
 public class ButtonSection extends WizardPageSection {
 
 	private String label;
+	private String tooltip;
 	private Callable<Void> clickHandler;
+
+	public ButtonSection(IPageWithSections owner, String label, Runnable clickHandler) {
+		this(owner, label, () -> {
+			clickHandler.run();
+			return null;
+		});
+	}
 
 	public ButtonSection(IPageWithSections owner, String label, Callable<Void> clickHandler) {
 		super(owner);
@@ -40,6 +48,9 @@ public class ButtonSection extends WizardPageSection {
 	public void createContents(Composite page) {
 		Button button = new Button(page, SWT.PUSH);
 		button.setText(label);
+		if (tooltip!=null) {
+			button.setToolTipText(tooltip);
+		}
 		applyLayoutData(button);
 		button.addSelectionListener(new SelectionListener() {
 			@Override
@@ -56,6 +67,11 @@ public class ButtonSection extends WizardPageSection {
 				widgetSelected(arg0);
 			}
 		});
+	}
+	
+	public ButtonSection tooltip(String tooltip) {
+		this.tooltip = tooltip;
+		return this;
 	}
 
 	/**
