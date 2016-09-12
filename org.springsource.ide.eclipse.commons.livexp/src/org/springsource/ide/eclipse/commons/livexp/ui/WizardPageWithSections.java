@@ -22,6 +22,8 @@ import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -94,7 +96,16 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 //        scroller.setSize(page.getSize());
 		scroller.setContent(page);
         setControl(scroller);
-        reflow();
+    	page.addPaintListener(new PaintListener() {
+            //This is a bit yuck. But don't know a better way to 'reflow' the page the first time
+            // it gets shown. And if we don't do that, then there are often layout issues.
+            //See for example: https://www.pivotaltracker.com/story/show/130209913
+			@Override
+			public void paintControl(PaintEvent e) {
+				page.removePaintListener(this);
+				reflow();
+			}
+		});
         if (getContainer().getCurrentPage()!=null) { // Otherwise an NPE will ensue when updating buttons. Buttons depend on current page so that is logical.
 	        getContainer().updateButtons();
 	        getContainer().updateMessage();
