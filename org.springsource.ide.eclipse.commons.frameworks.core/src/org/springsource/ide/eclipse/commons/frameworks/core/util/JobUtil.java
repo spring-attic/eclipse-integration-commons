@@ -12,7 +12,6 @@ package org.springsource.ide.eclipse.commons.frameworks.core.util;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.eclipse.core.runtime.ICoreRunnable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -57,9 +56,10 @@ public class JobUtil {
 	 * null.
 	 * 
 	 */
-	public static void runBackgroundJobWithUIProgress(final ICoreRunnable coreRunner, final IRunnableContext progressService,
-			final String jobLabel) throws Exception {
-		final IRunnableWithProgress runner = new IRunnableWithProgress() {
+	public static void runBackgroundJobWithUIProgress(final IRunnableWithProgress runnableWithProgress,
+			final IRunnableContext progressService, final String jobLabel) throws Exception {
+		// This outer runnable launches the background job
+		final IRunnableWithProgress outerRunnable = new IRunnableWithProgress() {
 			public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 				monitor.beginTask(jobLabel, IProgressMonitor.UNKNOWN);
 				// Fork outside UI thread
@@ -69,7 +69,7 @@ public class JobUtil {
 						SubMonitor subMonitor = SubMonitor.convert(monitor);
 						subMonitor.setTaskName(jobLabel);
 						try {
-							coreRunner.run(subMonitor);
+							runnableWithProgress.run(subMonitor);
 						} catch (Throwable e) {
 							FrameworkCoreActivator.log(e);
 						} finally {
@@ -83,20 +83,18 @@ public class JobUtil {
 			}
 		};
 
-		// To get the UI progress, must initially launch in UI thread
-		// Do a sync execution to avoid unnecessary further delays in launching
-		// the background job.
+		// Progress services needs to be launched in UI thread.
 		Exception[] error = new Exception[1];
-		Display.getDefault().syncExec(()->{
+		Display.getDefault().syncExec(() -> {
 			try {
-				progressService.run(true, true, runner);
+				progressService.run(true, true, outerRunnable);
 			} catch (InvocationTargetException e) {
 				error[0] = e;
 			} catch (InterruptedException e) {
 				error[0] = e;
 			}
 		});
-		
+
 		if (error[0] != null) {
 			throw error[0];
 		}
