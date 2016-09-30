@@ -69,6 +69,7 @@
 
 	<properties>
 		<!-- Eclipse Integration Commons Properties -->
+	    <misc.p2.repo.version>3.8.2.201609202236</misc.p2.repo.version>
 		<p2.qualifier>SNAPSHOT</p2.qualifier>
 		<p2.sign>false</p2.sign>
 		<p2.repository.name>Eclipse Integration Commons</p2.repository.name>
@@ -354,7 +355,7 @@
  		<repository>
  			<id>p2-thirdparty-bundles</id>
  			<layout>p2</layout>
- 			<url>http://dist.springsource.com/release/TOOLS/third-party/misc-p2-repo</url>
+ 			<url>http://dist.springsource.com/release/TOOLS/third-party/misc-p2-repo/${misc.p2.repo.version}</url>
  		</repository>
 
 		<repository>
