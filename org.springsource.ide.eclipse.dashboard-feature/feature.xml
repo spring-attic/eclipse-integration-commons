@@ -2,7 +2,7 @@
 <feature
       id="org.springsource.ide.eclipse.dashboard"
       label="%featureName"
-      version="3.8.2.qualifier"
+      version="3.8.3.qualifier"
       provider-name="%providerName">
 
    <description>
@@ -20,7 +20,7 @@
    <requires>
       <import feature="org.eclipse.mylyn_feature" version="3.4.0.v20100601" match="compatible"/>
       <import feature="org.eclipse.mylyn.context_feature" version="3.4.0.v20100601" match="compatible"/>
-      <import feature="org.springsource.ide.eclipse.commons" version="3.8.2"/>
+      <import feature="org.springsource.ide.eclipse.commons" version="3.8.3"/>
    </requires>
 
    <plugin

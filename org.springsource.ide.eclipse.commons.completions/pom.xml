@@ -2,11 +2,11 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.springsource.ide.eclipse.commons</groupId>
   <artifactId>org.springsource.ide.eclipse.commons.completions</artifactId>
-  <version>3.8.2-SNAPSHOT</version>
+  <version>3.8.3-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   <parent>
     <groupId>org.springsource.ide.eclipse.commons</groupId>
     <artifactId>org.springsource.ide.eclipse.commons.parent</artifactId>
-    <version>3.8.2-SNAPSHOT</version>
+    <version>3.8.3-SNAPSHOT</version>
   </parent>
 </project>
