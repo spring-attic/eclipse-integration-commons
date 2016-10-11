@@ -21,9 +21,39 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.progress.UIJob;
 import org.springsource.ide.eclipse.commons.frameworks.core.FrameworkCoreActivator;
 
 public class JobUtil {
+
+	/**
+	 * Should ideally not be used except for testing. Eclipse UI should provide a runnable context like
+	 * a progress service via the workbench.
+	 */
+	public static final IRunnableContext DEFAULT_BACKGROUND_RUNNABLE_CONTEXT = new IRunnableContext() {
+
+		@Override
+		public void run(boolean arg0, boolean arg1, final IRunnableWithProgress runnableWithProgress)
+				throws InvocationTargetException, InterruptedException {
+			if (runnableWithProgress != null) {
+				Job job = new Job("Running a background job.") {
+
+					@Override
+					public IStatus run(IProgressMonitor monitor) {
+						try {
+							runnableWithProgress.run(monitor);
+						} catch (InvocationTargetException | InterruptedException e) {
+							return UIJob.errorStatus(e);
+						}
+						return Status.OK_STATUS;
+					}
+				};
+				job.setSystem(true);
+				job.schedule();
+
+			}
+		}
+	};
 
 	/**
 	 * Create a scheduling rule that conflicts only with itself and only
