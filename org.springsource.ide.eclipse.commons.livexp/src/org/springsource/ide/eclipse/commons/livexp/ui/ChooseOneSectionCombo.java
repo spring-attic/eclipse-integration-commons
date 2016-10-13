@@ -40,6 +40,7 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 	private final SelectionModel<T> selection;
 	private final String label; //Descriptive Label for this section
 	private LiveExpression<T[]> options; //The elements to choose from
+	private boolean useFieldLabelWidthHint = true;
 
 	/**
 	 * For a combo that allows text edits, a textInputParser must be provided to convert
@@ -50,6 +51,11 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 	public ChooseOneSectionCombo(IPageWithSections owner, String label, SelectionModel<T> selection, T[] options) {
 		this(owner, label, selection, LiveExpression.constant(options));
 		Assert.isNotNull(options);
+	}
+
+	public ChooseOneSectionCombo<T> useFieldLabelWidthHint(boolean use) {
+		this.useFieldLabelWidthHint = use;
+		return this;
 	}
 
 	public ChooseOneSectionCombo(IPageWithSections owner, String label, SelectionModel<T> selection, LiveExpression<T[]> options) {
@@ -88,10 +94,13 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 
 		Label fieldNameLabel = new Label(field, SWT.NONE);
 		fieldNameLabel.setText(label);
-        GridDataFactory.fillDefaults()
-        	.hint(UIConstants.fieldLabelWidthHint(fieldNameLabel), SWT.DEFAULT)
-        	.align(SWT.BEGINNING, SWT.CENTER)
-        	.applyTo(fieldNameLabel);
+		GridDataFactory labelGridData = GridDataFactory
+				.fillDefaults()
+				.align(SWT.BEGINNING, SWT.CENTER);
+		if (useFieldLabelWidthHint) {
+			labelGridData.hint(UIConstants.fieldLabelWidthHint(fieldNameLabel), SWT.DEFAULT);
+		}
+		labelGridData.applyTo(fieldNameLabel);
 
 		final Combo combo = new Combo(field, inputParser==null?SWT.READ_ONLY:SWT.NONE);
 
