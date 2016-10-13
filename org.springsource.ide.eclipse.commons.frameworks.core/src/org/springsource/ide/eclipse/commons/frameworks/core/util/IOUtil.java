@@ -22,8 +22,6 @@ import java.io.UnsupportedEncodingException;
 
 public class IOUtil {
 
-	private static final int BUF_SIZE = 0;
-
 	/**
 	 * Copy data from an inputstream into a file until end of the inputstream
 	 * is reached.
