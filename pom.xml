@@ -69,7 +69,8 @@
 
 	<properties>
 		<!-- Eclipse Integration Commons Properties -->
-	    <misc.p2.repo.version>3.8.2.201609202236</misc.p2.repo.version>
+	    <!-- <misc.p2.repo.version>3.8.2.201609202236</misc.p2.repo.version> -->
+	    <misc.p2.repo.version>3.8.2.201610251853</misc.p2.repo.version>
 		<p2.qualifier>SNAPSHOT</p2.qualifier>
 		<p2.sign>false</p2.sign>
 		<p2.repository.name>Eclipse Integration Commons</p2.repository.name>
