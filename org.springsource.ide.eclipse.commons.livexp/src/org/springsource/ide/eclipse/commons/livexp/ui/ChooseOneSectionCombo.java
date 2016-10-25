@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
+import static org.springsource.ide.eclipse.commons.livexp.ui.UIConstants.FIELD_TEXT_AREA_WIDTH;
+
+import java.util.Collection;
+import java.util.Objects;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -26,10 +31,6 @@ import org.springsource.ide.eclipse.commons.livexp.core.SelectionModel;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 import org.springsource.ide.eclipse.commons.livexp.util.Parser;
-
-import static org.springsource.ide.eclipse.commons.livexp.ui.UIConstants.*;
-
-import java.util.Objects;
 
 /**
  * Wizard section to choose one element from list of elements. Uses a pulldown Combo box to allow selecting
@@ -63,6 +64,15 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 		this.label = label;
 		this.selection = selection;
 		this.options = options;
+	}
+
+	@SuppressWarnings("unchecked")
+	public ChooseOneSectionCombo(IPageWithSections owner, String label, LiveVariable<T> selection, Collection<T> options) {
+		this(owner,
+			label,
+			new SelectionModel<>(selection),
+			(T[])options.toArray()
+		);
 	}
 
 	/**
