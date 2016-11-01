@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Text;
 import org.springsource.ide.eclipse.commons.livexp.core.FieldModel;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
+import org.springsource.ide.eclipse.commons.livexp.core.UIValueListener;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.Validator;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
@@ -36,6 +37,7 @@ public class StringFieldSection extends WizardPageSection {
 	/// model elements
 	private final LiveVariable<String> variable;
 	private final LiveExpression<ValidationResult> validator;
+	private LiveExpression<Boolean> enabler = LiveExpression.constant(true);
 
 	/// UI elements
 	private Text text;
@@ -57,8 +59,8 @@ public class StringFieldSection extends WizardPageSection {
 		this(owner, f.getLabel(), f.getVariable(), f.getValidator());
 	}
 
-	public StringFieldSection(IPageWithSections owner, 
-			String label, 
+	public StringFieldSection(IPageWithSections owner,
+			String label,
 			LiveVariable<String> variable
 	) {
 		this(owner, label, variable, Validator.OK);
@@ -68,12 +70,12 @@ public class StringFieldSection extends WizardPageSection {
 	public LiveExpression<ValidationResult> getValidator() {
 		return validator;
 	}
-	
+
 	public StringFieldSection setPassword(boolean enablePasswordBehavior) {
 		this.password = enablePasswordBehavior;
 		return this;
 	}
-	
+
 	@Override
 	public void createContents(Composite page) {
         // project specification group
@@ -98,20 +100,20 @@ public class StringFieldSection extends WizardPageSection {
 				variable.setValue(text.getText());
 			}
 		});
-        variable.addListener(new ValueListener<String>() {
-			public void gotValue(LiveExpression<String> exp, String value) {
-				if (text!=null && !text.isDisposed()) {
-					if (value==null) {
-						value = "";
-					}
-					String oldText = text.getText();
-					if (!oldText.equals(value)) {
-						text.setText(value);
-					}
+        variable.addListener(UIValueListener.from((exp, value) -> {
+			if (text!=null && !text.isDisposed()) {
+				if (value==null) {
+					value = "";
+				}
+				String oldText = text.getText();
+				if (!oldText.equals(value)) {
+					text.setText(value);
 				}
 			}
-		});
-
+		}));
+        enabler.addListener(UIValueListener.from((exp, enable) -> {
+        	text.setEnabled(enable);
+        }));
         if (tooltip!=null) {
         	label.setToolTipText(tooltip);
         	text.setToolTipText(tooltip);
@@ -120,6 +122,11 @@ public class StringFieldSection extends WizardPageSection {
 
 	public StringFieldSection tooltip(String string) {
 		this.tooltip = string;
+		return this;
+	}
+
+	public StringFieldSection setEnabler(LiveExpression<Boolean> enable) {
+		this.enabler = enable;
 		return this;
 	}
 
