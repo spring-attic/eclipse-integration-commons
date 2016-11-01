@@ -75,19 +75,23 @@ public abstract class StsUiTestCase extends SWTBotTestCase {
 	}
 
 	@Override
-	protected void setUp() throws Exception {
-		SWTBotPreferences.KEYBOARD_LAYOUT = "EN_US";
-		bot = new StsBot();
+	public void setUp() {
 		try {
-			bot.viewByTitle("Welcome").close();
-		}
-		catch (WidgetNotFoundException e) {
-			// ignore
-		}
+			SWTBotPreferences.KEYBOARD_LAYOUT = "EN_US";
+			bot = new StsBot();
+			try {
+				bot.viewByTitle("Welcome").close();
+			}
+			catch (WidgetNotFoundException e) {
+				// ignore
+			}
 
-		// run in setUp() to enable super class to capture screenshot in
-		// case of a failure
-		cleanUp();
+			// run in setUp() to enable super class to capture screenshot in
+			// case of a failure
+			cleanUp();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override

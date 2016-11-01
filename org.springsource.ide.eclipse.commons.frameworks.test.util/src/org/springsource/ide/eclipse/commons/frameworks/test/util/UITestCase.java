@@ -60,25 +60,29 @@ public class UITestCase extends SWTBotTestCase {
 	 * instead.
 	 */
 	@Override
-	public final void setUp() throws Exception {
-		if (enablePrinting()) {
-			SWTBotUtils.enablePrinting();;
-		}
-		if (!isClassSetup()) {
-			try {
-				setupClass();
-			} finally {
-				setupClassTried = this.getClass();
+	public final void setUp() {
+		try {
+			if (enablePrinting()) {
+				SWTBotUtils.enablePrinting();;
 			}
-			isClassSetup = this.getClass();
+			if (!isClassSetup()) {
+				try {
+					setupClass();
+				} finally {
+					setupClassTried = this.getClass();
+				}
+				isClassSetup = this.getClass();
+			}
+			setupInstance();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		setupInstance();
 	}
-	
+
 	protected boolean enablePrinting() {
 		 return true;
 	}
-	
+
 	protected void print(String message) {
 		SWTBotUtils.print(message);
 	}
@@ -130,7 +134,7 @@ public class UITestCase extends SWTBotTestCase {
 
 	/**
 	 * Create a general project in the workspace. To be used as test fixture.
-	 * 
+	 *
 	 * @return an IProject referring to the create project.
 	 * @throws CoreException
 	 */
@@ -147,7 +151,7 @@ public class UITestCase extends SWTBotTestCase {
 	/**
 	 * General cleanup: close all editors. Delete all projects. Copied from:
 	 * StsUiTestCase
-	 * 
+	 *
 	 * @author Steffen Pingel
 	 */
 	public static void workspaceCleanUp() throws CoreException {
@@ -165,7 +169,7 @@ public class UITestCase extends SWTBotTestCase {
 			project.delete(true, true, null);
 		}
 	}
-	
+
 	private void workspaceFileSystemCleanup() {
 		File workspace = StsTestUtil.getWorkspaceRoot().getLocation().toFile();
 		File[] wsFiles = workspace.listFiles();
@@ -228,7 +232,7 @@ public class UITestCase extends SWTBotTestCase {
 	 * that calls this method at the end of the suite.
 	 * <p>
 	 * For example, add the following code to your test Suite
-	 * 
+	 *
 	 * <code>
 	 * class MySuite {
 	 *   public static TestSuite suite() {
@@ -239,7 +243,7 @@ public class UITestCase extends SWTBotTestCase {
 	 *   }
 	 * }
 	 * </code>
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void tearDownClass() throws Exception {
@@ -260,10 +264,10 @@ public class UITestCase extends SWTBotTestCase {
 	 * Opens a particular view, from the Eclipse Window >> Show View menu.
 	 */
 	protected SWTBotView openView() {
-		
+
 		String category = getProjectViewCategory();
 		String viewName = getProjectViewName();
-		
+
 		SWTBotView explorer = null;
 		try {
 			explorer = bot.viewByTitle(viewName);
@@ -287,13 +291,13 @@ public class UITestCase extends SWTBotTestCase {
 	/**
 	 * Gets a view by name. It assumes the view MUST be opened, although not
 	 * necessarily active. Open the view first if necessary.
-	 * 
+	 *
 	 * @return Active, focused explorer view
 	 */
 	protected SWTBotView getView() {
 		return SWTBotUtils.getView(bot, getProjectViewName());
 	}
-	
+
 	/**
 	 * Gets a view by name. It assumes the view MUST be opened, although not necessarily active.
 	 * Open the view first if necessary.
@@ -302,7 +306,7 @@ public class UITestCase extends SWTBotTestCase {
 	protected SWTBotView getView(String name) {
 		return SWTBotUtils.getView(bot, name);
 	}
-	
+
 
 	/**
 	 * Sometimes widgets respond slowly to selection and key presses. Use this
@@ -327,7 +331,7 @@ public class UITestCase extends SWTBotTestCase {
 
 	/**
 	 * Activate a wizard from the "File >> New" menu.
-	 * 
+	 *
 	 * @param projectWizardName
 	 * @param wizardShellName
 	 * @return A reference to the Wizard's shell.
@@ -345,14 +349,14 @@ public class UITestCase extends SWTBotTestCase {
 	/**
 	 * Selects a project in the currently opened view. A view must be opened
 	 * prior to using this method.
-	 * 
+	 *
 	 * @param projectName
 	 * @return
 	 */
 	protected SWTBotTree selectProject(String projectName) {
 		return SWTBotUtils.selectProject(bot, projectName, getProjectViewName());
 	}
-	
+
 	protected Object getTreeItemObject(final SWTBotTreeItem item) {
 		final Object[] result = new Object[1];
 		UIThreadRunnable.syncExec(bot.getDisplay(), new VoidResult() {
@@ -366,7 +370,7 @@ public class UITestCase extends SWTBotTestCase {
 	/**
 	 * Gets the explorer tree in a currently OPENED explorer view. The explorer
 	 * view MUST be opened before invoking this method
-	 * 
+	 *
 	 * @return explorer view tree
 	 */
 	protected SWTBotTree getExplorerViewTree() {
