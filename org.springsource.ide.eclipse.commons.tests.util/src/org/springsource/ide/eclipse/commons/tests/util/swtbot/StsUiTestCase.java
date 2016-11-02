@@ -75,7 +75,7 @@ public abstract class StsUiTestCase extends SWTBotTestCase {
 	}
 
 	@Override
-	public void setUp() {
+	public void setUp() throws Exception {
 		try {
 			SWTBotPreferences.KEYBOARD_LAYOUT = "EN_US";
 			bot = new StsBot();
