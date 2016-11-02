@@ -141,6 +141,16 @@ public abstract class DialogWithSections extends TitleAreaDialog
 	private List<WizardPageSection> sections = null;
 	private CompositeValidator validator;
 	private UIJob updateJob;
+	private int disableOkButtonLevel = Status.ERROR;
+
+	/**
+	 * Sets the severity level at which the ok button in the dialog
+	 * gets disabled. The default value is Status.ERROR.
+	 */
+	public DialogWithSections disableOkButtonAt(int statusSeverity) {
+		this.disableOkButtonLevel = statusSeverity;
+		return this;
+	}
 
 	protected synchronized List<WizardPageSection> getSections() {
 		if (sections==null) {
@@ -202,7 +212,7 @@ public abstract class DialogWithSections extends TitleAreaDialog
 			setMessage("", IMessageProvider.NONE);
 		} else {
 			setMessage(status.msg, status.getMessageProviderStatus());
-			enableOk = status.status<IStatus.ERROR;
+			enableOk = status.status<disableOkButtonLevel;
 		}
 		Button okButton = getButton(IDialogConstants.OK_ID);
 		if (okButton!=null) {
