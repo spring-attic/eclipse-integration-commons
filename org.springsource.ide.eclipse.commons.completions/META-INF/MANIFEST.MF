@@ -10,8 +10,7 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.jdt.ui,
  org.eclipse.jdt.core,
  org.eclipse.jface.text,
- org.eclipse.equinox.preferences,
- org.springframework.core
+ org.eclipse.equinox.preferences
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.springsource.ide.eclipse.commons.completions,
