@@ -96,7 +96,8 @@ public class ExceptionUtil {
 	}
 
 	public static boolean isCancelation(Throwable e) {
-		return (
+		Throwable cause = e.getCause();
+		boolean isCancel = (
 				e instanceof OperationCanceledException ||
 				e instanceof InterruptedException ||
 				e instanceof CancellationException ||
@@ -104,6 +105,11 @@ public class ExceptionUtil {
 						e instanceof CoreException &&
 						((CoreException)e).getStatus().getSeverity()==IStatus.CANCEL
 				)
+		);
+		return isCancel || (
+				cause!=null && //avoid npe's on recursive check
+				cause!=e && //avoid infinite recursion on e == cause
+				isCancelation(cause)
 		);
 	}
 
