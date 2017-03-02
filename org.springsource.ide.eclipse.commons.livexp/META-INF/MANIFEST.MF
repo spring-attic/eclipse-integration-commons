@@ -15,6 +15,7 @@ Bundle-Vendor: Pivotal Software, Inc.
 Export-Package: org.springsource.ide.eclipse.commons.livexp.core;uses:="com.google.common.base",
  org.springsource.ide.eclipse.commons.livexp.core.validators,
  org.springsource.ide.eclipse.commons.livexp.ui,
+ org.springsource.ide.eclipse.commons.livexp.ui.util,
  org.springsource.ide.eclipse.commons.livexp.util
 Import-Package: org.eclipse.core.runtime,
  org.eclipse.core.runtime.jobs,
