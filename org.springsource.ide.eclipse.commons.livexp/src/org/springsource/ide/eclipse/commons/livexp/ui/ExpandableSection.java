@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Pivotal, Inc.
+ * Copyright (c) 2015, 2017 Pivotal, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,6 @@ import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
-import org.springsource.ide.eclipse.commons.livexp.ui.util.ReflowUtil;
 
 /**
  * Section containing an ExpandableComposite that contains another
@@ -45,12 +44,11 @@ import org.springsource.ide.eclipse.commons.livexp.ui.util.ReflowUtil;
  *
  * @author Kris De Volder
  */
-public class ExpandableSection extends WizardPageSection implements Disposable {
+public class ExpandableSection extends ReflowableSection implements Disposable {
 
 	private IPageSection child;
 	private String title;
 	private LiveVariable<Boolean> expansionState = new LiveVariable<>(true);
-	private LiveVariable<Boolean> visibleState = new LiveVariable<>(true);
 
 	public ExpandableSection(IPageWithSections owner, String title, IPageSection expandableContent) {
 		super(owner);
@@ -127,32 +125,8 @@ public class ExpandableSection extends WizardPageSection implements Disposable {
 		}
 	}
 
-	/**
-	 * Called after a expandable section was expanded or collapsed. It should
-	 * cause the surrounding parent widgets to 'reflow' to adapt to new size.
-	 */
-	protected void reflow(IPageWithSections owner, ExpandableComposite comp) {
-		ReflowUtil.reflow(owner, comp);
-// Old implementation doesn't work as well:
-//		boolean reflowed = false;
-//		if (owner instanceof Reflowable) {
-//			reflowed = ((Reflowable) owner).reflow();
-//		}
-//		if (!reflowed) {
-//			//sortof works in some cases, but may not adjust scrollbars in the page.
-//			comp.getParent().layout(true);
-//		}
-	}
-
-	public void setVisible(boolean reveal) {
-		this.visibleState.setValue(reveal);
-	}
-
-
 	@Override
 	public String toString() {
 		return "ExpandableSection("+title+")";
 	}
-
-
 }
