@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2015 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2017 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
 import org.springsource.ide.eclipse.commons.core.CommandHistoryTest;
+import org.springsource.ide.eclipse.commons.core.NameGeneratorTest;
 import org.springsource.ide.eclipse.commons.core.ResourceProviderTest;
 import org.springsource.ide.eclipse.commons.internal.configurator.ConfiguratorImporterTest;
 import org.springsource.ide.eclipse.commons.internal.configurator.touchpoint.ConfiguratorActionTest;
@@ -40,6 +41,7 @@ import org.springsource.ide.eclipse.commons.internal.ui.editors.UpdateNotificati
 		DescriptorMatcherTest.class, //
 		ResourceProviderTest.class, //
 		CommandHistoryTest.class, //
+		NameGeneratorTest.class,
 		UpdateNotificationTest.class, //
 		DownloadManagerTests.class //
 })
