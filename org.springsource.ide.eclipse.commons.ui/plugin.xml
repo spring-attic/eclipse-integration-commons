@@ -29,6 +29,9 @@
       <startup
             class="org.springsource.ide.eclipse.commons.internal.ui.AnyEditToolsPrefsInitializer">
       </startup>
+      <startup
+            class="org.springsource.ide.eclipse.commons.internal.ui.EgitPreferencesFixer">
+      </startup>
    </extension>
 
 	<extension point="org.eclipse.wst.xml.core.catalogContributions">
