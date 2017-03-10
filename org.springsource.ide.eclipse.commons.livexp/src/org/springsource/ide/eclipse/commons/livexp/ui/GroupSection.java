@@ -45,6 +45,8 @@ public class GroupSection extends WizardPageSection {
 
 	private boolean equalWidthColumns = true;
 
+	private boolean contentsCreated = false;
+
 	/**
 	 * If title is null then it creates a normal composite without a box around it. Otherwise
 	 * it creates a 'group' and uses the title as label for the group.
@@ -53,6 +55,11 @@ public class GroupSection extends WizardPageSection {
 		super(owner);
 		this.groupTitle = title;
 		this.sections = new ArrayList<WizardPageSection>();
+		addSections(_sections);
+	}
+
+	public void addSections(WizardPageSection... _sections) {
+		Assert.isLegal(!contentsCreated);
 		for (WizardPageSection s : _sections) {
 			if (s!=null) {
 				sections.add(s);
@@ -72,6 +79,7 @@ public class GroupSection extends WizardPageSection {
 
 	@Override
 	public void createContents(Composite page) {
+		contentsCreated = true;
 		final Composite group = createComposite(page);
 		for (WizardPageSection s : sections) {
 			s.createContents(group);

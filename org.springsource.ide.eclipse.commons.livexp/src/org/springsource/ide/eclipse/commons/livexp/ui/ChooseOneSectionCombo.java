@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2015 GoPivotal, Inc.
+ * Copyright (c) 2013, 2017 Pivotal, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    GoPivotal, Inc. - initial API and implementation
+ *    Pivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
@@ -25,6 +25,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.springsource.ide.eclipse.commons.livexp.core.FieldModel;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.SelectionModel;
@@ -42,6 +43,7 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 	private final String label; //Descriptive Label for this section
 	private LiveExpression<T[]> options; //The elements to choose from
 	private boolean useFieldLabelWidthHint = true;
+	private boolean grabHorizontal = false;
 
 	/**
 	 * For a combo that allows text edits, a textInputParser must be provided to convert
@@ -56,6 +58,11 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 
 	public ChooseOneSectionCombo<T> useFieldLabelWidthHint(boolean use) {
 		this.useFieldLabelWidthHint = use;
+		return this;
+	}
+	
+	public ChooseOneSectionCombo<T> grabHorizontal(boolean grab) {
+		this.grabHorizontal  = grab;
 		return this;
 	}
 
@@ -73,6 +80,11 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 			new SelectionModel<>(selection),
 			(T[])options.toArray()
 		);
+	}
+
+	public ChooseOneSectionCombo(IPageWithSections owner, FieldModel<T> model,
+			T[] options) {
+		this(owner, model.getLabel(), new SelectionModel<>(model.getVariable(), model.getValidator()), LiveExpression.constant(options));
 	}
 
 	/**
@@ -125,6 +137,8 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 		});
 		if (inputParser==null) {
 			GridDataFactory.fillDefaults().applyTo(combo);
+		} else if (grabHorizontal) {
+			GridDataFactory.fillDefaults().grab(true, false).applyTo(combo);
 		} else {
 			GridDataFactory.fillDefaults().hint(FIELD_TEXT_AREA_WIDTH, SWT.DEFAULT).applyTo(combo);
 		}
