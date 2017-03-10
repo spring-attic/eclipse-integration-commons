@@ -16,7 +16,10 @@ import java.util.Collection;
 import java.util.Objects;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
@@ -25,7 +28,9 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.progress.UIJob;
 import org.springsource.ide.eclipse.commons.livexp.core.FieldModel;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
@@ -60,6 +65,7 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 	 * the input text into a selection value.
 	 */
 	private Parser<T> inputParser = null;
+	private Combo combo;
 
 	public ChooseOneSectionCombo(IPageWithSections owner, String label, SelectionModel<T> selection, T[] options) {
 		this(owner, label, selection, LiveExpression.constant(options));
@@ -135,7 +141,7 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 		}
 		labelGridData.applyTo(fieldNameLabel);
 
-		final Combo combo = new Combo(field, inputParser==null?SWT.READ_ONLY:SWT.NONE);
+		combo = new Combo(field, inputParser==null?SWT.READ_ONLY:SWT.NONE);
 
 		options.addListener(new ValueListener<T[]>() {
 			public void gotValue(org.springsource.ide.eclipse.commons.livexp.core.LiveExpression<T[]> exp, T[] value) {
@@ -189,19 +195,27 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 		}
 	}
 
-	private void handleModifyText(final Combo combo) {
-		int selected = combo.getSelectionIndex();
-		debug("selectedIdx = "+selected);
-		T[] options = getOptionsArray();
-		if (options!=null && selected>=0 && selected<options.length) {
-			debug("setting selection based on idx = "+ options[selected]);
-			selection.selection.setValue(options[selected]);
-		} else {
-			T parsed = parse(combo.getText());
-			debug("setting selection from combo = "+ parsed);
-			selection.selection.setValue(parsed);
+	UIJob handleModifyTextJob = new UIJob("Sync text->pulldown state") {
+		@Override
+		public IStatus runInUIThread(IProgressMonitor monitor) {
+			int selected = combo.getSelectionIndex();
+			debug("selectedIdx = "+selected);
+			T[] options = getOptionsArray();
+			if (options!=null && selected>=0 && selected<options.length) {
+				debug("setting selection based on idx = "+ options[selected]);
+				selection.selection.setValue(options[selected]);
+			} else {
+				T parsed = parse(combo.getText());
+				debug("setting selection from combo = "+ parsed);
+				selection.selection.setValue(parsed);
+			}
+			debug("Exiting: "+labelProvider.getText(selection.selection.getValue()) +" == "+combo.getText());
+			return Status.OK_STATUS;
 		}
-		debug("Exiting: "+labelProvider.getText(selection.selection.getValue()) +" == "+combo.getText());
+	};
+
+	private void handleModifyText(final Combo combo) {
+		handleModifyTextJob.schedule(100);
 	}
 
 	private T parse(String text) {
