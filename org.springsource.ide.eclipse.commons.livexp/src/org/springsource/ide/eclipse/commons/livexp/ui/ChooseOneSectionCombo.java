@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
@@ -39,6 +40,15 @@ import org.springsource.ide.eclipse.commons.livexp.util.Parser;
  */
 public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 
+	private boolean DEBUG = true; //(""+Platform.getLocation()).contains("kdvolder");
+
+	private void debug(String string) {
+		if (DEBUG) {
+			System.out.println("handleModifyText "+string);
+		}
+	}
+
+
 	private final SelectionModel<T> selection;
 	private final String label; //Descriptive Label for this section
 	private LiveExpression<T[]> options; //The elements to choose from
@@ -60,7 +70,7 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 		this.useFieldLabelWidthHint = use;
 		return this;
 	}
-	
+
 	public ChooseOneSectionCombo<T> grabHorizontal(boolean grab) {
 		this.grabHorizontal  = grab;
 		return this;
@@ -68,6 +78,7 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 
 	public ChooseOneSectionCombo(IPageWithSections owner, String label, SelectionModel<T> selection, LiveExpression<T[]> options) {
 		super(owner);
+		DEBUG = DEBUG && "Service URL".equals(label);
 		this.label = label;
 		this.selection = selection;
 		this.options = options;
@@ -137,8 +148,8 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 		});
 		if (inputParser==null) {
 			GridDataFactory.fillDefaults().applyTo(combo);
-		} else if (grabHorizontal) {
-			GridDataFactory.fillDefaults().grab(true, false).applyTo(combo);
+//		} else if (grabHorizontal) {
+//			GridDataFactory.fillDefaults().grab(true, false).applyTo(combo);
 		} else {
 			GridDataFactory.fillDefaults().hint(FIELD_TEXT_AREA_WIDTH, SWT.DEFAULT).applyTo(combo);
 		}
@@ -180,12 +191,17 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 
 	private void handleModifyText(final Combo combo) {
 		int selected = combo.getSelectionIndex();
+		debug("selectedIdx = "+selected);
 		T[] options = getOptionsArray();
 		if (options!=null && selected>=0 && selected<options.length) {
-			selection.selection.setValue(getOptionsArray()[selected]);
+			debug("setting selection based on idx = "+ options[selected]);
+			selection.selection.setValue(options[selected]);
 		} else {
-			selection.selection.setValue(parse(combo.getText()));
+			T parsed = parse(combo.getText());
+			debug("setting selection from combo = "+ parsed);
+			selection.selection.setValue(parsed);
 		}
+		debug("Exiting: "+labelProvider.getText(selection.selection.getValue()) +" == "+combo.getText());
 	}
 
 	private T parse(String text) {
