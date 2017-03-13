@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.Objects;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
@@ -40,7 +39,7 @@ import org.springsource.ide.eclipse.commons.livexp.util.Parser;
  */
 public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 
-	private boolean DEBUG = true; //(""+Platform.getLocation()).contains("kdvolder");
+	private boolean DEBUG = false; //(""+Platform.getLocation()).contains("kdvolder");
 
 	private void debug(String string) {
 		if (DEBUG) {
@@ -193,8 +192,16 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 		int selected = combo.getSelectionIndex();
 		debug("selectedIdx = "+selected);
 		T[] options = getOptionsArray();
-		if (options!=null && selected>=0 && selected<options.length) {
-			debug("setting selection based on idx = "+ options[selected]);
+		// BUG in OSX: Seems that when text edit is enabled in the combo control, and a new text is entered in the combo
+		// that is NOT in the list of options, the new
+		// text has an index that fluctuates from -1 to 0. -1 is the expected index because
+		// the new text is not in the list of options, but for some reason sometimes it is 0, which may
+		// result in the first element in the options being set instead of the new text in the control with the code below.
+		// Therefore adding an additional check that guards when values from options are set in the selection ONLY if the value in the selected
+		// index of the options matches the text in the combo. Otherwise, parse the combo text directly
+		if (options!=null && selected>=0 && selected<options.length
+				&& labelProvider.getText(options[selected]).equals(combo.getText())) {
+			debug("setting selection based on idx = " + options[selected]);
 			selection.selection.setValue(options[selected]);
 		} else {
 			T parsed = parse(combo.getText());
