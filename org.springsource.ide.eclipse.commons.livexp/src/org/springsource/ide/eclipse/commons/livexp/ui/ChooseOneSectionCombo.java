@@ -52,7 +52,6 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 	private final String label; //Descriptive Label for this section
 	private LiveExpression<T[]> options; //The elements to choose from
 	private boolean useFieldLabelWidthHint = true;
-	private boolean grabHorizontal = false;
 
 	/**
 	 * For a combo that allows text edits, a textInputParser must be provided to convert
@@ -67,11 +66,6 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 
 	public ChooseOneSectionCombo<T> useFieldLabelWidthHint(boolean use) {
 		this.useFieldLabelWidthHint = use;
-		return this;
-	}
-
-	public ChooseOneSectionCombo<T> grabHorizontal(boolean grab) {
-		this.grabHorizontal  = grab;
 		return this;
 	}
 
