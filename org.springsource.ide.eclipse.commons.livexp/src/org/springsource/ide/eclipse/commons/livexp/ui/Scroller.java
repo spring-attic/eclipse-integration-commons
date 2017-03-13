@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.widgets.SharedScrolledComposite;
 import org.eclipse.ui.progress.UIJob;
-import org.springsource.ide.eclipse.commons.livexp.ui.Reflowable;
 
 public class Scroller extends SharedScrolledComposite implements Reflowable {
 
@@ -57,7 +56,12 @@ public class Scroller extends SharedScrolledComposite implements Reflowable {
 			reflowJob = new UIJob(Display.getDefault(), "Reflow Wizard Contents") {
 				@Override
 				public IStatus runInUIThread(IProgressMonitor monitor) {
-					reflow(true);
+					// Must guard against widget disposed, as
+					// this is an asynch operation, and it is possible that
+			        // the widget may get disposed after scheduling a job, but before it can run
+					if (!isDisposed()) {
+						reflow(true);
+					}
 					return Status.OK_STATUS;
 				}
 			};
