@@ -141,8 +141,6 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 		});
 		if (inputParser==null) {
 			GridDataFactory.fillDefaults().applyTo(combo);
-//		} else if (grabHorizontal) {
-//			GridDataFactory.fillDefaults().grab(true, false).applyTo(combo);
 		} else {
 			GridDataFactory.fillDefaults().hint(FIELD_TEXT_AREA_WIDTH, SWT.DEFAULT).applyTo(combo);
 		}
