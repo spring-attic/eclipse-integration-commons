@@ -39,7 +39,7 @@ public class GroupSection extends WizardPageSection {
 	 * Setting isVisible to false will make this group disappear.
 	 * Setting it to true will make it re-appear.
 	 */
-	public final LiveVariable<Boolean> isVisible = new LiveVariable<Boolean>(true);
+	public final LiveVariable<Boolean> isVisible = new LiveVariable<>(true);
 
 	private int columns = 1; //one columnby default
 
@@ -54,7 +54,7 @@ public class GroupSection extends WizardPageSection {
 	public GroupSection(IPageWithSections owner, String title, WizardPageSection... _sections) {
 		super(owner);
 		this.groupTitle = title;
-		this.sections = new ArrayList<WizardPageSection>();
+		this.sections = new ArrayList<>();
 		addSections(_sections);
 	}
 
@@ -66,7 +66,9 @@ public class GroupSection extends WizardPageSection {
 			}
 		}
 
-		validator = new CompositeValidator();
+		if (validator==null) {
+			validator = new CompositeValidator();
+		}
 		for (WizardPageSection s : sections) {
 			validator.addChild(s.getValidator());
 		}
