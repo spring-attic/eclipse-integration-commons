@@ -35,27 +35,7 @@ public abstract class ReflowableSection extends WizardPageSection {
 	 * cause the surrounding parent widgets to 'reflow' to adapt to new size.
 	 */
 	protected void reflow(IPageWithSections owner, Composite area) {
-		// Looks like the container parent needs a re-layout first in order for
-		// expansion state to
-		// fully take effect in the UI, otherwise
-		// container composite remains "expanded" even though the content is
-		// collapsed.
-		// Reflow of the parents as performed by the util below does not seem to
-		// solve this
-		if (area.getParent() instanceof Composite) {
-			area.layout(true);
-		}
-		ReflowUtil.reflow(owner, area);
-		// Old implementation doesn't work as well:
-		// boolean reflowed = false;
-		// if (owner instanceof Reflowable) {
-		// reflowed = ((Reflowable) owner).reflow();
-		// }
-		// if (!reflowed) {
-		// //sortof works in some cases, but may not adjust scrollbars in the
-		// page.
-		// comp.getParent().layout(true);
-		// }
+		ReflowUtil.reflowParents(owner, area);
 	}
 
 	public void setVisible(boolean reveal) {

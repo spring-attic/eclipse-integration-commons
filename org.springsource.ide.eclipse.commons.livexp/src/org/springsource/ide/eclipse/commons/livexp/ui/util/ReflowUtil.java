@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui.util;
 
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.springsource.ide.eclipse.commons.livexp.ui.IPageWithSections;
 import org.springsource.ide.eclipse.commons.livexp.ui.Reflowable;
@@ -36,6 +37,29 @@ public class ReflowUtil {
 			control = control.getParent();
 		}
 		//No Reflowable found. Sorry!
+		return false;
+	}
+
+	/**
+	 * The simple reflow isn't very reliable. There are often components in the ui
+	 * that 'refuse' to recompute their size. This one is more aggressive, walking
+	 * up the parent-chain and asking every composite up the chain to layout iself
+	 * until a proper 'Reflowable' is found.
+	 */
+	public static boolean reflowParents(IPageWithSections owner, Control control) {
+		while (control!=null) {
+			if (control instanceof Reflowable) {
+				if (((Reflowable)control).reflow()) {
+					return true;
+				}
+			} else if (control instanceof Composite) {
+				((Composite)control).layout(true);
+			}
+			control = control.getParent();
+		}
+		if (owner instanceof Reflowable) {
+			return ((Reflowable) owner).reflow();
+		}
 		return false;
 	}
 
