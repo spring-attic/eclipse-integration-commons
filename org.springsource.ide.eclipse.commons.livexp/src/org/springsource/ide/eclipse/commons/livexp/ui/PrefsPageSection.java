@@ -12,16 +12,16 @@ package org.springsource.ide.eclipse.commons.livexp.ui;
 
 /**
  * Abstract base class for implementing 'sections' containing a group of widgets that can be added to a PreferencePageWithSections.
- * 
+ *
  * @author Kris De Volder
  */
-public abstract class PrefsPageSection extends PageSection {
-	
+public abstract class PrefsPageSection extends WizardPageSection {
+
 	public PrefsPageSection(IPageWithSections owner) {
 		super(owner);
 	}
 
 	public abstract boolean performOK();
 	public abstract void performDefaults();
-	
+
 }
