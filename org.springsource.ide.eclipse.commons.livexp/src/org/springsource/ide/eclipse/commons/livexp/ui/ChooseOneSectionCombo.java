@@ -52,6 +52,8 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 	private final String label; //Descriptive Label for this section
 	private LiveExpression<T[]> options; //The elements to choose from
 	private boolean useFieldLabelWidthHint = true;
+	private boolean grabHorizontal = false;
+
 
 	/**
 	 * For a combo that allows text edits, a textInputParser must be provided to convert
@@ -139,11 +141,16 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 				}
 			};
 		});
-		if (inputParser==null) {
-			GridDataFactory.fillDefaults().applyTo(combo);
-		} else {
-			GridDataFactory.fillDefaults().hint(FIELD_TEXT_AREA_WIDTH, SWT.DEFAULT).applyTo(combo);
+		GridDataFactory gridData = GridDataFactory.fillDefaults();
+		if (inputParser!=null) {
+			gridData = gridData
+					.hint(FIELD_TEXT_AREA_WIDTH, SWT.DEFAULT)
+					.minSize(FIELD_TEXT_AREA_WIDTH, SWT.DEFAULT);
 		}
+		if (grabHorizontal) {
+			gridData = gridData.grab(grabHorizontal, false);
+		}
+		gridData.applyTo(combo);
 
 		combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
@@ -228,6 +235,11 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 
 	public LiveExpression<T[]> getOptions() {
 		return options;
+	}
+
+	public ChooseOneSectionCombo<T> grabHorizontal(boolean grab) {
+		this.grabHorizontal = grab;
+		return this;
 	}
 
 	/**
