@@ -118,9 +118,13 @@ public class DescriptionSection extends WizardPageSection {
 
 		this.model.addListener(new ValueListener<String>() {
 			public void gotValue(LiveExpression<String> exp, String value) {
-				String oldText = text.getText();
-				if (!oldText.equals(value)) {
-					text.setText(value==null?"":value);
+				if (!text.isDisposed()) {
+					String oldText = text.getText();
+					if (!oldText.equals(value)) {
+						text.setText(value==null?"":value);
+					}
+				} else {
+					exp.removeListener(this);
 				}
 			}
 		});
