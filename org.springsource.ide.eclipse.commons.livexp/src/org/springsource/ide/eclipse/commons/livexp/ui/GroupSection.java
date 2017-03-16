@@ -16,6 +16,7 @@ import java.util.List;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -46,6 +47,10 @@ public class GroupSection extends WizardPageSection {
 	private boolean equalWidthColumns = true;
 
 	private boolean contentsCreated = false;
+
+	private boolean grabVertical = false;
+
+	private Color background = null;
 
 	/**
 	 * If title is null then it creates a normal composite without a box around it. Otherwise
@@ -83,6 +88,9 @@ public class GroupSection extends WizardPageSection {
 	public void createContents(Composite page) {
 		contentsCreated = true;
 		final Composite group = createComposite(page);
+		if (background!=null) {
+			group.setBackground(background);
+		}
 		for (WizardPageSection s : sections) {
 			s.createContents(group);
 		}
@@ -104,15 +112,17 @@ public class GroupSection extends WizardPageSection {
 		if (groupTitle!=null) {
 			//Create a group with box around it and a title
 			final Group group = new Group(page, SWT.NONE);
-			group.setText(groupTitle);
+			if (!"".equals(groupTitle)) {
+				group.setText(groupTitle);
+			}
 			group.setLayout(createLayout());
-			GridDataFactory.fillDefaults().grab(true, false).applyTo(group);
+			GridDataFactory.fillDefaults().grab(true, grabVertical).applyTo(group);
 			return group;
 		} else {
 			//Create a normal composite. No box
 			final Composite composite = new Composite(page, SWT.NONE);
 			composite.setLayout(createLayout());
-			GridDataFactory.fillDefaults().grab(true, false).applyTo(composite);
+			GridDataFactory.fillDefaults().grab(true, grabVertical).applyTo(composite);
 			return composite;
 		}
 	}
@@ -147,6 +157,16 @@ public class GroupSection extends WizardPageSection {
 	public GroupSection columns(int i) {
 		Assert.isLegal(i>=1);
 		this.columns = i;
+		return this;
+	}
+
+	public GroupSection grabVertical(boolean grab) {
+		this.grabVertical = grab;
+		return this;
+	}
+
+	public GroupSection background(Color c) {
+		this.background = c;
 		return this;
 	}
 
