@@ -12,6 +12,7 @@ package org.springsource.ide.eclipse.commons.livexp.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -22,6 +23,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 import org.springsource.ide.eclipse.commons.livexp.core.CompositeValidator;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
@@ -51,6 +53,8 @@ public class GroupSection extends WizardPageSection {
 	private boolean grabVertical = false;
 
 	private Color background = null;
+
+	private boolean noMargins;
 
 	/**
 	 * If title is null then it creates a normal composite without a box around it. Otherwise
@@ -134,10 +138,16 @@ public class GroupSection extends WizardPageSection {
 	 */
 	protected GridLayout createLayout() {
 		GridLayout layout = new GridLayout(this.columns, equalWidthColumns);
-		if (groupTitle==null) {
+		if (groupTitle==null || noMargins) {
 			layout.marginWidth = 0;
+			layout.marginHeight = 0;
 		}
 		return layout;
+	}
+
+	public GroupSection noMargins(boolean noMargins) {
+		this.noMargins = true;
+		return this;
 	}
 
 	@Override
