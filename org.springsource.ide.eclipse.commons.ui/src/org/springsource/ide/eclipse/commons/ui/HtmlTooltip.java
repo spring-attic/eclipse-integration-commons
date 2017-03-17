@@ -184,9 +184,7 @@ public class HtmlTooltip extends ToolTip {
 			fTextLayout.setTabs(new int[] { tabWidth });
 			fTextLayout.setText(""); //$NON-NLS-1$
 
-			Rectangle trim= /*browser.getParent().computeTrim(0, 0, 0, 0)*/new Rectangle(0,0,12,12);
-//			trim.width += 12;
-//			trim.height += 12;
+			Rectangle trim= /*browser.getParent().computeTrim(0, 0, 0, 0)*/new Rectangle(0,0,35,20);
 			int height= trim.height;
 
 			//FIXME: The HTML2TextReader does not render <p> like a browser.
@@ -227,8 +225,8 @@ public class HtmlTooltip extends ToolTip {
 			height= height + bounds.height;
 
 			// Add some air to accommodate for different browser renderings
-			minWidth+= 15;
-			height+= 20;
+//			minWidth+= 15;
+//			height+= 20;
 
 
 			// Apply max size constraints
