@@ -59,9 +59,9 @@ import org.springsource.ide.eclipse.commons.internal.ui.UiPlugin;
 @SuppressWarnings("restriction")
 public class HtmlTooltip extends ToolTip {
 
-	private static final int MIN_WIDTH= 80;
+	private static final int MIN_WIDTH= 50;
 
-	private static final int MIN_HEIGHT= 50;
+	private static final int MIN_HEIGHT= 10;
 
 	private static final Pattern FONT_SIZE_PATTERN = Pattern.compile("html\\s*\\{.*(?:\\s|;)?font-size:\\s*(\\d+)(pt|px|em)?\\;?.*\\}");
 	private static final Pattern FONT_STYLE_PATTERN = Pattern.compile("html\\s*\\{.*(?:\\s|;)?font-style:\\s*(\\w+)\\;?.*\\}");
@@ -69,14 +69,11 @@ public class HtmlTooltip extends ToolTip {
 	private static final Pattern FONT_WEIGHT_PATTERN = Pattern.compile("html\\s*\\{.*(?:\\s|;)?font-weight:\\s*(\\w+)\\;?.*\\}");
 
 	private Supplier<String> html;
-	private int maxWidth;
-	private int maxHeight;
+	private Point maxSizeConstraints = new Point(SWT.DEFAULT, SWT.DEFAULT);
 
 	public HtmlTooltip(Control control) {
 		super(control);
 		setHideOnMouseDown(false);
-		this.maxHeight = 700;
-		this.maxWidth = 300;
 	}
 
 	@Override
@@ -128,9 +125,8 @@ public class HtmlTooltip extends ToolTip {
 		this.html = html;
 	}
 
-	public void setMaxSize(int minWidth, int minHeight) {
-		this.maxWidth = minWidth;
-		this.maxHeight = minHeight;
+	public void setMaxSize(int maxWidth, int maxHeight) {
+		this.maxSizeConstraints = maxWidth > 0 && maxHeight > 0 ? new Point(maxWidth, maxHeight) : new Point(SWT.DEFAULT, SWT.DEFAULT);
 	}
 
 	private Point computeSizeHint(Browser browser, String html) {
@@ -188,10 +184,9 @@ public class HtmlTooltip extends ToolTip {
 			fTextLayout.setTabs(new int[] { tabWidth });
 			fTextLayout.setText(""); //$NON-NLS-1$
 
-			Point sizeConstraints= new Point(maxWidth, maxHeight);
-			Rectangle trim= browser.getParent().computeTrim(0, 0, 0, 0);
-			trim.width += 12;
-			trim.height += 12;
+			Rectangle trim= /*browser.getParent().computeTrim(0, 0, 0, 0)*/new Rectangle(0,0,12,12);
+//			trim.width += 12;
+//			trim.height += 12;
 			int height= trim.height;
 
 			//FIXME: The HTML2TextReader does not render <p> like a browser.
@@ -206,7 +201,7 @@ public class HtmlTooltip extends ToolTip {
 			}
 
 			fTextLayout.setText(text);
-			fTextLayout.setWidth(sizeConstraints == null ? SWT.DEFAULT : sizeConstraints.x - trim.width);
+			fTextLayout.setWidth(maxSizeConstraints == null || maxSizeConstraints.x < trim.width? SWT.DEFAULT : maxSizeConstraints.x - trim.width);
 			Iterator<StyleRange> iter= presentation.getAllStyleRangeIterator();
 			while (iter.hasNext()) {
 				StyleRange sr= iter.next();
@@ -232,17 +227,17 @@ public class HtmlTooltip extends ToolTip {
 			height= height + bounds.height;
 
 			// Add some air to accommodate for different browser renderings
-			minWidth+= 20;
+			minWidth+= 15;
 			height+= 20;
 
 
 			// Apply max size constraints
-			if (sizeConstraints != null) {
-				if (sizeConstraints.x != SWT.DEFAULT) {
-					minWidth= Math.min(sizeConstraints.x, minWidth + trim.width);
+			if (maxSizeConstraints != null) {
+				if (maxSizeConstraints.x != SWT.DEFAULT) {
+					minWidth= Math.min(maxSizeConstraints.x, minWidth + trim.width);
 				}
-				if (sizeConstraints.y != SWT.DEFAULT) {
-					height= Math.min(sizeConstraints.y, height);
+				if (maxSizeConstraints.y != SWT.DEFAULT) {
+					height= Math.min(maxSizeConstraints.y, height);
 				}
 			}
 
