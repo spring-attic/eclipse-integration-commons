@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.internal.ui;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
@@ -66,4 +68,7 @@ public class UiPlugin extends AbstractUIPlugin {
 		return getActiveWorkbenchWindow().getActivePage();
 	}
 
+	public static void log(Throwable e) {
+		getDefault().getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage(), e));
+	}
 }
