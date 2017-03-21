@@ -69,7 +69,7 @@
 
 	<properties>
 		<!-- Eclipse Integration Commons Properties -->
-	    <misc.p2.repo.version>3.8.4.201703110035</misc.p2.repo.version>
+	    <misc.p2.repo.version>3.8.4.201703211214</misc.p2.repo.version>
 	<!--<misc.p2.repo.version>3.8.4.201701181819</misc.p2.repo.version>-->
 	    
 		<p2.qualifier>SNAPSHOT</p2.qualifier>
