@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -119,6 +120,7 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 				@Override
 				public IStatus runInUIThread(IProgressMonitor monitor) {
 					if (scroller!=null && !scroller.isDisposed()) {
+						scroller.layout(true, true);
 						scroller.reflow(true);
 					}
 					return Status.OK_STATUS;
