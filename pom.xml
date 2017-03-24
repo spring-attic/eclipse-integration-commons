@@ -523,7 +523,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jarsigner-plugin</artifactId>
-				<version>1.2</version>
+				<version>1.3</version>
 				<executions>
 					<execution>
 						<id>sign</id>
@@ -538,6 +538,7 @@
 					<keystore>${signing.keystore}</keystore>
 					<storepass>${signing.store.password}</storepass>
 					<keypass>${signing.key.password}</keypass>
+					<tsa>http://timestamp.digicert.com</tsa>
 					<arguments>
 						<argument>-sigalg</argument><argument>SHA1withRSA</argument>
 						<argument>-digestalg</argument><argument>SHA1</argument>

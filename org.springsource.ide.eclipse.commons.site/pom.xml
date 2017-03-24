@@ -69,12 +69,6 @@
 								<checksum file="${dist.full.path}" algorithm="SHA1" fileext=".sha1" />
 								<checksum file="${dist.full.path}" algorithm="MD5" fileext=".md5" />
 
-								<echo message="=== deploy params ================"/>
-								
-								<echo message="dist.accessKey=${dist.accessKey}"/>
-								<echo message="dist.bucket=${dist.bucket}"/>
-								<echo message="dist.path=${dist.path}"/>
-
 								<s3 accessKey="${dist.accessKey}" secretKey="${dist.secretKey}">
 
 									<delete bucketName="${dist.bucket}">
