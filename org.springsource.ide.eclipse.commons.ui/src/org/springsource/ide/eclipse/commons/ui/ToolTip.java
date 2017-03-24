@@ -264,12 +264,6 @@ public abstract class ToolTip {
 		return true;
 	}
 
-	private boolean shouldHideToolTip(Event event) {
-		boolean hide = _shouldHideToolTip(event);
-		return hide;
-	}
-
-
 	/**
 	 * This method is called before the tooltip is hidden
 	 *
@@ -277,7 +271,7 @@ public abstract class ToolTip {
 	 *            the event trying to hide the tooltip
 	 * @return <code>true</code> if the tooltip should be hidden
 	 */
-	private boolean _shouldHideToolTip(Event event) {
+	private boolean shouldHideToolTip(Event event) {
 		if (
 				event != null &&
 				event.type == SWT.MouseMove &&
@@ -294,10 +288,7 @@ public abstract class ToolTip {
 			return rv;
 		} else if (event != null && event.type==SWT.MouseExit) {
 			//Shouldn't hide if exiting into the tooltip itself...
-			System.out.println("Exiting into: "+event.widget);
-			System.out.println(event.widget==CURRENT_TOOLTIP);
 			return event.widget!=CURRENT_TOOLTIP;
-//			System.out.println("shouldHideToolTip("+event+") -> "+true);
 		}
 		return true;
 	}
