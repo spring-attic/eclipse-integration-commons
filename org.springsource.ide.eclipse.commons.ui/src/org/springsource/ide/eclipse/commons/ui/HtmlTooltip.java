@@ -24,7 +24,6 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.TextPresentation;
-import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationAdapter;
@@ -72,8 +71,9 @@ public class HtmlTooltip extends ToolTip {
 	private Point maxSizeConstraints = new Point(SWT.DEFAULT, SWT.DEFAULT);
 
 	public HtmlTooltip(Control control) {
-		super(control);
+		super(control, ToolTip.NO_RECREATE, false);
 		setHideOnMouseDown(false);
+		setShift(new Point(1,1));
 	}
 
 	@Override
@@ -119,6 +119,13 @@ public class HtmlTooltip extends ToolTip {
 		});
 
 		return composite;
+	}
+
+	@Override
+	protected Object getToolTipArea(Event event) {
+		Object r = super.getToolTipArea(event);
+		System.out.println("tooltipArea = "+r);
+		return r;
 	}
 
 	public void setHtml(Supplier<String> html) {
