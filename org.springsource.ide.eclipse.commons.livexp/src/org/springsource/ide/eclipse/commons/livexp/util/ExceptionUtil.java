@@ -155,7 +155,7 @@ public class ExceptionUtil {
 		return stacktrace(new Exception("Stacktrace"));
 	}
 
-	public static String stacktrace(Exception exception) {
+	public static String stacktrace(Throwable exception) {
 		ByteArrayOutputStream dump = new ByteArrayOutputStream();
 		PrintStream out = new PrintStream(dump);
 		try {
