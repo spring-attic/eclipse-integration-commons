@@ -116,7 +116,7 @@ public class StsProperties {
 		props.put("spring.guides.url.external", "true");
 
 		//Spring boot runtime
-		props.put("spring.boot.install.url", "http://repo.spring.io/release/org/springframework/boot/spring-boot-cli/1.5.1.RELEASE/spring-boot-cli-1.5.1.RELEASE-bin.zip");
+		props.put("spring.boot.install.url", "http://repo.spring.io/release/org/springframework/boot/spring-boot-cli/1.5.2.RELEASE/spring-boot-cli-1.5.2.RELEASE-bin.zip");
 		//Discovery url for spring reference app
 		props.put("spring.reference.app.discovery.url", "https://raw.github.com/kdvolder/spring-reference-apps-meta/master/reference-apps.json");
 
@@ -125,7 +125,7 @@ public class StsProperties {
 
 		//Default version of spring boot, assumed when we need a version but can't determine it from the classpath of the project.
 		//Typically this should point to the latest version of spring-boot (the one used by spring-initialzr app).
-		props.put("spring.boot.default.version", "1.5.1.RELEASE");
+		props.put("spring.boot.default.version", "1.5.2.RELEASE");
 
 		return props;
 	}
