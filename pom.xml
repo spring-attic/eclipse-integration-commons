@@ -663,7 +663,7 @@
 						<showEclipseLog>true</showEclipseLog>
 						<testSuite>${project.artifactId}</testSuite>
 						<testClass>${test.class}</testClass>
-						<testFailureIgnore>true</testFailureIgnore>
+<!--						<testFailureIgnore>true</testFailureIgnore> -->
 						<argLine>
 							-Xmx1024m -XX:MaxPermSize=256m -Djava.io.tmpdir=${project.build.directory}
 							-Duser.home=${project.build.directory} ${test.vmargs}
