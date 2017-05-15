@@ -47,13 +47,15 @@ public class ReflowUtil {
 	 * until a proper 'Reflowable' is found.
 	 */
 	public static boolean reflowParents(IPageWithSections owner, Control control) {
+		boolean layoutChildren = true;
 		while (control!=null) {
 			if (control instanceof Reflowable) {
 				if (((Reflowable)control).reflow()) {
 					return true;
 				}
 			} else if (control instanceof Composite) {
-				((Composite)control).layout(true);
+				((Composite)control).layout(true, layoutChildren);
+				layoutChildren = false;
 			}
 			control = control.getParent();
 		}
