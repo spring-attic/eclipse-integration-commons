@@ -24,6 +24,7 @@ public class Filters {
 		public boolean accept(Object t) {
 			return true;
 		}
+		public boolean isTrivial() { return true; }
 	};
 
 	@SuppressWarnings("unchecked")

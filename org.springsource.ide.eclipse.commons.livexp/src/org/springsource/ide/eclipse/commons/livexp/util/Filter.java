@@ -21,7 +21,6 @@ package org.springsource.ide.eclipse.commons.livexp.util;
  * @param <T>
  */
 public interface Filter<T> {
-
 	boolean accept(T t);
-
+	default boolean isTrivial() { return false; }
 }
