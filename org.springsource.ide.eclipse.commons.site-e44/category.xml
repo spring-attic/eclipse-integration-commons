@@ -17,27 +17,27 @@
 	<category-def name="Resources / Eclipse Integration Commons" label="Resources / Eclipse Integration Commons"/>
 
 	<feature
-		url="org.springsource.ide.eclipse.commons_3.8.4.qualifier.jar"
-		id="org.springsource.ide.eclipse.commons" version="3.8.4.qualifier">
+		url="org.springsource.ide.eclipse.commons_3.9.0.qualifier.jar"
+		id="org.springsource.ide.eclipse.commons" version="3.9.0.qualifier">
 		<category name="Core / Eclipse Integration Commons" />
 	</feature>
 
  	<feature
-		url="org.springsource.ide.eclipse.commons.quicksearch.feature_3.8.4.qualifier.jar"
-		id="org.springsource.ide.eclipse.commons.quicksearch.feature" version="3.8.4.qualifier">
+		url="org.springsource.ide.eclipse.commons.quicksearch.feature_3.9.0.qualifier.jar"
+		id="org.springsource.ide.eclipse.commons.quicksearch.feature" version="3.9.0.qualifier">
 		<category name="Core / Eclipse Integration Commons" />
 	</feature>
 	
 	<feature
-		url="org.springsource.ide.eclipse.dashboard_3.8.4.qualifier.jar"
-		id="org.springsource.ide.eclipse.dashboard" version="3.8.4.qualifier">
+		url="org.springsource.ide.eclipse.dashboard_3.9.0.qualifier.jar"
+		id="org.springsource.ide.eclipse.dashboard" version="3.9.0.qualifier">
 		<category name="Core / Eclipse Integration Commons" />
 	</feature>
 
 	<!-- Dependencies - uncategorized -->
 	<feature
-		url="org.springsource.ide.eclipse.commons.test_3.8.4.qualifier.jar"
-		id="org.springsource.ide.eclipse.commons.test" version="3.8.4.qualifier">
+		url="org.springsource.ide.eclipse.commons.test_3.9.0.qualifier.jar"
+		id="org.springsource.ide.eclipse.commons.test" version="3.9.0.qualifier">
 	</feature>
 	
 	<feature id="org.eclipse.fx.runtime.min.feature" version="0.0.0"/>
