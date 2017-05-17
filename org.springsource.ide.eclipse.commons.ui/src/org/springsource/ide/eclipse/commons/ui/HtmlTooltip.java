@@ -19,7 +19,9 @@ import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.internal.text.html.HTML2TextReader;
+import org.eclipse.jface.internal.text.html.HTMLPrinter;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.resource.JFaceResources;
@@ -39,6 +41,7 @@ import org.eclipse.swt.graphics.TextLayout;
 import org.eclipse.swt.graphics.TextStyle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.PartInitException;
@@ -58,6 +61,17 @@ import org.springsource.ide.eclipse.commons.internal.ui.UiPlugin;
 @SuppressWarnings("restriction")
 public class HtmlTooltip extends ToolTip {
 
+	static {
+		//This funky code forces HTMLPrinter to initialize and then waits for some async stuff it does
+		// on the ui thread (i.e. loading colors for tooltips). If we don't do this,
+		// it gets used before being fully initialized causing the very first tooltip to have the
+		// wrong color.
+		//
+		// See bug: https://www.pivotaltracker.com/story/show/142483141
+		HTMLPrinter.insertPageProlog(new StringBuffer(), 0);
+		Display.getDefault().syncExec(() -> {});
+	}
+
 	private static final int MIN_WIDTH= 50;
 
 	private static final int MIN_HEIGHT= 10;
@@ -66,6 +80,8 @@ public class HtmlTooltip extends ToolTip {
 	private static final Pattern FONT_STYLE_PATTERN = Pattern.compile("html\\s*\\{.*(?:\\s|;)?font-style:\\s*(\\w+)\\;?.*\\}");
 	private static final Pattern FONT_FAMILY_PATTERN = Pattern.compile("html\\s*\\{.*(?:\\s|;)?font-family:\\s*(.+?);.*\\}");
 	private static final Pattern FONT_WEIGHT_PATTERN = Pattern.compile("html\\s*\\{.*(?:\\s|;)?font-weight:\\s*(\\w+)\\;?.*\\}");
+
+	private static final boolean DEBUG = (""+Platform.getLocation()).contains("kdvolder");
 
 	private Supplier<String> html;
 	private Point maxSizeConstraints = new Point(SWT.DEFAULT, SWT.DEFAULT);
@@ -84,6 +100,8 @@ public class HtmlTooltip extends ToolTip {
 
 		browser.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
 		browser.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
+		debug("foreground = "+browser.getForeground().getRGB());
+		debug("background = "+browser.getBackground().getRGB());
 
 		browser.setJavascriptEnabled(false);
 
@@ -98,6 +116,7 @@ public class HtmlTooltip extends ToolTip {
 		browser.setMenu(new Menu(browser.getShell(), SWT.NONE));
 
 		String htmlContent = html.get();
+		debug("html = "+htmlContent);
 
 		browser.setText(htmlContent);
 		Point size = computeSizeHint(browser, htmlContent);
@@ -121,10 +140,15 @@ public class HtmlTooltip extends ToolTip {
 		return composite;
 	}
 
+	private void debug(String string) {
+		if (DEBUG) {
+			System.out.println(string);
+		}
+	}
+
 	@Override
 	protected Object getToolTipArea(Event event) {
 		Object r = super.getToolTipArea(event);
-		System.out.println("tooltipArea = "+r);
 		return r;
 	}
 
