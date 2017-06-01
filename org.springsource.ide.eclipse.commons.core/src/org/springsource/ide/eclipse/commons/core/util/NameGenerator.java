@@ -10,80 +10,39 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.core.util;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Simple name generator implementation
  *
  * @author Alex Boyko
- *
+ * @author Kris De Volder
  */
 public class NameGenerator {
 
-	private static Pattern EXAMPLE_PATTERN = Pattern.compile("^(.+\\D+)(\\d+)$");
+	private static final String delimiter = "-";
 
-	private final String prefix;
-	private final String delimiter;
+	private String prefix;
 	private int number = 0;
 
-	private NameGenerator(String prefix, String delimiter, int number) {
-		this.prefix = prefix;
-		this.delimiter = delimiter;
-		this.number = number;
+	public NameGenerator(String previousName) {
+		prefix = previousName;
+		int d = previousName.lastIndexOf(delimiter);
+		if (d>=0) {
+			try {
+				String numString = previousName.substring(d+1);
+				number = Integer.parseInt(numString);
+				prefix = previousName.substring(0, d);
+			} catch (NumberFormatException e) {
+				//ignore
+			}
+		}
 	}
 
-	/**
-	 * Generates the next name
-	 * @return next name
-	 */
 	public String generateNext() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(prefix);
-		if (number > 0) {
-			sb.append(delimiter);
-			sb.append(number);
-		}
-		number++;
+		sb.append(delimiter);
+		sb.append(++number);
 		return sb.toString();
-	}
-
-	/**
-	 * Creates name generator able to generate names of type <code>|prefix|delimiter|?number</code>. For example <code>create("name", "---")</code> would generate names:
-	 * <ul>
-	 * <li>name</li>
-	 * <li>name---1</li>
-	 * <li>name---2</li>
-	 * <li>...</li>
-	 * </ul>
-	 * @param prefix name prefix
-	 * @param delimiter delimiter between the prefix and the number part of the name
-	 * @return The <code>NameGenerator</code> able to generate names described above
-	 */
-	public static NameGenerator create(String prefix, String delimiter) {
-		return new NameGenerator(prefix, delimiter, 0);
-	}
-
-	/**
-	 * Creates <code>NameGenerator</code> based on the "previous" name. For example <code>createFromPrevious("name---56")</code> would generate names:
-	 * <ul>
-	 * <li>name---57</li>
-	 * <li>name---58</li>
-	 * <li>name---59</li>
-	 * <li>...</li>
-	 * </ul>
-	 * @param previousName Previously generated name
-	 * @return The <code>NameGenerator</code> able to generate names described above
-	 */
-	public static NameGenerator createFromPrevious(String previousName) {
-		Matcher matcher = EXAMPLE_PATTERN.matcher(previousName);
-		if (matcher.find()) {
-			String prefix = matcher.group(1);
-			int number = Integer.valueOf(matcher.group(2));
-			return new NameGenerator(prefix, "", number + 1);
-		} else {
-			return new NameGenerator(previousName, "", 1);
-		}
 	}
 
 }

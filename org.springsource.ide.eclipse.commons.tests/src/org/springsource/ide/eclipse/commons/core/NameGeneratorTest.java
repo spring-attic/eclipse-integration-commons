@@ -25,49 +25,41 @@ public class NameGeneratorTest {
 	
 	@Test
 	public void testDefault() {
-		NameGenerator ng = NameGenerator.create("name", "");
-		assertEquals("name", ng.generateNext());
-		assertEquals("name1", ng.generateNext());
-		assertEquals("name2", ng.generateNext());
-	}
-
-	@Test
-	public void testSimpleDelimiter() {
-		NameGenerator ng = NameGenerator.create("name", "-");
-		assertEquals("name", ng.generateNext());
+		NameGenerator ng = new NameGenerator("name");
 		assertEquals("name-1", ng.generateNext());
 		assertEquals("name-2", ng.generateNext());
+		assertEquals("name-3", ng.generateNext());
 	}
 
 	@Test
-	public void testMultiCharDelimiter() {
-		NameGenerator ng = NameGenerator.create("name", "---@");
-		assertEquals("name", ng.generateNext());
-		assertEquals("name---@1", ng.generateNext());
-		assertEquals("name---@2", ng.generateNext());
+	public void testNameWithDash() {
+		NameGenerator ng = new NameGenerator("name-blah");
+		assertEquals("name-blah-1", ng.generateNext());
+		assertEquals("name-blah-2", ng.generateNext());
+		assertEquals("name-blah-3", ng.generateNext());
 	}
 
 	@Test
-	public void testFromSimplePrevious() {
-		NameGenerator ng = NameGenerator.createFromPrevious("name");
-		assertEquals("name1", ng.generateNext());
-		assertEquals("name2", ng.generateNext());
-		assertEquals("name3", ng.generateNext());
+	public void testNumberIncrement() {
+		NameGenerator ng = new NameGenerator("name-1");
+		assertEquals("name-2", ng.generateNext());
+		assertEquals("name-3", ng.generateNext());
+		assertEquals("name-4", ng.generateNext());
 	}
 
 	@Test
-	public void testFromComplexPrevious_1() {
-		NameGenerator ng = NameGenerator.createFromPrevious("name___123___");
-		assertEquals("name___123___1", ng.generateNext());
-		assertEquals("name___123___2", ng.generateNext());
-		assertEquals("name___123___3", ng.generateNext());
+	public void testNumberIncrement2() {
+		NameGenerator ng = new NameGenerator("name-22");
+		assertEquals("name-23", ng.generateNext());
+		assertEquals("name-24", ng.generateNext());
+		assertEquals("name-25", ng.generateNext());
 	}
 
 	@Test
-	public void testFromComplexPrevious_2() {
-		NameGenerator ng = NameGenerator.createFromPrevious("name___123___-45");
-		assertEquals("name___123___-46", ng.generateNext());
-		assertEquals("name___123___-47", ng.generateNext());
-		assertEquals("name___123___-48", ng.generateNext());
+	public void testNumberIncrementWithDash() {
+		NameGenerator ng = new NameGenerator("foo-bar-1");
+		assertEquals("foo-bar-2", ng.generateNext());
+		assertEquals("foo-bar-3", ng.generateNext());
+		assertEquals("foo-bar-4", ng.generateNext());
 	}
 }
