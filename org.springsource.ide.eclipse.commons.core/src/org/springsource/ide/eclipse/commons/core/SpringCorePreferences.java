@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
 
@@ -26,6 +27,9 @@ import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
  * @since 2.0
  */
 public class SpringCorePreferences {
+
+	/** The identifier for enablement of project versus workspace settings */
+	public static final String PROJECT_PROPERTY_ID = "enable.project.preferences";
 
 	private final String propertyNamespace;
 
@@ -45,8 +49,14 @@ public class SpringCorePreferences {
 		return new SpringCorePreferences(project, qualifier);
 	}
 
+	public static SpringCorePreferences getPluginPreferences(String qualifier) {
+		return new SpringCorePreferences(null, qualifier);
+	}
+
 	private IEclipsePreferences getEclipsePreferences(IProject project, String qualifier) {
-		IScopeContext context = new ProjectScope(project);
+		IScopeContext context = project!=null
+				? new ProjectScope(project)
+				: InstanceScope.INSTANCE;
 		IEclipsePreferences node = context.getNode(qualifier);
 		return node;
 	}

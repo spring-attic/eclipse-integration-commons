@@ -43,7 +43,8 @@ import org.springsource.ide.eclipse.commons.internal.ui.editors.UpdateNotificati
 		CommandHistoryTest.class, //
 		NameGeneratorTest.class,
 		UpdateNotificationTest.class, //
-		DownloadManagerTests.class //
+		DownloadManagerTests.class, //
+		StringUtilTests.class
 })
 public class AllIdeTests {
 
