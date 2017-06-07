@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.core.maintype;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -21,13 +23,17 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.internal.debug.ui.launcher.MainMethodSearchEngine;
 import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
+import org.springsource.ide.eclipse.commons.frameworks.core.FrameworkCoreActivator;
 
 /**
  * Provides access to heuristic algorithms to 'guess' the main type for a
@@ -90,21 +96,20 @@ public class MainTypeFinder {
 		// confidence that they are the types requested. Each confidence itself also has a priority
 		// order, with more authoritative finders listed first.
 		this.algos.put(Confidence.CERTAIN, new IMainTypeFinder[] {
-		// add in order of which is more authoritative
-
-				});
+				// add in order of which is more authoritative
+		});
 
 		this.algos.put(Confidence.HIGH, new IMainTypeFinder[] {
-		// add more here if they should be considered more authorative
+				// add more here if they should be considered more authorative
 				new FindInPom()
 				// add more here if they should be considered less authorative
-				});
+		});
 
 		this.algos.put(Confidence.LOW, new IMainTypeFinder[] {
-		// add more here if they should be considered more authorative
+				// add more here if they should be considered more authorative
 				new FindInSource()
 				// add more here if they should be considered less authorative
-				});
+		});
 
 	}
 
@@ -120,8 +125,7 @@ public class MainTypeFinder {
 				// Collect all types per confidence level
 				for (IMainTypeFinder algo : entry.getValue()) {
 					try {
-						IType[] found = algo.findMain(project, new SubProgressMonitor(mon,
-								1));
+						IType[] found = algo.findMain(project, new SubProgressMonitor(mon, 1));
 						for (IType type : found) {
 							totalTypes.add(type);
 						}
@@ -192,10 +196,7 @@ public class MainTypeFinder {
 			try {
 
 				MainMethodSearchEngine engine = new MainMethodSearchEngine();
-				int constraints = IJavaSearchScope.SOURCES;
-				// constraints |= IJavaSearchScope.APPLICATION_LIBRARIES;
-				IJavaSearchScope scope = SearchEngine.createJavaSearchScope(
-						new IJavaElement[] { javaProject }, constraints);
+				IJavaSearchScope scope = createSearchScope(javaProject);
 
 				boolean includeSubtypes = true;
 				IType[] types =  engine
@@ -204,10 +205,40 @@ public class MainTypeFinder {
 					types = EMPTY;
 				}
 				return types;
-
+			} catch (Exception e) {
+				FrameworkCoreActivator.log(e);
 			} finally {
 				monitor.done();
 			}
+			return EMPTY;
+		}
+
+		private IJavaSearchScope createSearchScope(IJavaProject javaProject) throws JavaModelException {
+			List<IJavaElement> pfrs = new ArrayList<>();
+			for (IPackageFragmentRoot pfr : javaProject.getAllPackageFragmentRoots()) {
+				IClasspathEntry cpe = pfr.getRawClasspathEntry();
+				if (isInteresting(cpe)) {
+					pfrs.add(pfr);
+				}
+			}
+
+			int constraints = IJavaSearchScope.SOURCES;
+				constraints |= IJavaSearchScope.APPLICATION_LIBRARIES;
+		
+			return SearchEngine.createJavaSearchScope(
+					pfrs.toArray(new IJavaElement[pfrs.size()]), constraints);
+		}
+
+		private boolean isInteresting(IClasspathEntry cpe) {
+			if (cpe==null) {
+				return false;
+			}
+			int e_kind = cpe.getEntryKind();
+			return  e_kind == IClasspathEntry.CPE_SOURCE 
+			|| ( 
+				e_kind == IClasspathEntry.CPE_CONTAINER && 
+				"org.jetbrains.kotlin.core.KOTLIN_CONTAINER".equals(cpe.getPath().segment(0))
+			);
 		}
 	}
 
