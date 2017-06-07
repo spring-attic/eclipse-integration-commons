@@ -11,8 +11,10 @@
 package org.springsource.ide.eclipse.dashboard.internal.ui;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -33,10 +35,10 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Version;
 import org.springsource.ide.eclipse.commons.core.ResourceProvider;
 import org.springsource.ide.eclipse.commons.core.ResourceProvider.Property;
+import org.springsource.ide.eclipse.commons.frameworks.core.util.Gtk3Check;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardEditorInputFactory;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardMainPage;
 import org.springsource.ide.eclipse.dashboard.ui.actions.ShowDashboardAction;
-import org.springsource.ide.eclipse.commons.frameworks.core.util.Gtk3Check;
 
 /**
  * Note: Bundle activation is triggered by Mylyn's tasks ui startup due to
@@ -53,9 +55,9 @@ public class IdeUiPlugin extends AbstractUIPlugin {
 
 	private static IdeUiPlugin plugin;
 
-	public static final Version JAVAFX_MINIMUM_ECLIPSE_VERSION = new Version("4.3");
+	public static final Version JAVAFX_MINIMUM_ECLIPSE_VERSION = new org.osgi.framework.Version("4.3");
 	
-	public static final Version JAVAFX_MINIMUM_JRE_VERSION = new Version("1.7");
+	public static final Version JAVAFX_MINIMUM_JRE_VERSION = Version.valueOf("1.7");
 	
 	@Override
 	public void start(BundleContext context) throws Exception {
@@ -177,8 +179,15 @@ public class IdeUiPlugin extends AbstractUIPlugin {
 		Version eclipseVersion = new Version(Platform.getBundle("org.eclipse.platform").getHeaders().get("Bundle-Version"));
 		boolean eclipseCompatible = eclipseVersion.compareTo(JAVAFX_MINIMUM_ECLIPSE_VERSION) >= 0;
 		String javaVersionString = System.getProperty("java.version");
-		String[] majorMinorQualifier = StringUtils.split(javaVersionString, ".");
-		Version jreVersion = new Version(Integer.parseInt(majorMinorQualifier[0]), Integer.parseInt(majorMinorQualifier[1]), 0);
+		int dashAt = javaVersionString.indexOf('-');
+		if (dashAt>=0) { //Remove pre-release qualifier
+			javaVersionString = javaVersionString.substring(0, dashAt);
+		}
+		List<String> majorMinorQualifier = new ArrayList<>(Arrays.asList(javaVersionString.split("\\.")));
+		while (majorMinorQualifier.size()<2) {
+			majorMinorQualifier.add("0");
+		}
+		Version jreVersion = new Version(Integer.parseInt(majorMinorQualifier.get(0)), Integer.parseInt(majorMinorQualifier.get(1)), 0);
 		boolean jreCompatible = jreVersion.compareTo(JAVAFX_MINIMUM_JRE_VERSION) >= 0;
 		return eclipseCompatible && jreCompatible;
 	}
