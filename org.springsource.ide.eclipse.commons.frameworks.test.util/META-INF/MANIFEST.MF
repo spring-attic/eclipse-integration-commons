@@ -11,3 +11,4 @@ Require-Bundle: org.eclipse.swtbot.go,
  org.eclipse.debug.core,
  org.hamcrest.library
 Export-Package: org.springsource.ide.eclipse.commons.frameworks.test.util
+Import-Package: org.hamcrest;version="1.1.0"
