@@ -166,4 +166,7 @@ public class ExceptionUtil {
 		return dump.toString();
 	}
 
+	public static String getSimpleError(Throwable e) {
+		return e.getClass().getSimpleName();
+	}
 }
