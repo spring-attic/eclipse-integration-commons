@@ -18,7 +18,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
 public class IOUtil {
 
@@ -60,7 +59,7 @@ public class IOUtil {
 		return toString(input, "UTF8");
 	}
 
-	private static String toString(InputStream input, String encoding) throws Exception {
+	public static String toString(InputStream input, String encoding) throws Exception {
 		ByteArrayOutputStream buf = new ByteArrayOutputStream();
 		pipe(input, buf);
 		return buf.toString(encoding);

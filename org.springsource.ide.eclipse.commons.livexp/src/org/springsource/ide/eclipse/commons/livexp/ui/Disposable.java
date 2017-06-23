@@ -10,8 +10,12 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
-public interface Disposable {
+@FunctionalInterface
+public interface Disposable extends AutoCloseable {
 
 	void dispose();
+	default void close() {
+		dispose();
+	}
 
 }
