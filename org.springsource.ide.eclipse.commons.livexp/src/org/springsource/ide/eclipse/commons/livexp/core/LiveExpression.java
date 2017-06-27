@@ -224,24 +224,34 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 
 	@Override
 	public void dispose() {
-		if (fDisposeHandlers!=null) {
-			for (Object _handler : fDisposeHandlers.getListeners()) {
+		Object[] disposeHandlers = null;
+		synchronized (this) {
+			if (fDisposeHandlers!=null) {
+				disposeHandlers = fDisposeHandlers.getListeners();
+				fDisposeHandlers = null;
+				fListeners = null;
+			}
+		}
+		if (disposeHandlers!=null) {
+			for (Object _handler : disposeHandlers) {
 				DisposeListener handler = (DisposeListener) _handler;
 				handler.disposed(this);
 			}
-			fDisposeHandlers = null;
 		}
-		fListeners = null;
 	}
 
 	@Override
 	public void onDispose(DisposeListener listener) {
-		ListenerList disposeHandlers = this.fDisposeHandlers;
-		if (disposeHandlers==null) {
-			//already disposed!
+		boolean alreadyDisposed = false;
+		synchronized (this) {
+			if (this.fDisposeHandlers==null) {
+				alreadyDisposed = true;
+			} else {
+				this.fDisposeHandlers.add(listener);
+			}
+		}
+		if (alreadyDisposed) {
 			listener.disposed(this);
-		} else {
-			disposeHandlers.add(listener);
 		}
 	}
 
