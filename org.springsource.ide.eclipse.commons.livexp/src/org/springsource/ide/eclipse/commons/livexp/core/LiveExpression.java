@@ -124,8 +124,11 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 	}
 
 	public void addListener(ValueListener<V> l) {
-		fListeners.add(l);
-		l.gotValue(this, value);
+		ListenerList fListeners = this.fListeners;
+		if (fListeners!=null) {
+			fListeners.add(l);
+			l.gotValue(this, value);
+		}
 	}
 
 	public void removeListener(ValueListener<V> l) {
@@ -233,7 +236,13 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 
 	@Override
 	public void onDispose(DisposeListener listener) {
-		fDisposeHandlers.add(listener);
+		ListenerList disposeHandlers = this.fDisposeHandlers;
+		if (disposeHandlers==null) {
+			//already disposed!
+			listener.disposed(this);
+		} else {
+			disposeHandlers.add(listener);
+		}
 	}
 
 	public void setOwner(Object owner) {
