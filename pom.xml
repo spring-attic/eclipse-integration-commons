@@ -29,6 +29,7 @@
 		<module>org.springsource.ide.eclipse.commons.browser</module>
 		<module>org.springsource.ide.eclipse.commons.gettingstarted</module>
 		
+		<module>org.springsource.ide.eclipse.commons.jdk_tools</module>
 		<module>org.springsource.ide.eclipse.commons.content.core</module>
 		<module>org.springsource.ide.eclipse.commons.core</module>
 		<module>org.springsource.ide.eclipse.commons.frameworks.core</module>

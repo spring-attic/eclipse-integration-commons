@@ -28,6 +28,21 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<configuration>
+					<extraClasspathElements>
+						<extraClasspathElement>
+							<groupId>jdk</groupId>
+							<artifactId>tools.jar</artifactId>
+							<version>${java.version}</version>
+							<scope>system</scope>
+							<systemPath>${java.home}/../lib/tools.jar</systemPath>
+						</extraClasspathElement>
+					</extraClasspathElements>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
