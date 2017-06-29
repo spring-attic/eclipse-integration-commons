@@ -51,6 +51,7 @@ public class ProcessUtils {
 					throw new UnsupportedOperationException("Process PID calculation not supported on the current platform", ex);
 				}
 			} else {
+				// Must be windows platform
 				throw new UnsupportedOperationException("Process PID calculation not supported on the current platform");
 			}
 		return result;
