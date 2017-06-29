@@ -70,13 +70,13 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-         
+
    <plugin
          id="org.springsource.ide.eclipse.commons.completions"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/>      
+         unpack="false"/>
 
    <plugin
          id="io.projectreactor.reactor-core"
@@ -91,5 +91,11 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+   <plugin
+         id="org.springsource.ide.eclipse.commons.jdk_tools"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>
