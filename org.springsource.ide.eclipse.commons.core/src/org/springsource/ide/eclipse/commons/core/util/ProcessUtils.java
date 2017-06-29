@@ -46,7 +46,7 @@ public class ProcessUtils {
 					result = f.getLong(p);
 					f.setAccessible(false);
 				} catch (Exception ex) {
-					result = -1;
+					throw new UnsupportedOperationException("Process PID calculation not supported on the current platform", ex);
 				}
 			} else {
 				throw new UnsupportedOperationException("Process PID calculation not supported on the current platform");
