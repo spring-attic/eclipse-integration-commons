@@ -18,6 +18,8 @@ import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
+import org.springsource.ide.eclipse.commons.internal.core.CorePlugin;
+
 import com.sun.tools.attach.AttachNotSupportedException;
 import com.sun.tools.attach.VirtualMachine;
 import com.sun.tools.attach.VirtualMachineDescriptor;
@@ -70,9 +72,9 @@ public class ProcessUtils {
 					return JMXConnectorFactory.connect(serviceUrl, null);
 				}
 			} catch (AttachNotSupportedException e) {
-				e.printStackTrace();
+				CorePlugin.log(e);
 			} catch (IOException e) {
-				e.printStackTrace();
+				CorePlugin.log(e);
 			}
 		}
 		return null;
