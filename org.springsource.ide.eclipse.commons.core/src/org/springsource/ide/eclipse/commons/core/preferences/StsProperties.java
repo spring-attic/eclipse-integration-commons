@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2013 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2017 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -125,7 +125,7 @@ public class StsProperties {
 
 		//Default version of spring boot, assumed when we need a version but can't determine it from the classpath of the project.
 		//Typically this should point to the latest version of spring-boot (the one used by spring-initialzr app).
-		props.put("spring.boot.default.version", "1.5.3.RELEASE");
+		props.put("spring.boot.default.version", "1.5.4.RELEASE");
 		props.put("spring.boot.cloud.default.version", "1.3.3.RELEASE");
 
 		return props;
