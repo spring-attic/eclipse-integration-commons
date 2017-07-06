@@ -116,7 +116,7 @@ public class StsProperties {
 		props.put("spring.guides.url.external", "true");
 
 		//Spring boot runtime
-		props.put("spring.boot.install.url", "http://repo.spring.io/release/org/springframework/boot/spring-boot-cli/1.5.3.RELEASE/spring-boot-cli-1.5.3.RELEASE-bin.zip");
+		props.put("spring.boot.install.url", "http://repo.spring.io/release/org/springframework/boot/spring-boot-cli/1.5.4.RELEASE/spring-boot-cli-1.5.4.RELEASE-bin.zip");
 		//Discovery url for spring reference app
 		props.put("spring.reference.app.discovery.url", "https://raw.github.com/kdvolder/spring-reference-apps-meta/master/reference-apps.json");
 
