@@ -34,15 +34,6 @@ public class Gtk3Check {
 	 */
 	private static boolean isGTK3() {
 
-//Doesn't work:
-//		try {
-//			Class.forName("javafx.embed.swt.FXCanvas");
-//			return false;
-//		} catch (ClassNotFoundException e) {
-//			return true;
-//		}
-
-
 		if (!"linux".equals(Platform.getOS())) {
 			return false;
 		}

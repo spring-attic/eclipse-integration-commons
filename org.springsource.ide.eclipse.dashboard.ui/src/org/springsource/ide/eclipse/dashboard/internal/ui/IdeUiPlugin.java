@@ -55,10 +55,6 @@ public class IdeUiPlugin extends AbstractUIPlugin {
 
 	private static IdeUiPlugin plugin;
 
-	public static final Version JAVAFX_MINIMUM_ECLIPSE_VERSION = new org.osgi.framework.Version("4.3");
-	
-	public static final Version JAVAFX_MINIMUM_JRE_VERSION = Version.valueOf("1.7");
-	
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
@@ -176,25 +172,11 @@ public class IdeUiPlugin extends AbstractUIPlugin {
 	}
 	
 	public boolean supportsNewDashboard(IProgressMonitor mon) {
-		Version eclipseVersion = new Version(Platform.getBundle("org.eclipse.platform").getHeaders().get("Bundle-Version"));
-		boolean eclipseCompatible = eclipseVersion.compareTo(JAVAFX_MINIMUM_ECLIPSE_VERSION) >= 0;
-		String javaVersionString = System.getProperty("java.version");
-		int dashAt = javaVersionString.indexOf('-');
-		if (dashAt>=0) { //Remove pre-release qualifier
-			javaVersionString = javaVersionString.substring(0, dashAt);
-		}
-		List<String> majorMinorQualifier = new ArrayList<>(Arrays.asList(javaVersionString.split("\\.")));
-		while (majorMinorQualifier.size()<2) {
-			majorMinorQualifier.add("0");
-		}
-		Version jreVersion = new Version(Integer.parseInt(majorMinorQualifier.get(0)), Integer.parseInt(majorMinorQualifier.get(1)), 0);
-		boolean jreCompatible = jreVersion.compareTo(JAVAFX_MINIMUM_JRE_VERSION) >= 0;
-		return eclipseCompatible && jreCompatible;
+		return true;
 	}
 
 	public boolean useNewDashboard(IProgressMonitor mon) {
-		return supportsNewDashboard(mon) && !IdeUiPlugin.getDefault().getPreferenceStore().getBoolean(IIdeUiConstants.PREF_USE_OLD_DASHOARD)
-				&& !Gtk3Check.isGTK3;
+		return supportsNewDashboard(mon) && !IdeUiPlugin.getDefault().getPreferenceStore().getBoolean(IIdeUiConstants.PREF_USE_OLD_DASHOARD);
 	}
 	
 	private void migrateBlogFeeds() {

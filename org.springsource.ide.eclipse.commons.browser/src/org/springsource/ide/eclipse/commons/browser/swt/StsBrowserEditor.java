@@ -8,13 +8,18 @@
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.browser.javafx;
+package org.springsource.ide.eclipse.commons.browser.swt;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.browser.ProgressAdapter;
+import org.eclipse.swt.browser.ProgressEvent;
+import org.eclipse.swt.browser.TitleEvent;
+import org.eclipse.swt.browser.TitleListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
@@ -22,27 +27,14 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.browser.WebBrowserEditorInput;
 import org.eclipse.ui.part.EditorPart;
-import org.springsource.ide.eclipse.commons.frameworks.core.util.Gtk3Check;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker;
-import javafx.concurrent.Worker.State;
-import javafx.scene.web.WebView;
 
 /**
- * An editor that displays the contents of a webpage using JavaFx WebView.
+ * An editor that displays the contents of a webpage using SWT Embedded Browser Widget.
  *
  * @author Kris De Volder
  * @author Miles Parker
  */
-public class JavaFxBrowserEditor extends EditorPart {
-
-	static {
-		if (Gtk3Check.isGTK3) {
-			throw new UnsupportedOperationException("JavaFX doesn't work with GTK3");
-		}
-	}
+public class StsBrowserEditor extends EditorPart {
 
 	public static final String EDITOR_ID = "org.springsource.ide.eclipse.commons.browser.Editor";
 
@@ -53,9 +45,9 @@ public class JavaFxBrowserEditor extends EditorPart {
 
 	private String name;
 
-	private JavaFxBrowserViewer browserViewer;
+	private StsBrowserViewer browserViewer;
 
-	private JavaFxBrowserManager browserManager;
+	private StsBrowserManager browserManager;
 
 	/*
 	 * (non-Javadoc)
@@ -67,9 +59,9 @@ public class JavaFxBrowserEditor extends EditorPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		parent.setLayout(new FillLayout());
-		browserViewer = new JavaFxBrowserViewer(parent, hasToolbar() ? JavaFxBrowserViewer.BUTTON_BAR
-				| JavaFxBrowserViewer.LOCATION_BAR : SWT.NONE);
-		final WebView browser = browserViewer.getBrowser();
+		browserViewer = new StsBrowserViewer(parent, hasToolbar() ? StsBrowserViewer.BUTTON_BAR
+				| StsBrowserViewer.LOCATION_BAR : SWT.NONE);
+		final Browser browser = browserViewer.getBrowser();
 		if (getEditorInput() instanceof WebBrowserEditorInput) {
 			homeUrl = ((WebBrowserEditorInput) getEditorInput()).getURL().toString();
 			browserViewer.setVisible(true);
@@ -79,39 +71,41 @@ public class JavaFxBrowserEditor extends EditorPart {
 			browserViewer.setURL(homeUrl);
 		}
 		else {
-			browser.getEngine().loadContent(
-					"<h1>URL not set</h1>" + "<p>Url should be provided via the setInitializationData method</p>");
+			browser.setText(
+					"<h1>URL not set</h1>" + "<p>Url should be provided via the setInitializationData method</p>"
+			);
 		}
 		if (getName() == null) {
-			browser.getEngine().titleProperty().addListener(new ChangeListener<String>() {
+			browser.addTitleListener(new TitleListener() {
+
 				@Override
-				public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				public void changed(TitleEvent event) {
+					String newValue = event.title;
 					setName(newValue);
 					setPartName(newValue);
 				}
 			});
 		}
-		getBrowserViewer().getBrowser().getEngine().getLoadWorker().stateProperty()
-				.addListener(new ChangeListener<Worker.State>() {
-
-					@Override
-					public void changed(ObservableValue<? extends State> ov, State oldState, State newState) {
-						if (newState == Worker.State.SUCCEEDED && getBrowserViewer() != null) {
-							if (browserManager == null) {
-								browserManager = new JavaFxBrowserManager();
-							}
-							browserManager.setClient(getBrowserViewer().getBrowser());
-							if (getEditorInput() instanceof WebBrowserEditorInput) {
-								String url = getBrowserViewer().getURL();
-								try {
-									setInput(new WebBrowserEditorInput(new URL(url), SWT.NONE, url));
-								} catch (MalformedURLException e) {
-									throw new RuntimeException(e);
-								}
-							}
+		browser.addProgressListener(new ProgressAdapter() {
+			@Override
+			public void completed(ProgressEvent event) {
+				StsBrowserViewer browserViewer = getBrowserViewer();
+				if (browserViewer != null) {
+					if (browserManager == null) {
+						browserManager = new StsBrowserManager();
+					}
+					browserManager.setClient(browserViewer.getBrowser());
+					if (getEditorInput() instanceof WebBrowserEditorInput) {
+						String url = browserViewer.getURL();
+						try {
+							setInput(new WebBrowserEditorInput(new URL(url), SWT.NONE, url));
+						} catch (MalformedURLException e) {
+							throw new RuntimeException(e);
 						}
 					}
-				});
+				}
+			}
+		});
 	}
 
 	/**
@@ -161,7 +155,7 @@ public class JavaFxBrowserEditor extends EditorPart {
 		this.name = name;
 	}
 
-	protected JavaFxBrowserViewer getBrowserViewer() {
+	protected StsBrowserViewer getBrowserViewer() {
 		return browserViewer;
 	}
 

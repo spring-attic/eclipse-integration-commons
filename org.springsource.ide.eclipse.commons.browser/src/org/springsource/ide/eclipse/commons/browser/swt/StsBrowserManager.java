@@ -8,24 +8,23 @@
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springsource.ide.eclipse.commons.browser.javafx;
+package org.springsource.ide.eclipse.commons.browser.swt;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.browser.BrowserFunction;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.springsource.ide.eclipse.commons.browser.BrowserExtensions;
@@ -33,20 +32,15 @@ import org.springsource.ide.eclipse.commons.browser.BrowserPlugin;
 import org.springsource.ide.eclipse.commons.browser.IBrowserToEclipseFunction;
 import org.springsource.ide.eclipse.commons.browser.IEclipseToBrowserFunction;
 
-import javafx.application.Platform;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-import netscape.javascript.JSObject;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  *
  * @author Miles Parker
  */
-public class JavaFxBrowserManager {
-
-	private WebEngine engine;
-
-	private WebView view;
+public class StsBrowserManager {
 
 	private boolean disposed;
 
@@ -56,13 +50,32 @@ public class JavaFxBrowserManager {
 
 	private String currentUrl;
 
-	public void setClient(WebView view) {
-		this.view = view;
-		this.engine = view.getEngine();
-		JSObject window = (JSObject) engine.executeScript("window");
-		window.setMember("ide", this);
+	private Browser browser;
+
+	private final ObjectMapper mapper = new ObjectMapper();
+
+	private BrowserFunction browser_function;
+
+	public void setClient(Browser browser) {
+		this.browser = browser;
+		browser.execute(
+				"window.ide = {\n" +
+				"	call: function () {\n" +
+				"		return ide_call.apply(this, arguments);\n" +
+				"	}\n" +
+				"}"
+		);
+		if (browser_function==null) {
+			browser_function = new BrowserFunction(browser, "ide_call") {
+				@Override
+				public Object function(Object[] arguments) {
+					call((String)arguments[0], (String)arguments[1]);
+					return null;
+				}
+			};
+		}
 		onLoadFunctions = new ArrayList<IEclipseToBrowserFunction>();
-		currentUrl = view.getEngine().locationProperty().get();
+		currentUrl = browser.getUrl();
 		//Need to remove any query parameters that might break pattern matching for extensions
 		currentUrl = StringUtils.substringBeforeLast(currentUrl, "?");
 		currentUrl = StringUtils.substringBeforeLast(currentUrl, "&");
@@ -91,13 +104,12 @@ public class JavaFxBrowserManager {
 	}
 
 	/**
-	 * Handle calls <i>from</i> Javascript functions on the browser. (This is
-	 * called by reflection by JavaFx so there won't be any apparent usages for
-	 * this method.)
+	 * Handle calls <i>from</i> Javascript functions on the browser.
+	 *
 	 * @param functionId
 	 * @param argument
 	 */
-	public void call(String functionId, String argument) {
+	private void call(String functionId, String argument) {
 		try {
 			IConfigurationElement element = BrowserExtensions.getExtension(
 					BrowserExtensions.EXTENSION_ID_BROWSER_TO_ECLIPSE, functionId, currentUrl);
@@ -120,23 +132,41 @@ public class JavaFxBrowserManager {
 	}
 
 	private void doCall(final IEclipseToBrowserFunction function) {
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				JSObject js = (JSObject) getEngine().executeScript("window");
+		Display.getDefault().asyncExec(() -> {
 				IEclipseToBrowserFunction provider = function;
 				if (provider!=null) {
 					String fname = provider.getFunctionName();
-					Object[] fargs = provider.getArguments();
-					js.call(fname, fargs);
+					try {
+						Object[] fargs = provider.getArguments();
+						String code = "window."+fname+serializeArguments(fargs);
+						boolean success = browser.execute(code);
+						if (!success) {
+							throw new ExecutionException("Problems executing script: '"+code+"'");
+						}
+					} catch (Exception e) {
+						StatusManager.getManager().handle(
+								new Status(IStatus.ERROR, BrowserPlugin.PLUGIN_ID,
+										"Could not call browser function extension: " + fname, e
+								)
+						);
+					}
 				}
-				getView().requestLayout();
-				getView().setVisible(true);
 				if (DEBUG) {
 					printPageHtml();
 				}
-			}
 		});
+	}
+
+	private String serializeArguments(Object[] fargs) throws JsonGenerationException, JsonMappingException, IOException {
+		StringWriter serialized = new StringWriter();
+		boolean first = true;
+		for (Object arg : fargs) {
+			serialized.write(first ? "(" : ", ");
+			mapper.writeValue(serialized, arg);
+			first = false;
+		}
+		serialized.write(")");
+		return serialized.toString();
 	}
 
 	/**
@@ -170,21 +200,7 @@ public class JavaFxBrowserManager {
 	 * For debugging..
 	 */
 	private void printPageHtml() {
-		StringWriter sw = new StringWriter();
-		try {
-			TransformerFactory tf = TransformerFactory.newInstance();
-			Transformer transformer = tf.newTransformer();
-			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-			transformer.setOutputProperty(OutputKeys.METHOD, "html");
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-
-			transformer.transform(new DOMSource(getView().getEngine().getDocument()), new StreamResult(sw));
-			System.out.println(sw.toString());
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		System.out.println(browser.getText());
 	}
 
 	public void dispose() {
@@ -192,19 +208,10 @@ public class JavaFxBrowserManager {
 		for (IEclipseToBrowserFunction function : onLoadFunctions) {
 			function.dispose();
 		}
+		if (browser_function!=null) {
+			browser_function.dispose();
+			browser_function = null;
+		}
 	}
 
-	/**
-	 * @return the view
-	 */
-	public WebView getView() {
-		return view;
-	}
-
-	/**
-	 * @return the engine
-	 */
-	public WebEngine getEngine() {
-		return engine;
-	}
 }

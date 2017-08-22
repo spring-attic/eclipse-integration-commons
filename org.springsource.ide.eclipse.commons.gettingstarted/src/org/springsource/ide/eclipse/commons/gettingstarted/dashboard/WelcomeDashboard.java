@@ -29,7 +29,6 @@ import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
-import org.springsource.ide.eclipse.commons.browser.javafx.JavaFxBrowserEditor;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IIdeUiConstants;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 import org.springsource.ide.eclipse.dashboard.internal.ui.editors.DashboardReopener;
@@ -39,11 +38,11 @@ import com.sun.syndication.feed.synd.SyndEntry;
 
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
-
+import org.springsource.ide.eclipse.commons.browser.swt.StsBrowserEditor;
 import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
 import org.springsource.ide.eclipse.commons.frameworks.core.util.JobUtil;
 
-public class WelcomeDashboard extends JavaFxBrowserEditor {
+public class WelcomeDashboard extends StsBrowserEditor {
 
 	private static final String WELCOME_PAGE_URI = "platform:/plugin/org.springsource.ide.eclipse.commons.gettingstarted/resources/welcome";
 	private IEditorSite site;

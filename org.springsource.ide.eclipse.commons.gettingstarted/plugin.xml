@@ -18,7 +18,7 @@
 	<extension
           point="org.springsource.ide.browser.function.browserToEclipse">
        <function
-             class="org.springsource.ide.eclipse.commons.browser.javafx.OpenJavaFxBrowserFunction"
+             class="org.springsource.ide.eclipse.commons.browser.swt.OpenStsBrowserFunction"
              id="openWebPage"
              urlExpression=".*\.html">
        </function>

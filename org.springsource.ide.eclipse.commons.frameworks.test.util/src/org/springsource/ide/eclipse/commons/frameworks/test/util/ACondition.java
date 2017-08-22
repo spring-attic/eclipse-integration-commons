@@ -109,11 +109,13 @@ public abstract class ACondition {
 			if (e!=null) {
 				if (e instanceof Exception) {
 					throw (Exception)e;
+				} else if (e instanceof Error) {
+					throw (Error)e;
 				} else {
-					throw new Error(e);
+					throw new RuntimeException(e);
 				}
 			} else {
-				throw new Error(getMessage());
+				throw new RuntimeException(getMessage());
 			}
 		}
 		if (description!=null) {

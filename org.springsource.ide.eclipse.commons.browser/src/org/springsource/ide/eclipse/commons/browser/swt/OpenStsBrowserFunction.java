@@ -9,7 +9,7 @@
  *     Pivotal Software, Inc. - initial API and implementation
  *******************************************************************************/
 
-package org.springsource.ide.eclipse.commons.browser.javafx;
+package org.springsource.ide.eclipse.commons.browser.swt;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,7 +26,7 @@ import org.springsource.ide.eclipse.commons.browser.BrowserPlugin;
 import org.springsource.ide.eclipse.commons.browser.IBrowserToEclipseFunction;
 
 @SuppressWarnings("restriction")
-public class OpenJavaFxBrowserFunction implements IBrowserToEclipseFunction {
+public class OpenStsBrowserFunction implements IBrowserToEclipseFunction {
 
 	@Override
 	public void call(String url) {
@@ -36,7 +36,7 @@ public class OpenJavaFxBrowserFunction implements IBrowserToEclipseFunction {
 			} else {
 				WebBrowserEditorInput input = new WebBrowserEditorInput(new URL(url), SWT.NONE, url);
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-						.openEditor(input, JavaFxBrowserEditor.EDITOR_ID);
+						.openEditor(input, StsBrowserEditor.EDITOR_ID);
 			}
 		}
 		catch (MalformedURLException e) {

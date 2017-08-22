@@ -132,16 +132,6 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 		useOldDashboardButton.setText("Use Old Dashboard");
 		GridDataFactory.fillDefaults().span(2, 1).applyTo(useOldDashboardButton);
 		useOldDashboardButton.setSelection(getUseOldDashboard());
-		useOldDashboardButton.addSelectionListener(new SelectionListener() {
-
-			public void widgetSelected(SelectionEvent e) {
-				updateDashboardWarning();
-			}
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-		});
-		updateDashboardWarning();
 	}
 	
 	private void createUpdateNewsFeedButton(Composite composite) {
@@ -189,7 +179,6 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 			editor.performDefaults();
 		}
 		super.performDefaults();
-		updateDashboardWarning();
 	}
 
 	@Override
@@ -216,17 +205,4 @@ public class MainPreferencesPage extends PreferencePage implements IWorkbenchPre
 			preferenceStore.setValue(propName, value);
 		}
 	}
-
-	private void updateDashboardWarning() {
-		if (!IdeUiPlugin.getDefault().supportsNewDashboard(new NullProgressMonitor())
-				&& !useOldDashboardButton.getSelection()) {
-			setMessage("Current environment does not support new dashboard. Upgrade to Eclipse "
-					+ IdeUiPlugin.JAVAFX_MINIMUM_ECLIPSE_VERSION + " and Java "
-					+ IdeUiPlugin.JAVAFX_MINIMUM_JRE_VERSION + " or newer. Will fall back to old dashboard.", WARNING);
-		}
-		else {
-			setMessage(null);
-		}
-	}
-
 }
