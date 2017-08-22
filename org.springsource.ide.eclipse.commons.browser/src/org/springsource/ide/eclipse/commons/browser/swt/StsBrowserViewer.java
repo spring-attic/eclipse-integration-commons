@@ -16,6 +16,8 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.browser.swt;
 
+import static org.springsource.ide.eclipse.commons.browser.swt.SelectionListenerUtil.widgetSelectedAdapter;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -40,7 +42,6 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -776,7 +777,7 @@ public class StsBrowserViewer extends Composite {
 
         updateHistory();
 
-		combo.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		combo.addSelectionListener(widgetSelectedAdapter(e -> {
 			try {
 				if (combo.getSelectionIndex() != -1 && !combo.getListVisible()) {
 					setURL(combo.getItem(combo.getSelectionIndex()));
@@ -795,7 +796,7 @@ public class StsBrowserViewer extends Composite {
         go.setDisabledImage(ImageResource
                 .getImage(ImageResource.IMG_DLCL_NAV_GO));
         go.setToolTipText(Messages.actionWebBrowserGo);
-		go.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> setURL(combo.getText())));
+		go.addSelectionListener(widgetSelectedAdapter(e -> setURL(combo.getText())));
 
 		return toolbar;
     }
@@ -822,7 +823,7 @@ public class StsBrowserViewer extends Composite {
         back.setDisabledImage(ImageResource
                 .getImage(ImageResource.IMG_DLCL_NAV_BACKWARD));
         back.setToolTipText(Messages.actionWebBrowserBack);
-		back.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> back()));
+		back.addSelectionListener(widgetSelectedAdapter(e -> back()));
 
         forward = new ToolItem(toolbar, SWT.NONE);
         forward.setImage(ImageResource
@@ -832,7 +833,7 @@ public class StsBrowserViewer extends Composite {
         forward.setDisabledImage(ImageResource
                 .getImage(ImageResource.IMG_DLCL_NAV_FORWARD));
         forward.setToolTipText(Messages.actionWebBrowserForward);
-		forward.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> forward()));
+		forward.addSelectionListener(widgetSelectedAdapter(e -> forward()));
 
         // create refresh, stop, and print actions
         ToolItem stop = new ToolItem(toolbar, SWT.NONE);
@@ -842,7 +843,7 @@ public class StsBrowserViewer extends Composite {
         stop.setDisabledImage(ImageResource
                 .getImage(ImageResource.IMG_DLCL_NAV_STOP));
         stop.setToolTipText(Messages.actionWebBrowserStop);
-		stop.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> stop()));
+		stop.addSelectionListener(widgetSelectedAdapter(e -> stop()));
 
         ToolItem refresh = new ToolItem(toolbar, SWT.NONE);
         refresh.setImage(ImageResource
@@ -852,7 +853,7 @@ public class StsBrowserViewer extends Composite {
         refresh.setDisabledImage(ImageResource
                 .getImage(ImageResource.IMG_DLCL_NAV_REFRESH));
         refresh.setToolTipText(Messages.actionWebBrowserRefresh);
-		refresh.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> refresh()));
+		refresh.addSelectionListener(widgetSelectedAdapter(e -> refresh()));
 
 		return toolbar;
     }

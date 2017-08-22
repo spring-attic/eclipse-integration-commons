@@ -10,13 +10,14 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.browser.swt;
 
+import static org.springsource.ide.eclipse.commons.browser.swt.SelectionListenerUtil.widgetSelectedAdapter;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
@@ -95,7 +96,7 @@ public class BrowserText {
         link.setText(Messages.BrowserText_link);
         link.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         link.setToolTipText(Messages.BrowserText_tooltip);
-		link.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		link.addSelectionListener(widgetSelectedAdapter(e -> {
 			BusyIndicator.showWhile(link.getDisplay(), () -> doOpenExternal());
 		}));
         link.setBackground(bg);
@@ -112,7 +113,7 @@ public class BrowserText {
         text.setBackground(bg);
         button = new Button(parent, SWT.PUSH);
         updateButtonText();
-		button.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+		button.addSelectionListener(widgetSelectedAdapter(e -> {
 			toggleException();
 		}));
         exception = new Text(parent, SWT.MULTI);
