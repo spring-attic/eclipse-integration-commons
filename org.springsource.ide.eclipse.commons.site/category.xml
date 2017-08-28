@@ -79,11 +79,6 @@
 	<bundle id="org.codehaus.jackson.core" version="0.0.0"/>
 	<bundle id="org.codehaus.jackson.mapper" version="0.0.0"/>
 
-	<bundle id="org.eclipse.fx.core" version="0.0.0"/>
-	<bundle id="org.eclipse.fx.osgi" version="0.0.0"/>
-	<bundle id="org.eclipse.fx.osgi.util" version="0.0.0"/>
-	<bundle id="org.eclipse.fx.javafx" version="0.0.0"/>
-
 	<bundle id="org.springframework.aop" version="0.0.0"/>
 	<bundle id="org.springframework.aop.source" version="0.0.0"/>
 	<bundle id="org.springframework.beans" version="0.0.0"/>

@@ -37,30 +37,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.fx.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.fx.osgi"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.fx.osgi.util"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.fx.javafx"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="org.springsource.ide.eclipse.commons.browser"
          download-size="0"
          install-size="0"

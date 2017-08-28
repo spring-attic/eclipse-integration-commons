@@ -40,8 +40,6 @@
 		id="org.springsource.ide.eclipse.commons.test" version="3.9.1.qualifier">
 	</feature>
 	
-	<feature id="org.eclipse.fx.runtime.min.feature" version="0.0.0"/>
-
 	<!-- third-party dependencies -->
 	<bundle id="com.springsource.util.common" version="0.0.0"/>
 	<bundle id="com.springsource.util.common.source" version="0.0.0"/>
@@ -84,9 +82,6 @@
 
 	<bundle id="org.codehaus.jackson.core" version="0.0.0"/>
 	<bundle id="org.codehaus.jackson.mapper" version="0.0.0"/>
-
-	<bundle id="org.eclipse.fx.osgi.util" version="0.0.0"/>
-	<bundle id="org.eclipse.fx.core" version="0.0.0"/>
 
 	<bundle id="org.springframework.aop" version="0.0.0"/>
 	<bundle id="org.springframework.aop.source" version="0.0.0"/>

@@ -290,11 +290,6 @@
 					<layout>p2</layout>
 					<url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
 				</repository>
-				<repository>
-					<id>javafx</id>
-					<layout>p2</layout>
-					<url>http://download.eclipse.org/efxclipse/updates-released/2.1.0/site/</url>
-				</repository>
 			</repositories>
 			<modules>
 				<module>org.springsource.ide.eclipse.dashboard-feature-e44</module>
@@ -326,11 +321,6 @@
 					<id>swtbot</id>
 					<layout>p2</layout>
 					<url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
-				</repository>
-				<repository>
-					<id>javafx</id>
-					<layout>p2</layout>
-					<url>http://download.eclipse.org/efxclipse/updates-released/2.1.0/site/</url>
 				</repository>
 			</repositories>
 			<modules>
