@@ -10,13 +10,16 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.core.workspace;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-
+import org.springsource.ide.eclipse.commons.frameworks.core.FrameworkCoreActivator;
 import org.springsource.ide.eclipse.commons.livexp.ui.Disposable;
 
 /**
@@ -72,9 +75,31 @@ public class ClasspathListenerManager implements Disposable {
 	private ClasspathListener listener;
 	private MyListener myListener;
 
-	public ClasspathListenerManager(ClasspathListener listener) {
+	/**
+	 * @param initialEvent If true, events are fired immediately on all existing java 
+	 * projects, treating the connection of the listener itself as a change event. 
+	 * This allows clients to become aware of all classpaths from the start and 
+	 * continually monitor them for changes from that point onward.
+	 */
+	public ClasspathListenerManager(ClasspathListener listener, boolean initialEvent) {
 		this.listener = listener;
+		if (initialEvent) {
+			for (IProject p : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
+				try {
+					if (p.isAccessible() && p.hasNature(JavaCore.NATURE_ID)) {
+						IJavaProject jp = JavaCore.create(p);
+						listener.classpathChanged(jp);
+					}
+				} catch (CoreException e) {
+					FrameworkCoreActivator.log(e);
+				}
+			}
+		}
 		JavaCore.addElementChangedListener(myListener=new MyListener(), ElementChangedEvent.POST_CHANGE);
+	}
+
+	public ClasspathListenerManager(ClasspathListener listener) {
+		this(listener, false);
 	}
 
 	public void dispose() {

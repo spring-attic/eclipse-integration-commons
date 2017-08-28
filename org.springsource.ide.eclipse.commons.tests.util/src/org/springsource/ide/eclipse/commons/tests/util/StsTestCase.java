@@ -110,12 +110,15 @@ public abstract class StsTestCase extends TestCase {
 		return file;
 	}
 
-	public static IFile createFile(IProject project, String path, String data)
-			throws CoreException {
-				IFile file = project.getFile(new Path(path));
-				file.create(new StringInputStream(data), true, new NullProgressMonitor());
-				return file;
-			}
+	public static IFile createFile(IProject project, String path, String data) throws CoreException {
+		IFile file = project.getFile(new Path(path));
+		if (file.exists()) {
+			file.setContents(new StringInputStream(data), true, true, new NullProgressMonitor());
+		} else {
+			file.create(new StringInputStream(data), true, new NullProgressMonitor());
+		}
+		return file;
+	}
 
 	public static void fileReplace(IProject project, String path, String find, String replace) throws Exception {
 		IFile file = project.getFile(path);
