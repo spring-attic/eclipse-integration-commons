@@ -19,7 +19,7 @@ import com.google.common.collect.Sets;
 public class LiveSets {
 
 	@SuppressWarnings("rawtypes")
-	private static final ObservableSet EMPTY_SET = ObservableSet.constant(ImmutableSet.of());
+	public static final ObservableSet EMPTY_SET = ObservableSet.constant(ImmutableSet.of());
 
 	@SuppressWarnings("unchecked")
 	public static <T> ObservableSet<T> emptySet(Class<T> t) {
