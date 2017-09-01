@@ -39,6 +39,16 @@ public class Stylers implements Disposable {
 	public Stylers(Font baseFont) {
 		this.baseFont = baseFont;
 	}
+	
+	public Styler hyperlink() {
+		return new Styler() {
+			@Override
+			public void applyStyles(TextStyle textStyle) {
+				darkBlue().applyStyles(textStyle);
+				textStyle.underline = true;
+			}
+		};
+	}
 
 	public Styler tag() {
 		return new Styler() {
