@@ -50,4 +50,5 @@ public class LiveVariable<T> extends LiveExpression<T> {
 	public String toString() {
 		return "LiveVariable("+getValue()+")";
 	}
+
 }

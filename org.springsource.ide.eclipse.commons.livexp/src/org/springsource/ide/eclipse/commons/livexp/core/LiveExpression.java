@@ -123,6 +123,24 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 		return value;
 	}
 
+	/**
+	 * Registers a ValueListener which is automatically removed when
+	 * its 'owner' is disposed.
+	 */
+	public void onChange(OnDispose owner, ValueListener<V> l) {
+		addListener(l);
+		owner.onDispose((o) -> removeListener(l));
+	}
+	
+	/**
+	 * Register a ValueListener which can be removed by invoking the
+	 * returned {@link Disposable}.
+	 */
+	public Disposable onChange(ValueListener<V> l) {
+		addListener(l);
+		return () -> removeListener(l);
+	}
+	
 	public void addListener(ValueListener<V> l) {
 		ListenerList fListeners = this.fListeners;
 		if (fListeners!=null) {
