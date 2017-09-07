@@ -4,13 +4,13 @@
 	<extension point="org.eclipse.ui.editors">
 		<editor
 			class="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.WelcomeDashboard"
-			icon="icons/spring.png"
+			icon="$nl$/icons/spring.png"
 			id="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.WelcomeDashboard"
 			name="Dashboard">
 		</editor>
 		<editor
 			class="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ExtensionsEditor"
-			icon="icons/spring_ext.png"
+			icon="$nl$/icons/spring_ext.png"
 			id="org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ExtensionsEditor"
 			name="Spring Extensions">
 		</editor>
