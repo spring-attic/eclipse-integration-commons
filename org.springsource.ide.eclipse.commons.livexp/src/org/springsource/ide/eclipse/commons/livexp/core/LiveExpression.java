@@ -213,7 +213,7 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 			}
 		};
 	}
-
+	
 	public <R> LiveExpression<R> apply(final Function<V,R> fun) {
 		final LiveExpression<V> target = this;
 		LiveExpression<R> result = new LiveExpression<R>() {

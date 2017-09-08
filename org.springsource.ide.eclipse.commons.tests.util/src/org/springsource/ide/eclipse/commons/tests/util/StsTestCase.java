@@ -67,8 +67,10 @@ public abstract class StsTestCase extends TestCase {
 
 	public static <T> void assertElements(Collection<T> actual, T... expect) {
 		Set<T> expectedSet = new HashSet<T>(Arrays.asList(expect));
+		StringBuilder actualStr = new StringBuilder();
 
 		for (T propVal : actual) {
+			actualStr.append(propVal+"\n");
 			if (!expectedSet.remove(propVal)) {
 				fail("Unexpected element: "+propVal);
 			}
@@ -79,7 +81,10 @@ public abstract class StsTestCase extends TestCase {
 			for (T propVal : expectedSet) {
 				missing.append(propVal+"\n");
 			}
-			fail("Missing elements: \n"+missing);
+			fail(
+					"Missing elements: \n"+ missing +
+					"Actual elements:\n" + actualStr
+			);
 		}
 	}
 
