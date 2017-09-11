@@ -227,6 +227,26 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 		};
 		return result;
 	}
+	
+	/**
+	 * Chain a function that returns another livexp with this livexp. 
+	 * <p>
+	 * The returned livexp tracks the value of the livexp returned by the function
+	 * and is updated whenever either the value of this liveExp changes, or
+	 * the value of the returned liveExp changes.
+	 * <p>
+	 * IMPORTANT: LiveExp(s) returned by the function are not automatically disposed.
+	 * (But any listeners attached to it by the returned LiveExp are removed automatically).
+	 */
+	public <R> LiveExpression<R> then(Function<V, LiveExpression<R>> fun) {
+		LiveExpression<LiveExpression<R>> resultExpExp = this.apply(fun);
+		DelegatingLiveExp<R> result = new DelegatingLiveExp<>();
+		result.onDispose(d -> resultExpExp.dispose());
+		resultExpExp.onChange(result, (e, v) -> 
+			result.setDelegate(resultExpExp.getValue())
+		);
+		return result;
+	}
 
 	public Object getOwner() {
 		return owner;
