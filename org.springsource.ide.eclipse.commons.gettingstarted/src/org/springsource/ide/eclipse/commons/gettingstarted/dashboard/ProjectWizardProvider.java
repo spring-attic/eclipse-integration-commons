@@ -48,7 +48,7 @@ public class ProjectWizardProvider extends IEclipseToBrowserFunction.Extension {
 					// We use github_download as that seems to provide the shape
 					// we
 					// need
-					html += "<a class=\"ide_widget btn btn-black uppercase\" href=\"\" onclick=\"ide.call('openWizard', '"
+					html += "<a class=\"ide_widget btn btn-black uppercase\" href=\"\" onclick=\"return ide.call('openWizard', '"
 							+ ids[i]
 							+ "')\">"
 							+ "Create "

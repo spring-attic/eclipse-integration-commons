@@ -105,7 +105,7 @@ public class BlogsProvider extends FeedProvider {
 		if (currentUpdated.before(entryDate)) {
 			currentUpdated = entryDate;
 		}
-		html += "	<a href=\"\" onclick=\"ide.call('openWebPage', '" + entry.getLink() + "')\">" + entry.getTitle()
+		html += "	<a href=\"\" onclick=\"return ide.call('openWebPage', '" + entry.getLink() + "')\">" + entry.getTitle()
 				+ "</a>";
 		html += "	</div>";
 		html += "	<div class=\"blog--post\">";

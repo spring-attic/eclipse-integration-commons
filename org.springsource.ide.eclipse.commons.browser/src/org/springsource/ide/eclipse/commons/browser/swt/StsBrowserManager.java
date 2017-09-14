@@ -70,12 +70,15 @@ public class StsBrowserManager {
 				@Override
 				public Object function(Object[] arguments) {
 					call((String)arguments[0], (String)arguments[1]);
-					return null;
+					return false;
 				}
 			};
 		}
 		onLoadFunctions = new ArrayList<IEclipseToBrowserFunction>();
+		String oldUrl = currentUrl;
 		currentUrl = browser.getUrl();
+		System.out.println("oldUrl: "+oldUrl);
+		System.out.println("newUrl: "+currentUrl);
 		//Need to remove any query parameters that might break pattern matching for extensions
 		currentUrl = StringUtils.substringBeforeLast(currentUrl, "?");
 		currentUrl = StringUtils.substringBeforeLast(currentUrl, "&");

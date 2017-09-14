@@ -69,7 +69,7 @@ public class UpdatesProvider extends FeedProvider {
 		html += "<div class=\"blog--container blog-preview\">";
 		html += "	<div class=\"blog--title\">";
 		html += "   <i class=\"fa fa-exclamation new-star\"></i>";
-		html += "	<a href=\"\" onclick=\"ide.call('openWebPage', '" + entry.getLink() + "')\"><b>" + entry.getTitle()
+		html += "	<a href=\"\" onclick=\"return ide.call('openWebPage', '" + entry.getLink() + "')\"><b>" + entry.getTitle()
 				+ "</b></a>";
 		html += "	</div>";
 		html += "</div>";
