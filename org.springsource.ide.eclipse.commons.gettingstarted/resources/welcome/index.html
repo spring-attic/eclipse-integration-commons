@@ -39,6 +39,14 @@
 </head>
 <body>
 	<script>
+		//window.ide 'dummy'. Replaced/injected later by STS browser integration.
+		//The dummy helps preview/test the page in an external browser.
+		window.ide = {
+			call: function () {
+				return false;
+			}
+		}
+		
 		function addHtml(element, html) {
 			if (html) {
 				document.getElementById(element).innerHTML = html;
@@ -57,18 +65,18 @@
 			<div class="navbar-inner">
 				<div class="container-fluid">
 					<div class="spring-logo--container">
-						<a class="spring-logo" href=""><span></span></a>
+						<a class="spring-logo" href="#"><span></span></a>
 					</div>
 					<ul class="nav pull-right">
-						<li class="navbar-link"><a href=""
+						<li class="navbar-link"><a
 							onclick="return ide.call('openWebPage', '${spring.docs.url}')">Docs</a></li>
-						<li class="navbar-link"><a href=""
+						<li class="navbar-link"><a
 							onclick="return ide.call('openWebPage', '${spring.guides.url}')">Guides</a></li>
-						<li class="navbar-link"><a href=""
+						<li class="navbar-link"><a
 							onclick="return ide.call('openWebPage', '${sts.tracker.url}')">Issues</a></li>
-						<li class="navbar-link"><a href=""
+						<li class="navbar-link"><a
 							onclick="return ide.call('openWebPage', '${spring.blog.url}')">Blog</a></li>
-						<li class="navbar-link"><a href=""
+						<li class="navbar-link"><a
 							onclick="return ide.call('openWebPage', '${sts.forum.url}')">Forum</a></li>
 						<li class="navbar-link nav-search"><i
 							class="fa fa-search navbar-search--icon js-search-input-open"></i>
@@ -118,7 +126,7 @@
 						</div>
 						<div class="right-pane-widget--container">
 							<h2>Manage</h2>
-							<a class="ide_widget btn btn-black uppercase" href=""
+							<a class="ide_widget btn btn-black uppercase" href="#"
 								onclick="return ide.call('openEditor', 'org.springsource.ide.eclipse.commons.gettingstarted.dashboard.ExtensionsEditor')">IDE Extensions</a>
 						</div>
 					</aside>
