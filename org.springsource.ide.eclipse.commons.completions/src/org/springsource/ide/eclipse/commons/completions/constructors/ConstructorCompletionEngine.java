@@ -72,10 +72,11 @@ public class ConstructorCompletionEngine {
 	SearchableEnvironment searchableEnv,
 	JavaProject javaProject,
 	WorkingCopyOwner owner,
+	ConstructorSearchValueProvider constructorValueProvider,
 	IProgressMonitor monitor) {
 		this.engine = new CompletionEngine(searchableEnv, requestor, javaProject.getOptions(true), javaProject, DefaultWorkingCopyOwner.PRIMARY,
 		monitor);
-		this.constructorValueProvider = new ConstructorSearchValueProvider();
+		this.constructorValueProvider = constructorValueProvider;
 	}
 
 	
