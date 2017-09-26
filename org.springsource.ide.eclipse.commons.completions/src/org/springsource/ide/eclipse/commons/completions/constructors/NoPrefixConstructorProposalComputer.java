@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Pivotal Software, Inc.
+ * Copyright (c) 2016, 2017 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.springsource.ide.eclipse.commons.completions.CompletionsActivator;
+import org.springsource.ide.eclipse.commons.frameworks.core.async.ConstructorSearchValueProvider;
 
 /**
  * Computes constructor proposals for the the case of "List<String> l = new <Ctrl-Space>", e.g. no prefix case
@@ -50,6 +51,8 @@ public class NoPrefixConstructorProposalComputer implements IJavaCompletionPropo
 	private static final String NEW_KEYWORD = "new";
 	
 	private static final long JAVA_CODE_ASSIST_TIMEOUT= Long.getLong("org.eclipse.jdt.ui.codeAssistTimeout", 5000).longValue(); // ms //$NON-NLS-1$
+	
+	private ConstructorSearchValueProvider constructorValueProvider = new ConstructorSearchValueProvider();
 
 	@Override
 	public void sessionStarted() {
@@ -68,7 +71,7 @@ public class NoPrefixConstructorProposalComputer implements IJavaCompletionPropo
 				 */
 				if (prefix.isEmpty() && isNewKeywordPreceeding(jdtContext) && jdtContext.getExpectedType() != null) {
 					List<ICompletionProposal> proposals = new ArrayList<>();
-					proposals.addAll(Arrays.asList(doComputeCompletionProposals(jdtContext, createTimeoutProgressMonitor(JAVA_CODE_ASSIST_TIMEOUT))));
+					proposals.addAll(Arrays.asList(doComputeCompletionProposals(jdtContext, monitor)));
 					return proposals;
 				}
 			} catch (BadLocationException e) {
@@ -137,7 +140,7 @@ public class NoPrefixConstructorProposalComputer implements IJavaCompletionPropo
 			/*
 			 * Create special completion engine to collect constructor proposals
 			 */
-			ConstructorCompletionEngine engine = new ConstructorCompletionEngine(cu, collector, searchableEnvironment, javaProject, DefaultWorkingCopyOwner.PRIMARY, monitor);
+			ConstructorCompletionEngine engine = new ConstructorCompletionEngine(cu, collector, searchableEnvironment, javaProject, DefaultWorkingCopyOwner.PRIMARY, constructorValueProvider, monitor);
 			/*
 			 * Gather completion proposals
 			 */

@@ -22,7 +22,7 @@
    </extension>
    <extension
          id="noprefixConstructorCompletions"
-         name="No Prefix Constructor Completiions"
+         name="No Prefix Constructor Completions"
          point="org.eclipse.jdt.ui.javaCompletionProposalComputer">
       <javaCompletionProposalComputer
             activate="true"

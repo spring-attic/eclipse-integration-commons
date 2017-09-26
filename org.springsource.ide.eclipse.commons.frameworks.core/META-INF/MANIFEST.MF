@@ -20,6 +20,7 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.springsource.ide.eclipse.commons.frameworks.core,
  org.springsource.ide.eclipse.commons.frameworks.core.async,
  org.springsource.ide.eclipse.commons.frameworks.core.downloadmanager,
+ org.springsource.ide.eclipse.commons.frameworks.core.internal.cache,
  org.springsource.ide.eclipse.commons.frameworks.core.internal.commands,
  org.springsource.ide.eclipse.commons.frameworks.core.internal.java,
  org.springsource.ide.eclipse.commons.frameworks.core.internal.plugins,

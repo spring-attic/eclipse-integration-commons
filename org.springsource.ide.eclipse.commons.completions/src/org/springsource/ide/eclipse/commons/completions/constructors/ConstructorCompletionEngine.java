@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Pivotal Software, Inc.
+ * Copyright (c) 2016, 2017 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@ package org.springsource.ide.eclipse.commons.completions.constructors;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
@@ -45,6 +46,8 @@ import org.eclipse.jdt.internal.core.search.BasicSearchEngine;
 import org.eclipse.jdt.internal.core.search.HierarchyScope;
 import org.eclipse.jdt.internal.core.search.IRestrictedAccessConstructorRequestor;
 import org.springsource.ide.eclipse.commons.completions.CompletionsActivator;
+import org.springsource.ide.eclipse.commons.frameworks.core.async.ConstructorSearchValueProvider;
+import org.springsource.ide.eclipse.commons.frameworks.core.async.JavaConstructorHint;
 
 /**
  * Completion Engine that wraps JDT CompletionEngine to collect completion
@@ -62,15 +65,18 @@ public class ConstructorCompletionEngine {
 	 * Wrapped JDT completion engine 
 	 */
 	private CompletionEngine engine;
+	private ConstructorSearchValueProvider constructorValueProvider;
 		
 	public ConstructorCompletionEngine(ICompilationUnit compilationUnit,
 	CompletionRequestor requestor,
 	SearchableEnvironment searchableEnv,
 	JavaProject javaProject,
 	WorkingCopyOwner owner,
+	ConstructorSearchValueProvider constructorValueProvider,
 	IProgressMonitor monitor) {
 		this.engine = new CompletionEngine(searchableEnv, requestor, javaProject.getOptions(true), javaProject, DefaultWorkingCopyOwner.PRIMARY,
 		monitor);
+		this.constructorValueProvider = constructorValueProvider;
 	}
 
 	
@@ -246,25 +252,12 @@ public class ConstructorCompletionEngine {
 			m.setAccessible(true);
 			m.invoke(engine, astNode, astNodeParent, compilationUnitDeclaration, qualifiedBinding, scope);
 	
-			/*
-			 * Perform our own search for possible constructors on a hierarchy scope
-			 */
-			IJavaSearchScope hierarchyScope = new HierarchyScope(getEngineFieldValue("javaProject", IJavaProject.class), expectedType,  DefaultWorkingCopyOwner.PRIMARY, true, false, false);
-			BasicSearchEngine basicEngine = new BasicSearchEngine();
-			/*
-			 * Search term is '*' meaning everything, i.e. any prefix
-			 */
-			basicEngine.searchAllConstructorDeclarations(null, "*".toCharArray(), SearchPattern.R_PATTERN_MATCH,
-					hierarchyScope, new IRestrictedAccessConstructorRequestor() {
-	
-						@Override
-						public void acceptConstructor(int modifiers, char[] simpleTypeName, int parameterCount,
-								char[] signature, char[][] parameterTypes, char[][] parameterNames, int typeModifiers,
-								char[] packageName, int extraFlags, String path, AccessRestriction access) {
-							engine.acceptConstructor(modifiers, simpleTypeName, parameterCount, signature, parameterTypes, parameterNames, typeModifiers, packageName, extraFlags, path, access);
-						}
-	
-					}, IJavaSearchConstants.FORCE_IMMEDIATE_SEARCH, monitor);
+			// BUG PT 150704813: The "old" implementation ran the search synchronously in the UI thread
+			// and if it timed out, caused JDT to open an error dialogue
+//			performLegacySyncSearch(expectedType, monitor);
+			// The new implementation runs the search asynchronously and reads values from a cache to avoid
+			// running a long-running search in the UI thread
+			performAsyncSearchAndReadFromCache(expectedType, monitor);
 		
 			/*
 			 * Use JDT CompletionEngine to process our search results, create core completion proposals and then collect them
@@ -283,6 +276,66 @@ public class ConstructorCompletionEngine {
 				CompletionsActivator.log(e);
 			}
 		}
+	}
+
+	private void performLegacySyncSearch(IType expectedType, IProgressMonitor monitor) throws JavaModelException {
+		/*
+		 * Perform our own search for possible constructors on a hierarchy scope
+		 */
+		IJavaSearchScope hierarchyScope = getScope(expectedType);
+		BasicSearchEngine basicEngine = new BasicSearchEngine();
+		/*
+		 * Search term is '*' meaning everything, i.e. any prefix
+		 * 
+		 */
+		
+		basicEngine.searchAllConstructorDeclarations(null, "*".toCharArray(), SearchPattern.R_PATTERN_MATCH,
+				hierarchyScope, new IRestrictedAccessConstructorRequestor() {
+
+					@Override
+					public void acceptConstructor(int modifiers, char[] simpleTypeName, int parameterCount,
+							char[] signature, char[][] parameterTypes, char[][] parameterNames, int typeModifiers,
+							char[] packageName, int extraFlags, String path, AccessRestriction access) {
+						engine.acceptConstructor(modifiers, simpleTypeName, parameterCount, signature, parameterTypes, parameterNames, typeModifiers, packageName, extraFlags, path, access);
+					}
+
+				}, IJavaSearchConstants.FORCE_IMMEDIATE_SEARCH, monitor);
+	}
+	
+	/**
+	 * Performs the search asynchronously and reads from cache.
+	 * @param expectedType
+	 * @param monitor
+	 * @throws JavaModelException
+	 */
+	private void performAsyncSearchAndReadFromCache(IType expectedType, IProgressMonitor monitor) throws JavaModelException {
+		/*
+		 * Perform our own search for possible constructors on a hierarchy scope
+		 */
+		IJavaSearchScope scope = getScope(expectedType);
+		
+		Collection<JavaConstructorHint> values = constructorValueProvider.getValuesNow(expectedType, scope);
+		if (values != null) {
+			for (JavaConstructorHint javaConstructorHint : values) {
+				engine.acceptConstructor(
+						javaConstructorHint.modifiers, 
+						javaConstructorHint.simpleTypeName, 
+						javaConstructorHint.parameterCount, 
+						javaConstructorHint.signature, 
+						javaConstructorHint.parameterTypes, 
+						javaConstructorHint.parameterNames, 
+						javaConstructorHint.typeModifiers, 
+						javaConstructorHint.packageName, 
+						javaConstructorHint.extraFlags, 
+						javaConstructorHint.path, 
+						javaConstructorHint.access);
+			}	
+		}
+	}
+
+
+	private HierarchyScope getScope(IType expectedType) throws JavaModelException {
+		return new HierarchyScope(getEngineFieldValue("javaProject", IJavaProject.class), expectedType,  DefaultWorkingCopyOwner.PRIMARY, true, false, false);
 	}
 
 }
