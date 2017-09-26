@@ -24,13 +24,16 @@ package org.springsource.ide.eclipse.commons.livexp.core;
  */
 public class DelegatingLiveExp<T> extends LiveExpression<T> {
 
-	public DelegatingLiveExp() {}
-
-	private LiveExpression<T> delegate = null;
+	private LiveVariable<LiveExpression<T>> _delegate = new LiveVariable<>();
 	private ValueListener<T> delegateListener = (exp, value) -> refresh();
+
+	public DelegatingLiveExp() {
+		onDispose(d -> _delegate.dispose());
+	}
 
 	@Override
 	protected T compute() {
+		LiveExpression<T> delegate = _delegate.getValue();
 		if (delegate==null) {
 			return null;
 		} else {
@@ -39,8 +42,8 @@ public class DelegatingLiveExp<T> extends LiveExpression<T> {
 	}
 
 	public synchronized void setDelegate(LiveExpression<T> newDelegate) {
-		LiveExpression<T> oldDelegate = this.delegate;
-		this.delegate = newDelegate;
+		LiveExpression<T> oldDelegate = _delegate.getValue();
+		_delegate.setValue(newDelegate);
 		if (oldDelegate==newDelegate) {
 			return;
 		} else {
@@ -54,6 +57,10 @@ public class DelegatingLiveExp<T> extends LiveExpression<T> {
 				newDelegate.addListener(delegateListener);
 			}
 		}
+	}
+	
+	public LiveExpression<LiveExpression<T>> getDelegate() {
+		return _delegate;
 	}
 
 }

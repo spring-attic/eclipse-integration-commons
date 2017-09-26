@@ -214,6 +214,12 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 		};
 	}
 	
+	@SuppressWarnings("unchecked")
+	public <T> LiveExpression<T> unsafeCast(Class<T> klass) {
+		Object self = this;
+		return (LiveExpression<T>) self;
+	}
+	
 	public <R> LiveExpression<R> apply(final Function<V,R> fun) {
 		final LiveExpression<V> target = this;
 		LiveExpression<R> result = new LiveExpression<R>() {
@@ -238,7 +244,7 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 	 * IMPORTANT: LiveExp(s) returned by the function are not automatically disposed.
 	 * (But any listeners attached to it by the returned LiveExp are removed automatically).
 	 */
-	public <R> LiveExpression<R> then(Function<V, LiveExpression<R>> fun) {
+	public <R> DelegatingLiveExp<R> then(Function<V, LiveExpression<R>> fun) {
 		LiveExpression<LiveExpression<R>> resultExpExp = this.apply(fun);
 		DelegatingLiveExp<R> result = new DelegatingLiveExp<>();
 		result.onDispose(d -> resultExpExp.dispose());
