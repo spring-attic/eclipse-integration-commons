@@ -103,20 +103,6 @@ public abstract class ResourceWalker extends Job {
 		this.suspend = false;
 		this.schedule();
 	}
-
-	protected boolean ignore(IResource r) {
-		String name = r.getName();
-		if (name.startsWith(".")) {
-			return true;
-		}
-		if (name.endsWith(".jar") || name.endsWith(".zip")) {
-			return true;
-		}
-		if (name.equals("bin")) {
-			return true;
-		}
-		return false;
-	}
 	
 	public IStatus run(IProgressMonitor monitor) {
 		//TODO: progress reporting?
@@ -126,20 +112,18 @@ public abstract class ResourceWalker extends Job {
 			} else {
 				IResource r = getWork();
 				if (r!=null) {
-					if (!ignore(r)) {
-						if (r instanceof IFile) {
-							IFile f = (IFile) r;
-							visit(f, monitor);
-						} else if (r instanceof IContainer) {
-							IContainer f = (IContainer) r;
-							if (f.isAccessible()) {
-    							try {
-    								for (IResource child : f.members()) {
-    									enqueue(child);
-    								}
-    							} catch (CoreException e) {
-    								QuickSearchActivator.log(e);
-    							}
+					if (r instanceof IFile) {
+						IFile f = (IFile) r;
+						visit(f, monitor);
+					} else if (r instanceof IContainer) {
+						IContainer f = (IContainer) r;
+						if (f.isAccessible()) {
+							try {
+								for (IResource child : f.members()) {
+									enqueue(child);
+								}
+							} catch (CoreException e) {
+								QuickSearchActivator.log(e);
 							}
 						}
 					}
