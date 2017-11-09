@@ -58,4 +58,37 @@ public class Filters {
 			}
 		};
 	}
+
+	/**
+	 * Convenience method to ensure that a given filter is not null (uses the 'acceptAll' filter instead of null)
+	 */
+	public static <T> Filter<T> ofNullable(Filter<T> maybeFilter) {
+		return maybeFilter == null ? acceptAll() : maybeFilter;
+	}
+
+	/**
+	 * Creates a filter that wraps another filter provided by a LiveExp.
+	 * <p>
+	 * Note that the returned filter is not purely functional since there is state 
+	 * inherent in that the filter being delegated to can change over time. 
+	 * Some care has to be taken using this filter.
+	 */
+	public static <T> Filter<T> delegatingTo(LiveExpression<Filter<T>> delegate) {
+		return new Filter<T>() {
+			@Override
+			public boolean accept(T t) {
+				return ofNullable(delegate.getValue()).accept(t);
+			}
+			
+			@Override
+			public boolean isTrivial() {
+				return ofNullable(delegate.getValue()).isTrivial();
+			}
+			
+			@Override
+			public String toString() {
+				return "DelegatingFilter("+delegate.getValue()+")";
+			}
+		};
+	}
 }
