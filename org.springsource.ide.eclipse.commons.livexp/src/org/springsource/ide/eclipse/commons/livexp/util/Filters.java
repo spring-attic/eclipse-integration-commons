@@ -10,7 +10,14 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.util;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.eclipse.jface.text.IRegion;
+import org.eclipse.jface.text.Region;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Helper methods for creating common filters.
@@ -25,6 +32,7 @@ public class Filters {
 			return true;
 		}
 		public boolean isTrivial() { return true; }
+		
 	};
 
 	@SuppressWarnings("unchecked")
@@ -60,35 +68,64 @@ public class Filters {
 	}
 
 	/**
-	 * Convenience method to ensure that a given filter is not null (uses the 'acceptAll' filter instead of null)
-	 */
-	public static <T> Filter<T> ofNullable(Filter<T> maybeFilter) {
-		return maybeFilter == null ? acceptAll() : maybeFilter;
-	}
-
-	/**
 	 * Creates a filter that wraps another filter provided by a LiveExp.
 	 * <p>
 	 * Note that the returned filter is not purely functional since there is state 
-	 * inherent in that the filter being delegated to can change over time. 
+	 * inherent in that the delegated to can change over time. 
 	 * Some care has to be taken using this filter.
 	 */
 	public static <T> Filter<T> delegatingTo(LiveExpression<Filter<T>> delegate) {
 		return new Filter<T>() {
+
 			@Override
 			public boolean accept(T t) {
 				return ofNullable(delegate.getValue()).accept(t);
 			}
-			
+
 			@Override
 			public boolean isTrivial() {
 				return ofNullable(delegate.getValue()).isTrivial();
 			}
-			
+
 			@Override
-			public String toString() {
-				return "DelegatingFilter("+delegate.getValue()+")";
+			public Iterable<IRegion> getHighlights(String text) {
+				return ofNullable(delegate.getValue()).getHighlights(text);
 			}
 		};
 	}
+
+	public static <T> Filter<T> ofNullable(Filter<T> maybeFilter) {
+		return maybeFilter!=null ? maybeFilter : acceptAll();
+	}
+	
+	public static Filter<String> caseInsensitiveSubstring(String _lookfor) {
+		if (_lookfor!=null) {
+			String lookfor = _lookfor.trim().toLowerCase();
+			if (!"".equals(lookfor)) {
+				return new Filter<String>() {
+					@Override
+					public boolean accept(String text) {
+						return text.toLowerCase().contains(lookfor);
+					}
+					
+					@Override
+					public List<IRegion> getHighlights(String text) {
+						int start = text.toLowerCase().indexOf(lookfor);
+						if (start>=0) {
+							return ImmutableList.of(new Region(start, lookfor.length()));
+						}
+						return ImmutableList.of();
+					}
+					
+					@Override
+					public String toString() {
+						return "CaseInsensitiveSubstringFilter("+lookfor+")";
+					}
+				};
+			}
+		}
+		//The 'lookfor' is empty or null
+		return acceptAll();
+	}
+
 }

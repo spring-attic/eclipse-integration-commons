@@ -11,11 +11,13 @@
 package org.springsource.ide.eclipse.commons.livexp.ui.util;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.jface.viewers.StyledString.Styler;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.events.ModifyListener;
@@ -69,7 +71,7 @@ public class WidgetUtil {
  		TreeAwareViewerFilter viewerFilter = new TreeAwareViewerFilter(viewer, Filters.acceptAll(), labels, treeContent);
 		Disposable disposable = searchBoxModel.onChange(UIValueListener.from((e, filter) -> {
 			viewerFilter.setFilter(searchBoxModel.getValue());
-			viewer.refresh();
+			viewer.refresh(true);
 		}));
 		viewer.setFilters(viewerFilter); //TODO: what if there are existing filters?
 		viewer.getControl().addDisposeListener(de -> {
@@ -84,7 +86,6 @@ public class WidgetUtil {
 	
 	/**
 	 * Decorate a basic LabelProvider so that it bolds matched elements based on a text-based filter applied to its labels.
-	 * @return 
 	 */
 	public static StyledCellLabelProvider boldMatchedElements(Stylers stylers, ILabelProvider baseLabels, Filter<String> filter) {
 		return new StyledCellLabelProvider() {
@@ -98,11 +99,18 @@ public class WidgetUtil {
 				//styled label
 				String label = baseLabels.getText(element);
 				StyledString styledLabel = new StyledString(label);
-				if (!filter.isTrivial() && filter.accept(label)) {
-					styledLabel.setStyle(0, label.length(), stylers.bold());
+				if (filter.accept(label)) {
+					Styler bold = stylers.bold();
+					for (IRegion r : filter.getHighlights(label)) {
+						styledLabel.setStyle(r.getOffset(), r.getLength(), bold);
+					}
+					System.out.println("change label higlights: "+label);
 				}
 				cell.setStyleRanges(styledLabel.getStyleRanges());
 				cell.setText(styledLabel.getString());
+				cell.getControl().redraw(); 
+								//Sigh... Yes, this is needed. It seems SWT/Jface isn't smart enough to itself figure out that if 
+								//the styleranges change a redraw is needed to make the change visible.
 			}
 			
 		};
