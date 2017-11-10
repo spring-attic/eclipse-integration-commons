@@ -21,10 +21,12 @@ import org.eclipse.jface.viewers.StyledString.Styler;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.UIValueListener;
+import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 import org.springsource.ide.eclipse.commons.livexp.ui.Disposable;
 import org.springsource.ide.eclipse.commons.livexp.ui.Stylers;
 import org.springsource.ide.eclipse.commons.livexp.util.Filter;
@@ -33,7 +35,7 @@ import org.springsource.ide.eclipse.commons.livexp.util.Filters;
 /**
  * Convenience methods to attach LiveExp / LiveVar model elements to SWT widgets.
  */
-public class WidgetUtil {
+public class SwtConnect {
 
 	public static void connect(Text text, LiveVariable<String> model) {
 		if (!text.isDisposed()) {
@@ -114,6 +116,21 @@ public class WidgetUtil {
 			}
 			
 		};
+	}
+
+	public static void connect(Label widget, LiveExpression<String> model) {
+		ValueListener<String> modelListener = new UIValueListener<String>() {
+			@Override
+			protected void uiGotValue(LiveExpression<String> exp, String value) {
+				String newText = model.getValue();
+				if (newText==null) {
+					newText = "";
+				}
+				widget.setText(newText);
+			}
+		};
+		model.addListener(modelListener);
+		widget.addDisposeListener(xx -> model.removeListener(modelListener));
 	}
 	
 }
