@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.core;
 
+import java.time.Duration;
+
 import org.eclipse.core.runtime.ListenerList;
 import org.springsource.ide.eclipse.commons.livexp.ui.Disposable;
 
@@ -218,6 +220,30 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 	public <T> LiveExpression<T> unsafeCast(Class<T> klass) {
 		Object self = this;
 		return (LiveExpression<T>) self;
+	}
+	
+	/**
+	 * Create a LiveExpression that copies the value this liveexp with 
+	 * a synchronization delay. 
+	 * <p>
+	 * This is useful to avoid 'bursty' changes to cause flickering in the
+	 * ui by only propagating the changes 
+	 * @param delay
+	 * @return
+	 */
+	public <R> LiveExpression<V> delay(Duration delay) {
+		final LiveExpression<V> target = this;
+		AsyncLiveExpression<V> result = new AsyncLiveExpression<V>(null) {
+			{
+				setRefreshDelay(delay.toMillis());
+				dependsOn(target);
+			}
+			@Override
+			protected V compute() {
+				return target.getValue();
+			}
+		};
+		return result;
 	}
 	
 	public <R> LiveExpression<R> apply(final Function<V,R> fun) {

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui.util;
 
+import java.time.Duration;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -111,7 +113,7 @@ public class SwtConnect {
 				cell.setStyleRanges(styledLabel.getStyleRanges());
 				cell.setText(styledLabel.getString());
 				cell.getControl().redraw(); 
-								//Sigh... Yes, this is needed. It seems SWT/Jface isn't smart enough to itself figure out that if 
+								//^^^ Sigh... Yes, this is needed. It seems SWT/Jface isn't smart enough to itself figure out that if 
 								//the styleranges change a redraw is needed to make the change visible.
 			}
 			
@@ -132,5 +134,15 @@ public class SwtConnect {
 		model.addListener(modelListener);
 		widget.addDisposeListener(xx -> model.removeListener(modelListener));
 	}
-	
+
+	public static void connect(Label widget, LiveExpression<String> model, Duration delay) {
+		if (delay==null || delay.isZero() || delay.isNegative()) {
+			connect(widget, model);
+		} else {
+			LiveExpression<String> delayedModel = model.delay(delay);
+			widget.addDisposeListener(de -> delayedModel.dispose());
+			connect(widget, delayedModel);
+		}
+	}
+
 }
