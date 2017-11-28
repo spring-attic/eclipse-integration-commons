@@ -40,20 +40,16 @@ public class ProcessUtils {
 	 */
 	public static long getProcessID(Process p) {
 		long result = -1;
-			// for windows
-			if (p.getClass().getName().equals("java.lang.UNIXProcess")) {
-				try {
-					Field f = p.getClass().getDeclaredField("pid");
-					f.setAccessible(true);
-					result = f.getLong(p);
-					f.setAccessible(false);
-				} catch (Exception ex) {
-					throw new UnsupportedOperationException("Process PID calculation not supported on the current platform", ex);
-				}
-			} else {
-				// Must be windows platform
-				throw new UnsupportedOperationException("Process PID calculation not supported on the current platform");
-			}
+		try {
+			Field f = p.getClass().getDeclaredField("pid");
+			f.setAccessible(true);
+			result = f.getLong(p);
+			f.setAccessible(false);
+		}
+		catch (Exception ex) {
+			throw new UnsupportedOperationException("Process PID calculation not supported on the current platform",
+					ex);
+		}
 		return result;
 	}
 
