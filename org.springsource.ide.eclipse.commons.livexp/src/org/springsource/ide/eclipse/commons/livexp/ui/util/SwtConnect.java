@@ -82,6 +82,10 @@ public class SwtConnect {
 			disposable.dispose();
 		});
 		Stylers stylers = new Stylers(viewer.getTree().getFont());
+		viewer.getControl().addDisposeListener(de -> {
+			disposable.dispose();
+			stylers.dispose();
+		});
 		ILabelProvider baseLabels = (ILabelProvider) viewer.getLabelProvider();
 		Assert.isNotNull(baseLabels); //Can't add bolding support without this! Ensure label provider is set before calling this method
 		
