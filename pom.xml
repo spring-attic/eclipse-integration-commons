@@ -17,13 +17,15 @@
 	</scm>
 
 	<modules>
-		<module>org.springsource.ide.eclipse.commons-feature</module>
 		<module>org.springsource.ide.eclipse.commons.test-feature</module>
 
 		<!-- quick search -->
 		<module>org.springsource.ide.eclipse.commons.quicksearch.feature</module>
 		<module>org.springsource.ide.eclipse.commons.quicksearch</module>
 		<module>org.springsource.ide.eclipse.commons.quicksearch.test</module>
+
+		<!-- dashboard -->
+		<module>org.springsource.ide.eclipse.dashboard.ui</module>
 
 		<!-- getting started -->
 		<module>org.springsource.ide.eclipse.commons.browser</module>
@@ -37,7 +39,6 @@
 		<module>org.springsource.ide.eclipse.commons.frameworks.ui</module>
 		<module>org.springsource.ide.eclipse.commons.configurator</module>
 		<module>org.springsource.ide.eclipse.commons.tests</module>
-		<module>org.springsource.ide.eclipse.dashboard.ui</module>
 		<module>org.springsource.ide.eclipse.commons.tests.util</module>
 		<module>org.springsource.ide.eclipse.commons.ui</module>
 		<module>org.springsource.ide.eclipse.commons.livexp</module>
