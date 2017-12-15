@@ -66,8 +66,8 @@ public class ProjectChangeListenerManager implements IResourceChangeListener {
 	}
 
 	public void dispose() {
+		workspace.removeResourceChangeListener(this);
 		if (listener!=null) {
-			workspace.removeResourceChangeListener(this);
 			listener = null;
 		}
 	}
