@@ -31,7 +31,7 @@ public class Timewatch {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				if (!done.get()) {
-					System.err.println("WARNING! "+taskName+ " is longer than "+limit);
+					System.err.println("WARNING! "+taskName+ " is longer than "+(limit.toMillis() / 1000)+" seconds");
 					System.err.println(StsTestUtil.getStackDumps());
 				}
 				return Status.OK_STATUS;

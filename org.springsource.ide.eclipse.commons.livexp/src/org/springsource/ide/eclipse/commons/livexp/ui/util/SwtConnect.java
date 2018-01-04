@@ -112,7 +112,6 @@ public class SwtConnect {
 					for (IRegion r : filter.getHighlights(label)) {
 						styledLabel.setStyle(r.getOffset(), r.getLength(), bold);
 					}
-					System.out.println("change label higlights: "+label);
 				}
 				cell.setStyleRanges(styledLabel.getStyleRanges());
 				cell.setText(styledLabel.getString());
