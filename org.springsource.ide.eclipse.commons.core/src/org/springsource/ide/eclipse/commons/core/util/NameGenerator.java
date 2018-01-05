@@ -24,7 +24,7 @@ public class NameGenerator {
 	private int number = 0;
 
 	public NameGenerator(String previousName) {
-		prefix = previousName;
+		prefix = previousName.replace(' ', '-'); //See: https://github.com/spring-projects/spring-ide/issues/230
 		int d = previousName.lastIndexOf(delimiter);
 		if (d>=0) {
 			try {
