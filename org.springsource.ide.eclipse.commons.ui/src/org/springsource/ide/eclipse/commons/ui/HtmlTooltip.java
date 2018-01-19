@@ -19,7 +19,6 @@ import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.internal.text.html.HTML2TextReader;
 import org.eclipse.jface.internal.text.html.HTMLPrinter;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -81,8 +80,6 @@ public class HtmlTooltip extends ToolTip {
 	private static final Pattern FONT_FAMILY_PATTERN = Pattern.compile("html\\s*\\{.*(?:\\s|;)?font-family:\\s*(.+?);.*\\}");
 	private static final Pattern FONT_WEIGHT_PATTERN = Pattern.compile("html\\s*\\{.*(?:\\s|;)?font-weight:\\s*(\\w+)\\;?.*\\}");
 
-	private static final boolean DEBUG = (""+Platform.getLocation()).contains("kdvolder");
-
 	private Supplier<String> html;
 	private Point maxSizeConstraints = new Point(SWT.DEFAULT, SWT.DEFAULT);
 
@@ -100,8 +97,6 @@ public class HtmlTooltip extends ToolTip {
 
 		browser.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
 		browser.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
-		debug("foreground = "+browser.getForeground().getRGB());
-		debug("background = "+browser.getBackground().getRGB());
 
 		browser.setJavascriptEnabled(false);
 
@@ -116,7 +111,6 @@ public class HtmlTooltip extends ToolTip {
 		browser.setMenu(new Menu(browser.getShell(), SWT.NONE));
 
 		String htmlContent = html.get();
-		debug("html = "+htmlContent);
 
 		browser.setText(htmlContent);
 		Point size = computeSizeHint(browser, htmlContent);
@@ -138,12 +132,6 @@ public class HtmlTooltip extends ToolTip {
 		});
 
 		return composite;
-	}
-
-	private void debug(String string) {
-		if (DEBUG) {
-			System.out.println(string);
-		}
 	}
 
 	@Override
