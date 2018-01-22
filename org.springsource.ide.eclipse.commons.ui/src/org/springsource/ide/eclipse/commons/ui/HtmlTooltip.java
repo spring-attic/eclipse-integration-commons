@@ -20,7 +20,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.jface.internal.text.html.HTML2TextReader;
-import org.eclipse.jface.internal.text.html.HTMLPrinter;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.resource.JFaceResources;
@@ -67,7 +66,7 @@ public class HtmlTooltip extends ToolTip {
 		// wrong color.
 		//
 		// See bug: https://www.pivotaltracker.com/story/show/142483141
-		HTMLPrinter.insertPageProlog(new StringBuffer(), 0);
+		HTMLPrinter.insertPageProlog(new StringBuilder(), 0);
 		Display.getDefault().syncExec(() -> {});
 	}
 
