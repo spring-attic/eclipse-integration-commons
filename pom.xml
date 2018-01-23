@@ -282,7 +282,7 @@
 					<url>http://download.eclipse.org/eclipse/updates/4.6/</url>
 				</repository>
 				<repository>
-					<id>mars</id>
+					<id>neon</id>
 					<layout>p2</layout>
 					<url>http://download.eclipse.org/releases/neon/</url>
 				</repository>
@@ -314,9 +314,46 @@
 					<url>http://download.eclipse.org/eclipse/updates/4.7/</url>
 				</repository>
 				<repository>
-					<id>mars</id>
+					<id>oxygen</id>
 					<layout>p2</layout>
 					<url>http://download.eclipse.org/releases/oxygen/</url>
+				</repository>
+				<repository>
+					<id>swtbot</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+				</repository>
+			</repositories>
+			<modules>
+				<module>org.springsource.ide.eclipse.dashboard-feature-e44</module>
+				<module>org.springsource.ide.eclipse.commons.site-e44</module>
+			</modules>
+		</profile>
+		
+		<profile>
+			<id>e48</id>
+			<properties>
+				<dist.target>e4.8</dist.target>
+				<dist.platform.name>Photon</dist.platform.name>
+				<dist.platform.id>photon</dist.platform.id>
+				<dist.platform.version>4.8</dist.platform.version>
+				<package.qualifierPrefix>e48</package.qualifierPrefix>
+			</properties>
+			<repositories>
+				<repository>
+					<id>platform</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/eclipse/updates/4.8/</url>
+				</repository>
+				<repository>
+					<id>photon</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/releases/photon/</url>
+				</repository>
+				<repository>
+					<id>orbit</id>
+					<layout>p2</layout>
+					<url>http://download.eclipse.org/tools/orbit/downloads/drops/S20180119201206/repository/</url>
 				</repository>
 				<repository>
 					<id>swtbot</id>
