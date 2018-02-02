@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2017 Pivotal Software, Inc.
+ * Copyright (c) 2016, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -46,38 +50,51 @@ import org.springsource.ide.eclipse.commons.frameworks.core.async.ConstructorSea
  *
  */
 @SuppressWarnings("restriction")
-public class NoPrefixConstructorProposalComputer implements IJavaCompletionProposalComputer{
+public class NoPrefixConstructorProposalComputer implements IJavaCompletionProposalComputer {
 	
 	private static final String NEW_KEYWORD = "new";
-	
-	private static final long JAVA_CODE_ASSIST_TIMEOUT= Long.getLong("org.eclipse.jdt.ui.codeAssistTimeout", 5000).longValue(); // ms //$NON-NLS-1$
+	private static final long JAVA_CODE_ASSIST_TIMEOUT= Long.getLong("org.eclipse.jdt.ui.codeAssistTimeout", 5000).longValue() ; // ms //$NON-NLS-1$
 	
 	private ConstructorSearchValueProvider constructorValueProvider = new ConstructorSearchValueProvider();
 
 	@Override
 	public void sessionStarted() {
-		// Nothing to do	
 	}
 
 	@Override
 	public List<ICompletionProposal> computeCompletionProposals(ContentAssistInvocationContext context,
 			IProgressMonitor monitor) {
+
 		if (context instanceof JavaContentAssistInvocationContext) {
 			JavaContentAssistInvocationContext jdtContext = (JavaContentAssistInvocationContext) context;
+
 			try {
+
 				String prefix =jdtContext.computeIdentifierPrefix().toString();
 				/*
 				 * No prefix, "new" keyword preceding and certain type expected? Compute constructors based on expected type.
 				 */
 				if (prefix.isEmpty() && isNewKeywordPreceeding(jdtContext) && jdtContext.getExpectedType() != null) {
-					List<ICompletionProposal> proposals = new ArrayList<>();
-					proposals.addAll(Arrays.asList(doComputeCompletionProposals(jdtContext, monitor)));
-					return proposals;
+
+					CompletableFuture<List<ICompletionProposal>> future = CompletableFuture.supplyAsync(() -> {
+						List<ICompletionProposal> proposals = new ArrayList<>();
+						proposals.addAll(Arrays.asList(doComputeCompletionProposals(jdtContext, monitor)));
+						return proposals;
+					});
+
+					try {
+						long timeout = JAVA_CODE_ASSIST_TIMEOUT;
+						timeout -= (timeout / 4); // run with slightly less time then the timeout to avoid hitting that
+						return future.get(timeout, TimeUnit.MILLISECONDS);
+					} catch (InterruptedException | ExecutionException | TimeoutException e) {
+						e.printStackTrace();
+					}
 				}
 			} catch (BadLocationException e) {
 				CompletionsActivator.log(e);
 			}
 		}
+
 		return Collections.emptyList();
 	}
 	
@@ -163,56 +180,19 @@ public class NoPrefixConstructorProposalComputer implements IJavaCompletionPropo
 			return new CompletionProposalCollector(context.getCompilationUnit(), true);
 	}
 	
-	private static IProgressMonitor createTimeoutProgressMonitor(final long timeout) {
-		return new IProgressMonitor() {
-
-			private long fEndTime;
-			
-			@Override
-			public void beginTask(String name, int totalWork) {
-				fEndTime= System.currentTimeMillis() + timeout;
-			}
-			@Override
-			public boolean isCanceled() {
-				return fEndTime <= System.currentTimeMillis();
-			}
-			@Override
-			public void done() {
-			}
-			@Override
-			public void internalWorked(double work) {
-			}
-			@Override
-			public void setCanceled(boolean value) {
-			}
-			@Override
-			public void setTaskName(String name) {
-			}
-			@Override
-			public void subTask(String name) {
-			}
-			@Override
-			public void worked(int work) {
-			}
-		};
-	}
-
 	@Override
 	public List<IContextInformation> computeContextInformation(ContentAssistInvocationContext context,
 			IProgressMonitor monitor) {
-		// Nothing to do
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Override
 	public String getErrorMessage() {
-		// Nothing to do
 		return null;
 	}
 
 	@Override
 	public void sessionEnded() {
-		// Nothing to do
 	}
 
 }
