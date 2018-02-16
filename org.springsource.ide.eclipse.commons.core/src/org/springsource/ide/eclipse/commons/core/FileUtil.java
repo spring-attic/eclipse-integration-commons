@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -152,22 +152,6 @@ public class FileUtil {
 		finally {
 			monitor.done();
 		}
-	}
-
-	/**
-	 * Deprecated: moved to org.springsource.ide.eclipse.commons.frameworks.core.util.FileUtil.
-	 */
-	@Deprecated
-	public static File createTempDirectory(String name) throws IOException {
-		return org.springsource.ide.eclipse.commons.frameworks.core.util.FileUtil.createTempDirectory(name);
-	}
-
-	/**
-	 * Deprecated: moved to org.springsource.ide.eclipse.commons.frameworks.core.util.FileUtil.
-	 */
-	@Deprecated
-	public static File createTempDirectory() throws IOException {
-		return org.springsource.ide.eclipse.commons.frameworks.core.util.FileUtil.createTempDirectory();
 	}
 
 	private static String[] BINARY_EXTENSIONS = new String[] { "jar", "gif", "jpg", "jpeg", ".class", "png" };

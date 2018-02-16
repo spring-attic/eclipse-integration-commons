@@ -42,6 +42,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.springsource.ide.eclipse.commons.frameworks.core.ExceptionUtil;
 import org.springsource.ide.eclipse.commons.frameworks.core.FrameworkCoreActivator;
+import org.springsource.ide.eclipse.commons.frameworks.core.util.FileUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarker;
@@ -229,10 +230,7 @@ public class StsTestUtil {
 	}
 
 	public static File createTempDirectory(String prefix, String suffix) throws IOException {
-		File file = File.createTempFile(prefix, suffix);
-		file.delete();
-		file.mkdirs();
-		return file;
+		return FileUtil.createTempDirectory(prefix, suffix);
 	}
 
 	public static void deleteAllProjects() throws Exception {
