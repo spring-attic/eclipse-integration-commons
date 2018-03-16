@@ -62,6 +62,7 @@ import org.eclipse.ui.internal.browser.Trace;
 import org.eclipse.ui.internal.browser.WebBrowserPreference;
 import org.eclipse.ui.internal.browser.WebBrowserUtil;
 import org.springsource.ide.eclipse.commons.browser.BrowserImages;
+import org.springsource.ide.eclipse.commons.browser.BrowserPlugin;
 
 /**
  * A Web browser widget. It extends the Eclipse SWT Browser widget by adding an
@@ -234,11 +235,16 @@ public class StsBrowserViewer extends Composite {
             this.browser = new Browser(this, SWT.NONE);
         }
         catch (SWTError e) {
+        		BrowserPlugin.log(e);
             if (e.code!=SWT.ERROR_NO_HANDLES) {
                 WebBrowserUtil.openError(Messages.errorCouldNotLaunchInternalWebBrowser);
                 return;
             }
             text = new BrowserText(this, this, e);
+        }
+        catch (Throwable t) {
+        		WebBrowserUtil.openError("Failure to open browser: " + t.getMessage());
+        		BrowserPlugin.log(t);
         }
 
         if (showURLbar) {
