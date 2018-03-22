@@ -78,7 +78,7 @@ public class StsProperties {
 		// matter what).
 
 		props.put("spring.site.url", "http://spring.io");
-		props.put("spring.initializr.json.url", "http://start.spring.io");
+		props.put("spring.initializr.json.url", "https://start.spring.io");
 
 		//Urls used in the dashboard. For each XXX.url=... property, if
 		//  - XXX.url.label is defined that label will be used for the corresponding
