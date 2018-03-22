@@ -76,8 +76,12 @@ public class ExceptionUtil {
 		// The message of nested exception is usually more interesting than the
 		// one on top.
 		Throwable cause = getDeepestCause(e);
-		String msg = cause.getClass().getSimpleName() + ": " + cause.getMessage();
-		return msg;
+		String errorType = cause.getClass().getSimpleName();
+		String msg = cause.getMessage();
+		if (errorType.equals("ValueParseException") && msg!=null) {
+			return msg;
+		}
+		return errorType + ": " + msg;
 	}
 
 	public static IllegalStateException notImplemented(String string) {
