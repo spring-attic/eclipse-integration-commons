@@ -35,7 +35,6 @@ import org.springsource.ide.eclipse.commons.browser.IEclipseToBrowserFunction;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 /**
  *
  * @author Miles Parker
@@ -77,8 +76,8 @@ public class StsBrowserManager {
 		onLoadFunctions = new ArrayList<IEclipseToBrowserFunction>();
 		String oldUrl = currentUrl;
 		currentUrl = browser.getUrl();
-		System.out.println("oldUrl: "+oldUrl);
-		System.out.println("newUrl: "+currentUrl);
+//		System.out.println("oldUrl: "+oldUrl);
+//		System.out.println("newUrl: "+currentUrl);
 		//Need to remove any query parameters that might break pattern matching for extensions
 		currentUrl = StringUtils.substringBeforeLast(currentUrl, "?");
 		currentUrl = StringUtils.substringBeforeLast(currentUrl, "&");
@@ -136,27 +135,29 @@ public class StsBrowserManager {
 
 	private void doCall(final IEclipseToBrowserFunction function) {
 		Display.getDefault().asyncExec(() -> {
-				IEclipseToBrowserFunction provider = function;
-				if (provider!=null) {
-					String fname = provider.getFunctionName();
-					try {
-						Object[] fargs = provider.getArguments();
-						String code = "window."+fname+serializeArguments(fargs);
-						boolean success = browser.execute(code);
-						if (!success) {
-							throw new ExecutionException("Problems executing script: '"+code+"'");
-						}
-					} catch (Exception e) {
-						StatusManager.getManager().handle(
-								new Status(IStatus.ERROR, BrowserPlugin.PLUGIN_ID,
-										"Could not call browser function extension: " + fname, e
-								)
-						);
+			IEclipseToBrowserFunction provider = function;
+			if (provider!=null) {
+				String fname = provider.getFunctionName();
+				try {
+					Object[] fargs = provider.getArguments();
+					//System.out.println("doCall "+fname+" "+Arrays.asList(fargs));
+					String code = "window."+fname+serializeArguments(fargs);
+					boolean success = browser.execute(code);
+					//System.out.println("doCall("+fname+") => "+success);
+					if (!success) {
+						throw new ExecutionException("Problems executing script: '"+code+"'");
 					}
+				} catch (Exception e) {
+					StatusManager.getManager().handle(
+							new Status(IStatus.ERROR, BrowserPlugin.PLUGIN_ID,
+									"Could not call browser function extension: " + fname, e
+							)
+					);
 				}
-				if (DEBUG) {
-					printPageHtml();
-				}
+			}
+			if (DEBUG) {
+				printPageHtml();
+			}
 		});
 	}
 
@@ -203,7 +204,9 @@ public class StsBrowserManager {
 	 * For debugging..
 	 */
 	private void printPageHtml() {
-		System.out.println(browser.getText());
+		Display.getDefault().asyncExec(() -> {
+			System.out.println(browser.getText());
+		});
 	}
 
 	public void dispose() {
