@@ -29,6 +29,7 @@ import org.springsource.ide.eclipse.commons.livexp.core.FieldModel;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.SelectionModel;
+import org.springsource.ide.eclipse.commons.livexp.core.UIValueListener;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 import org.springsource.ide.eclipse.commons.livexp.util.Parser;
@@ -157,23 +158,21 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 				handleModifyText(combo);
 			}
 		});
-		selection.selection.addListener(new ValueListener<T>() {
-			public void gotValue(LiveExpression<T> exp, T newSelection) {
-				if (newSelection!=null) {
-					//Technically, not entirely correct. This might
-					// select the wrong element if more than one option
-					// has the same label text.
-					String newText = labelProvider.getText(newSelection);
-					combo_setText(combo, newText);
-					if (!combo.getText().equals(newText)) {
-						//widget rejected the selection. To avoid widget state
-						// and model state getting out-of-sync, refelct current
-						// widget state back to the model:
-						handleModifyText(combo);
-					}
+		selection.selection.addListener(UIValueListener.from((exp, newSelection) -> {
+			if (newSelection!=null && !combo.isDisposed()) {
+				//Technically, not entirely correct. This might
+				// select the wrong element if more than one option
+				// has the same label text.
+				String newText = labelProvider.getText(newSelection);
+				combo_setText(combo, newText);
+				if (!combo.getText().equals(newText)) {
+					//widget rejected the selection. To avoid widget state
+					// and model state getting out-of-sync, refelct current
+					// widget state back to the model:
+					handleModifyText(combo);
 				}
 			}
-		});
+		}));
 	}
 
 	private void combo_setText(final Combo combo, String newText) {

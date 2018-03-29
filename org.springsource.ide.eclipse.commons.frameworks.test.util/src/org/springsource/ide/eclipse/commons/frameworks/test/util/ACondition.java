@@ -89,7 +89,7 @@ public abstract class ACondition {
 	 */
 	@Deprecated
 	public void waitFor(long timeout) throws Exception {
-		long SLEEP_FOR = Math.max(2000, Math.min(100, timeout/5));
+		long SLEEP_FOR = Math.max(2000, timeout/5);
 		long startTime = System.currentTimeMillis();
 		long endTime = startTime + timeout;
 		boolean result = false;
