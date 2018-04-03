@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2015 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.IStatus;
@@ -132,8 +133,8 @@ public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContex
 	}
 
 	/**
-	 * Returns true if <code>name</code> matches the expected constraints
-	 * expressed by the other parameters.
+	 * Returns true if <code>name</code> matches the expected constraints expressed
+	 * by the other parameters.
 	 *
 	 * @param name the name of the directory on disk
 	 * @param path the expected path prefix
@@ -362,9 +363,8 @@ public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContex
 		}
 
 		/*
-		 * p2 has a bug (ah, more then one actually): it can't make its mind if
-		 * it wants sts.ini or STS.ini so on case sensitive file systems we copy
-		 * it file again.
+		 * p2 has a bug (ah, more then one actually): it can't make its mind if it wants
+		 * sts.ini or STS.ini so on case sensitive file systems we copy it file again.
 		 */
 		if (Platform.getOS().equals(Platform.OS_MACOSX)) {
 			File upperCaseFile = new File(".", "STS.ini");
@@ -379,8 +379,8 @@ public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContex
 					FileUtil.copyFile(upperCaseFile, lowerCaseFile, new NullProgressMonitor());
 				}
 				catch (CoreException e) {
-					StatusHandler.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-							"Could not copy STS.ini to sts.ini", e));
+					StatusHandler.log(
+							new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not copy STS.ini to sts.ini", e));
 				}
 			}
 		}
@@ -388,8 +388,8 @@ public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContex
 		// Check if we should run at all
 		final boolean configured = Activator.getDefault().getPreferenceStore()
 				.getBoolean(Activator.PROPERTY_CONFIGURATOR_PROCESSED);
-		final boolean pendingRequests = StringUtils.hasLength(Activator.getDefault().getPreferenceStore()
-				.getString(Activator.PROPERTY_CONFIGURE_TARGETS));
+		final boolean pendingRequests = StringUtils
+				.hasLength(Activator.getDefault().getPreferenceStore().getString(Activator.PROPERTY_CONFIGURE_TARGETS));
 
 		if (configured && !pendingRequests) {
 
@@ -462,31 +462,39 @@ public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContex
 				locations.add(0, getInstallLocation());
 			}
 		}
+		String[] pathSegments = path.split("/");
 		outerLoop: for (File location : locations) {
 			// Iterate up till dm Server, tc Server or samples dir is found
-			while (location != null) {
-				File[] files = location.listFiles();
-				if (files != null) {
-					for (File file : files) {
-						if (file.isDirectory() && matches(file.getName(), path, versionRange)) {
-							matches.add(file);
+			IPath p = new Path(location.toString());
+			for (int i = 0; i < pathSegments.length - 1; i++) {
+				p = p.append(pathSegments[i]);
+			}
+			File locationContainerFolder = p.toFile();
+			if (locationContainerFolder.exists() && locationContainerFolder.isDirectory()) {
+				while (locationContainerFolder != null) {
+					File[] files = locationContainerFolder.listFiles();
+					if (files != null) {
+						for (File file : files) {
+							if (file.isDirectory()
+									&& matches(file.getName(), pathSegments[pathSegments.length - 1], versionRange)) {
+								matches.add(file);
+							}
 						}
 					}
+					if (!matches.isEmpty() && firstMatchOnly) {
+						break outerLoop;
+					}
+					if (!recurse) {
+						break;
+					}
+					locationContainerFolder = locationContainerFolder.getParentFile();
 				}
-				if (!matches.isEmpty() && firstMatchOnly) {
-					break outerLoop;
-				}
-				if (!recurse) {
-					break;
-				}
-				location = location.getParentFile();
 			}
 		}
 		if (!matches.isEmpty()) {
 			Collections.sort(matches, new Comparator<File>() {
 				/**
-				 * Sorts high versions first and path names with invalid
-				 * versions last.
+				 * Sorts high versions first and path names with invalid versions last.
 				 */
 				public int compare(File o1, File o2) {
 					Version v1 = getVersion(o1.getName());
@@ -500,6 +508,22 @@ public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContex
 					return -v1.compareTo(v2);
 				}
 			});
+			// If installFolder is given by a few segments the install location is the top
+			// segment.
+			// The versions would be attached to the bottom segment hence sorting should be
+			// done before "normalization"
+			if (pathSegments.length > 1) {
+				List<File> normalizedMatches = new ArrayList<>(matches.size());
+				for (File match : matches) {
+					while (match != null && !match.getName().equals(pathSegments[0])) {
+						match = match.getParentFile();
+					}
+					if (match != null) {
+						normalizedMatches.add(match);
+					}
+				}
+				matches = normalizedMatches;
+			}
 			return matches;
 		}
 		return Collections.emptyList();
@@ -510,8 +534,8 @@ public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContex
 	}
 
 	public void setInstallLocation(File location) {
-		Activator.getDefault().getPreferenceStore()
-				.setValue(Activator.PROPERTY_USER_INSTALL_PATH, location.getAbsolutePath());
+		Activator.getDefault().getPreferenceStore().setValue(Activator.PROPERTY_USER_INSTALL_PATH,
+				location.getAbsolutePath());
 	}
 
 	/**
@@ -528,8 +552,8 @@ public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContex
 	private void createProject(IProgressMonitor monitor, File sample) {
 		if (sample.isDirectory()) {
 			try {
-				IProjectDescription desc = ResourcesPlugin.getWorkspace().loadProjectDescription(
-						new Path(sample.getAbsolutePath()).append(".project"));
+				IProjectDescription desc = ResourcesPlugin.getWorkspace()
+						.loadProjectDescription(new Path(sample.getAbsolutePath()).append(".project"));
 				if (desc != null) {
 					String projectName = desc.getName();
 
@@ -542,8 +566,8 @@ public class ConfiguratorImporter implements IIdeUiStartup, IConfigurationContex
 
 			}
 			catch (CoreException e) {
-				StatusHandler.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "An error occurred creating project",
-						e));
+				StatusHandler
+						.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "An error occurred creating project", e));
 			}
 		}
 	}
