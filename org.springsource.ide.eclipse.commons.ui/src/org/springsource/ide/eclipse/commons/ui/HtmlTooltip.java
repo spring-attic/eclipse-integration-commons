@@ -12,38 +12,44 @@ package org.springsource.ide.eclipse.commons.ui;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.internal.text.html.HTML2TextReader;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.resource.JFaceColors;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.TextPresentation;
+import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTError;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationAdapter;
 import org.eclipse.swt.browser.LocationEvent;
 import org.eclipse.swt.browser.OpenWindowListener;
 import org.eclipse.swt.browser.WindowEvent;
 import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.TextLayout;
 import org.eclipse.swt.graphics.TextStyle;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.progress.UIJob;
 import org.springsource.ide.eclipse.commons.internal.ui.UiPlugin;
 
 /**
@@ -91,46 +97,80 @@ public class HtmlTooltip extends ToolTip {
 	@Override
 	protected Composite createToolTipContentArea(Event event, Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(GridLayoutFactory.fillDefaults().create());
-		Browser browser = new Browser(composite, SWT.NONE);
-
-		browser.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
-		browser.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
-
-		browser.setJavascriptEnabled(false);
-
-		browser.addOpenWindowListener(new OpenWindowListener() {
-			@Override
-			public void open(WindowEvent event) {
-				event.required= true; // Cancel opening of new windows
-			}
-		});
-
-		// Replace browser's built-in context menu with none
-		browser.setMenu(new Menu(browser.getShell(), SWT.NONE));
-
+		composite.setLayout(new GridLayout());
 		String htmlContent = html.get();
 
-		browser.setText(htmlContent);
-		Point size = computeSizeHint(browser, htmlContent);
-		browser.setLayoutData(GridDataFactory.swtDefaults().hint(size.x, size.y).create());
+		Browser browser;
+		try {
+			browser = new Browser(composite, SWT.NONE);
 
-		// Add after HTML content is set to avoid event fired after the content is set
-		browser.addLocationListener(new LocationAdapter() {
+			Color foreground = JFaceColors.getInformationViewerForegroundColor(parent.getDisplay());
+			Color background = JFaceColors.getInformationViewerBackgroundColor(parent.getDisplay());
+			browser.setForeground(foreground);
+			browser.setBackground(background);
+			//browser.setJavascriptEnabled(false);
+
+			browser.addOpenWindowListener(new OpenWindowListener() {
+				@Override
+				public void open(WindowEvent event) {
+					event.required= true; // Cancel opening of new windows
+				}
+			});
+
+			// Replace browser's built-in context menu with none
+			browser.setMenu(new Menu(browser.getShell(), SWT.NONE));
+
+			Point size = computeSizeHint(browser, htmlContent);
+			browser.setLayoutData(GridDataFactory.swtDefaults().hint(size.x, size.y).create());
+
+			browser.setText(htmlContent);
+
+			// Add after HTML content is set to avoid event fired after the content is set
+			browser.addLocationListener(new LocationAdapter() {
+				@Override
+				public void changing(LocationEvent event) {
+					super.changing(event);
+					System.out.println("location = " + event.location);
+					try {
+						if (event.location!=null) {
+							if (event.location.startsWith("about:")) { //about:blank url
+								//ignore
+							} else {
+								event.doit = false;
+								openUrl(event.location);
+							}
+						}
+					} catch (Exception e) {
+						UiPlugin.log(e);
+					}
+				}
+			});
+		} catch (SWTError e) {
+			System.out.println("Could not instantiate Browser: " + e.getMessage());
+			throw new RuntimeException(e);
+		}
+		return composite;
+	}
+
+	private void openUrl(String url) {
+		//Careful calling this in response to a location change event directly makes SWT browser
+		//on Linux deadlock and permanently breaks embedded browser widget until workbench restart.
+		//This probably a bug in SWT browser widget.
+		new UIJob("open url") {
+
 			@Override
-			public void changing(LocationEvent event) {
-				super.changing(event);
-				event.doit = false;
+			public IStatus runInUIThread(IProgressMonitor arg0) {
 				try {
-					PlatformUI.getWorkbench().getBrowserSupport().createBrowser(null).openURL(new URL(event.location));
 					hide();
-				} catch (PartInitException | MalformedURLException e) {
+					PlatformUI.getWorkbench().getBrowserSupport().createBrowser(null).openURL(new URL(url));
+				}
+				catch (Exception e) {
 					UiPlugin.log(e);
 				}
+				return Status.OK_STATUS;
 			}
-		});
-
-		return composite;
+		}
+		.schedule();
 	}
 
 	@Override
@@ -275,5 +315,4 @@ public class HtmlTooltip extends ToolTip {
 			}
 		}
 	}
-
 }
