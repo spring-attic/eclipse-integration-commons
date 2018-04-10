@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2017 Pivotal, Inc.
+ * Copyright (c) 2016, 2018 Pivotal, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,7 @@ import org.springsource.ide.eclipse.commons.livexp.util.ExceptionUtil;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.ReplayProcessor;
-import reactor.util.concurrent.QueueSupplier;
+import reactor.util.concurrent.Queues;
 
 /**
  * 
@@ -74,7 +74,7 @@ public class FluxConstructorSearch {
 	private IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
 	private String pattern = null;
 	private int patternRule = SearchPattern.R_PATTERN_MATCH;
-	private int bufferSize = QueueSupplier.SMALL_BUFFER_SIZE;
+	private int bufferSize = Queues.SMALL_BUFFER_SIZE;
 	private boolean useSystemJob = false;
 	private int jobPriority = Job.INTERACTIVE;
 
@@ -113,7 +113,7 @@ public class FluxConstructorSearch {
 	class FluxSearchRequestor  {
 
 		private boolean isCanceled = false;
-		private ReplayProcessor<JavaConstructorHint> emitter = ReplayProcessor.<JavaConstructorHint>create(bufferSize).connect();
+		private ReplayProcessor<JavaConstructorHint> emitter = ReplayProcessor.<JavaConstructorHint>create(bufferSize);
 		private Flux<JavaConstructorHint> flux = emitter.doOnCancel(() -> isCanceled=true);
 
 		public Flux<JavaConstructorHint> asFlux() {

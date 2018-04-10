@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Pivotal, Inc.
+ * Copyright (c) 2016, 2018 Pivotal, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,8 +38,7 @@ import org.springsource.ide.eclipse.commons.livexp.util.ExceptionUtil;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.ReplayProcessor;
-
-import reactor.util.concurrent.QueueSupplier;
+import reactor.util.concurrent.Queues;
 
 /**
  * Helper class to perform a search using Eclipse JDT search engine returning
@@ -74,7 +73,7 @@ public class FluxJdtSearch {
 	private IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
 	private SearchPattern pattern = null;
 	private SearchParticipant[] participants = new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()};
-	private int bufferSize = QueueSupplier.SMALL_BUFFER_SIZE;
+	private int bufferSize = Queues.SMALL_BUFFER_SIZE;
 	private boolean useSystemJob = false;
 	private int jobPriority = Job.INTERACTIVE;
 
@@ -133,7 +132,7 @@ public class FluxJdtSearch {
 	class FluxSearchRequestor extends SearchRequestor {
 
 		private boolean isCanceled = false;
-		private ReplayProcessor<SearchMatch> emitter = ReplayProcessor.<SearchMatch>create(bufferSize).connect();
+		private ReplayProcessor<SearchMatch> emitter = ReplayProcessor.<SearchMatch>create(bufferSize);
 		private Flux<SearchMatch> flux = emitter.doOnCancel(() -> isCanceled=true);
 
 		public Flux<SearchMatch> asFlux() {
