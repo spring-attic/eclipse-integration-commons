@@ -17,21 +17,21 @@
 	<category-def name="Resources / Eclipse Integration Commons" label="Resources / Eclipse Integration Commons"/>
 
  	<feature
-		url="org.springsource.ide.eclipse.commons.quicksearch.feature_3.9.4.qualifier.jar"
-		id="org.springsource.ide.eclipse.commons.quicksearch.feature" version="3.9.4.qualifier">
+		url="org.springsource.ide.eclipse.commons.quicksearch.feature_3.9.5.qualifier.jar"
+		id="org.springsource.ide.eclipse.commons.quicksearch.feature" version="3.9.5.qualifier">
 		<category name="Core / Eclipse Integration Commons" />
 	</feature>
 	
 	<feature
-		url="org.springsource.ide.eclipse.dashboard_3.9.4.qualifier.jar"
-		id="org.springsource.ide.eclipse.dashboard" version="3.9.4.qualifier">
+		url="org.springsource.ide.eclipse.dashboard_3.9.5.qualifier.jar"
+		id="org.springsource.ide.eclipse.dashboard" version="3.9.5.qualifier">
 		<category name="Core / Eclipse Integration Commons" />
 	</feature>
 
 	<!-- Dependencies - uncategorized -->
 	<feature
-		url="org.springsource.ide.eclipse.commons.test_3.9.4.qualifier.jar"
-		id="org.springsource.ide.eclipse.commons.test" version="3.9.4.qualifier">
+		url="org.springsource.ide.eclipse.commons.test_3.9.5.qualifier.jar"
+		id="org.springsource.ide.eclipse.commons.test" version="3.9.5.qualifier">
 	</feature>
 	
 	<bundle id="org.springsource.ide.eclipse.commons.content.core" version="0.0.0"/>
