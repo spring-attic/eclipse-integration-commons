@@ -44,6 +44,19 @@
 	<bundle id="org.springsource.ide.eclipse.commons.completions" version="0.0.0"/>
 	<bundle id="org.springsource.ide.eclipse.commons.jdk_tools" version="0.0.0"/>
 
+	<!-- sshj and dependencies -->
+	
+    <bundle id="bcpkix" version="1.57.0"/>
+    <bundle id="bcpkix.source" version="1.57.0"/>
+    <bundle id="bcprov" version="1.57.0"/>
+    <bundle id="bcprov.source" version="1.57.0"/>
+    <bundle id="com.hierynomus.sshj" version="0.24.0"/>
+    <bundle id="com.hierynomus.sshj.source" version="0.24.0"/>
+    <bundle id="com.jcraft.jzlib" version="1.1.3"/>
+    <bundle id="com.jcraft.jzlib.source" version="1.1.3"/>
+    <bundle id="net.i2p.crypto.eddsa" version="0.2.0"/>
+    <bundle id="net.i2p.crypto.eddsa.source" version="0.2.0"/>
+
 	<!-- third-party dependencies -->
 	<bundle id="com.springsource.util.common" version="0.0.0"/>
 	<bundle id="com.springsource.util.common.source" version="0.0.0"/>
