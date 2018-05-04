@@ -142,10 +142,12 @@ public class ZipFileUtil {
 					Policy.checkCancelled(monitor);
 					monitor.subTask(name);
 					File entryFile = new File(targetFile, name);
-					if (name.contains("..")
-							&& !entryFile.getCanonicalPath().startsWith(targetFile.getCanonicalPath())) {
-						throw new ZipException("The file " + name +
-								" is trying to leave the target output directory of " + targetFile);
+					/*
+					 * Ensure the outputdir + name doesn't leave the outputdir.
+					 */
+					if (!entryFile.toPath().normalize().startsWith(targetFile.toPath().normalize())) {
+						throw new ZipException("The file " + name
+								+ " is trying to leave the target output directory of " + targetFile);
 					}
 					if (entry.isDirectory()) {
 						entryFile.mkdirs();
