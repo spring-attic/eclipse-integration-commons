@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -140,11 +141,16 @@ public class ZipFileUtil {
 
 					Policy.checkCancelled(monitor);
 					monitor.subTask(name);
+					File entryFile = new File(targetFile, name);
+					if (name.contains("..")
+							&& !entryFile.getCanonicalPath().startsWith(targetFile.getCanonicalPath())) {
+						throw new ZipException("The file " + name +
+								" is trying to leave the target output directory of " + targetFile);
+					}
 					if (entry.isDirectory()) {
-						new File(targetFile, name).mkdirs();
+						entryFile.mkdirs();
 					}
 					else {
-						File entryFile = new File(targetFile, name);
 						entryFile.getParentFile().mkdirs();
 						FileOutputStream out = new FileOutputStream(entryFile);
 						try {
