@@ -145,7 +145,11 @@ public class StsBrowserManager {
 					boolean success = browser.execute(code);
 					//System.out.println("doCall("+fname+") => "+success);
 					if (!success) {
-						throw new ExecutionException("Problems executing script: '"+code+"'");
+						//Can't seem to get rid of this error with 'window.addHtml' (we tried quite a bit but nothing seems to work).
+						//The error seems to do no real harm... so let's just hide it...
+						if (!code.contains("window.addHtml")) {
+							throw new ExecutionException("Problems executing script: '"+code+"'");
+						}
 					}
 				} catch (Exception e) {
 					StatusManager.getManager().handle(

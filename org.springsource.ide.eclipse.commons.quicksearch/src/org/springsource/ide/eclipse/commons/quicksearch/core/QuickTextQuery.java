@@ -114,10 +114,6 @@ public class QuickTextQuery {
 		//}
 	}
 
-//	public StringMatcher getPattern() {
-//		return pattern;
-//	}
-
 	public boolean equalsFilter(QuickTextQuery o) {
 		//TODO: actually for case insensitive matches we could relax this and treat patterns that
 		// differ only in case as the same.
