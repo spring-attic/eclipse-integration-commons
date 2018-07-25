@@ -8,7 +8,7 @@ Require-Bundle: org.eclipse.jface,
  org.eclipse.ui.workbench,
  org.eclipse.core.resources,
  org.eclipse.ui.forms,
- com.google.guava;bundle-version="21.0.0",
+ com.google.guava,
  org.eclipse.text
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
