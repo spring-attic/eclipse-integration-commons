@@ -23,6 +23,10 @@ import org.eclipse.jface.viewers.StyledString.Styler;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
@@ -38,7 +42,7 @@ import org.springsource.ide.eclipse.commons.livexp.util.Filters;
  * Convenience methods to attach LiveExp / LiveVar model elements to SWT widgets.
  */
 public class SwtConnect {
-
+	
 	public static void connect(Text text, LiveVariable<String> model) {
 		if (!text.isDisposed()) {
 			text.addDisposeListener(de -> model.dispose());
@@ -148,6 +152,28 @@ public class SwtConnect {
 			widget.addDisposeListener(de -> delayedModel.dispose());
 			connect(widget, delayedModel);
 		}
+	}
+
+	public static void checkbox(Button checkbox, LiveVariable<Boolean> model) {
+		ValueListener<Boolean> modelListener = new UIValueListener<Boolean>() {
+			@Override
+			protected void uiGotValue(LiveExpression<Boolean> exp, Boolean value) {
+				Boolean newValue = model.getValue();
+				boolean select = newValue!=null && newValue;
+				if (!checkbox.isDisposed()) {
+					checkbox.setSelection(select);
+				}
+			}
+		};
+		model.addListener(modelListener);
+		SelectionListener widgetListener = new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				model.setValue(checkbox.getSelection());
+			}
+		};
+		checkbox.addSelectionListener(widgetListener);
+		checkbox.addDisposeListener(xx -> model.removeListener(modelListener));
 	}
 
 }
