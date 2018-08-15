@@ -10,8 +10,14 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.frameworks.test.util;
 
+import static org.junit.Assert.fail;
+
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
+import org.junit.Assert;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 import junit.framework.AssertionFailedError;
@@ -200,6 +206,45 @@ public abstract class ACondition {
 				return true;
 			}
 		};
+	}
+
+	/**
+	 * Repeatedly check asserter for a given duration. If the asserter ever fails
+	 * during that time this check fails.
+	 */
+	public static void expectAllways(String name, long timeout, final Asserter asserter) throws Exception {
+		AtomicReference<Throwable> firstFail = new AtomicReference<>();
+		try {
+			waitFor(name, timeout, () -> {
+				boolean success = false;
+				try {
+					asserter.execute();
+					success = true;
+				} catch (Throwable e) {
+					firstFail.set(e);
+				} finally {
+					//First time asserter does not succeed... the 'waitFor' should end.
+					Assert.assertFalse(success);
+				}
+			});
+			//The waitfor above should fail. Reaching here means it passed.
+			// Make sure we have some kind of exception. Create one if need be.
+			if (firstFail.get()==null) {
+				firstFail.set(new AssertionFailedError(name));
+			}
+		} catch (Throwable e) {
+			//expected. The wait for should fail with negated asserter
+		}
+		Throwable e = firstFail.get();
+		if (e!=null) {
+			if (e instanceof Exception) {
+				throw (Exception)e;
+			} else if (e instanceof Error) {
+				throw (Error)e;
+			} else {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
 }
