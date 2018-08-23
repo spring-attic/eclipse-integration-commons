@@ -20,6 +20,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
@@ -110,18 +111,20 @@ public abstract class PreferencePageWithSections extends PreferencePage implemen
 	}
 
 	public void gotValue(LiveExpression<ValidationResult> exp, ValidationResult status) {
-		setErrorMessage(null);
-		setMessage(null);
-		if (status.isOk()) {
-		} else if (status.status == IStatus.ERROR) {
-			setErrorMessage(status.msg);
-		} else if (status.status == IStatus.WARNING) {
-			setMessage(status.msg, IMessageProvider.WARNING);
-		} else if (status.status == IStatus.INFO) {
-			setMessage(status.msg, IMessageProvider.INFORMATION);
-		} else {
-			setMessage(status.msg, IMessageProvider.NONE);
-		}
+		Display.getDefault().asyncExec(() -> {
+			setErrorMessage(null);
+			setMessage(null);
+			if (status.isOk()) {
+			} else if (status.status == IStatus.ERROR) {
+				setErrorMessage(status.msg);
+			} else if (status.status == IStatus.WARNING) {
+				setMessage(status.msg, IMessageProvider.WARNING);
+			} else if (status.status == IStatus.INFO) {
+				setMessage(status.msg, IMessageProvider.INFORMATION);
+			} else {
+				setMessage(status.msg, IMessageProvider.NONE);
+			}
+		});
 	}
 
 	public IRunnableContext getRunnableContext() {

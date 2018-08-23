@@ -21,7 +21,7 @@ import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 
 import org.eclipse.swt.widgets.Label;
 
-public class CommentSection extends WizardPageSection {
+public class CommentSection extends PrefsPageSection {
 
 	private String text;
 	private Label l;
@@ -49,6 +49,15 @@ public class CommentSection extends WizardPageSection {
 			l.dispose();
 			l = null;
 		}
+	}
+
+	@Override
+	public boolean performOK() {
+		return true;
+	}
+
+	@Override
+	public void performDefaults() {
 	}
 
 }
