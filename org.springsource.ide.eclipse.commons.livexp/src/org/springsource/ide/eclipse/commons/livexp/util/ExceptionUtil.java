@@ -100,6 +100,9 @@ public class ExceptionUtil {
 	}
 
 	public static boolean isCancelation(Throwable e) {
+		if (e==null) {
+			return false;
+		}
 		Throwable cause = e.getCause();
 		boolean isCancel = (
 				e instanceof OperationCanceledException ||
