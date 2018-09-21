@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SpringSource Tool Suite Content (Core)
 Bundle-SymbolicName: org.springsource.ide.eclipse.commons.content.core;singleton:=true
-Bundle-Version: 3.9.6.qualifier
+Bundle-Version: 3.9.7.qualifier
 Bundle-Vendor: Pivotal Software, Inc.
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
