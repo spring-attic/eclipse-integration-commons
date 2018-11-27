@@ -221,19 +221,9 @@ public final class SpringUIUtils {
 	 * <code>true</code> if <code>PreferenceDialog.OK</code> was selected.
 	 */
 	public static boolean showPreferenceDialog(String propertyPageId, IProject project, Map<String, Object> data) {
-		IPreferenceNode targetNode = null;
-
 		PropertyPageManager pageManager = new PropertyPageManager();
 		PropertyPageContributorManager.getManager().contribute(pageManager, project);
-
-		IPreferenceNode[] nodes = pageManager.getRootSubNodes();
-		for (IPreferenceNode node : nodes) {
-			// Was SpringPreferencePage.ID
-			if ("org.springsource.ide.eclipse.commons.projectPropertyPage".equals(node.getId())) {
-				targetNode = node;
-				break;
-			}
-		}
+		IPreferenceNode targetNode = pageManager.find("org.springsource.ide.eclipse.commons.projectPropertyPage/org.springframework.ide.eclipse.ui.validationPropertyPage");
 		if (targetNode != null) {
 			return openPreferenceNode(propertyPageId, targetNode, "Properties for " + project.getName(), project, data);
 		}
@@ -286,10 +276,7 @@ public final class SpringUIUtils {
 		if (part instanceof ITextEditor) {
 			return (ITextEditor) part;
 		}
-		else if (part instanceof IAdaptable) {
-			return (ITextEditor) ((IAdaptable) part).getAdapter(ITextEditor.class);
-		}
-		return null;
+		return part.getAdapter(ITextEditor.class);
 	}
 
 	public static void revealInEditor(IEditorPart editor, int line) {
@@ -332,9 +319,7 @@ public final class SpringUIUtils {
 				if (editor instanceof ITextEditor) {
 					textEditor = (ITextEditor) editor;
 				}
-				else if (editor instanceof IAdaptable) {
-					textEditor = (ITextEditor) ((IAdaptable) editor).getAdapter(ITextEditor.class);
-				}
+				textEditor = ((IAdaptable) editor).getAdapter(ITextEditor.class);
 				if (textEditor != null) {
 					IDocument document = textEditor.getDocumentProvider().getDocument(editor.getEditorInput());
 					try {
