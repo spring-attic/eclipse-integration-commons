@@ -229,7 +229,7 @@ public final class SpringUIUtils {
 		IPreferenceNode[] nodes = pageManager.getRootSubNodes();
 		for (IPreferenceNode node : nodes) {
 			// Was SpringPreferencePage.ID
-			if ("org.springframework.ide.eclipse.ui.projectPropertyPage".equals(node.getId())) {
+			if ("org.springsource.ide.eclipse.commons.projectPropertyPage".equals(node.getId())) {
 				targetNode = node;
 				break;
 			}

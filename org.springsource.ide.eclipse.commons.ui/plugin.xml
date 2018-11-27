@@ -153,6 +153,31 @@
           </command>
       </menuContribution>
    </extension>
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            adaptable="true"
+            class="org.springsource.ide.eclipse.commons.ui.CommonSpringProjectPropertiesPage"
+            id="org.springsource.ide.eclipse.commons.projectPropertyPage"
+            name="Spring"
+            objectClass="org.eclipse.core.resources.IProject">
+         <enabledWhen>
+            <test
+                  property="org.springsource.ide.eclipse.commons.isSpringProject">
+            </test>
+         </enabledWhen>
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="org.springsource.ide.eclipse.commons.ui.SpringPropertyTester"
+            id="org.springsource.ide.eclipse.commons.ui.SpringPropertyTester"
+            namespace="org.springsource.ide.eclipse.commons"
+            properties="isSpringProject,isSpringProjectResource"
+            type="org.eclipse.core.resources.IResource">
+      </propertyTester>
+   </extension>
 
 
 </plugin>
