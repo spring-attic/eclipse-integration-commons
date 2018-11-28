@@ -143,14 +143,22 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="toolbar:org.springsource.ide.eclipse.dashboard.ui.toolbar1">
-          <command
-                commandId="org.springframework.ide.eclipse.boot.dash.ToggleLineNumbers"
-                icon="icons/etool16/show_line_numbers.png"
-                label="Toggle Line Numbers"
-                style="toggle"
-                tooltip="Toggle line numbers in text editors">
-          </command>
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <menu
+               icon="icons/view16/spring.png"
+               id="org.springframework.ide.eclipse.ui.tools"
+               label="Spring"
+               tooltip="Spring Features">
+            <separator
+                  name="group0"
+                  visible="true">
+            </separator>
+            <separator
+                  name="boot"
+                  visible="true">
+            </separator>
+         </menu>
       </menuContribution>
    </extension>
    <extension
