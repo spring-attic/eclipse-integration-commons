@@ -164,15 +164,28 @@
    <extension
          point="org.eclipse.ui.propertyPages">
       <page
-            adaptable="true"
             class="org.springsource.ide.eclipse.commons.ui.CommonSpringProjectPropertiesPage"
             id="org.springsource.ide.eclipse.commons.projectPropertyPage"
-            name="Spring"
-            objectClass="org.eclipse.core.resources.IProject">
+            name="Spring">
          <enabledWhen>
-            <test
-                  property="org.springsource.ide.eclipse.commons.isSpringProject">
-            </test>
+            <or>
+               <and>
+                  <instanceof
+                        value="org.eclipse.core.resources.IProject">
+                  </instanceof>
+                  <test
+                        property="org.springsource.ide.eclipse.commons.isSpringProject">
+                  </test>
+               </and>
+               <and>
+                  <instanceof
+                        value="org.eclipse.jdt.core.IJavaProject">
+                  </instanceof>
+                  <test
+                        property="org.springsource.ide.eclipse.commons.java.isInSpringProject">
+                  </test>
+               </and>
+            </or>
          </enabledWhen>
       </page>
    </extension>
@@ -184,6 +197,13 @@
             namespace="org.springsource.ide.eclipse.commons"
             properties="isSpringProject,isSpringProjectResource"
             type="org.eclipse.core.resources.IResource">
+      </propertyTester>
+      <propertyTester
+            class="org.springsource.ide.eclipse.commons.ui.SpringJavaElementPropertyTester"
+            id="org.springsource.ide.eclipse.commons.ui.SpringJavaElementPropertyTester"
+            namespace="org.springsource.ide.eclipse.commons.java"
+            properties="isInSpringProject,projectNature"
+            type="org.eclipse.jdt.core.IJavaElement">
       </propertyTester>
    </extension>
 
