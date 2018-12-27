@@ -106,7 +106,7 @@
 		<test.useUIThread>true</test.useUIThread>
 		<test.skip>${maven.test.skip}</test.skip>
 
-		<tycho-version>1.1.0</tycho-version>
+		<tycho-version>1.2.0</tycho-version>
 
 		<maven.test.error.ignore>true</maven.test.error.ignore>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
@@ -427,7 +427,7 @@
 				<repository>
 					<id>orbit</id>
 					<layout>p2</layout>
-					<url>http://download.eclipse.org/tools/orbit/downloads/drops/S20181031145145/repository</url>
+					<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20181128170323/repository</url>
 				</repository>
 				<repository>
 					<id>swtbot</id>
@@ -460,10 +460,9 @@
 		<profile>
 			<id>osx</id>
 			<activation>
-				<property>
-					<name>java.vendor.url</name>
-					<value>http://www.apple.com/</value>
-				</property>
+				<os>
+					<family>mac</family>
+				</os>
 			</activation>
 			<properties>
 				<test.osvmargs>-Dosgi.ws=cocoa -XstartOnFirstThread</test.osvmargs>
@@ -657,7 +656,21 @@
 							<arch>x86_64</arch>
 						</environment>
 					</environments>
-				</configuration>
+			       <dependency-resolution>
+			          <extraRequirements>
+			             <requirement>
+			                <type>eclipse-plugin</type>
+			                <id>org.eclipse.equinox.event</id>
+			                <versionRange>0.0.0</versionRange>
+			             </requirement>
+			             <requirement>
+			                <type>eclipse-plugin</type>
+			                <id>org.apache.felix.scr</id>
+			                <versionRange>0.0.0</versionRange>
+			             </requirement>
+			          </extraRequirements>
+			       </dependency-resolution>
+			    </configuration>
 			</plugin>
 
 			<plugin>
@@ -808,6 +821,20 @@
 							-Xmx1024m -XX:MaxPermSize=256m -Djava.io.tmpdir=${project.build.directory}
 							-Duser.home=${project.build.directory} ${test.vmargs}
 						</argLine>
+
+						<bundleStartLevel>
+							<bundle>
+								<id>org.eclipse.equinox.event</id>
+								<level>2</level>
+								<autoStart>true</autoStart>
+							</bundle>
+							<bundle>
+								<id>org.apache.felix.scr</id>
+								<level>2</level>
+								<autoStart>true</autoStart>
+							</bundle>
+						</bundleStartLevel>
+
 <!-- 					What's this?? It seems to stop test from running with e43 because keystore.password file not found.
 						Commented out for now.
 						<appArgLine>
