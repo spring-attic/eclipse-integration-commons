@@ -173,6 +173,8 @@ public class DownloadManagerTests extends TestCase {
 		service.at("http://foo", error("Foo"), error("Foo"), content("Foo"));
 		
 		try {
+			System.out.println("TEMP FILE DIR: " + System.getProperty("java.io.tmpdir"));
+			
 			File tempFolder = File.createTempFile("testtempfile", "tmp");
 			if (!tempFolder.exists()) {
 				System.out.println("temp file does not exist...?!?");
