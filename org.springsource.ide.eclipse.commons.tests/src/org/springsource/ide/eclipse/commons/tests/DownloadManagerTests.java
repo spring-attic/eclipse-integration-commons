@@ -172,7 +172,17 @@ public class DownloadManagerTests extends TestCase {
 		TestDownloadService service = new TestDownloadService();
 		service.at("http://foo", error("Foo"), error("Foo"), content("Foo"));
 		
-		File something = FileUtil.createTempDirectoryWithTimestamp("somethingForTests");
+		try {
+			File tempFolder = File.createTempFile("testtempfile", "tmp");
+			if (!tempFolder.exists()) {
+				System.out.println("temp file does not exist...?!?");
+			}
+		}
+		catch (Exception e) {
+			System.out.println("TEMP FILE CREATION PROBLEM !!!!!");
+			e.printStackTrace();
+			System.out.println();
+		}
 		
 		downloader = new DownloadManager(service, null);
 		downloader.allowUIThread(true);
