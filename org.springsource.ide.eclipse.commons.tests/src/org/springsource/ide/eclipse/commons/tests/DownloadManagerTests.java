@@ -27,6 +27,7 @@ import junit.framework.TestCase;
 import org.springsource.ide.eclipse.commons.frameworks.core.downloadmanager.DownloadManager;
 import org.springsource.ide.eclipse.commons.frameworks.core.downloadmanager.DownloadManager.DownloadService;
 import org.springsource.ide.eclipse.commons.frameworks.core.downloadmanager.DownloadableItem;
+import org.springsource.ide.eclipse.commons.frameworks.core.util.FileUtil;
 import org.springsource.ide.eclipse.commons.frameworks.core.util.IOUtil;
 
 public class DownloadManagerTests extends TestCase {
@@ -170,6 +171,9 @@ public class DownloadManagerTests extends TestCase {
 	public void testRetryOnError() throws Exception {
 		TestDownloadService service = new TestDownloadService();
 		service.at("http://foo", error("Foo"), error("Foo"), content("Foo"));
+		
+		File something = FileUtil.createTempDirectoryWithTimestamp("somethingForTests");
+		
 		downloader = new DownloadManager(service, null);
 		downloader.allowUIThread(true);
 		File cacheDir = downloader.getCacheDir();
