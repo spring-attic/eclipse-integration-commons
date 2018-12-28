@@ -817,10 +817,8 @@
 						<testSuite>${project.artifactId}</testSuite>
 						<testClass>${test.class}</testClass>
 <!--						<testFailureIgnore>true</testFailureIgnore> -->
-						<argLine>
-							-Xmx1024m -XX:MaxPermSize=256m -Djava.io.tmpdir=${project.build.directory}
-							-Duser.home=${project.build.directory} ${test.vmargs}
-						</argLine>
+<!--						<argLine>-Xmx1024m -XX:MaxPermSize=256m -Djava.io.tmpdir=${project.build.directory} -Duser.home=${project.build.directory} ${test.vmargs}</argLine>-->
+						<argLine>-Xmx1024m ${test.vmargs}</argLine>
 
 						<bundleStartLevel>
 							<bundle>
