@@ -22,13 +22,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 import org.springsource.ide.eclipse.commons.frameworks.core.downloadmanager.DownloadManager;
 import org.springsource.ide.eclipse.commons.frameworks.core.downloadmanager.DownloadManager.DownloadService;
 import org.springsource.ide.eclipse.commons.frameworks.core.downloadmanager.DownloadableItem;
-import org.springsource.ide.eclipse.commons.frameworks.core.util.FileUtil;
 import org.springsource.ide.eclipse.commons.frameworks.core.util.IOUtil;
+
+import junit.framework.TestCase;
 
 public class DownloadManagerTests extends TestCase {
 
@@ -171,21 +170,6 @@ public class DownloadManagerTests extends TestCase {
 	public void testRetryOnError() throws Exception {
 		TestDownloadService service = new TestDownloadService();
 		service.at("http://foo", error("Foo"), error("Foo"), content("Foo"));
-		
-		try {
-			System.out.println("TEMP FILE DIR: " + System.getProperty("java.io.tmpdir"));
-			
-			File tempFolder = File.createTempFile("testtempfile", "tmp");
-			if (!tempFolder.exists()) {
-				System.out.println("temp file does not exist...?!?");
-			}
-		}
-		catch (Exception e) {
-			System.out.println("TEMP FILE CREATION PROBLEM !!!!!");
-			e.printStackTrace();
-			System.out.println();
-		}
-		
 		downloader = new DownloadManager(service, null);
 		downloader.allowUIThread(true);
 		File cacheDir = downloader.getCacheDir();
