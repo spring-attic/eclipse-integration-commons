@@ -69,7 +69,8 @@
 
 	<properties>
 		<!-- Eclipse Integration Commons Properties -->
-	    <misc.p2.repo.version>3.9.4.201805082144</misc.p2.repo.version>
+		<misc.p2.repo.version>3.9.4.201901081830</misc.p2.repo.version>
+	    <!-- <misc.p2.repo.version>3.9.4.201805082144</misc.p2.repo.version> -->
 	    <!-- <misc.p2.repo.version>3.9.4.201804101345</misc.p2.repo.version> -->
 	    <!-- <misc.p2.repo.version>3.8.4.201703211214</misc.p2.repo.version> -->
 	    

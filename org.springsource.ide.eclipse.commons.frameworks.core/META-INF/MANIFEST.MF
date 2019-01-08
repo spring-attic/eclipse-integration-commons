@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.ui,
  org.apache.commons.io,
  org.apache.commons.codec,
  org.springsource.ide.eclipse.commons.livexp,
- io.projectreactor.reactor-core;bundle-version="[3.1.5,3.1.6)",
+ io.projectreactor.reactor-core;bundle-version="[3.1.9,3.1.10)",
  org.reactivestreams.reactive-streams
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-LazyStart: true
