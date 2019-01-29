@@ -54,6 +54,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.StyledString.Styler;
+import org.eclipse.search.internal.ui.text.EditorOpener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
@@ -102,7 +103,9 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.ActiveShellExpression;
 import org.eclipse.ui.IWorkbenchCommandConstants;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionStatusDialog;
 import org.eclipse.ui.handlers.IHandlerActivation;
@@ -185,10 +188,28 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			return Status.OK_STATUS;
 		}
 	};
-
+	
+	protected void openSelection() {
+		try {
+			LineItem item = (LineItem) this.getFirstResult();
+			if (item!=null) {
+				QuickTextQuery q = this.getQuery();
+				TextRange range = q.findFirst(item.getText());
+				EditorOpener opener = new EditorOpener();
+				IWorkbenchPage page = window.getActivePage();
+				if (page!=null) {
+					opener.openAndSelect(page, item.getFile(), range.getOffset()+item.getOffset(), 
+						range.getLength(), true);
+				}
+			}
+		} catch (PartInitException e) {
+			QuickSearchActivator.log(e);
+		}
+	}
+	
 	/**
 	 * Job that shows a simple busy indicator while a search is active.
-	 * The job must be scheduled when a search starts/resumes. It periodically checks the
+	 * The job must be scheduled when a search starts/resumes.
 	 */
 	private UIJob progressJob =  new UIJob("Refresh") {
 		int animate = 0; // number of dots to display.
@@ -324,6 +345,9 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	private static final String CASE_SENSITIVE = "CASE_SENSITIVE";
 	private static final boolean CASE_SENSITIVE_DEFAULT = true;
 
+	private static final String KEEP_OPEN = "KEEP_OPEN";
+	private static final boolean KEEP_OPEN_DEFAULT = true;
+
 	/**
 	 * Represents an empty selection in the pattern input field (used only for
 	 * initial pattern).
@@ -358,8 +382,6 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 	private Label progressLabel;
 
-	private IStatus status;
-
 	private ContentProvider contentProvider;
 
 	private String initialPatternText;
@@ -380,6 +402,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 
 	private ToggleCaseSensitiveAction toggleCaseSensitiveAction;
+	private ToggleKeepOpenAction toggleKeepOpenAction;
+	
 
 	private QuickSearchContext context;
 
@@ -387,6 +411,8 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	private SashForm sashForm;
 
 	private Label headerLabel;
+
+	private IWorkbenchWindow window;
 
 	/**
 	 * Creates a new instance of the class.
@@ -399,6 +425,9 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 */
 	public QuickSearchDialog(IWorkbenchWindow window) {
 		super(window.getShell());
+		this.window = window;
+		setShellStyle(SWT.CLOSE | SWT.MODELESS | SWT.BORDER | SWT.TITLE);
+		setBlockOnOpen(false);
 		this.setTitle("Quick Text Search");
 		this.context = new QuickSearchContext(window);
 		this.multi = false;
@@ -495,11 +524,30 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		}
 	}
 
+	private class ToggleKeepOpenAction extends Action {
+		public ToggleKeepOpenAction(IDialogSettings settings) {
+			super(
+					"Keep Open",
+					IAction.AS_CHECK_BOX
+			);
+			if (settings.get(KEEP_OPEN)==null) {
+				setChecked(KEEP_OPEN_DEFAULT);
+			} else{
+				setChecked(settings.getBoolean(KEEP_OPEN));
+			}
+		}
+
+		public void run() {
+			//setChecked(!isChecked());
+			refreshHeaderLabel();
+			applyFilter();
+		}
+
+	}
+
+
 	private class ToggleCaseSensitiveAction extends Action {
 
-		/**
-		 * Creates a new instance of the class.
-		 */
 		public ToggleCaseSensitiveAction(IDialogSettings settings) {
 			super(
 					"Case Sensitive",
@@ -558,6 +606,9 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		settings.put(DIALOG_LAST_QUERY, currentSearch);
 		if (toggleCaseSensitiveAction!=null) {
 			settings.put(CASE_SENSITIVE, toggleCaseSensitiveAction.isChecked());
+		}
+		if (toggleKeepOpenAction!=null) {
+			settings.put(KEEP_OPEN, toggleKeepOpenAction.isChecked());
 		}
 		Table table = list.getTable();
 		if (table.getColumnCount()>0) {
@@ -704,8 +755,11 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 *           the menu manager
 	 */
 	protected void fillViewMenu(IMenuManager menuManager) {
-		toggleCaseSensitiveAction = new ToggleCaseSensitiveAction(getDialogSettings());
+		IDialogSettings settings = getDialogSettings();
+		toggleCaseSensitiveAction = new ToggleCaseSensitiveAction(settings);
 		menuManager.add(toggleCaseSensitiveAction);
+		toggleKeepOpenAction = new ToggleKeepOpenAction(settings);
+		menuManager.add(toggleKeepOpenAction);
 	}
 
 	private void showViewMenu() {
@@ -1104,18 +1158,6 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 //	}
 
 	/**
-	 * This method is a hook for subclasses to override default dialog behavior.
-	 * The <code>handleDoubleClick()</code> method handles double clicks on
-	 * the list of filtered elements.
-	 * <p>
-	 * Current implementation makes double-clicking on the list do the same as
-	 * pressing <code>OK</code> button on the dialog.
-	 */
-	protected void handleDoubleClick() {
-		okPressed();
-	}
-
-	/**
 	 * Handle selection in the items list by updating labels of selected and
 	 * unselected items and refresh the details field using the selection.
 	 *
@@ -1232,19 +1274,26 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		setResult(objectsToReturn);
 	}
 
-	/*
-	 * @see org.eclipse.ui.dialogs.SelectionStatusDialog#updateStatus(org.eclipse.core.runtime.IStatus)
+	
+	
+	/**
+	 * Handles double-click of items, but *also* by pressing the 'enter' key. 
 	 */
-	protected void updateStatus(IStatus status) {
-		this.status = status;
-		super.updateStatus(status);
+	protected void handleDoubleClick() {
+		computeResult();
+		openSelection();
+		if (!toggleKeepOpenAction.isChecked()) {
+			close();
+		}
 	}
 
-	/*
-	 * @see Dialog#okPressed()
+	/**
+	 * Handles directly clicking the ok button (but not double-click or enter key)
 	 */
 	protected void okPressed() {
-		super.okPressed();
+		computeResult();
+		openSelection();
+		close();
 	}
 
 	/**

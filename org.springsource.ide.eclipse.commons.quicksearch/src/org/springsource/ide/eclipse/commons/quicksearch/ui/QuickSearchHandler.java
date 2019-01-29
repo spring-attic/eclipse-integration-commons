@@ -15,15 +15,9 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.search.internal.ui.text.EditorOpener;
 import org.eclipse.ui.ISelectionService;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.springsource.ide.eclipse.commons.quicksearch.core.LineItem;
-import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextQuery;
-import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextQuery.TextRange;
 
 /**
  * Our sample handler extends AbstractHandler, an IHandler base class.
@@ -49,26 +43,9 @@ public class QuickSearchHandler extends AbstractHandler {
 	}
 
 	public static void doQuickSearch(IWorkbenchWindow window) {
-		try {
-			QuickSearchDialog dialog = new QuickSearchDialog(window);
-			initializeFromSelection(window, dialog);
-			int code = dialog.open();
-			if (code == QuickSearchDialog.OK) {
-				LineItem item = (LineItem) dialog.getFirstResult();
-				if (item!=null) {
-					QuickTextQuery q = dialog.getQuery();
-					TextRange range = q.findFirst(item.getText());
-					EditorOpener opener = new EditorOpener();
-					IWorkbenchPage page = window.getActivePage();
-					if (page!=null) {
-						opener.openAndSelect(page, item.getFile(), range.getOffset()+item.getOffset(), 
-							range.getLength(), true);
-					}
-				}
-			}
-		} catch (PartInitException e) {
-			QuickSearchActivator.log(e);
-		}
+		QuickSearchDialog dialog = new QuickSearchDialog(window);
+		initializeFromSelection(window, dialog);
+		dialog.open();
 	}
 
 	/**
