@@ -1280,11 +1280,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * Handles double-click of items, but *also* by pressing the 'enter' key. 
 	 */
 	protected void handleDoubleClick() {
-		computeResult();
-		openSelection();
-		if (!toggleKeepOpenAction.isChecked()) {
-			close();
-		}
+		okPressed();
 	}
 
 	/**
@@ -1293,7 +1289,9 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	protected void okPressed() {
 		computeResult();
 		openSelection();
-		close();
+		if (!toggleKeepOpenAction.isChecked()) {
+			close();
+		}
 	}
 
 	/**
