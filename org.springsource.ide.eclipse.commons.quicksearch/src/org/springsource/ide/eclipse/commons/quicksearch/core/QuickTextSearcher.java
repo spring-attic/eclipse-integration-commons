@@ -69,6 +69,12 @@ public class QuickTextSearcher {
 	 * of the 'current file' in the progress area of the quicksearch dialog.
 	 */
 	private IFile currentFile = null;
+	
+	/**
+	 * Flag to disable incremental filtering logic based on incremental
+	 * query updates. This forces a full refresh of the search results.
+	 */
+	private boolean forceRefresh = false;
 
 	/**
 	 * Retrieves the current result limit.
@@ -198,11 +204,12 @@ public class QuickTextSearcher {
 			QuickTextQuery nq = newQuery; //Copy into local variable to avoid
 										  // problems if another thread changes newQuery while we
 										  // are still mucking with it.
-			if (query.isSubFilter(nq)) {
+			if (!forceRefresh && query.isSubFilter(nq)) {
 				query = nq;
 				performIncrementalUpdate(monitor);
 			} else {
 				query = nq;
+				forceRefresh = false;
 				performRestart(monitor);
 			}
 			return monitor.isCanceled()?Status.CANCEL_STATUS:Status.OK_STATUS;
@@ -254,11 +261,12 @@ public class QuickTextSearcher {
 		}
 	}
 
-	public void setQuery(QuickTextQuery newQuery) {
-		if (newQuery.equalsFilter(query)) {
+	public void setQuery(QuickTextQuery newQuery, boolean force) {
+		if (newQuery.equalsFilter(query) && !force) {
 			return;
 		}
 		this.newQuery = newQuery;
+		this.forceRefresh = true;
 		walker.suspend(); //The walker must be suspended so the update job can run, they share scheduling rule
 						 // so only one job can run at any time.
 		scheduleIncrementalUpdate();

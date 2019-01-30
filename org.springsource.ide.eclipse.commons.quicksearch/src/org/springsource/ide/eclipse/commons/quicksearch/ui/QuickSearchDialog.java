@@ -37,12 +37,12 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.LegacyActionTools;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ILazyContentProvider;
@@ -54,11 +54,11 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.StyledString.Styler;
-import org.eclipse.search.internal.ui.text.EditorOpener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.search.internal.ui.text.EditorOpener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.accessibility.ACC;
 import org.eclipse.swt.accessibility.AccessibleAdapter;
@@ -78,10 +78,10 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -89,6 +89,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -131,6 +132,9 @@ import org.springsource.ide.eclipse.commons.quicksearch.util.TableResizeHelper;
  */
 @SuppressWarnings({ "rawtypes", "restriction", "unchecked" })
 public class QuickSearchDialog extends SelectionStatusDialog {
+
+	private static final int GO_BUTTON_ID = IDialogConstants.CLIENT_ID  + 1;
+	private static final int REFRESH_BUTTON_ID = IDialogConstants.CLIENT_ID + 2;
 
 	public static final Styler HIGHLIGHT_STYLE = org.eclipse.search.internal.ui.text.DecoratingFileSearchLabelProvider.HIGHLIGHT_STYLE;
 
@@ -184,7 +188,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	private UIJob refreshJob = new UIJob("Refresh") {
 		@Override
 		public IStatus runInUIThread(IProgressMonitor monitor) {
-			refresh();
+			refreshWidgets();
 			return Status.OK_STATUS;
 		}
 	};
@@ -539,8 +543,6 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 		public void run() {
 			//setChecked(!isChecked());
-			refreshHeaderLabel();
-			applyFilter();
 		}
 
 	}
@@ -563,7 +565,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		public void run() {
 			//setChecked(!isChecked());
 			refreshHeaderLabel();
-			applyFilter();
+			applyFilter(false);
 		}
 	}
 
@@ -915,7 +917,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 		pattern.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				applyFilter();
+				applyFilter(false);
 			}
 		});
 
@@ -996,7 +998,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		}
 
 		// apply filter even if pattern is empty (display history)
-		applyFilter();
+		applyFilter(false);
 
 		return dialogArea;
 	}
@@ -1205,19 +1207,27 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	}
 
 	/**
-	 * Refreshes the dialog - has to be called in UI thread.
+	 * Has to be called in UI thread.
 	 */
-	public void refresh() {
+	public void refreshWidgets() {
 		if (list != null && !list.getTable().isDisposed()) {
-			ScrollBar sb = list.getTable().getVerticalBar();
-			int oldScroll = sb.getSelection();
+//			ScrollBar sb = list.getTable().getVerticalBar();
+//			int oldScroll = sb.getSelection();
 			int itemCount = contentProvider.getNumberOfElements();
 			list.setItemCount(itemCount);
 			list.refresh(true, false);
-			int newScroll = sb.getSelection();
-			if (oldScroll!=newScroll) {
-				System.out.println("Scroll moved in refresh: "+oldScroll+ " => " + newScroll);
+			Button goButton = getButton(GO_BUTTON_ID);
+			if (goButton!=null && !goButton.isDisposed()) {
+				//Even if no element is selected. The dialog should be have as if the first
+				//element in the list is selected. So the button is enabled if any
+				//element is available in the list.
+				goButton.setEnabled(itemCount>0);
 			}
+			
+//			int newScroll = sb.getSelection();
+//			if (oldScroll!=newScroll) {
+//				System.out.println("Scroll moved in refresh: "+oldScroll+ " => " + newScroll);
+//			}
 			//sb.setSelection((int) Math.floor(oldScroll*sb.getMaximum()));
 		}
 //
@@ -1280,18 +1290,40 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * Handles double-click of items, but *also* by pressing the 'enter' key. 
 	 */
 	protected void handleDoubleClick() {
-		okPressed();
+		goButtonPressed();
+	}
+
+	protected void refreshButtonPressed() {
+		applyFilter(true);
 	}
 
 	/**
-	 * Handles directly clicking the ok button (but not double-click or enter key)
+	 * Handles directly clicking the 'go' button.
 	 */
-	protected void okPressed() {
+	protected void goButtonPressed() {
 		computeResult();
 		openSelection();
 		if (!toggleKeepOpenAction.isChecked()) {
 			close();
 		}
+	}
+	
+	@Override
+	protected void createButtonsForButtonBar(Composite parent) {
+		SelectionListener listener = new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int buttonId = (int) ((Button)e.widget).getData();
+				if (buttonId==GO_BUTTON_ID) {
+					goButtonPressed();
+				} else if (buttonId==REFRESH_BUTTON_ID) {
+					refreshButtonPressed();
+				}
+			}
+		};
+		createButton(parent, GO_BUTTON_ID, "Go!", false).addSelectionListener(listener);
+		createButton(parent, REFRESH_BUTTON_ID, "Refresh", false).addSelectionListener(listener);
+		refreshWidgets();
 	}
 
 	/**
@@ -1377,8 +1409,13 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	 * Applies the filter created by <code>createFilter()</code> method to the
 	 * items list. When new filter is different than previous one it will cause
 	 * refiltering.
+	 * <p>
+	 * The 'force' parameter forces a full refresh of the search results / filter even
+	 * when the filter is unchanged, or when a incremenal filtering optimisation could be
+	 * applied based on query structure. (The use case for this, is to trigger forced refresh
+	 * because the underlying resources may have changed).
 	 */
-	protected void applyFilter() {
+	protected void applyFilter(boolean force) {
 		QuickTextQuery newFilter = createFilter();
 		if (this.searcher==null) {
 			if (!newFilter.isTrivial()) {
@@ -1404,12 +1441,12 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 						contentProvider.refresh();
 					}
 				});
-				refresh();
+				refreshWidgets();
 			}
 //			this.list.setInput(input)
 		} else {
 			//The QuickTextSearcher is already active update the query
-			this.searcher.setQuery(newFilter);
+			this.searcher.setQuery(newFilter, force);
 		}
 		if (progressJob!=null) {
 			progressJob.schedule();
@@ -1488,78 +1525,6 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		public void refresh() {
 			scheduleRefresh();
 		}
-
-//		/**
-//		 * Removes items from history and refreshes the view.
-//		 *
-//		 * @param item
-//		 *           to remove
-//		 *
-//		 * @return removed item
-//		 */
-//		public Object removeHistoryElement(Object item) {
-//			if (this.selectionHistory != null)
-//				this.selectionHistory.remove(item);
-//			if (filter == null || filter.getPattern().length() == 0) {
-//				items.remove(item);
-//				duplicates.remove(item);
-//				this.lastSortedItems.remove(item);
-//			}
-//
-//			synchronized (lastSortedItems) {
-//				Collections.sort(lastSortedItems, getHistoryComparator());
-//			}
-//			return item;
-//		}
-
-//		/**
-//		 * Adds item to history and refresh view.
-//		 *
-//		 * @param item
-//		 *           to add
-//		 */
-//		public void addHistoryElement(Object item) {
-//			if (this.selectionHistory != null)
-//				this.selectionHistory.accessed(item);
-//			if (filter == null || !filter.matchItem(item)) {
-//				this.items.remove(item);
-//				this.duplicates.remove(item);
-//				this.lastSortedItems.remove(item);
-//			}
-//			synchronized (lastSortedItems) {
-//				Collections.sort(lastSortedItems, getHistoryComparator());
-//			}
-//			this.refresh();
-//		}
-
-//		/**
-//		 * Sets/unsets given item as duplicate.
-//		 *
-//		 * @param item
-//		 *           item to change
-//		 *
-//		 * @param isDuplicate
-//		 *           duplicate flag
-//		 */
-//		public void setDuplicateElement(Object item, boolean isDuplicate) {
-//			if (this.items.contains(item)) {
-//				if (isDuplicate)
-//					this.duplicates.add(item);
-//				else
-//					this.duplicates.remove(item);
-//			}
-//		}
-
-//		/**
-//		 * Indicates whether given item is a duplicate.
-//		 *
-//		 * @param item
-//		 *           item to check
-//		 * @return <code>true</code> if item is duplicate
-//		 */
-//		public boolean isDuplicateElement(Object item) {
-//			return duplicates.contains(item);
-//		}
 
 		/*
 		 * (non-Javadoc)
