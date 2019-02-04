@@ -16,11 +16,14 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
+import org.springsource.ide.eclipse.commons.quicksearch.core.pathmatch.ResourceMatcher;
+import org.springsource.ide.eclipse.commons.quicksearch.core.pathmatch.ResourceMatchers;
 import org.springsource.ide.eclipse.commons.quicksearch.core.priority.PriorityFunction;
 import org.springsource.ide.eclipse.commons.quicksearch.util.JobUtil;
 import org.springsource.ide.eclipse.commons.quicksearch.util.LineReader;
@@ -75,6 +78,7 @@ public class QuickTextSearcher {
 	 * query updates. This forces a full refresh of the search results.
 	 */
 	private boolean forceRefresh = false;
+	private ResourceMatcher pathMatcher = ResourceMatchers.ANY;
 
 	/**
 	 * Retrieves the current result limit.
@@ -91,7 +95,19 @@ public class QuickTextSearcher {
 		this.MAX_LINE_LEN = maxLineLen;
 		this.requestor = requestor;
 		this.query = query;
-		this.walker = createWalker(priorities);
+		this.walker = createWalker(new PriorityFunction() {
+			@Override
+			public double priority(IResource r) {
+				double basePriority = priorities.priority(r);
+				if (basePriority==PRIORITY_IGNORE) {
+					return basePriority;
+				}
+				if (r.getType()==IResource.FILE && !pathMatcher.matches(r)) {
+					return PRIORITY_IGNORE;
+				}
+				return basePriority;
+			}
+		});
 	}
 
 	private SearchInFilesWalker createWalker(PriorityFunction priorities) {
@@ -267,9 +283,15 @@ public class QuickTextSearcher {
 		}
 		this.newQuery = newQuery;
 		this.forceRefresh = true;
-		walker.suspend(); //The walker must be suspended so the update job can run, they share scheduling rule
-						 // so only one job can run at any time.
 		scheduleIncrementalUpdate();
+	}
+	
+	public void setPathMatcher(ResourceMatcher pathMatcher) {
+		if (this.pathMatcher.equals(pathMatcher)) {
+			return;
+		}
+		this.pathMatcher = pathMatcher;
+		setQuery(query, true);
 	}
 
 	public QuickTextQuery getQuery() {
@@ -280,6 +302,9 @@ public class QuickTextSearcher {
 	}
 
 	private synchronized void scheduleIncrementalUpdate() {
+		walker.suspend(); //The walker must be suspended so the update job can run, they share scheduling rule
+		 // so only one job can run at any time.
+		
 		//Any outstanding incremental update should be canceled since the query has changed again.
 		if (incrementalUpdate!=null) {
 			incrementalUpdate.cancel();

@@ -40,6 +40,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -58,6 +59,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.jgit.ignore.internal.PathMatcher;
 import org.eclipse.search.internal.ui.text.EditorOpener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.accessibility.ACC;
@@ -121,6 +123,9 @@ import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextQuery;
 import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextQuery.TextRange;
 import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextSearchRequestor;
 import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextSearcher;
+import org.springsource.ide.eclipse.commons.quicksearch.core.pathmatch.ResourceMatcher;
+import org.springsource.ide.eclipse.commons.quicksearch.core.pathmatch.ResourceMatchers;
+import org.springsource.ide.eclipse.commons.quicksearch.core.priority.PriorityFunction;
 import org.springsource.ide.eclipse.commons.quicksearch.util.DocumentFetcher;
 import org.springsource.ide.eclipse.commons.quicksearch.util.TableResizeHelper;
 
@@ -417,6 +422,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	private Label headerLabel;
 
 	private IWorkbenchWindow window;
+	private Text searchIn;
 
 	/**
 	 * Creates a new instance of the class.
@@ -854,8 +860,6 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		content.setLayout(layout);
 
 		final Label headerLabel = createHeader(content);
-
-
 		pattern = new Text(content, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
 		pattern.getAccessible().addAccessibleListener(new AccessibleAdapter() {
 			public void getName(AccessibleEvent e) {
@@ -865,6 +869,11 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		});
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		pattern.setLayoutData(gd);
+		
+		Label searchInlabel = new Label(content, SWT.NONE);
+		searchInlabel.setText("Search in (comma-separated list of '.gitignore' style inclusion patterns)");
+		searchIn = new Text(content, SWT.SINGLE | SWT.BORDER | SWT.ICON_CANCEL);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(searchIn);
 
 		final Label listLabel = createLabels(content);
 
@@ -915,10 +924,12 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 		createPopupMenu();
 
-		pattern.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				applyFilter(false);
-			}
+		pattern.addModifyListener(e -> {
+			applyFilter(false);
+		});
+		
+		searchIn.addModifyListener(e -> {
+			applyPathMatcher();
 		});
 
 		pattern.addKeyListener(new KeyAdapter() {
@@ -1002,7 +1013,6 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 
 		return dialogArea;
 	}
-
 
 	protected void dispose() {
 		if (blankImage!=null) {
@@ -1441,6 +1451,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 						contentProvider.refresh();
 					}
 				});
+				applyPathMatcher();
 				refreshWidgets();
 			}
 //			this.list.setInput(input)
@@ -1452,6 +1463,13 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			progressJob.schedule();
 		}
 	}
+
+	private void applyPathMatcher() {
+		if (this.searcher!=null) {
+			this.searcher.setPathMatcher(ResourceMatchers.commaSeparatedPaths(searchIn.getText()));
+		}
+	}
+
 
 
 	/**

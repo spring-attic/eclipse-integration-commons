@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text,
  org.eclipse.jdt.ui,
  org.springsource.ide.eclipse.commons.livexp,
- com.google.guava
+ com.google.guava,
+ org.eclipse.jgit
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: Pivotal Software, Inc.
