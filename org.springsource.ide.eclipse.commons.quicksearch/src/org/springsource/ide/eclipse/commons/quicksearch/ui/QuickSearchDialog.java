@@ -355,7 +355,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	private static final boolean CASE_SENSITIVE_DEFAULT = true;
 
 	private static final String KEEP_OPEN = "KEEP_OPEN";
-	private static final boolean KEEP_OPEN_DEFAULT = true;
+	private static final boolean KEEP_OPEN_DEFAULT = false;
 
 	/**
 	 * Represents an empty selection in the pattern input field (used only for
