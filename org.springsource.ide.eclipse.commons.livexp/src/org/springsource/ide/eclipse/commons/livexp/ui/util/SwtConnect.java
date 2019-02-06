@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Pivotal, Inc.
+ * Copyright (c) 2017, 2019 Pivotal, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.StyledString.Styler;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -29,6 +30,8 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.springsource.ide.eclipse.commons.livexp.core.HighlightedText;
+import org.springsource.ide.eclipse.commons.livexp.core.HighlightedText.Style;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.UIValueListener;
@@ -143,6 +146,36 @@ public class SwtConnect {
 		model.addListener(modelListener);
 		widget.addDisposeListener(xx -> model.removeListener(modelListener));
 	}
+	
+	public static void connectHighlighted(Styler highlightStyle, StyledText widget, LiveExpression<HighlightedText> model) {
+		ValueListener<HighlightedText> modelListener = new UIValueListener<HighlightedText>() {
+			@Override
+			protected void uiGotValue(LiveExpression<HighlightedText> exp, HighlightedText value) {
+				HighlightedText highlightedText = model.getValue();
+				StyledString newText = new StyledString("", Stylers.NULL);
+				if (highlightedText != null) {
+					StyledString styledString = new StyledString();
+					highlightedText.build().stream().forEach(segment -> {
+						if (segment.getStyle() == Style.HIGHLIGHT) {
+							styledString.append(segment.getText(), highlightStyle);
+						} else {
+							styledString.append(segment.getText(), Stylers.NULL);
+						}
+					});
+					newText = styledString;
+				}
+				if (!widget.isDisposed()) {
+					widget.setText(newText.getString());
+					// IMPORTANT: set style ranges AFTER the text, not before, otherwise SWT may
+					// throw exception
+					widget.setStyleRanges(newText.getStyleRanges());
+				}
+			}
+
+		};
+		model.addListener(modelListener);
+		widget.addDisposeListener(xx -> model.removeListener(modelListener));
+	}
 
 	public static void connect(Label widget, LiveExpression<String> model, Duration delay) {
 		if (delay==null || delay.isZero() || delay.isNegative()) {
@@ -151,6 +184,16 @@ public class SwtConnect {
 			LiveExpression<String> delayedModel = model.delay(delay);
 			widget.addDisposeListener(de -> delayedModel.dispose());
 			connect(widget, delayedModel);
+		}
+	}
+	
+	public static void connectHighlighted(Styler highlightStyle, StyledText widget, LiveExpression<HighlightedText> model, Duration delay) {
+		if (delay==null || delay.isZero() || delay.isNegative()) {
+			connectHighlighted(highlightStyle, widget, model);
+		} else {
+			LiveExpression<HighlightedText> delayedModel = model.delay(delay);
+			widget.addDisposeListener(de -> delayedModel.dispose());
+			connectHighlighted(highlightStyle, widget, delayedModel);
 		}
 	}
 
@@ -175,5 +218,4 @@ public class SwtConnect {
 		checkbox.addSelectionListener(widgetListener);
 		checkbox.addDisposeListener(xx -> model.removeListener(modelListener));
 	}
-
 }
