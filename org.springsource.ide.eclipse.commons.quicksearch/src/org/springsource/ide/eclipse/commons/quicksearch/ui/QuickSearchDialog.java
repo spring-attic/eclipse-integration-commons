@@ -40,7 +40,6 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -59,7 +58,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
-import org.eclipse.jgit.ignore.internal.PathMatcher;
 import org.eclipse.search.internal.ui.text.EditorOpener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.accessibility.ACC;
@@ -74,8 +72,6 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -98,7 +94,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
@@ -123,9 +118,7 @@ import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextQuery;
 import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextQuery.TextRange;
 import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextSearchRequestor;
 import org.springsource.ide.eclipse.commons.quicksearch.core.QuickTextSearcher;
-import org.springsource.ide.eclipse.commons.quicksearch.core.pathmatch.ResourceMatcher;
 import org.springsource.ide.eclipse.commons.quicksearch.core.pathmatch.ResourceMatchers;
-import org.springsource.ide.eclipse.commons.quicksearch.core.priority.PriorityFunction;
 import org.springsource.ide.eclipse.commons.quicksearch.util.DocumentFetcher;
 import org.springsource.ide.eclipse.commons.quicksearch.util.TableResizeHelper;
 
@@ -849,30 +842,29 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 			}
 		});
 
-		Composite content = new Composite(dialogArea, SWT.NONE);
+		Composite content = createNestedComposite(dialogArea, 1, false);
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		content.setLayoutData(gd);
-
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 1;
-		layout.marginWidth = 0;
-		layout.marginHeight = 0;
-		content.setLayout(layout);
-
+		
 		final Label headerLabel = createHeader(content);
-		pattern = new Text(content, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
+		
+		Composite inputRow = createNestedComposite(content, 10, true);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(inputRow);
+		pattern = new Text(inputRow, SWT.SINGLE | SWT.BORDER | SWT.SEARCH | SWT.ICON_CANCEL);
 		pattern.getAccessible().addAccessibleListener(new AccessibleAdapter() {
 			public void getName(AccessibleEvent e) {
 				e.result = LegacyActionTools.removeMnemonics(headerLabel
 						.getText());
 			}
 		});
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		pattern.setLayoutData(gd);
-		
-		Label searchInlabel = new Label(content, SWT.NONE);
-		searchInlabel.setText("Search in (comma-separated list of '.gitignore' style inclusion patterns)");
-		searchIn = new Text(content, SWT.SINGLE | SWT.BORDER | SWT.ICON_CANCEL);
+		GridDataFactory.fillDefaults().span(6,1).grab(true, false).applyTo(pattern);
+
+		Composite searchInComposite = createNestedComposite(inputRow, 2, false);
+		GridDataFactory.fillDefaults().span(4,1).grab(true, false).applyTo(searchInComposite);
+		Label searchInLabel = new Label(searchInComposite, SWT.NONE);
+		searchInLabel.setText(" In: ");
+		searchIn = new Text(searchInComposite, SWT.SINGLE | SWT.BORDER | SWT.ICON_CANCEL);
+		searchIn.setToolTipText("Search in (comma-separated list of '.gitignore' style inclusion patterns)");
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(searchIn);
 
 		final Label listLabel = createLabels(content);
@@ -1012,6 +1004,21 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 		applyFilter(false);
 
 		return dialogArea;
+	}
+
+	private Composite createNestedComposite(Composite parent, int numRows, boolean equalRows) {
+		Composite nested = new Composite(parent, SWT.NONE);
+		{
+			GridLayout layout = new GridLayout(numRows, equalRows);
+			layout.marginWidth = 0;
+			layout.marginHeight = 0;
+			layout.marginLeft = 0;
+			layout.marginRight = 0;
+			layout.horizontalSpacing = 0;
+			nested.setLayout(layout);
+		}
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(nested);
+		return nested;
 	}
 
 	protected void dispose() {
