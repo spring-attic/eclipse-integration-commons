@@ -66,6 +66,13 @@
 		<system>BAMBOO</system>
 	</ciManagement>
 
+	<licenses>
+		<license>
+			<name>Eclipse Public License v1.0</name>
+			<url>https://www.eclipse.org/legal/epl-v10.html</url>
+		</license>
+	</licenses>
+
 	<properties>
 		<!-- Eclipse Integration Commons Properties -->
 		<misc.p2.repo.version>3.9.4.201901081830</misc.p2.repo.version>
