@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2017 Pivotal, Inc.
+ * Copyright (c) 2016, 2019 Pivotal, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -81,14 +81,14 @@ public abstract class CachingValueProvider<T> {
 
 		public CacheEntry(String query, Flux<T> producer) {
 			values = producer
-//			.doOnNext((e) -> {
-//				count++;
+			.doOnNext((e) -> {
+				count++;
 //				debug("onNext["+query+":"+count+"]: "+e.getValue().toString());
-//			})
-//			.doOnComplete(() -> {
+			})
+			.doOnComplete(() -> {
 //				debug("onComplete["+query+":"+count+"]");
-//				isComplete = true;
-//			})
+				isComplete = true;
+			})
 			.take(MAX_RESULTS)
 			.cache(MAX_RESULTS);
 			values.subscribe(); // create infinite demand so that we actually force cache entries to be fetched upto the max.
