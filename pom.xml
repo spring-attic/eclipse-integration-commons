@@ -736,7 +736,7 @@
 					<keystore>${signing.keystore}</keystore>
 					<storepass>${signing.store.password}</storepass>
 					<keypass>${signing.key.password}</keypass>
-					<tsa>https://timestamp.geotrust.com/tsa</tsa>
+					<tsa>https://freetsa.org</tsa>
 <!--					<tsa>http://sha256timestamp.ws.symantec.com/sha256/timestamp</tsa> -->
 <!--					<arguments>
 						<argument>-sigalg</argument><argument>SHA1withRSA</argument>
