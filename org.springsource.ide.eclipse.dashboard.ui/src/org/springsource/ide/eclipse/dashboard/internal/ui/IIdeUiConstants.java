@@ -65,7 +65,7 @@ public interface IIdeUiConstants {
 
 	public static final String SPRINGSOURCE_RUNTIME_ERROR_ANALYSIS_ISSUE_TYPE = "Analysis";
 
-	public final static String SPRINGSOURCE_PORTAL_URL = ""; // "http://sts.staging6.springsource.com";
+	public final static String SPRINGSOURCE_PORTAL_URL = "";
 
 	public final static String SPRINGSOURCE_PORTAL_KIND = "net.covalent.support";
 

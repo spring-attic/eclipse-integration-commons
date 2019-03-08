@@ -186,11 +186,11 @@ public class IdeUiPlugin extends AbstractUIPlugin {
 			Property feedsProp = provider.getProperty(DashboardMainPage.RESOURCE_DASHBOARD_FEEDS_BLOGS);
 			if (feedsProp != null) {
 				String value = feedsProp.getValue();
-				if (value.contains("http://www.springframework.org/node/feed/")) {
-					value = value.replace("http://www.springframework.org/node/feed/", " ");
+				if (value.contains("https://www.springframework.org/node/feed/")) {
+					value = value.replace("https://www.springframework.org/node/feed/", " ");
 				}
-				if (value.contains("http://blog.springsource.com/main/feed/")) {
-					value = value.replace("http://blog.springsource.com/main/feed/", " ");
+				if (value.contains("https://blog.springsource.com/main/feed/")) {
+					value = value.replace("https://blog.springsource.com/main/feed/", " ");
 				}
 				if (!value.contains("https://spring.io/blog.atom")) {
 					value = value.concat("\nhttps://spring.io/blog.atom");

@@ -23,69 +23,9 @@
       	</configExtension>
    	</extension>
 	
-<!--	<extension point="org.eclipse.mylyn.tasks.core.templates">
-		<repository addAutomatically="true" anonymous="false"
-			characterEncoding="UTF-8" label="SpringSource" repositoryKind="jira"
-			urlNewAccount="https://issuetracker.springsource.com/secure/Signup!default.jspa"
-			urlRepository="https://issuetracker.springsource.com" />
-		<repository addAutomatically="true" anonymous="false"
-			characterEncoding="UTF-8" label="Spring Framework" repositoryKind="jira"
-			urlNewAccount="http://jira.springsource.org/secure/Signup!default.jspa"
-			urlRepository="http://jira.springsource.org">
-		</repository>
-	</extension> -->
-	
-<!--	<extension point="org.eclipse.mylyn.tasks.bugs.support">
-		<category description="Commercial support"
-			id="org.eclipse.mylyn.tasks.bugs.commercial" name="Commercial Support"
-			weight="500">
-		</category>
-		<provider categoryId="org.eclipse.mylyn.tasks.bugs.commercial"
-			description="Support for Spring Tool Suite" icon="icons/prod/spring_32.png"
-			id="com.springsource" name="SpringSource" url="http://www.springsource.com/services">
-		</provider>
-		<product featureId="org.springsource.sts" id="org.springsource.sts"
-        	providerId="com.springsource">
-		</product>
-		<mapping namespace="org.springsource.sts" productId="org.springsource.sts">
-			<repository kind="jira" url="https://issuetracker.springsource.com">
-			</repository>
-			<property name="product" value="STS">
-			</property>
-		</mapping>
-		<mapping namespace="com.vmware.vfabric.ide" productId="org.springsource.sts">
-			<repository kind="jira" url="https://issuetracker.springsource.com">
-			</repository>
-			<property name="product" value="STS">
-			</property>
-			<property name="component" value="SERVER">
-			</property>
-		</mapping>
-		<mapping namespace="org.springframework.ide" productId="org.springsource.sts">
-			<repository kind="jira" url="https://issuetracker.springsource.com">
-			</repository>
-			<property name="product" value="STS">
-			</property>
-		</mapping>
-		<mapping namespace="org.springsource.ide" productId="org.springsource.sts">
-			<repository kind="jira" url="https://issuetracker.springsource.com">
-			</repository>
-			<property name="product" value="STS">
-			</property>
-		</mapping>
-		<mapping namespace="org.cloudfoundry.ide" productId="org.springsource.sts">
-			<repository kind="jira" url="https://issuetracker.springsource.com">
-			</repository>
-			<property name="product" value="STS">
-			</property>
-			<property name="component" value="CLOUDFOUNDRY">
-			</property>
-		</mapping>
-	</extension> -->
-
 	<extension point="com.springsource.sts.core.resources">
 		<propertyDefinition id="dashboard.bug.tracker"
-			defaultValue="https://issuetracker.springsource.com/browse/STS">
+			defaultValue="https://github.com/spring-projects/spring-ide/issues">
 		</propertyDefinition>
 		<propertyDefinition
         defaultValue="%dashboard.feeds.blogs.defaultValue"
@@ -95,16 +35,16 @@
         userConfigurable="true">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.feeds.update"
-			defaultValue="http://dist.springsource.com/release/STS/doc/updates.xml">
+			defaultValue="https://dist.springsource.com/release/STS/doc/updates.xml">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.logo"
-			defaultValue="http://spring.io">
+			defaultValue="https://spring.io">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.subscribe"
 			defaultValue="https://spring.io/#newsletter">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.new.and.noteworthy"
-			defaultValue="http://static.springsource.org/sts/nan/latest/NewAndNoteworthy.html">
+			defaultValue="https://docs.spring.io/sts/nan/latest/NewAndNoteworthy.html">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.product.page"
 			defaultValue="https://spring.io/tools/">
@@ -113,16 +53,16 @@
 			defaultValue="https://spring.io/search?q=">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.support.commercial"
-			defaultValue="http://www.springsource.com/support/springsupport">
+			defaultValue="https://pivotal.io/support/business_critical_support">
 		</propertyDefinition>
 		<propertyDefinition id="dashboard.support.community"
-			defaultValue="http://forum.spring.io/forum/spring-projects/springsource-tool-suite">
+			defaultValue="https://stackoverflow.com/questions/ask?tags=spring-tool-suite">
 		</propertyDefinition>
 		<propertyDefinition id="knowledge.base.help.regexp"
-			defaultValue="http://java.sun.com/j2se/1.5.0/docs/api/java/util/regex/Pattern.html">
+			defaultValue="https://java.sun.com/j2se/1.5.0/docs/api/java/util/regex/Pattern.html">
 		</propertyDefinition>
 		<propertyDefinition id="discovery.directory"
-			defaultValue="http://dist.springsource.com/release/STS/discovery/directory-%SHORT_VERSION%.xml">
+			defaultValue="https://dist.springsource.com/release/STS/discovery/directory-%SHORT_VERSION%.xml">
 		</propertyDefinition>
 	</extension>
 
