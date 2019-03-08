@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -18,7 +18,7 @@ import junit.framework.TestCase;
 public class ResourceProviderTest extends TestCase {
 
 	public void testGetCustomValue() {
-		assertEquals("http://my.bug.tracker", ResourceProvider.getUrl("dashboard.bug.tracker"));
+		assertEquals("https://my.bug.tracker", ResourceProvider.getUrl("dashboard.bug.tracker"));
 	}
 
 	public void testGetUrlOverrideValue() {

@@ -69,7 +69,7 @@
          <attribute name="urlExpression" type="string" use="required">
             <annotation>
                <documentation>
-                  A regular expression defining the URL(s) that this extension will be applied to. For example &quot;http://foo\.org/html/index.html&quot; applies the funtion to http://foo.org/html/index.html and &quot;.*\index.html&quot; applies the function to all &quot;index.html&quot; files opened from within a browser.
+                  A regular expression defining the URL(s) that this extension will be applied to. For example &quot;https://foo\.org/html/index.html&quot; applies the funtion to https://foo.org/html/index.html and &quot;.*\index.html&quot; applies the function to all &quot;index.html&quot; files opened from within a browser.
                </documentation>
             </annotation>
          </attribute>

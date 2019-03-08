@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -57,7 +57,6 @@ import org.springsource.ide.eclipse.commons.core.StatusHandler;
 import org.springsource.ide.eclipse.commons.internal.configurator.Activator;
 import org.springsource.ide.eclipse.commons.internal.configurator.ConfiguratorImporter;
 import org.springsource.ide.eclipse.commons.ui.UiUtil;
-
 
 /**
  * Automatically adds server runtimes and sample projects to the workspace by
@@ -170,8 +169,8 @@ public class ServerConfigurator {
 		dmServer1.setRuntimeName("SpringSource dm Server (Runtime) v1.0");
 		dmServer1.setServerName("SpringSource dm Server v1.0");
 		dmServer1.setName("SpringSource dm Server");
-		dmServer1
-				.setDescription("SpringSource dm Server is an open source, completely modular, OSGi-based Java server designed to run enterprise Java applications and Spring-powered application.");
+		dmServer1.setDescription(
+				"SpringSource dm Server is an open source, completely modular, OSGi-based Java server designed to run enterprise Java applications and Spring-powered application.");
 		dmServer1.setInstallPath("dm-server-1");
 		dmServer1.setVersionRange("[1.0.0,2.0.0)");
 		dmServer1.setBundleId("com.springsource.server.dm.bundle-v1");
@@ -185,8 +184,8 @@ public class ServerConfigurator {
 		dmServer2.setRuntimeName("SpringSource dm Server (Runtime) v2.0");
 		dmServer2.setServerName("SpringSource dm Server v2.0");
 		dmServer2.setName("SpringSource dm Server");
-		dmServer2
-				.setDescription("SpringSource dm Server is an open source, completely modular, OSGi-based Java server designed to run enterprise Java applications and Spring-powered application.");
+		dmServer2.setDescription(
+				"SpringSource dm Server is an open source, completely modular, OSGi-based Java server designed to run enterprise Java applications and Spring-powered application.");
 		dmServer2.setInstallPath("dm-server-2");
 		dmServer2.setVersionRange("[2.0.0,3.0.0)");
 		dmServer2.setBundleId("com.springsource.server.dm.bundle-v2");
@@ -194,15 +193,21 @@ public class ServerConfigurator {
 
 		// ServerDescriptor tcServer2 = new ServerDescriptor(ID_TC_SERVER_2_0);
 		// //
-		// tcServer2.setDownloadUrl("http://dist.springsource.com/release/DMS/springsource-dm-server-1.0.2.RELEASE.zip");
+		// tcServer2.setDownloadUrl("https://dist.springsource.com/release/DMS/springsource-dm-server-1.0.2.RELEASE.zip");
 		// tcServer2.setArchivePath("tcServer-6.0");
 		// tcServer2.setRuntimeTypeId("com.springsource.tcserver.runtime.60");
 		// tcServer2.setServerTypeId("com.springsource.tcserver.60");
-		// tcServer2.setRuntimeName("SpringSource tc Server Developer Edition (Runtime) v2.0");
-		// tcServer2.setServerName("SpringSource tc Server Developer Edition v2.0");
+		// tcServer2.setRuntimeName("SpringSource tc Server Developer Edition
+		// (Runtime) v2.0");
+		// tcServer2.setServerName("SpringSource tc Server Developer Edition
+		// v2.0");
 		// tcServer2.setName("SpringSource tc Server Developer Edition");
 		// tcServer2
-		// .setDescription("SpringSource tc Server is an enterprise version of Apache Tomcat that provides developers with the lightweight server they want paired with the operational management, advanced diagnostics, and mission-critical support capabilities businesses need.");
+		// .setDescription("SpringSource tc Server is an enterprise version of
+		// Apache Tomcat that provides developers with the lightweight server
+		// they want paired with the operational management, advanced
+		// diagnostics, and mission-critical support capabilities businesses
+		// need.");
 		// tcServer2.setVersionRange("[2.0.0,2.1.0)");
 		// tcServer2.setInstallPath("tc-server-developer");
 		// tcServer2.setBundleId("com.springsource.server.tc.bundle-v2");
@@ -228,15 +233,21 @@ public class ServerConfigurator {
 
 		// ServerDescriptor tcServer21 = new ServerDescriptor(ID_TC_SERVER_2_1);
 		// //
-		// tcServer2.setDownloadUrl("http://dist.springsource.com/release/DMS/springsource-dm-server-1.0.2.RELEASE.zip");
+		// tcServer2.setDownloadUrl("https://dist.springsource.com/release/DMS/springsource-dm-server-1.0.2.RELEASE.zip");
 		// tcServer21.setArchivePath("springsource-tc-server-developer");
 		// tcServer21.setRuntimeTypeId("com.springsource.tcserver.runtime.70");
 		// tcServer21.setServerTypeId("com.springsource.tcserver.70");
-		// tcServer21.setRuntimeName("SpringSource tc Server Developer Edition (Runtime) v2.1");
-		// tcServer21.setServerName("SpringSource tc Server Developer Edition v2.1");
+		// tcServer21.setRuntimeName("SpringSource tc Server Developer Edition
+		// (Runtime) v2.1");
+		// tcServer21.setServerName("SpringSource tc Server Developer Edition
+		// v2.1");
 		// tcServer21.setName("SpringSource tc Server Developer Edition");
 		// tcServer21
-		// .setDescription("SpringSource tc Server is an enterprise version of Apache Tomcat that provides developers with the lightweight server they want paired with the operational management, advanced diagnostics, and mission-critical support capabilities businesses need.");
+		// .setDescription("SpringSource tc Server is an enterprise version of
+		// Apache Tomcat that provides developers with the lightweight server
+		// they want paired with the operational management, advanced
+		// diagnostics, and mission-critical support capabilities businesses
+		// need.");
 		// tcServer21.setVersionRange("[2.1.0,3.0.0)");
 		// tcServer21.setInstallPath("tc-server-developer");
 		// tcServer21.setBundleId("com.springsource.server.tc.bundle-v21");
@@ -283,14 +294,18 @@ public class ServerConfigurator {
 
 		// ServerDescriptor tcServer = new ServerDescriptor(ID_TC_SERVER_6);
 		// //
-		// tcServer.setDownloadUrl("http://dist.springsource.com/release/DMS/springsource-dm-server-1.0.2.RELEASE.zip");
+		// tcServer.setDownloadUrl("https://dist.springsource.com/release/DMS/springsource-dm-server-1.0.2.RELEASE.zip");
 		// tcServer.setArchivePath("tcServer-6.0");
 		// tcServer.setRuntimeTypeId("com.springsource.tcserver.runtime.60");
 		// tcServer.setServerTypeId("com.springsource.tcserver.60");
 		// tcServer.setRuntimeName("SpringSource tc Server (Runtime) v6.0");
 		// tcServer.setServerName("SpringSource tc Server v6.0");
 		// tcServer.setName("SpringSource tc Server");
-		// tcServer.setDescription("SpringSource tc Server is an enterprise version of Apache Tomcat that provides developers with the lightweight server they want paired with the operational management, advanced diagnostics, and mission-critical support capabilities businesses need.");
+		// tcServer.setDescription("SpringSource tc Server is an enterprise
+		// version of Apache Tomcat that provides developers with the
+		// lightweight server they want paired with the operational management,
+		// advanced diagnostics, and mission-critical support capabilities
+		// businesses need.");
 		// tcServer.setVersionRange("[6.0.0,7.0.0)");
 		// tcServer.setInstallPath("tc-server");
 		// tcServer.setBundleId("com.springsource.server.tc.bundle");
@@ -413,9 +428,7 @@ public class ServerConfigurator {
 				final boolean[] response = new boolean[1];
 				Display.getDefault().syncExec(new Runnable() {
 					public void run() {
-						response[0] = MessageDialog.openQuestion(
-								UiUtil.getShell(),
-								"Install Runtime",
+						response[0] = MessageDialog.openQuestion(UiUtil.getShell(), "Install Runtime",
 								NLS.bind("No local installation of {0} found. Proceed with download?",
 										descriptor.getServerName()));
 					}

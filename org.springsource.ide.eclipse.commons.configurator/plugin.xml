@@ -56,15 +56,15 @@
        point="com.springsource.sts.core.resources">
       <propertyDefinition
             id="download.dm.server.1"
-            defaultValue="http://dist.springsource.com/release/DMS/springsource-dm-server-1.0.2.SR02.zip">
+            defaultValue="https://dist.springsource.com/release/DMS/springsource-dm-server-1.0.2.SR02.zip">
       </propertyDefinition>
       <propertyDefinition
             id="download.dm.server.2"
-            defaultValue="http://dist.springframework.org/release/DMS/springsource-dm-server-2.0.0.RELEASE.zip">
+            defaultValue="https://dist.springframework.org/release/DMS/springsource-dm-server-2.0.0.RELEASE.zip">
       </propertyDefinition>
       <propertyDefinition
             id="download.tomcat.6"
-            defaultValue="http://www.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.zip">
+            defaultValue="https://www.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.zip">
       </propertyDefinition>
  	</extension>
 	

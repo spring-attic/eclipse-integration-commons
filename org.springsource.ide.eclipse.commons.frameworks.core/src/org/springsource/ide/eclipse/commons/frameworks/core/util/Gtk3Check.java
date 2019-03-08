@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *   Kris De Volder - Initial API and implementation
@@ -63,7 +63,7 @@ public class Gtk3Check {
 
 	@SuppressWarnings("unchecked")
 	private static Vector<String> getNativeLibs(ClassLoader classLoader) throws Exception {
-		//See: http://stackoverflow.com/questions/1007861/how-do-i-get-a-list-of-jni-libraries-which-are-loaded
+		//See: https://stackoverflow.com/questions/1007861/how-do-i-get-a-list-of-jni-libraries-which-are-loaded
 		Field field = ClassLoader.class.getDeclaredField("loadedLibraryNames");
 		field.setAccessible(true);
 		return (Vector<String>)field.get(classLoader);

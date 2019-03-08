@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  * GoPivotal, Inc. - initial API and implementation
@@ -109,7 +109,7 @@ public class DescriptionSection extends WizardPageSection {
 //		grab.applyTo(field);
 //		grab.applyTo(text);
 		GridData data = new GridData(GridData.FILL_HORIZONTAL); //Without this, SWT.WRAP doesn't work!
-		  //See: http://vzurczak.wordpress.com/2012/08/28/force-a-swt-text-to-wrap/
+		  //See: https://vzurczak.wordpress.com/2012/08/28/force-a-swt-text-to-wrap/
 		data.heightHint = preferredHeight;
 		data.widthHint = UIConstants.FIELD_TEXT_AREA_WIDTH;
 		text.setLayoutData(data);

@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -77,7 +77,7 @@ public class StsProperties {
 		// Default properties (guarantees certain properties have a value no
 		// matter what).
 
-		props.put("spring.site.url", "http://spring.io");
+		props.put("spring.site.url", "https://spring.io");
 		props.put("spring.initializr.json.url", "https://start.spring.io");
 
 		//Urls used in the dashboard. For each XXX.url=... property, if
@@ -101,12 +101,12 @@ public class StsProperties {
 		props.put("sts.tracker.url.external", "true");
 
 		//New and Noteworthy
-		props.put("sts.nan.url", "http://static.springsource.org/sts/nan/latest/NewAndNoteworthy.html");
+		props.put("sts.nan.url", "https://static.springsource.org/sts/nan/latest/NewAndNoteworthy.html");
 		props.put("sts.nan.url.label", "New and Noteworthy");
 		props.put("sts.nan.url.external", "false");
 
 		//Forum:
-		props.put("sts.forum.url", "http://forum.springsource.org/forumdisplay.php?32-SpringSource-Tool-Suite");
+		props.put("sts.forum.url", "https://forum.springsource.org/forumdisplay.php?32-SpringSource-Tool-Suite");
 		props.put("sts.forum.url.label", "Forum");
 		props.put("sts.forum.url.external", "false");
 
@@ -116,12 +116,12 @@ public class StsProperties {
 		props.put("spring.guides.url.external", "true");
 
 		//Spring boot runtime
-		props.put("spring.boot.install.url", "http://repo.spring.io/release/org/springframework/boot/spring-boot-cli/2.0.4.RELEASE/spring-boot-cli-2.0.4.RELEASE-bin.zip");
+		props.put("spring.boot.install.url", "https://repo.spring.io/release/org/springframework/boot/spring-boot-cli/2.0.4.RELEASE/spring-boot-cli-2.0.4.RELEASE-bin.zip");
 		//Discovery url for spring reference app
 		props.put("spring.reference.app.discovery.url", "https://raw.github.com/kdvolder/spring-reference-apps-meta/master/reference-apps.json");
 
 		//Url for webservice that generates typegraph for spring boot jar type content assist
-		props.put("spring.boot.typegraph.url", "http://aetherial.cfapps.io/boot/typegraph");
+		props.put("spring.boot.typegraph.url", "https://aetherial.cfapps.io/boot/typegraph");
 
 		//Default version of spring boot, assumed when we need a version but can't determine it from the classpath of the project.
 		//Typically this should point to the latest version of spring-boot (the one used by spring-initialzr app).

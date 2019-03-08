@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Composite;
  * Improved version of 'ScrolledComposite' that doesn't waste space for
  * scrollbars if the scrollbars are invisible.
  * 
- * See http://stackoverflow.com/questions/16516984/how-to-get-rid-of-wasted-space-in-swt-scrolledcomposite-when-the-scrollbars-are
+ * See https://stackoverflow.com/questions/16516984/how-to-get-rid-of-wasted-space-in-swt-scrolledcomposite-when-the-scrollbars-are
  */
 class PackedScrolledComposite extends ScrolledComposite
 {

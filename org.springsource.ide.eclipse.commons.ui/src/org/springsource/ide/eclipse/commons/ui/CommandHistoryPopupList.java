@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -40,7 +40,7 @@ import org.springsource.ide.eclipse.commons.core.Entry;
  * @author Christian Dupuis
  * @author Andy Clement
  * @author Kris De Volder
- * @see <a href="http://www.eclipse.org/swt/">Sample code and further
+ * @see <a href="https://www.eclipse.org/swt/">Sample code and further
  * information</a>
  */
 public class CommandHistoryPopupList {
@@ -72,7 +72,7 @@ public class CommandHistoryPopupList {
 
 	/**
 	 * Creates a PopupList above the specified shell.
-	 * 
+	 *
 	 * @param parent a Shell control which will be the parent of the new
 	 * instance (cannot be null)
 	 */
@@ -82,11 +82,11 @@ public class CommandHistoryPopupList {
 
 	/**
 	 * Creates a PopupList above the specified shell.
-	 * 
+	 *
 	 * @param parent a widget which will be the parent of the new instance
 	 * (cannot be null)
 	 * @param style the style of widget to construct
-	 * 
+	 *
 	 * @since 3.0
 	 */
 	public CommandHistoryPopupList(Shell parent, int style) {
@@ -141,7 +141,7 @@ public class CommandHistoryPopupList {
 	 * Gets the widget font.
 	 * <p>
 	 * @return the widget font
-	 * 
+	 *
 	 * @exception SWTException <ul>
 	 * <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li> <li>
 	 * ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created
@@ -156,9 +156,9 @@ public class CommandHistoryPopupList {
 	 * Gets the items.
 	 * <p>
 	 * This operation will fail if the items cannot be queried from the OS.
-	 * 
+	 *
 	 * @return the items in the widget
-	 * 
+	 *
 	 * @exception SWTException <ul>
 	 * <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li> <li>
 	 * ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created
@@ -175,7 +175,7 @@ public class CommandHistoryPopupList {
 
 	/**
 	 * Gets the minimum width of the list.
-	 * 
+	 *
 	 * @return the minimum width of the list
 	 */
 	public int getMinimumWidth() {
@@ -185,11 +185,11 @@ public class CommandHistoryPopupList {
 	/**
 	 * Launches the Popup List, waits for an item to be selected and then closes
 	 * the PopupList.
-	 * 
+	 *
 	 * @param rect the initial size and location of the PopupList; the dialog
 	 * will be positioned so that it does not run off the screen and the largest
 	 * number of items are visible
-	 * 
+	 *
 	 * @return the text of the selected item or null if no item is selected
 	 */
 	public Entry open(Rectangle rect) {
@@ -266,9 +266,9 @@ public class CommandHistoryPopupList {
 	 * If the item is not currently selected, it is selected. If the item at an
 	 * index is selected, it remains selected. If the string is not matched, it
 	 * is ignored.
-	 * 
+	 *
 	 * @param string the text of the item
-	 * 
+	 *
 	 * @exception SWTException <ul>
 	 * <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li> <li>
 	 * ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created
@@ -303,9 +303,9 @@ public class CommandHistoryPopupList {
 	 * <p>
 	 * When new font is null, the font reverts to the default system font for
 	 * the widget.
-	 * 
+	 *
 	 * @param font the new font (or null)
-	 * 
+	 *
 	 * @exception SWTException <ul>
 	 * <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li> <li>
 	 * ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created
@@ -317,17 +317,17 @@ public class CommandHistoryPopupList {
 	}
 
 	/**
-	 * 
+	 *
 	 * Sets all items.
 	 * <p>
 	 * The previous selection is cleared. The previous items are deleted. The
 	 * new items are added. The top index is set to 0.
-	 * 
+	 *
 	 * @param strings the array of items
-	 * 
+	 *
 	 * This operation will fail when an item is null or could not be added in
 	 * the OS.
-	 * 
+	 *
 	 * @exception IllegalArgumentException <ul>
 	 * <li>ERROR_NULL_ARGUMENT - if the items array is null</li> <li>
 	 * ERROR_INVALID_ARGUMENT - if an item in the items array is null</li>
@@ -354,7 +354,7 @@ public class CommandHistoryPopupList {
 
 	/**
 	 * Sets the minimum width of the list.
-	 * 
+	 *
 	 * @param width the minimum width of the list
 	 */
 	public void setMinimumWidth(int width) {

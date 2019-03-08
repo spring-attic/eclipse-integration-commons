@@ -5,7 +5,7 @@
 
 	<property name="toolsDir" value="../../releng/com.springsource.sts.releng/tools/ant" />
 	<property name="dest" value="../../releng/help" />
-	<property name="baseUrl" value="http://dist.springsource.com/release/STS/help/" />
+	<property name="baseUrl" value="https://dist.springsource.com/release/STS/help/" />
 
 	<path id="eclipse.core.runtime.id">
 		<fileset dir="${eclipse.home}/plugins">

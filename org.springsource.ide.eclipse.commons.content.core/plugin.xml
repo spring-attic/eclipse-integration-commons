@@ -5,7 +5,7 @@
          point="com.springsource.sts.core.resources">
       <propertyDefinition
             id="content.descriptors"
-            defaultValue="http://dist.springsource.com/release/STS/help/descriptors.xml">
+            defaultValue="https://dist.springsource.com/release/STS/help/descriptors.xml">
       </propertyDefinition>
    </extension>
 </plugin>

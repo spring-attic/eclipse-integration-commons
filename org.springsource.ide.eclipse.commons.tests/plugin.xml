@@ -5,7 +5,7 @@
          point="com.springsource.sts.core.resources">
       <url
             id="dashboard.bug.tracker"
-            value="http://my.bug.tracker">
+            value="https://my.bug.tracker">
       </url>
       <url
             id="my.key"

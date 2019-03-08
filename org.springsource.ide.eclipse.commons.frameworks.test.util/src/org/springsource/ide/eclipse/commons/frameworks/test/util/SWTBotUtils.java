@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -217,7 +217,7 @@ public class SWTBotUtils {
 		// Note: table.doubleClick() method doesn't work, table appears not to
 		// be listening to the events that are being posted by this method.
 		// Use this workaround instead:
-		// http://dev.eclipse.org/mhonarc/newsLists/news.eclipse.swtbot/msg00309.html
+		// https://dev.eclipse.org/mhonarc/newsLists/news.eclipse.swtbot/msg00309.html
 		UIThreadRunnable.asyncExec(bot.getDisplay(), new VoidResult() {
 			public void run() {
 				table.widget.notifyListeners(SWT.DefaultSelection, new Event());

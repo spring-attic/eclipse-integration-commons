@@ -21,16 +21,16 @@
 
   For Eclipse >= 4.7:
   
-    - CI builds: http://dist.springsource.com/snapshot/TOOLS/eclipse-integration-commons/nightly/ 
-    - Milestone builds: http://dist.springsource.com/milestone/TOOLS/eclipse-integration-commons/
-    - Release builds: http://dist.springsource.com/release/TOOLS/eclipse-integration-commons/
+    - CI builds: https://dist.springsource.com/snapshot/TOOLS/eclipse-integration-commons/nightly/ 
+    - Milestone builds: https://dist.springsource.com/milestone/TOOLS/eclipse-integration-commons/
+    - Release builds: https://dist.springsource.com/release/TOOLS/eclipse-integration-commons/
 
 ## Questions and bug reports:
 
   If you have a question that Google can't answer, the best way is to go to the stackoverflow
   using the tag `spring-tool-suite`:
 
-  http://stackoverflow.com/tags/spring-tool-suite[`spring-tool-suite`]
+  https://stackoverflow.com/tags/spring-tool-suite[`spring-tool-suite`]
   
   Bug reports and enhancement requests are tracked using GitHub issues here:
   

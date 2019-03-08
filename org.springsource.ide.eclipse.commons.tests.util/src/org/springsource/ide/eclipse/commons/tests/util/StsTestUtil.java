@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -830,13 +830,13 @@ public class StsTestUtil {
         }
         boolean errorFound = false;
         sb.append("Problems:\n");
-        for (int i = 0; i < markers.length; i++) {
-            if (((Integer) markers[i].getAttribute(IMarker.SEVERITY)).intValue() == IMarker.SEVERITY_ERROR) {
+        for (IMarker marker : markers) {
+            if (((Integer) marker.getAttribute(IMarker.SEVERITY)).intValue() == IMarker.SEVERITY_ERROR) {
                 sb.append("  ");
-                sb.append(markers[i].getResource().getName()).append(" : ");
-                sb.append(markers[i].getAttribute(IMarker.LINE_NUMBER)).append(" : ");
-                sb.append(markers[i].getAttribute(IMarker.MESSAGE)).append("\n");
-                if (!((String) markers[i].getAttribute(IMarker.MESSAGE)).contains("can't determine modifiers of missing type")) {
+                sb.append(marker.getResource().getName()).append(" : ");
+                sb.append(marker.getAttribute(IMarker.LINE_NUMBER)).append(" : ");
+                sb.append(marker.getAttribute(IMarker.MESSAGE)).append("\n");
+                if (!((String) marker.getAttribute(IMarker.MESSAGE)).contains("can't determine modifiers of missing type")) {
                     errorFound = true;
                 }
             }
@@ -936,8 +936,8 @@ public class StsTestUtil {
     			"<beans xmlns=\"http://www.springframework.org/schema/beans\"\r\n" +
     			"	xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n" +
     			"	xmlns:context=\"http://www.springframework.org/schema/context\"\r\n" +
-    			"	xsi:schemaLocation=\"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd\r\n" +
-    			"		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd\">\r\n" +
+    			"	xsi:schemaLocation=\"http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-3.0.xsd\r\n" +
+    			"		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context-2.5.xsd\">\r\n" +
     			beansContents +
     			"\n</beans>";
 

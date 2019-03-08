@@ -18,7 +18,7 @@
    <!-- it seems that using the new and recommended way of contributing entries to existing menus
         doesn't work for the search menu.
         So we have to use the old mechanism using actionSets 
-        See here http://stackoverflow.com/questions/7113380/how-to-extend-the-source-menu-in-eclipse-or-what-is-its-locationuri
+        See here https://stackoverflow.com/questions/7113380/how-to-extend-the-source-menu-in-eclipse-or-what-is-its-locationuri
     -->
    <extension
          point="org.eclipse.ui.actionSets">

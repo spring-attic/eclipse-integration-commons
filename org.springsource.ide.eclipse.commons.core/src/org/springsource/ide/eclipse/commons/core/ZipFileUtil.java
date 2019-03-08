@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *     Pivotal Software, Inc. - initial API and implementation
@@ -94,7 +94,7 @@ public class ZipFileUtil {
 								}
 								catch (InterruptedException e) {
 									// Restore the interrupted status (see
-									// http://www.ibm.com/developerworks/java/library/j-jtp05236/index.html)
+									// https://www.ibm.com/developerworks/java/library/j-jtp05236/index.html)
 									Thread.currentThread().interrupt();
 								}
 								return; // No sense making a file executable
