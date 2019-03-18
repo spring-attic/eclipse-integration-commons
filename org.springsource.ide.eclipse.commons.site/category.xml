@@ -51,6 +51,9 @@
 	<bundle id="org.reactivestreams.reactive-streams" version="0.0.0"/>
 
 	<bundle id="io.projectreactor.reactor-core" version="0.0.0"/>
+	
+	<bundle id="org.jsoup" version="0.0.0"/>
+	<bundle id="com.kotcrab.remark" version="0.0.0"/>
 
 	<bundle id="edu.emory.mathcs.backport" version="0.0.0"/>
 	<bundle id="edu.emory.mathcs.backport.source" version="0.0.0"/>
