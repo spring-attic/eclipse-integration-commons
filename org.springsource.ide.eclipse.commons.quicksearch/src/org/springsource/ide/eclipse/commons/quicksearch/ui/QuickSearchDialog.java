@@ -344,6 +344,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	private static final String DIALOG_SASH_WEIGHTS = "SASH_WEIGHTS";
 
 	private static final String DIALOG_LAST_QUERY = "LAST_QUERY";
+	private static final String DIALOG_PATH_FILTER = "PATH_FILTER";
 	private static final String CASE_SENSITIVE = "CASE_SENSITIVE";
 	private static final boolean CASE_SENSITIVE_DEFAULT = true;
 
@@ -496,6 +497,10 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 				pattern.setText(lastSearch);
 				pattern.setSelection(0, lastSearch.length());
 			}
+			if (settings.get(DIALOG_PATH_FILTER)!=null) {
+				String filter = settings.get(DIALOG_PATH_FILTER);
+				searchIn.setText(filter);
+			}
 
 			if (settings.getArray(DIALOG_COLUMNS)!=null) {
 				String[] columnWidths = settings.getArray(DIALOG_COLUMNS);
@@ -605,6 +610,7 @@ public class QuickSearchDialog extends SelectionStatusDialog {
 	protected void storeDialog(IDialogSettings settings) {
 		String currentSearch = pattern.getText();
 		settings.put(DIALOG_LAST_QUERY, currentSearch);
+		settings.put(DIALOG_PATH_FILTER, searchIn.getText());
 		if (toggleCaseSensitiveAction!=null) {
 			settings.put(CASE_SENSITIVE, toggleCaseSensitiveAction.isChecked());
 		}
