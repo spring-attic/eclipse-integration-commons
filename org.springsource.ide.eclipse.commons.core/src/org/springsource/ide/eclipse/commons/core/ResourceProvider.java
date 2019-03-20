@@ -15,8 +15,10 @@ import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -26,6 +28,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
@@ -211,7 +214,28 @@ public class ResourceProvider {
 	}
 
 	public static String[] getUrls(String key) {
-		String value = instance.getValue(key);
+		String[] urls = parseUrls(key, instance.getValue(key));
+		String[] defaultUrls = parseUrls(key, instance.getDefaultValue(key));
+
+		Set<String> cleanableUrls = new HashSet<>();
+		for (String url : defaultUrls) {
+			if (url.startsWith("https:")) {
+				cleanableUrls.add("http:"+url.substring(6));
+			} else if (url.startsWith("http:")) {
+				cleanableUrls.add(url);
+			}
+		}
+
+		for (int i = 0; i < urls.length; i++) {
+			String url = urls[i];
+			if (cleanableUrls.contains(url)) {
+				urls[i] = "https:"+url.substring(5);
+			}
+		}
+		return urls;
+	}
+
+	private static String[] parseUrls(String key, String value) {
 		if (value == null) {
 			throw new RuntimeException(NLS.bind(
 					"No URL found for key: ''{0}''", key));
@@ -234,7 +258,6 @@ public class ResourceProvider {
 		}
 		String[] values = value.split(RECORD_SEPARATOR_PATTERN);
 		return discardLocationNames(values);
-
 	}
 
 	private static String[] discardLocationNames(String[] values) {
@@ -272,6 +295,16 @@ public class ResourceProvider {
 					}
 				});
 
+		DefaultScope.INSTANCE.getNode(CorePlugin.PLUGIN_ID).addPreferenceChangeListener(new IPreferenceChangeListener() {
+			@Override
+			public void preferenceChange(PreferenceChangeEvent event) {
+				Property p = propertyById.get(event.getKey());
+				if (p != null) {
+					p.defaultValue = (String)event.getNewValue();
+				}
+			}
+		});
+
 		ExtensionPointReader reader = new ExtensionPointReader();
 		reader.read(this);
 		this.propertyById = reader.propertyById;
@@ -301,5 +334,11 @@ public class ResourceProvider {
 		Property p = propertyById.get(key);
 		return (p != null) ? p.getValue() : null;
 	}
+
+	private String getDefaultValue(String key) {
+		Property p = propertyById.get(key);
+		return (p != null) ? p.getDefaultValue() : null;
+	}
+
 
 }

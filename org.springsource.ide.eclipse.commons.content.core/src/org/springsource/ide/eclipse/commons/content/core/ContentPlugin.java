@@ -37,7 +37,7 @@ public class ContentPlugin extends Plugin {
 	 * The file in the bundle state directory that has information about
 	 * installed and available content.
 	 */
-	private static final String FILENAME_CONTENT = "content.xml";
+	private static final String FILENAME_CONTENT = "https-content.xml";
 
 	public static final String PLUGIN_ID = "org.springsource.ide.eclipse.commons.content.core";
 
@@ -78,8 +78,8 @@ public class ContentPlugin extends Plugin {
 			}
 		}
 		catch (IOException e) {
-			StatusHandler.log(new Status(IStatus.WARNING, PLUGIN_ID, "Unable to locate dfault descriptor for content",
-					e));
+			StatusHandler
+					.log(new Status(IStatus.WARNING, PLUGIN_ID, "Unable to locate dfault descriptor for content", e));
 		}
 		manager.init();
 	}
