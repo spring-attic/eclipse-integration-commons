@@ -186,7 +186,7 @@ ADDITIONAL LICENSE INFORMATION:
 
 > Apache 1.1
 
-Apache Software License, Version 1.1 http://www.apache.org/licenses/LICENSE-1.1
+Apache Software License, Version 1.1 https://www.apache.org/licenses/LICENSE-1.1
 
 
 >>> springframework.roo.wrapping.bcprov-jdk15_1.45-1.45
@@ -201,7 +201,7 @@ ADDITIONAL LICENSE INFORMATION:
 
 > Apache 1.1
 
-Apache Software License, Version 1.1 	http://www.apache.org/licenses/LICENSE-1.1
+Apache Software License, Version 1.1 	https://www.apache.org/licenses/LICENSE-1.1
 
 
 >>> yamlbeans-1.06
@@ -234,7 +234,7 @@ Copyright 2009-2011 the original author or authors.
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -252,7 +252,7 @@ The ASF licenses this file to You under the Apache License, Version 2.0
 (the "License"); you may not use this file except in compliance with
 the License.  You may obtain a copy of the License at
 
-http://www.apache.org/licenses/LICENSE-2.0
+https://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -267,7 +267,7 @@ Licensed to the Apache Software Foundation (ASF) under one or more contributor l
 
 See the NOTICE file distributed with this work for additional information regarding copyright ownership.
 
-The ASF licenses this file to You under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+The ASF licenses this file to You under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.  You may obtain a copy of the License at https://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  
@@ -390,7 +390,7 @@ specific rights regarding derivate works.
 
 You may obtain a copy of the License at:
 
-http://www.apache.org/licenses/LICENSE-2.0
+https://www.apache.org/licenses/LICENSE-2.0
 
 
 >>> jackson-core-2.3.3
@@ -402,7 +402,7 @@ specific rights regarding derivate works.
 
 You may obtain a copy of the License at:
 
-http://www.apache.org/licenses/LICENSE-2.0
+https://www.apache.org/licenses/LICENSE-2.0
 
 
 >>> jackson-core-asl-1.9.13
@@ -414,7 +414,7 @@ specific rights regarding derivate works.
 
 You may obtain a copy of the License at:
 
-http://www.apache.org/licenses/
+https://www.apache.org/licenses/
 
 A copy is also included with both the the downloadable source code package
 and jar that contains class bytecodes, as file "ASL 2.0". In both cases,
@@ -431,7 +431,7 @@ specific rights regarding derivate works.
 
 You may obtain a copy of the License at:
 
-http://www.apache.org/licenses/LICENSE-2.0
+https://www.apache.org/licenses/LICENSE-2.0
 
 
 >>> jackson-mapper-asl-1.9.13
@@ -452,7 +452,7 @@ specific rights regarding derivate works.
 
 You may obtain a copy of the License at:
 
-http://www.apache.org/licenses/
+https://www.apache.org/licenses/
 
 A copy is also included with both the the downloadable source code package
 and jar that contains class bytecodes, as file "ASL 2.0". In both cases,
@@ -482,7 +482,7 @@ This product includes/uses software(s) developed by 'an unknown organization'
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
 *
-* http://www.apache.org/licenses/LICENSE-2.0
+* https://www.apache.org/licenses/LICENSE-2.0
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
@@ -499,7 +499,7 @@ This product includes/uses software(s) developed by 'an unknown organization'
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -516,7 +516,7 @@ Copyright 2002-2015 the original author or authors.
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
 *
-* http://www.apache.org/licenses/LICENSE-2.0
+* https://www.apache.org/licenses/LICENSE-2.0
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
@@ -600,7 +600,7 @@ is included above.
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
 *
-* http://www.apache.org/licenses/LICENSE-2.0
+* https://www.apache.org/licenses/LICENSE-2.0
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
@@ -668,7 +668,7 @@ conditions of the subcomponent's license, as noted in the LICENSE file.
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -754,7 +754,7 @@ Copyright 2002-2014 the original author or authors.
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -777,7 +777,7 @@ Copyright 2002-2014 the original author or authors.
 
  *
 
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
 
  *
 
@@ -800,7 +800,7 @@ Copyright 2002-2012 the original author or authors.
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -822,7 +822,7 @@ Copyright 2002-2012 the original author or authors.
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -839,7 +839,7 @@ Copyright 2002-2012 the original author or authors.
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -856,7 +856,7 @@ Copyright 2002-2012 the original author or authors.
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -873,7 +873,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-http://www.apache.org/licenses/LICENSE-2.0
+https://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -890,7 +890,7 @@ Copyright (c) 2008-2013, http://www.snakeyaml.org
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
 
-     http://www.apache.org/licenses/LICENSE-2.0
+     https://www.apache.org/licenses/LICENSE-2.0
 
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
@@ -915,7 +915,7 @@ of any of the following licenses:
 EPL, Eclipse Public License, V1.0 or later, http://www.eclipse.org/legal
 LGPL, GNU Lesser General Public License, V2.1 or later, http://www.gnu.org/licenses/lgpl.html
 GPL, GNU General Public License, V2 or later, http://www.gnu.org/licenses/gpl.html
-AL, Apache License, V2.0 or later, http://www.apache.org/licenses
+AL, Apache License, V2.0 or later, https://www.apache.org/licenses
 BSD, BSD License, http://www.opensource.org/licenses/bsd-license.php
 
 Please contact the author if you need another license.
@@ -1024,7 +1024,7 @@ three years from the date you acquired this Software product.
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -1041,7 +1041,7 @@ three years from the date you acquired this Software product.
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -1058,7 +1058,7 @@ three years from the date you acquired this Software product.
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -1113,7 +1113,7 @@ spring-core-4.0.5.RELEASE-sources.jar/ org/ springframework/ asm/ AnnotationVisi
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -1130,7 +1130,7 @@ spring-core-4.0.5.RELEASE-sources.jar/ org/ springframework/ asm/ AnnotationVisi
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an ""AS IS"" BASIS,
@@ -1156,7 +1156,7 @@ License.
 *
 
 *    
-http://www.apache.org/licenses/LICENSE-2.0
+https://www.apache.org/licenses/LICENSE-2.0
 
 *
 
@@ -1245,7 +1245,7 @@ for more information.
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
 *
-* http://www.apache.org/licenses/LICENSE-2.0
+* https://www.apache.org/licenses/LICENSE-2.0
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
@@ -1262,7 +1262,7 @@ for more information.
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an ""AS IS"" BASIS,
@@ -1279,7 +1279,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License. 
 You may obtain a copy of the License at  
 
-      http://www.apache.org/licenses/LICENSE-2.0  
+      https://www.apache.org/licenses/LICENSE-2.0  
 
 Unless required by applicable law or agreed to in writing, software * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
@@ -1827,7 +1827,7 @@ Licensed to the Apache Software Foundation (ASF) under one or more
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -1852,7 +1852,7 @@ Licensed to the Apache Software Foundation (ASF) under one or more
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -2018,7 +2018,7 @@ JavaBeans Activation Framework 1.1
 Your use of the Activation Framework code is subject to the terms and conditions of the Apache License Version 2.0. A copy of the license is contained in the file 
 LICENSE.txt
  and is also available at 
-http://www.apache.org/licenses/
+https://www.apache.org/licenses/
 .
 The source for the javax.activation bundle is available on the Apache Geronimo website at 
 http://geronimo.apache.org/
@@ -2134,7 +2134,7 @@ Java Mail 1.4
 Your use of the Java Mail code is subject to the terms and conditions of the Apache License Version 2.0. A copy of the license is contained in the file 
 LICENSE.txt
  and is also available at 
-http://www.apache.org/licenses/
+https://www.apache.org/licenses/
 .
 The source for the javax.mail bundle is available on the Apache Geronimo website at 
 http://geronimo.apache.org/
@@ -2159,7 +2159,7 @@ StAX 1.0.
 Your use of the StAX code is subject to the terms and conditions of the Apache Software License v2.0. A copy of the license is contained in the file 
 LICENCE.txt
  and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0
+https://www.apache.org/licenses/LICENSE-2.0
 .
 The source for the bundle is available at the StAX website at 
 http://stax.codehaus.org/
@@ -2184,7 +2184,7 @@ Java API for XML Web Services (JAX-WS API)
 Your use of the JAX-WS API code is subject to the terms and conditions of the Apache License Version 2.0. A copy of the license is contained in the file 
 LICENSE.txt
  and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0
+https://www.apache.org/licenses/LICENSE-2.0
 The source for the javax.xml.ws bundle is available on the Apache Geronimo website at http://geronimo.apache.org/.
 
 
@@ -2208,7 +2208,7 @@ Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
 Apache Commons Codec 1.6
 This code is licensed under the Apache License v2.0 and can be found at 
-http://www.apache.org/licenses/LICENSE-2.0.txt
+https://www.apache.org/licenses/LICENSE-2.0.txt
 . (
 local copy
 )
@@ -2242,7 +2242,7 @@ Copyright (c) 1997-2005 The Apache Software Foundation. All rights reserved.
 Your use of the Commons Collections code is subject to the terms and conditions of the Apache Software License 2.0. A copy of the license is contained in the file 
 LICENSE.txt
  and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0.html
+https://www.apache.org/licenses/LICENSE-2.0.html
 .
 The Apache attribution 
 NOTICE.txt
@@ -2277,7 +2277,7 @@ Copyright (c) 1997-2005 The Apache Software Foundation. All rights reserved.
 Your use of the Commons IO code is subject to the terms and conditions of the Apache Software License 2.0. A copy of the license is contained in the file 
 LICENSE.txt
  and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0.html
+https://www.apache.org/licenses/LICENSE-2.0.html
 .
 The Apache attribution 
 NOTICE.txt
@@ -2306,7 +2306,7 @@ The plug-in includes software developed by The Apache Software Foundation as par
 Your use of the HttpClient code is subject to the terms and conditions of the Apache Software License 2.0. A copy of the license is contained in the file 
 LICENSE.txt
  and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0.html
+https://www.apache.org/licenses/LICENSE-2.0.html
 .
 The names "HttpClient" and "Apache Software Foundation" must not be used to endorse or promote products derived from this software without prior written permission. For written permission, please contact 
 apache@apache.org
@@ -2335,7 +2335,7 @@ The plug-in includes software developed by The Apache Software Foundation as par
 Your use of the HttpCore code is subject to the terms and conditions of the Apache Software License 2.0. A copy of the license is contained in the file 
 LICENSE.txt
  and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0.html
+https://www.apache.org/licenses/LICENSE-2.0.html
 .
 The names "HttpCore" and "Apache Software Foundation" must not be used to endorse or promote products derived from this software without prior written permission. For written permission, please contact 
 apache@apache.org
@@ -2367,7 +2367,7 @@ Jackson JSON processor (Jackson)
 Your use of Jackson is subject to the terms and conditions of the Apache License, Version 2.0 ("Apache License"). A copy of the Apache License can be found in 
 ASL2.0
  and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0.html
+https://www.apache.org/licenses/LICENSE-2.0.html
 .
 The Apache attribution 
 NOTICE
@@ -2398,7 +2398,7 @@ Jackson JSON processor (Jackson)
 Your use of Jackson is subject to the terms and conditions of the Apache License, Version 2.0 ("Apache License"). A copy of the Apache License can be found in 
 ASL2.0
  and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0.html
+https://www.apache.org/licenses/LICENSE-2.0.html
 .
 The Apache attribution 
 NOTICE
@@ -2700,7 +2700,7 @@ to a jury trial in any resulting litigation.
 Apache License 
 
 Version 2.0, January 2004 
-http://www.apache.org/licenses/ 
+https://www.apache.org/licenses/ 
 
 TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION 
 
@@ -3219,7 +3219,7 @@ COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL)Version 1.1
 
 1.2. "Contributor Version" means the combination of the Original Software, prior Modifications used by a Contributor (if any), and the Modifications made by that particular Contributor. 
 
-1.3. "Covered SoftwareÆ?" means (a) the Original Software, or (b) Modifications, or (c) the combination of files containing Original Software with files containing Modifications, in each case including portions thereof. 
+1.3. "Covered Softwareï¿½?" means (a) the Original Software, or (b) Modifications, or (c) the combination of files containing Original Software with files containing Modifications, in each case including portions thereof. 
 
 1.4. "Executable" means the Covered Software in any form other than Source Code. 
 
