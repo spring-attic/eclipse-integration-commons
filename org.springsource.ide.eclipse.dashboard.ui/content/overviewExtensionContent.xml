@@ -4,7 +4,7 @@
 		style="overview.css" path="overview/@">
 		<group id="content-group" style-id="content-group">
 			<link label="Spring Tool Suite Dashboard"
-				url="https://org.eclipse.ui.intro/runAction?pluginId=org.springsource.ide.eclipse.dashboard.ui&amp;class=org.springsource.ide.eclipse.dashboard.ui.actions.ShowDashboardAction&amp;id=com.springsource.sts.ide.ui.action.dashboard"
+				url="http://org.eclipse.ui.intro/runAction?pluginId=org.springsource.ide.eclipse.dashboard.ui&amp;class=org.springsource.ide.eclipse.dashboard.ui.actions.ShowDashboardAction&amp;id=com.springsource.sts.ide.ui.action.dashboard"
 				id="sts-overview" style-id="content-link">
 				<text>See the Tool Suite Dashboard</text>
 			</link>

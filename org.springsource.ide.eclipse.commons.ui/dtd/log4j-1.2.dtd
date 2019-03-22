@@ -41,7 +41,7 @@ element. -->
 <!-- keeps its old value.                                                -->
      
 <!ATTLIST log4j:configuration
-  xmlns:log4j              CDATA #FIXED "https://jakarta.apache.org/log4j/" 
+  xmlns:log4j              CDATA #FIXED "http://jakarta.apache.org/log4j/" 
   threshold                (all|trace|debug|info|warn|error|fatal|off|null) "null"
   debug                    (true|false|null)  "null"
   reset                    (true|false) "false"
@@ -186,7 +186,7 @@ element. -->
 <!-- ==================================================================== -->
 <!ELEMENT log4j:eventSet (log4j:event*)>
 <!ATTLIST log4j:eventSet
-  xmlns:log4j             CDATA #FIXED "https://jakarta.apache.org/log4j/" 
+  xmlns:log4j             CDATA #FIXED "http://jakarta.apache.org/log4j/" 
   version                (1.1|1.2) "1.2" 
   includesLocationInfo   (true|false) "true"
 >
