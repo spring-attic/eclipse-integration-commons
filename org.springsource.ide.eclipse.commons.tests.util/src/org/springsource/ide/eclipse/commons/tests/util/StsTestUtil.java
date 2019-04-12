@@ -28,6 +28,7 @@ import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Map;
@@ -239,6 +240,19 @@ public class StsTestUtil {
 			project.refreshLocal(IResource.DEPTH_INFINITE, null);
 			project.close(null);
 			deleteProject(project);
+		}
+		getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, null);
+	}
+
+	public static void deleteAllProjectsExcept(String... names) throws Exception {
+		IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		List<String> namesList = Arrays.asList(names);
+		for (IProject project : allProjects) {
+			if (!namesList.contains(project.getName())) {
+				project.refreshLocal(IResource.DEPTH_INFINITE, null);
+				project.close(null);
+				deleteProject(project);
+			}
 		}
 		getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, null);
 	}
