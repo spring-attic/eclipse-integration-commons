@@ -99,6 +99,42 @@ public class SwtConnect {
 		viewer.setLabelProvider(boldMatchedElements(stylers, baseLabels, Filters.delegatingTo(searchBoxModel)));
 	}
 	
+	public static void connectTextToLazy(TreeViewer viewer, LiveExpression<Filter<String>> searchBoxModel, LabelProvider labels, FilteringLazyTreeContentProvider wrappingProvider, UpdateExpansionStates expansionStates) {
+
+		Disposable disposable = searchBoxModel.onChange(UIValueListener.from((e, filter) -> {
+			expansionStates.clear();
+			wrappingProvider.filter(searchBoxModel.getValue());
+			viewer.refresh(true);
+			int limit = 10;
+			expansionStates.scheduleExpand(limit);
+		}));
+		viewer.getControl().addDisposeListener(de -> {
+			disposable.dispose();
+		});
+		Stylers stylers = new Stylers(viewer.getTree().getFont());
+		viewer.getControl().addDisposeListener(de -> {
+			disposable.dispose();
+			stylers.dispose();
+		});
+		
+		viewer.getTree().getVerticalBar().addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				expansionStates.scheduleExpandRemaining();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				expansionStates.scheduleExpandRemaining();
+			}
+		});
+		ILabelProvider baseLabels = (ILabelProvider) viewer.getLabelProvider();
+		Assert.isNotNull(baseLabels); //Can't add bolding support without this! Ensure label provider is set before calling this method
+		
+		viewer.setLabelProvider(boldMatchedElements(stylers, baseLabels, Filters.delegatingTo(searchBoxModel)));
+	}
+	
 	/**
 	 * Decorate a basic LabelProvider so that it bolds matched elements based on a text-based filter applied to its labels.
 	 */
