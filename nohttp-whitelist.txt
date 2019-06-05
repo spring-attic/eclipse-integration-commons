@@ -1,0 +1,2 @@
+http://org\.eclipse\.ui\.intro/.*
+http://sha256timestamp\.ws\.symantec.com/sha256/timestamp
