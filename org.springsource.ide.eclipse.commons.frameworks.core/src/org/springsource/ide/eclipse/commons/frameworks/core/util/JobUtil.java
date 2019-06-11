@@ -11,6 +11,7 @@
 package org.springsource.ide.eclipse.commons.frameworks.core.util;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -25,6 +26,10 @@ import org.eclipse.ui.progress.UIJob;
 import org.springsource.ide.eclipse.commons.frameworks.core.FrameworkCoreActivator;
 
 public class JobUtil {
+	
+	public interface JobBody {
+		void run(IProgressMonitor mon) throws Exception;
+	}
 
 	/**
 	 * Should ideally not be used except for testing. Eclipse UI should provide a runnable context like
@@ -128,6 +133,28 @@ public class JobUtil {
 		if (error[0] != null) {
 			throw error[0];
 		}
+	}
+
+	public static CompletableFuture<Void> runInJob(String jobName, JobBody doit) {
+		CompletableFuture<Void> f = new CompletableFuture<>();
+		Job job = new Job(jobName) {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					doit.run(monitor);
+					f.complete(null);
+				} catch (Throwable e) {
+					f.completeExceptionally(e);
+				} finally {
+					monitor.done();
+				}
+				return Status.OK_STATUS;
+			}
+			
+		};
+		job.schedule();
+		return f;
 	}
 
 }
