@@ -11,13 +11,10 @@
 package org.springsource.ide.eclipse.commons.quicksearch.ui;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.springsource.ide.eclipse.commons.quicksearch.core.preferences.QuickSearchPreferences;
-import org.springsource.ide.eclipse.commons.quicksearch.core.priority.DefaultPriorityFunction;
-import org.springsource.ide.eclipse.commons.quicksearch.util.LineReader;
 
 public class QuickSearchPreferencesPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
