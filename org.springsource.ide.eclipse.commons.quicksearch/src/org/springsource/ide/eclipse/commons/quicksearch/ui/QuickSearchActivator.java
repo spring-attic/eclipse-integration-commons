@@ -84,7 +84,7 @@ public class QuickSearchActivator extends AbstractUIPlugin {
 	
 	public QuickSearchPreferences getPreferences() {
 		if (prefs==null) {
-			prefs = new QuickSearchPreferences(InstanceScope.INSTANCE.getNode(QuickSearchActivator.PLUGIN_ID));
+			prefs = new QuickSearchPreferences();
 		}
 		return prefs;
 	}

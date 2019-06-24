@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.springsource.ide.eclipse.commons.quicksearch.core.priority.DefaultPriorityFunction;
+import org.springsource.ide.eclipse.commons.quicksearch.ui.QuickSearchActivator;
 import org.springsource.ide.eclipse.commons.quicksearch.util.LineReader;
 
 /**
@@ -28,15 +31,13 @@ public class QuickSearchPreferences {
 	public static final String IGNORED_NAMES = "ignored.names";
 	public static final String IGNORED_PREFIXES = "ignored.prefixes";
 	public static final String MAX_LINE_LEN = "LineReader.MAX_LINE_LEN";
+	private static boolean initializedDefaults;
 
-	private IEclipsePreferences store;
+	private IPreferenceStore store;
 
-	public QuickSearchPreferences(IEclipsePreferences store) {
-		this.store = store;
-	}
-
-	public IEclipsePreferences getStore() {
-		return store;
+	public QuickSearchPreferences() {
+		this.store = QuickSearchActivator.getDefault().getPreferenceStore();
+		initializeDefaults();
 	}
 
 	public String[] getIgnoredExtensions() {
@@ -52,11 +53,11 @@ public class QuickSearchPreferences {
 	}
 
 	public int getMaxLineLen() {
-		return store.getInt(MAX_LINE_LEN, LineReader.DEFAULT_MAX_LINE_LENGTH);
+		return store.getInt(MAX_LINE_LEN);
 	}
 
 	private String[] getAndParseStringList(String key) {
-		String raw = store.get(key, null);
+		String raw = store.getString(key);
 		if (raw!=null) {
 			return parseStringList(raw);
 		}
@@ -80,6 +81,30 @@ public class QuickSearchPreferences {
 			}
 		}
 		return list.toArray(new String[list.size()]);
+	}
+	
+	public static void initializeDefaults() {
+		if (!initializedDefaults) {
+			initializedDefaults = true;
+			IPreferenceStore store = QuickSearchActivator.getDefault().getPreferenceStore();
+			store.setDefault(QuickSearchPreferences.MAX_LINE_LEN, LineReader.DEFAULT_MAX_LINE_LENGTH);
+			
+			DefaultPriorityFunction dpf =  new DefaultPriorityFunction();
+			store.setDefault(QuickSearchPreferences.IGNORED_EXTENSIONS, encode(dpf.ignoredExtensions));
+			store.setDefault(QuickSearchPreferences.IGNORED_NAMES, encode(dpf.ignoredNames));
+			store.setDefault(QuickSearchPreferences.IGNORED_PREFIXES, encode(dpf.ignoredPrefixes));
+		}
+	}
+
+	private static String encode(String[] strings) {
+		StringBuilder encoded = new StringBuilder();
+		for (int i = 0; i < strings.length; i++) {
+			if (i>0) {
+				encoded.append(", ");
+			}
+			encoded.append(strings[i]);
+		}
+		return encoded.toString();
 	}
 
 

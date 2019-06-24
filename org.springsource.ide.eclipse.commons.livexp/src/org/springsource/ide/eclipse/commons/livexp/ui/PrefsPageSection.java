@@ -10,11 +10,6 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
-import org.eclipse.swt.widgets.Composite;
-import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
-import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
-import org.springsource.ide.eclipse.commons.livexp.core.Validator;import com.google.common.collect.ImmutableList;
-
 /**
  * Abstract base class for implementing 'sections' containing a group of widgets that can be added to a PreferencePageWithSections.
  *
