@@ -12,6 +12,9 @@ package org.springsource.ide.eclipse.commons.quicksearch.ui;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
+import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.springsource.ide.eclipse.commons.quicksearch.core.preferences.QuickSearchPreferences;
@@ -59,8 +62,15 @@ public class QuickSearchPreferencesPage extends FieldEditorPreferencePage implem
 		addField(field_maxLineLen);
 		
 		for (int i = 0; i < fieldNames.length; i++) {
-			MultilineStringFieldEditor field = new MultilineStringFieldEditor(prefsKeys[i], "Ignore "+fieldNames[i], getFieldEditorParent());
-			field.getTextControl().setToolTipText(toolTips[i]);
+			final String tooltip = toolTips[i];
+			StringFieldEditor field = new StringFieldEditor(prefsKeys[i], "Ignore "+fieldNames[i], 45, 5, StringFieldEditor.VALIDATE_ON_FOCUS_LOST, getFieldEditorParent()) {
+				@Override
+				protected Text createTextWidget(Composite parent) {
+					Text w = super.createTextWidget(parent);
+					w.setToolTipText(tooltip);
+					return w;
+				}
+			};
 			addField(field);
 		}
 	}
