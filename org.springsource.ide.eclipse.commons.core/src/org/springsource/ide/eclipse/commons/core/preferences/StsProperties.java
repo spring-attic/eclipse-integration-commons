@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2018 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2019 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -116,7 +116,7 @@ public class StsProperties {
 		props.put("spring.guides.url.external", "true");
 
 		//Spring boot runtime
-		props.put("spring.boot.install.url", "https://repo.spring.io/release/org/springframework/boot/spring-boot-cli/2.0.4.RELEASE/spring-boot-cli-2.0.4.RELEASE-bin.zip");
+		props.put("spring.boot.install.url", "https://repo.spring.io/release/org/springframework/boot/spring-boot-cli/2.1.6.RELEASE/spring-boot-cli-2.1.6.RELEASE-bin.zip");
 		//Discovery url for spring reference app
 		props.put("spring.reference.app.discovery.url", "https://raw.github.com/kdvolder/spring-reference-apps-meta/master/reference-apps.json");
 
@@ -125,8 +125,8 @@ public class StsProperties {
 
 		//Default version of spring boot, assumed when we need a version but can't determine it from the classpath of the project.
 		//Typically this should point to the latest version of spring-boot (the one used by spring-initialzr app).
-		props.put("spring.boot.default.version", "2.0.4.RELEASE");
-		props.put("spring.boot.cloud.default.version", "2.0.0.RELEASE");
+		props.put("spring.boot.default.version", "2.1.6.RELEASE");
+		props.put("spring.boot.cloud.default.version", "2.1.0.RELEASE");
 
 		return props;
 	}
