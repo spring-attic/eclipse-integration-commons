@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
+import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.viewers.StyledString.Styler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -17,7 +18,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.TextStyle;
 import org.eclipse.swt.widgets.Display;
-import org.springsource.ide.eclipse.commons.livexp.ui.Disposable;
+import org.eclipse.ui.PlatformUI;
 
 public class Stylers implements Disposable {
 
@@ -44,7 +45,9 @@ public class Stylers implements Disposable {
 		return new Styler() {
 			@Override
 			public void applyStyles(TextStyle textStyle) {
-				darkBlue().applyStyles(textStyle);
+				Color color = PlatformUI.getWorkbench().getThemeManager().getCurrentTheme().getColorRegistry()
+						.get(JFacePreferences.HYPERLINK_COLOR);
+				color(color).applyStyles(textStyle);
 				textStyle.underline = true;
 			}
 		};
