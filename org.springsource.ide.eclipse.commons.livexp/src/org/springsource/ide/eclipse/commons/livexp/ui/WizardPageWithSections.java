@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2019 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -74,10 +73,13 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 		GridDataFactory.fillDefaults().grab(true,true).applyTo(parent);
 
 		scroller = new SharedScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL) {};
+		
 //		scroller.setWidthHint(500); // Avoid excessively wide dialogs
 //		Display display = Display.getCurrent();
 //		Color blue = display.getSystemColor(SWT.COLOR_BLUE);
 //		scroller.setBackground(blue);
+		
+		scroller.setBackground(parent.getBackground());
 		scroller.setExpandHorizontal(true);
 		scroller.setExpandVertical(true);
 		page = new Composite(scroller, SWT.NONE);
