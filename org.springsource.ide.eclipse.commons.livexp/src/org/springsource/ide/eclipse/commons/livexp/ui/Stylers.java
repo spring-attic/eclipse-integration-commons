@@ -180,6 +180,15 @@ public class Stylers implements Disposable {
 		};
 	}
 	
+	public Styler italicColoured(Color color) {
+		return new Styler() {
+			public void applyStyles(TextStyle textStyle) {
+				textStyle.font = getItalicFont();
+				textStyle.foreground = color;
+			}
+		};
+	}
+	
 	public Styler boldColoured(int foregroundColour) {
 		final Color foreGround = getSystemColor(foregroundColour);
 		return new Styler() {
