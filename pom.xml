@@ -6,7 +6,7 @@
 
 	<groupId>org.springsource.ide.eclipse.commons</groupId>
 	<artifactId>org.springsource.ide.eclipse.commons.parent</artifactId>
-	<version>3.9.10-SNAPSHOT</version>
+	<version>3.9.11-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<scm>
