@@ -66,7 +66,7 @@ public abstract class DialogWithSections extends TitleAreaDialog
 		super.create();
 		setTitle(title);
 	}
-
+	
 	protected Control createDialogArea(Composite parent) {
 		//	readSettings();
 		scroller = new SharedScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL) {};
@@ -207,16 +207,18 @@ public abstract class DialogWithSections extends TitleAreaDialog
 	}
 
 	private void updateStatus(ValidationResult status) {
-		boolean enableOk = true;
-		if (status==null || status.isOk()) {
-			setMessage("", IMessageProvider.NONE);
-		} else {
-			setMessage(status.msg, status.getMessageProviderStatus());
-			enableOk = status.status<disableOkButtonLevel;
-		}
-		Button okButton = getButton(IDialogConstants.OK_ID);
-		if (okButton!=null) {
-			okButton.setEnabled(enableOk);
+		if (scroller!=null && !scroller.isDisposed()) {
+			boolean enableOk = true;
+			if (status==null || status.isOk()) {
+				setMessage("", IMessageProvider.NONE);
+			} else {
+				setMessage(status.msg, status.getMessageProviderStatus());
+				enableOk = status.status<disableOkButtonLevel;
+			}
+			Button okButton = getButton(IDialogConstants.OK_ID);
+			if (okButton!=null) {
+				okButton.setEnabled(enableOk);
+			}
 		}
 	}
 
