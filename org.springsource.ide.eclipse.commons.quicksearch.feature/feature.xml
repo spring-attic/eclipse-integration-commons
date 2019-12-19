@@ -2,7 +2,7 @@
 <feature
       id="org.springsource.ide.eclipse.commons.quicksearch.feature"
       label="%featureName"
-      version="3.9.11.qualifier"
+      version="3.9.12.qualifier"
       provider-name="%providerName">
 
    <description>
