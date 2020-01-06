@@ -114,7 +114,7 @@
 		<test.useUIThread>true</test.useUIThread>
 		<test.skip>${maven.test.skip}</test.skip>
 
-		<tycho-version>1.2.0</tycho-version>
+		<tycho-version>1.5.1</tycho-version>
 
 		<maven.test.error.ignore>true</maven.test.error.ignore>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
@@ -122,178 +122,6 @@
 	</properties>
 
 	<profiles>
-
-		<profile>
-			<id>e49</id>
-			<properties>
-				<dist.target>e4.9</dist.target>
-				<dist.platform.name>2018-09</dist.platform.name>
-				<dist.platform.id>2018-09</dist.platform.id>
-				<dist.platform.version>4.9</dist.platform.version>
-				<package.qualifierPrefix>e49</package.qualifierPrefix>
-			</properties>
-			<repositories>
-				<repository>
-					<id>platform</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/eclipse/updates/4.9/</url>
-				</repository>
-				<!-- composite update site contains http references, using exact https urls instead -->
-<!--				<repository>
-					<id>2018-09</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/releases/2018-09/</url>
-				</repository> -->
-				<repository>
-					<id>2018-09</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/releases/2018-09/201809191002</url>
-				</repository>
-				<repository>
-					<id>2018-09-epp</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/technology/epp/packages/2018-09/</url>
-				</repository>
-
-				<repository>
-					<id>orbit</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20180905201904/repository</url>
-				</repository>
-				<repository>
-					<id>swtbot</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
-				</repository>
-			</repositories>
-			<modules>
-				<module>org.springsource.ide.eclipse.dashboard-feature-e44</module>
-				<module>org.springsource.ide.eclipse.commons.site-e44</module>
-			</modules>
-		</profile>
-
-		<profile>
-			<id>e410</id>
-			<properties>
-				<dist.target>e4.10</dist.target>
-				<dist.platform.name>2018-12</dist.platform.name>
-				<dist.platform.id>2018-12</dist.platform.id>
-				<dist.platform.version>4.10</dist.platform.version>
-				<package.qualifierPrefix>e410</package.qualifierPrefix>
-			</properties>
-			<repositories>
-				<repository>
-					<id>platform</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/eclipse/updates/4.10/</url>
-				</repository>
-				<!-- composite update site contains http references, using exact https urls instead -->
-<!--				<repository>
-					<id>2018-12</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/releases/2018-12/</url>
-				</repository> -->
-				<repository>
-					<id>2018-12</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/releases/2018-12/201812191000</url>
-				</repository>
-				<repository>
-					<id>2018-12-epp</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/technology/epp/packages/2018-12/</url>
-				</repository>
-
-				<repository>
-					<id>orbit</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20181128170323/repository</url>
-				</repository>
-				<repository>
-					<id>swtbot</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
-				</repository>
-			</repositories>
-			<modules>
-				<module>org.springsource.ide.eclipse.dashboard-feature-e44</module>
-				<module>org.springsource.ide.eclipse.commons.site-e44</module>
-			</modules>
-		</profile>
-
-		<profile>
-			<id>e411</id>
-			<properties>
-				<dist.target>e4.11</dist.target>
-				<dist.platform.name>2019-03</dist.platform.name>
-				<dist.platform.id>2019-03</dist.platform.id>
-				<dist.platform.version>4.11</dist.platform.version>
-				<package.qualifierPrefix>e411</package.qualifierPrefix>
-			</properties>
-			<repositories>
-				<repository>
-					<id>platform</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/eclipse/updates/4.11/</url>
-				</repository>
-				<repository>
-					<id>2019-03</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/releases/2019-03/</url>
-				</repository>
-				<repository>
-					<id>orbit</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20190226160451/repository</url>
-				</repository>
-				<repository>
-					<id>swtbot</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
-				</repository>
-			</repositories>
-			<modules>
-				<module>org.springsource.ide.eclipse.dashboard-feature-e44</module>
-				<module>org.springsource.ide.eclipse.commons.site-e44</module>
-			</modules>
-		</profile>
-
-		<profile>
-			<id>e412</id>
-			<properties>
-				<dist.target>e4.13</dist.target>
-				<dist.platform.name>2019-06</dist.platform.name>
-				<dist.platform.id>2019-06</dist.platform.id>
-				<dist.platform.version>4.12</dist.platform.version>
-				<package.qualifierPrefix>e412</package.qualifierPrefix>
-			</properties>
-			<repositories>
-				<repository>
-					<id>platform</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/eclipse/updates/4.12/</url>
-				</repository>
-				<repository>
-					<id>2019-03</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/releases/2019-06/</url>
-				</repository>
-				<repository>
-					<id>orbit</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20190602212107/repository</url>
-				</repository>
-				<repository>
-					<id>swtbot</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
-				</repository>
-			</repositories>
-			<modules>
-				<module>org.springsource.ide.eclipse.dashboard-feature-e44</module>
-				<module>org.springsource.ide.eclipse.commons.site-e44</module>
-			</modules>
-		</profile>
 
 		<profile>
 			<id>e413</id>
@@ -311,7 +139,7 @@
 					<url>https://download.eclipse.org/eclipse/updates/4.13/</url>
 				</repository>
 				<repository>
-					<id>2019-03</id>
+					<id>2019-09</id>
 					<layout>p2</layout>
 					<url>https://download.eclipse.org/releases/2019-09/</url>
 				</repository>
@@ -319,6 +147,80 @@
 					<id>orbit</id>
 					<layout>p2</layout>
 					<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20190827152740/repository</url>
+				</repository>
+				<repository>
+					<id>swtbot</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
+				</repository>
+			</repositories>
+			<modules>
+				<module>org.springsource.ide.eclipse.dashboard-feature-e44</module>
+				<module>org.springsource.ide.eclipse.commons.site-e44</module>
+			</modules>
+		</profile>
+
+		<profile>
+			<id>e414</id>
+			<properties>
+				<dist.target>e4.14</dist.target>
+				<dist.platform.name>2019-12</dist.platform.name>
+				<dist.platform.id>2019-12</dist.platform.id>
+				<dist.platform.version>4.14</dist.platform.version>
+				<package.qualifierPrefix>e414</package.qualifierPrefix>
+			</properties>
+			<repositories>
+				<repository>
+					<id>platform</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/eclipse/updates/4.14/</url>
+				</repository>
+				<repository>
+					<id>2019-12</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/releases/2019-12/</url>
+				</repository>
+				<repository>
+					<id>orbit</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20191126223242/repository</url>
+				</repository>
+				<repository>
+					<id>swtbot</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
+				</repository>
+			</repositories>
+			<modules>
+				<module>org.springsource.ide.eclipse.dashboard-feature-e44</module>
+				<module>org.springsource.ide.eclipse.commons.site-e44</module>
+			</modules>
+		</profile>
+
+		<profile>
+			<id>e415</id>
+			<properties>
+				<dist.target>e4.15</dist.target>
+				<dist.platform.name>2020-03</dist.platform.name>
+				<dist.platform.id>2020-03</dist.platform.id>
+				<dist.platform.version>4.15</dist.platform.version>
+				<package.qualifierPrefix>e415</package.qualifierPrefix>
+			</properties>
+			<repositories>
+				<repository>
+					<id>platform</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/eclipse/updates/4.15/</url>
+				</repository>
+				<repository>
+					<id>2019-03</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/releases/2020-03/</url>
+				</repository>
+				<repository>
+					<id>orbit</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20191126223242/repository</url>
 				</repository>
 				<repository>
 					<id>swtbot</id>
