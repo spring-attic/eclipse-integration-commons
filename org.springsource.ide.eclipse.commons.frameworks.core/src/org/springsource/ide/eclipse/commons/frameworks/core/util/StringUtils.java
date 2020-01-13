@@ -22,6 +22,29 @@ public class StringUtils {
 	}
 
 	/**
+	 * Convert a {@code String} array into a delimited {@code String} (e.g. CSV).
+	 * <p>Useful for {@code toString()} implementations.
+	 * @param arr the array to display (potentially {@code null} or empty)
+	 * @param delim the delimiter to use (typically a ",")
+	 * @return the delimited {@code String}
+	 */
+	public static String arrayToDelimitedString(Object[] arr, String delim) {
+		if (arr==null || arr.length==0) {
+			return "";
+		}
+		StringBuilder buf = new StringBuilder();
+		boolean first = true;
+		for (Object object : arr) {
+			if (!first) {
+				buf.append(delim);
+			}
+			buf.append(String.valueOf(object));
+			first = false;
+		}
+		return buf.toString();
+	}
+
+	/**
 	 * Check that the given {@code CharSequence} is neither {@code null} nor
 	 * of length 0.
 	 * <p>Note: this method returns {@code true} for a {@code CharSequence}
