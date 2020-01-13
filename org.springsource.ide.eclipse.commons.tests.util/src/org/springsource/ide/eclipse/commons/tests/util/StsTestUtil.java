@@ -250,7 +250,11 @@ public class StsTestUtil {
 		for (IProject project : allProjects) {
 			if (!namesList.contains(project.getName())) {
 				project.refreshLocal(IResource.DEPTH_INFINITE, null);
-				project.close(null);
+				try {
+					project.close(new NullProgressMonitor());
+				} catch (Exception e) {
+
+				}
 				deleteProject(project);
 			}
 		}
