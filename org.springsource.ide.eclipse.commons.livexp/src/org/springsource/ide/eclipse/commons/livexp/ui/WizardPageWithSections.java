@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2019 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.wizard.IWizardContainer2;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -124,6 +125,9 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 					if (scroller!=null && !scroller.isDisposed()) {
 						scroller.layout(true, true);
 						scroller.reflow(true);
+					}
+					if (getWizard() != null && getWizard().getContainer() instanceof IWizardContainer2) {
+						((IWizardContainer2)getWizard().getContainer()).updateSize();
 					}
 					return Status.OK_STATUS;
 				}
