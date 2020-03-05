@@ -61,7 +61,7 @@ public abstract class WizardPageWithSections extends WizardPage implements IPage
 	}
 
 	private List<WizardPageSection> sections = null;
-	private CompositeValidator validator;
+	protected CompositeValidator validator;
 	private UIJob updateJob;
 	private SharedScrolledComposite scroller;
 	private Composite page;
