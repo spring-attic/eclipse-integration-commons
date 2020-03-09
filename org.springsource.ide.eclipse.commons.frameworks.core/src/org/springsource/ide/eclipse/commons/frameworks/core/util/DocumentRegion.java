@@ -25,6 +25,17 @@ import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.TypedRegion;
 import org.springsource.ide.eclipse.commons.livexp.util.ExceptionUtil;
 
+/**
+ * A non-sucky alternative to {@link IRegion}. Represents a region of text in a document.
+ * <p>
+ * Caution: assumes the underlying document is not mutated during the lifetime of the
+ * region object (otherwise start/end positions may no longer be valid).
+ * <p>
+ * Implements {@link CharSequence} for convenience (e.g you can use {@link DocumentRegion} as
+ * input to a {@link Pattern} and other standard JRE functions which expect a {@link CharSequence}.
+ *
+ * @author Kris De Volder
+ */
 public class DocumentRegion implements CharSequence {
 	final IDocument doc;
 	final int start;
