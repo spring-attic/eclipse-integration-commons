@@ -131,7 +131,7 @@ public class ManagedTestSuite extends TestSuite {
 				// all cases, but is almost certainly better than leaving the
 				// "stuck" test hanging.
 				System.err.println("[TIMEOUT] " + test);
-				testThread.stop(new Error(debugInfo));
+				testThread.stop();
 			}
 			catch (Throwable e) {
 				e.printStackTrace();
