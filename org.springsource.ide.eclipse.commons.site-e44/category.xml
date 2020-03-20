@@ -16,12 +16,6 @@
 	<category-def name="Core / Eclipse Integration Commons" label="Core / Eclipse Integration Commons"/>
 	<category-def name="Resources / Eclipse Integration Commons" label="Resources / Eclipse Integration Commons"/>
 
- 	<feature
-		url="org.springsource.ide.eclipse.commons.quicksearch.feature_3.9.13.qualifier.jar"
-		id="org.springsource.ide.eclipse.commons.quicksearch.feature" version="3.9.13.qualifier">
-		<category name="Core / Eclipse Integration Commons" />
-	</feature>
-	
 	<feature
 		url="org.springsource.ide.eclipse.dashboard_3.9.13.qualifier.jar"
 		id="org.springsource.ide.eclipse.dashboard" version="3.9.13.qualifier">
