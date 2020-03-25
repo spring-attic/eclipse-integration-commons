@@ -24,7 +24,7 @@ public class ValidationResult {
 	public final String msg;
 	public int status;
 
-	private ValidationResult(int status, String msg) {
+	protected ValidationResult(int status, String msg) {
 		this.msg = msg;
 		this.status = status;
 	}
