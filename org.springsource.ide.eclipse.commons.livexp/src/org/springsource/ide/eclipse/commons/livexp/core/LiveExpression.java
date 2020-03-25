@@ -43,6 +43,13 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 	 */
 	protected V value;
 
+	/**
+	 * Optional liveExp created on demand as requested. Keeps track of refreshes. Can
+	 * be used as a mechanism for firing listener after every refresh (even if the value of
+	 * the liveexp has not changed.
+	 */
+	private LiveVariable<Integer> refreshCount;
+
 	public LiveExpression(V initialValue, Object owner) {
 		this.value = initialValue;
 		this.owner = owner;
@@ -72,6 +79,19 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 		if (changed) {
 			changed();
 		}
+		synchronized (this) {
+			LiveVariable<Integer> rc = this.refreshCount;
+			if (rc!=null) {
+				rc.setValue(rc.getValue()+1);
+			}
+		}
+	}
+	
+	public synchronized LiveExpression<Integer> refreshCount() {
+		if (refreshCount==null) {
+			refreshCount = new LiveVariable<>(0);
+		}
+		return refreshCount;
 	}
 
 	/**
