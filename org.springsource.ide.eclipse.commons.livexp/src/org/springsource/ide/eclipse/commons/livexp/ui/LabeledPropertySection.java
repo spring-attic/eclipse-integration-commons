@@ -10,9 +10,13 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -23,15 +27,17 @@ import org.springsource.ide.eclipse.commons.livexp.core.LiveVariable;
 import org.springsource.ide.eclipse.commons.livexp.core.UIValueListener;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.Validator;
+import org.springsource.ide.eclipse.commons.livexp.core.ValueListener;
 
 /**
- * Section with two labels: a label for a property name, and a label for a property value
+ * Section with two labels: a label for a property name, and a label for a
+ * property value
  *
  */
 public class LabeledPropertySection extends WizardPageSection {
 
 	/// options
-	private String propertyName; //what text to use for the label of the field
+	private String propertyName; // what text to use for the label of the field
 	private String tooltip = null; // what text to use for tooltip
 
 	/// model elements
@@ -41,6 +47,16 @@ public class LabeledPropertySection extends WizardPageSection {
 
 	/// UI elements
 	private Label propertyValueLabel;
+	private ControlDecoration errorMarker;
+	private final ValueListener<ValidationResult> errorMarkerListener = UIValueListener.from((exp, result) -> {
+		if (errorMarker != null && errorMarker.getControl() != null && !errorMarker.getControl().isDisposed()) {
+			if (result != null && result.status == IStatus.ERROR) {
+				errorMarker.show();
+			} else {
+				errorMarker.hide();
+			}
+		}
+	});
 
 	//////////////////////////////
 
@@ -72,28 +88,40 @@ public class LabeledPropertySection extends WizardPageSection {
 
 	@Override
 	public void createContents(Composite page) {
-        // project specification group
-        Composite projectGroup = new Composite(page, SWT.NONE);
-        GridLayout layout = GridLayoutFactory.fillDefaults().numColumns(2).margins(0,2).create();
-        projectGroup.setLayout(layout);
-        projectGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		// project specification group
+		Composite projectGroup = new Composite(page, SWT.NONE);
+		GridLayout layout = GridLayoutFactory.fillDefaults().numColumns(2).margins(0, 2).create();
+		projectGroup.setLayout(layout);
+		projectGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-        Label propertyNameLabel = new Label(projectGroup, SWT.NONE);
-        propertyNameLabel.setText(propertyName);
+		Label propertyNameLabel = new Label(projectGroup, SWT.NONE);
+		propertyNameLabel.setText(propertyName);
         GridDataFactory.fillDefaults()
         	.align(SWT.BEGINNING, SWT.CENTER)
         	.applyTo(propertyNameLabel);
 
-        propertyValueLabel = new Label(projectGroup, SWT.BORDER);
-        
+		propertyValueLabel = new Label(projectGroup, SWT.BORDER);
+
 		GridDataFactory.fillDefaults()
 			.align(SWT.BEGINNING, SWT.CENTER)
 			.grab(true, false)
 			.applyTo(propertyValueLabel);
+		
+		errorMarker = new ControlDecoration(propertyNameLabel, SWT.TOP | SWT.RIGHT);
 
-        property.addListener(UIValueListener.from((exp, value) -> {
-			if (propertyValueLabel!=null && !propertyValueLabel.isDisposed()) {
-				if (value==null) {
+		Image errorImage = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR)
+				.getImage();
+
+		errorMarker.setImage(errorImage);
+		errorMarker.hide();
+
+		if (validator != null) {
+			validator.addListener(errorMarkerListener);
+		}
+
+		property.addListener(UIValueListener.from((exp, value) -> {
+			if (propertyValueLabel != null && !propertyValueLabel.isDisposed()) {
+				if (value == null) {
 					value = "";
 				}
 				String oldText = propertyValueLabel.getText();
@@ -102,13 +130,13 @@ public class LabeledPropertySection extends WizardPageSection {
 				}
 			}
 		}));
-        enabler.addListener(UIValueListener.from((exp, enable) -> {
-        	propertyValueLabel.setEnabled(enable);
-        }));
-        if (tooltip!=null) {
-        	propertyNameLabel.setToolTipText(tooltip);
-        	propertyValueLabel.setToolTipText(tooltip);
-        }
+		enabler.addListener(UIValueListener.from((exp, enable) -> {
+			propertyValueLabel.setEnabled(enable);
+		}));
+		if (tooltip != null) {
+			propertyNameLabel.setToolTipText(tooltip);
+			propertyValueLabel.setToolTipText(tooltip);
+		}
 	}
 
 	public LabeledPropertySection tooltip(String string) {
@@ -121,4 +149,11 @@ public class LabeledPropertySection extends WizardPageSection {
 		return this;
 	}
 
+	@Override
+	public void dispose() {
+		if (validator != null) {
+			validator.removeListener(errorMarkerListener);
+		}
+		super.dispose();
+	}
 }
