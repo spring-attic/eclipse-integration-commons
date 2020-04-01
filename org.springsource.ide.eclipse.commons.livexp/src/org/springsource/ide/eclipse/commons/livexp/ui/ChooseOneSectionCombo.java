@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2017 Pivotal, Inc.
+ * Copyright (c) 2013, 2020 Pivotal, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,11 +16,15 @@ import java.util.Collection;
 import java.util.Objects;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -54,6 +58,20 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 	private LiveExpression<T[]> options; //The elements to choose from
 	private boolean useFieldLabelWidthHint = true;
 	private boolean grabHorizontal = false;
+	
+	
+	// Optional UI Elements
+	private boolean showErrorMarker = false;
+	private ControlDecoration errorMarker;
+	private final ValueListener<ValidationResult> errorMarkerListener = UIValueListener.from((exp, result) -> {
+		if (errorMarker != null && errorMarker.getControl() != null && !errorMarker.getControl().isDisposed()) {
+			if (result != null && result.status == IStatus.ERROR) {
+				errorMarker.show();
+			} else {
+				errorMarker.hide();
+			}
+		}
+	});
 
 
 	/**
@@ -158,6 +176,16 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 				handleModifyText(combo);
 			}
 		});
+		
+		if (showErrorMarker) {
+			errorMarker = new ControlDecoration(combo, SWT.TOP | SWT.RIGHT);
+			Image errorImage = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR)
+					.getImage();
+
+			errorMarker.setImage(errorImage);
+			errorMarker.hide();
+		}
+		
 		selection.selection.addListener(UIValueListener.from((exp, newSelection) -> {
 			if (newSelection!=null && !combo.isDisposed()) {
 				//Technically, not entirely correct. This might
@@ -238,6 +266,11 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 
 	public ChooseOneSectionCombo<T> grabHorizontal(boolean grab) {
 		this.grabHorizontal = grab;
+		return this;
+	}
+	
+	public ChooseOneSectionCombo<T> showErrorMarker(boolean showErrorMarker) {
+		this.showErrorMarker = showErrorMarker;
 		return this;
 	}
 
