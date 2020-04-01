@@ -107,7 +107,7 @@ public class LabeledPropertySection extends WizardPageSection {
 			.grab(true, false)
 			.applyTo(propertyValueLabel);
 		
-		errorMarker = new ControlDecoration(propertyNameLabel, SWT.TOP | SWT.RIGHT);
+		errorMarker = new ControlDecoration(propertyValueLabel, SWT.TOP | SWT.RIGHT);
 
 		Image errorImage = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR)
 				.getImage();
