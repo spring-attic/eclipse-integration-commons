@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.util;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.springsource.ide.eclipse.commons.livexp.Activator;
@@ -56,6 +58,13 @@ public class Log {
 		} catch (CoreException e) {
 			Log.log(e);
 		}
+	}
+
+	public static void async(CompletableFuture<?> asyncWork) {
+		asyncWork.exceptionally(e -> {
+			Log.log(e);
+			return null;
+		});
 	}
 
 }
