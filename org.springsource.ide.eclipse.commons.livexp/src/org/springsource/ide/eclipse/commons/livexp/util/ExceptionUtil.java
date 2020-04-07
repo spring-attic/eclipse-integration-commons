@@ -20,6 +20,8 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.springsource.ide.eclipse.commons.livexp.Activator;
 
+import com.google.common.collect.ImmutableSet;
+
 /**
  * Utility methods to convert exceptions into other types of exceptions, status
  * objects etc.
@@ -27,6 +29,11 @@ import org.springsource.ide.eclipse.commons.livexp.Activator;
  * @author Kris De Volder
  */
 public class ExceptionUtil {
+
+	private static final ImmutableSet<String> NO_SHOW_EXCEPTIONS = ImmutableSet.of(
+			"ValueParseException",
+			"CoreException"
+	);
 
 	public static CoreException coreException(int severity, String msg) {
 		return coreException(status(severity, msg));
@@ -78,7 +85,7 @@ public class ExceptionUtil {
 		Throwable cause = getDeepestCause(e);
 		String errorType = cause.getClass().getSimpleName();
 		String msg = cause.getMessage();
-		if (errorType.equals("ValueParseException") && msg!=null) {
+		if (NO_SHOW_EXCEPTIONS.contains(errorType) && msg!=null) {
 			return msg;
 		}
 		return errorType + ": " + msg;
@@ -175,5 +182,30 @@ public class ExceptionUtil {
 
 	public static String getSimpleError(Throwable e) {
 		return e.getClass().getSimpleName();
+	}
+
+	public static boolean isWarning(Throwable e) {
+		if (isWarningHere(e)) {
+			return true;
+		}
+		Throwable cause = e;
+		Throwable parent = e.getCause();
+		while (parent != null && parent != e) {
+			cause = parent;
+			if (isWarningHere(cause)) {
+				return true;
+			}
+			parent = cause.getCause();
+		}
+		return false;
+	}
+
+	private static boolean isWarningHere(Throwable e) {
+		if (e instanceof CoreException) {
+			CoreException ce = (CoreException) e;
+			IStatus status = ce.getStatus();
+			return status.getSeverity()==IStatus.WARNING;
+		}
+		return false;
 	}
 }
