@@ -178,12 +178,16 @@ public class ChooseOneSectionCombo<T> extends AbstractChooseOneSection<T> {
 		});
 		
 		if (showErrorMarker) {
-			errorMarker = new ControlDecoration(combo, SWT.TOP | SWT.RIGHT);
+			errorMarker = new ControlDecoration(fieldNameLabel, SWT.TOP | SWT.RIGHT);
 			Image errorImage = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR)
 					.getImage();
 
 			errorMarker.setImage(errorImage);
 			errorMarker.hide();
+			LiveExpression<ValidationResult> validator = getValidator();
+			if (validator != null) {
+				validator.addListener(errorMarkerListener);
+			}
 		}
 		
 		selection.selection.addListener(UIValueListener.from((exp, newSelection) -> {
