@@ -276,32 +276,12 @@
 			<url>file:///${basedir}/../bundles/repo</url>
 		</repository>
 
-		<repository>
-			<id>mylyn</id>
-			<layout>p2</layout>
-			<url>https://download.eclipse.org/mylyn/releases/3.7</url>
-		</repository>
-
  		<repository>
  			<id>p2-thirdparty-bundles</id>
  			<layout>p2</layout>
  			<url>https://dist.springsource.com/release/TOOLS/third-party/misc-p2-repo/${misc.p2.repo.version}</url>
  		</repository>
 
-		<repository>
-			<id>orbit</id>
-			<layout>p2</layout>
-			<!-- More recent needed for HttpComponents. Use of api URIBuilder (used 
-				only by new SpringBoot wizard) If we can replace with something else we can 
-				keep on using this older orbit site -->
-			<!--  <url>https://download.eclipse.org/tools/orbit/downloads/drops/R20120526062928/repository/</url> -->
-			<!--  need recent orbit for receptor client dependencies:  -->
-			<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20150519210750/repository/</url>
-			<!--  
-			    Remove: repsonsible for this bug? 
-			     <url>https://download.eclipse.org/tools/orbit/downloads/drops/I20131024145017/repository/</url>
-			 -->
-		</repository>
 	</repositories>
 
 	<pluginRepositories>
@@ -411,17 +391,7 @@
 						<environment>
 							<os>win32</os>
 							<ws>win32</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
 							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86</arch>
 						</environment>
 						<environment>
 							<os>linux</os>
