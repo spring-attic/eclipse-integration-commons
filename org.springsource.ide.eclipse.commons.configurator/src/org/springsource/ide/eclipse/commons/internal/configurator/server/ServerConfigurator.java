@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,7 +43,6 @@ import org.eclipse.osgi.service.resolver.VersionRange;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
-import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerCore;
 import org.eclipse.wst.server.core.TaskModel;
 import org.eclipse.wst.server.core.internal.InstallableRuntime2;
@@ -51,7 +50,6 @@ import org.eclipse.wst.server.ui.internal.wizard.TaskWizard;
 import org.eclipse.wst.server.ui.internal.wizard.fragment.LicenseWizardFragment;
 import org.eclipse.wst.server.ui.wizard.WizardFragment;
 import org.springsource.ide.eclipse.commons.configurator.ServerHandler;
-import org.springsource.ide.eclipse.commons.configurator.ServerHandlerCallback;
 import org.springsource.ide.eclipse.commons.core.HttpUtil;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 import org.springsource.ide.eclipse.commons.internal.configurator.Activator;
@@ -335,31 +333,29 @@ public class ServerConfigurator {
 		tomcatServer.setInstallPath("apache-tomcat-6.0");
 		tomcatServer.setBundleId("org.apache.tomcat.bundle");
 		// configure manager application
-		tomcatServer.setCallback(new ServerHandlerCallback() {
-			@Override
-			public void configureServer(IServerWorkingCopy server) {
-				try {
-					TomcatServer ts = (TomcatServer) server.loadAdapter(TomcatServer.class, null);
-					TomcatConfiguration configuration = ts.getTomcatConfiguration();
-					String docBase = server.getRuntime().getLocation().append("webapps").append("manager").toOSString();
-					WebModule managerModule = new WebModule("/manager", docBase, null, false);
-					configuration.addWebModule(-1, managerModule);
+		tomcatServer.setCallback(server -> {
+			try {
+				TomcatServer ts = (TomcatServer) server.loadAdapter(TomcatServer.class, null);
+				TomcatConfiguration configuration = ts.getTomcatConfiguration();
+				String docBase = server.getRuntime().getLocation().append("webapps").append("manager").toOSString();
+				WebModule managerModule = new WebModule("/manager", docBase, null, false);
+				configuration.addWebModule(-1, managerModule);
 
-					Field field = configuration.getClass().getDeclaredField("serverInstance");
-					field.setAccessible(true);
-					ServerInstance serverInstance = (ServerInstance) field.get(configuration);
-					Context context = serverInstance.getContext("/manager");
-					if (context != null) {
-						context.setAttributeValue("privileged", "true");
-					}
-				}
-				catch (LinkageError e) {
-					// ignore
-				}
-				catch (Exception e) {
-					// ignore
+				Field field = configuration.getClass().getDeclaredField("serverInstance");
+				field.setAccessible(true);
+				ServerInstance serverInstance = (ServerInstance) field.get(configuration);
+				Context context = serverInstance.getContext("/manager");
+				if (context != null) {
+					context.setAttributeValue("privileged", "true");
 				}
 			}
+			catch (LinkageError e) {
+				// ignore
+			}
+			catch (Exception e) {
+				// ignore
+			}
+			return Status.OK_STATUS;
 		});
 		addDescriptor(tomcatServer);
 

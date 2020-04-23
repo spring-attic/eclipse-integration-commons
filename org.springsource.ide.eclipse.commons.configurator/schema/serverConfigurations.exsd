@@ -138,7 +138,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="org.springsource.ide.eclipse.commons.configurator.ServerHandlerCallback:"/>
+                  <meta.attribute kind="java" basedOn=":java.util.function.Function"/>
                </appinfo>
             </annotation>
          </attribute>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,15 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.internal.configurator.server;
 
+import java.util.function.Function;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
-import org.springsource.ide.eclipse.commons.configurator.ServerHandlerCallback;
-
 
 /**
  * Provides information how to obtain a server runtime;
@@ -24,7 +26,7 @@ import org.springsource.ide.eclipse.commons.configurator.ServerHandlerCallback;
  */
 public class ServerDescriptor {
 
-	static class ServerHandlerCallbackDelegate extends ServerHandlerCallback {
+	static class ServerHandlerCallbackDelegate implements Function<IServerWorkingCopy, IStatus> {
 
 		private final IConfigurationElement element;
 
@@ -33,11 +35,18 @@ public class ServerDescriptor {
 			this.element = element;
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
-		public void configureServer(IServerWorkingCopy wc) throws CoreException {
-			Object object = WorkbenchPlugin.createExtension(element, "callback");
-			if (object instanceof ServerHandlerCallback) {
-				((ServerHandlerCallback) object).configureServer(wc);
+		public IStatus apply(IServerWorkingCopy wc) {
+			try {
+				Object object = WorkbenchPlugin.createExtension(element, "callback");
+				if (object instanceof Function) {
+					((Function<IServerWorkingCopy, IStatus>) object).apply(wc);
+				}
+				return Status.OK_STATUS;
+			}
+			catch (CoreException e) {
+				return e.getStatus();
 			}
 		}
 
@@ -71,7 +80,7 @@ public class ServerDescriptor {
 
 	private String bundleId;
 
-	private ServerHandlerCallback callback;
+	private Function<IServerWorkingCopy, IStatus> callback;
 
 	private boolean forceCreateRuntime;
 
@@ -129,7 +138,7 @@ public class ServerDescriptor {
 		return bundleId;
 	}
 
-	public ServerHandlerCallback getCallback() {
+	public Function<IServerWorkingCopy, IStatus> getCallback() {
 		return callback;
 	}
 
@@ -214,7 +223,7 @@ public class ServerDescriptor {
 	 * Sets an optional callback for setting additional configuration options
 	 * when a server instance is created.
 	 */
-	protected void setCallback(ServerHandlerCallback callback) {
+	protected void setCallback(Function<IServerWorkingCopy, IStatus> callback) {
 		this.callback = callback;
 	}
 

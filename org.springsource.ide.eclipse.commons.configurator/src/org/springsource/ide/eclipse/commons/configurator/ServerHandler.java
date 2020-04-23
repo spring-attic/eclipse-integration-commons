@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -43,7 +44,6 @@ import org.eclipse.wst.server.core.ServerUtil;
 import org.springsource.ide.eclipse.commons.core.Policy;
 import org.springsource.ide.eclipse.commons.internal.configurator.Activator;
 import org.springsource.ide.eclipse.commons.internal.configurator.server.ServerDescriptor;
-
 
 /**
  * @author Steffen Pingel
@@ -132,15 +132,15 @@ public class ServerHandler {
 		return createServer(monitor, query, null);
 	}
 
-	public IServer createServer(IProgressMonitor monitor, IOverwriteQuery query, ServerHandlerCallback callback)
-			throws CoreException {
+	public IServer createServer(IProgressMonitor monitor, IOverwriteQuery query,
+			Function<IServerWorkingCopy, IStatus> callback) throws CoreException {
 		try {
 			monitor.beginTask("Creating server configuration", 4);
 
 			IServerType st = ServerCore.findServerType(serverType);
 			if (st == null) {
-				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Could not find server type \""
-						+ serverType + "\""));
+				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+						"Could not find server type \"" + serverType + "\""));
 			}
 			IRuntime runtime;
 			if (serverPath != null) {
@@ -295,11 +295,11 @@ public class ServerHandler {
 	}
 
 	private IServer createServer(IServerType st, IRuntime runtime, IProgressMonitor monitor, IOverwriteQuery query,
-			ServerHandlerCallback callback) throws CoreException {
+			Function<IServerWorkingCopy, IStatus> callback) throws CoreException {
 		IServer server = ServerCore.findServer(serverName);
 		if (server != null) {
-			if (!query(query,
-					NLS.bind("A server with the name ''{0}'' already exists. Replace the existing server?", serverName))) {
+			if (!query(query, NLS.bind("A server with the name ''{0}'' already exists. Replace the existing server?",
+					serverName))) {
 				monitor.worked(1);
 				return server;
 			}
@@ -315,7 +315,10 @@ public class ServerHandler {
 		IServerWorkingCopy wc = st.createServer(serverName, null, runtime, new SubProgressMonitor(monitor, 1));
 		wc.setName(serverName);
 		if (callback != null) {
-			callback.configureServer(wc);
+			IStatus status = callback.apply(wc);
+			if (!status.isOK()) {
+				throw new CoreException(status);
+			}
 		}
 		server = wc.save(true, new SubProgressMonitor(monitor, 1));
 		return server;

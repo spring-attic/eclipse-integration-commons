@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.equinox.p2.engine,
  org.springframework.core;bundle-version="[4.0.0,4.4.0)",
  org.eclipse.mylyn.commons.ui;bundle-version="[3.7.0,4.0.0)"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
 Export-Package: org.springsource.ide.eclipse.commons.configurator,
