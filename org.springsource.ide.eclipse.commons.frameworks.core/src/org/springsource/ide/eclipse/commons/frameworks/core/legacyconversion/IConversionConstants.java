@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -98,7 +98,6 @@ public interface IConversionConstants {
             "org.springsource.ide.eclipse.commons.core", //$NON-NLS-1$
 //            "org.springsource.ide.eclipse.gradle.core", //$NON-NLS-1$
             "org.grails.ide.eclipse.groovy.debug.core", //$NON-NLS-1$
-            "org.springsource.ide.eclipse.commons.configurator", //$NON-NLS-1$
             "org.springframework.ide.eclipse.metadata", //$NON-NLS-1$
             "org.springframework.ide.eclipse.maven", //$NON-NLS-1$
             "org.springframework.ide.eclipse.osgi.runtime", //$NON-NLS-1$

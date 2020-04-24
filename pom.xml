@@ -31,7 +31,6 @@
 		<module>org.springsource.ide.eclipse.commons.frameworks.core</module>
 		<module>org.springsource.ide.eclipse.commons.frameworks.test.util</module>
 		<module>org.springsource.ide.eclipse.commons.frameworks.ui</module>
-		<module>org.springsource.ide.eclipse.commons.configurator</module>
 		<module>org.springsource.ide.eclipse.commons.tests</module>
 		<module>org.springsource.ide.eclipse.commons.tests.util</module>
 		<module>org.springsource.ide.eclipse.commons.ui</module>

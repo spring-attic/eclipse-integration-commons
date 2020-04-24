@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -76,8 +76,6 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.Version;
 import org.springframework.util.StringUtils;
 import org.springsource.ide.eclipse.commons.core.ResourceProvider;
-import org.springsource.ide.eclipse.commons.internal.configurator.Activator;
-import org.springsource.ide.eclipse.commons.internal.configurator.IConfigurator;
 import org.springsource.ide.eclipse.dashboard.internal.ui.IdeUiPlugin;
 import org.springsource.ide.eclipse.dashboard.internal.ui.util.IdeUiUtils;
 import org.springsource.ide.eclipse.dashboard.ui.AbstractDashboardPage;
@@ -572,10 +570,6 @@ public class DashboardExtensionsPage extends AbstractDashboardPage implements IR
 		@Override
 		protected Set<String> getInstalledFeatures(IProgressMonitor monitor) throws InterruptedException {
 			this.installedFeatures = super.getInstalledFeatures(monitor);
-			IConfigurator configurator = Activator.getConfigurator();
-			if (configurator != null) {
-				installedFeatures.addAll(configurator.getInstalledBundles());
-			}
 			for (Map.Entry<String, List<String>> entry : FEATURE_MAPPING.entrySet()) {
 				if (Platform.getBundle(entry.getKey()) != null) {
 					installedFeatures.addAll(entry.getValue());

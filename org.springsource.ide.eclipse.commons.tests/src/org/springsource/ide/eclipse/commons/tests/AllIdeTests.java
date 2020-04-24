@@ -21,8 +21,6 @@ import org.osgi.framework.Version;
 import org.springsource.ide.eclipse.commons.core.CommandHistoryTest;
 import org.springsource.ide.eclipse.commons.core.NameGeneratorTest;
 import org.springsource.ide.eclipse.commons.core.ResourceProviderTest;
-import org.springsource.ide.eclipse.commons.internal.configurator.ConfiguratorImporterTest;
-import org.springsource.ide.eclipse.commons.internal.configurator.touchpoint.ConfiguratorActionTest;
 import org.springsource.ide.eclipse.commons.internal.content.core.DescriptorMatcherTest;
 import org.springsource.ide.eclipse.commons.internal.help.HelpPluginTest;
 import org.springsource.ide.eclipse.commons.internal.ui.editors.UpdateNotificationTest;
@@ -35,9 +33,6 @@ import org.springsource.ide.eclipse.commons.internal.ui.editors.UpdateNotificati
  */
 @RunWith(Suite.class)
 @SuiteClasses({ HelpPluginTest.class, //
-		ConfiguratorImporterTest.class, //
-		// ServerConfiguratorTest.class, //
-		ConfiguratorActionTest.class, //
 		DescriptorMatcherTest.class, //
 		ResourceProviderTest.class, //
 		CommandHistoryTest.class, //

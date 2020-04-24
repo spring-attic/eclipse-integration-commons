@@ -23,7 +23,6 @@ Require-Bundle:
  org.eclipse.mylyn.commons.ui,
  org.eclipse.mylyn.discovery.core,
  org.eclipse.mylyn.discovery.ui,
- org.springsource.ide.eclipse.commons.configurator,
  org.springsource.ide.eclipse.commons.core,
  org.springsource.ide.eclipse.commons.ui,
  org.springsource.ide.eclipse.dashboard.ui,
