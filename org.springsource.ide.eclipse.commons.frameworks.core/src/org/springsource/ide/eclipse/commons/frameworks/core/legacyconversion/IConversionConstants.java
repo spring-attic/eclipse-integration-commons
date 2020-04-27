@@ -80,7 +80,6 @@ public interface IConversionConstants {
             "com.springsource.sts.core", //$NON-NLS-1$
  //           "com.springsource.sts.gradle.core", Gradle does its own thing.
             "com.springsource.sts.groovy.debug.core",  //$NON-NLS-1$
-            "com.springsource.sts.ide.configurator",  //$NON-NLS-1$
             "com.springsource.sts.ide.metadata", //$NON-NLS-1$
             "com.springsource.sts.maven", //$NON-NLS-1$
             "com.springsource.sts.ide.osgi", //$NON-NLS-1$
