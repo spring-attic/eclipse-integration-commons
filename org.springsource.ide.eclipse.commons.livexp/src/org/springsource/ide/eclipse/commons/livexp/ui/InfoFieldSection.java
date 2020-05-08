@@ -10,22 +10,22 @@
  *******************************************************************************/
 package org.springsource.ide.eclipse.commons.livexp.ui;
 
-import static org.springsource.ide.eclipse.commons.livexp.ui.UIConstants.FIELD_LABEL_WIDTH_HINT;
-
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.springsource.ide.eclipse.commons.livexp.core.LiveExpression;
+import org.springsource.ide.eclipse.commons.livexp.core.UIValueListener;
 import org.springsource.ide.eclipse.commons.livexp.core.ValidationResult;
 import org.springsource.ide.eclipse.commons.livexp.core.Validator;
 
 /**
- * Section contain short info field. This similar to a comment section except that
+ * Section containing a short info field. This is similar to a comment section except that
  * it provides a label and a text to display. This is so it can be inserted into
- * a page/dialog with a number of other fields and aling nicely rather than look
+ * a page/dialog with a number of other fields and align nicely rather than look
  * out of place.
  * 
  * @author Kris De Volder
@@ -68,12 +68,14 @@ public class InfoFieldSection extends WizardPageSection {
         	.applyTo(label);
 
         Label info = new Label(composite, SWT.NONE);
-        info.setText(getInfoText());
+        infoTextExp.addListener(UIValueListener.from((e,v) -> {
+            info.setText(getInfoText());
+            composite.layout(new Control[] {info});
+        }));
         GridDataFactory.fillDefaults()
         	.grab(true, false)
         	.align(SWT.BEGINNING, SWT.BEGINNING)
         	.applyTo(info);
-        
 	}
 
 	private String getInfoText() {
