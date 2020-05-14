@@ -135,6 +135,29 @@ public class JobUtil {
 		}
 	}
 
+	public static CompletableFuture<Void> runQuietlyInJob(String jobName, JobBody doit) {
+		CompletableFuture<Void> f = new CompletableFuture<>();
+		Job job = new Job(jobName) {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					doit.run(monitor);
+					f.complete(null);
+				} catch (Throwable e) {
+					f.completeExceptionally(e);
+				} finally {
+					monitor.done();
+				}
+				return Status.OK_STATUS;
+			}
+			
+		};
+		job.setSystem(true);
+		job.schedule();
+		return f;
+	}
+
 	public static CompletableFuture<Void> runInJob(String jobName, JobBody doit) {
 		CompletableFuture<Void> f = new CompletableFuture<>();
 		Job job = new Job(jobName) {
