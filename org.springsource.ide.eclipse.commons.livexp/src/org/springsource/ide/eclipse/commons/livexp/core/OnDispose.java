@@ -21,5 +21,12 @@ import org.springsource.ide.eclipse.commons.livexp.ui.Disposable;
 public interface OnDispose extends Disposable {
 
 	public void onDispose(DisposeListener listener);
-
+	default <C extends Disposable> C addDisposableChild(final C child) {
+		onDispose(new DisposeListener() {
+			public void disposed(Disposable disposed) {
+				child.dispose();
+			}
+		});
+		return child;
+	}
 }

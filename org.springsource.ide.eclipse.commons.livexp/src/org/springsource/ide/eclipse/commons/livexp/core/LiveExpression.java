@@ -14,6 +14,7 @@ import java.time.Duration;
 
 import org.eclipse.core.runtime.ListenerList;
 import org.springsource.ide.eclipse.commons.livexp.ui.Disposable;
+import org.springsource.ide.eclipse.commons.livexp.util.OldValueDisposer;
 
 import com.google.common.base.Function;
 
@@ -265,7 +266,7 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 		};
 		return result;
 	}
-	
+
 	public <R> LiveExpression<R> apply(final Function<V,R> fun) {
 		final LiveExpression<V> target = this;
 		LiveExpression<R> result = new LiveExpression<R>() {
@@ -278,6 +279,27 @@ public abstract class LiveExpression<V> implements Disposable, OnDispose {
 			}
 		};
 		return result;
+	}
+	
+	/**
+	 * Applies a given 'factory' function to this live expression. And produces
+	 * a LiveExpression who's value is the result of calling the function on 
+	 * this liveexp's value.
+	 * <p>
+	 * The resulting liveExp's lifecycle is automatically linked with this liveExp.
+	 * So, when this liveExp is disposed then the resulting liveExp is also disposed.
+	 * <p>
+	 * Additionally, the object's produced by the factory are also considered to be
+	 * 'owned' by this liveExp. So the resulting objects are also disposed as needed.
+	 */
+	public <R> LiveExpression<R> applyFactory(final Function<V,R> factory) {
+		@SuppressWarnings("resource")
+		LiveVariable<R> var = new OldValueDisposer<R>(this).getVar();
+		this.onChange((_e, _v) -> {
+			V input = _e.getValue();
+			var.setValue(input == null ? null : factory.apply(_e.getValue()));
+		});
+		return var;
 	}
 	
 	/**
