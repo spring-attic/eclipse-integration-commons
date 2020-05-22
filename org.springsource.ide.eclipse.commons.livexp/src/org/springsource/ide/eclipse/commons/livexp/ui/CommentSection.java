@@ -50,6 +50,12 @@ public class CommentSection extends PrefsPageSection {
 			l = null;
 		}
 	}
+	
+	public void setText(String text) {
+		if (text != null && !l.isDisposed()) {
+			l.setText(text);
+		}
+	}
 
 	@Override
 	public boolean performOK() {
