@@ -59,6 +59,14 @@ public class StringUtil {
 		return "";
 	}
 
+	public static String removePrefix(String s, String prefix) {
+		if (s.startsWith(prefix)) {
+			return s.substring(prefix.length());
+		} else {
+			return s;
+		}
+	}
+
 	public static String camelCaseToHyphens(String value) {
 		Matcher matcher = CAMEL_CASE_PATTERN.matcher(value);
 		StringBuffer result = new StringBuffer();
@@ -132,5 +140,4 @@ public class StringUtil {
 		SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
 		return f.format(d);
 	}
-
 }
