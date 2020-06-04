@@ -11,6 +11,7 @@
 package org.springsource.ide.eclipse.commons.livexp.util;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -18,12 +19,22 @@ import org.springsource.ide.eclipse.commons.livexp.Activator;
 
 public class Log {
 
+	/**
+	 * This is for testing and allows test code to 'observe' whether any errors are
+	 * being logged during test execution. 
+	 */
+	public static Consumer<Throwable> errorHandler = null;
+	
 	public static void log(Throwable e) {
 		if (ExceptionUtil.isCancelation(e)) {
 			//Don't log canceled operations, those aren't real errors.
 			return;
 		}
 		try {
+			Consumer<Throwable> eh = errorHandler;
+			if (eh!=null) {
+				eh.accept(e);
+			}
 			Activator.getDefault().getLog().log(ExceptionUtil.status(e));
 		} catch (NullPointerException npe) {
 			//Can happen if errors are trying to be logged during Eclipse's shutdown
