@@ -244,11 +244,11 @@
 					<layout>p2</layout>
 					<url>https://download.eclipse.org/eclipse/updates/4.16/</url>
 				</repository>
-				<repository>
+<!--				<repository>
 					<id>2020-06-staging</id>
 					<layout>p2</layout>
 					<url>https://download.eclipse.org/staging/2020-06/</url>
-				</repository>
+				</repository> -->
 				<repository>
 					<id>2020-06</id>
 					<layout>p2</layout>
