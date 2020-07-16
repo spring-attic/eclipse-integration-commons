@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -113,11 +113,14 @@ public class UiUtil {
 		// This only happens sometimes.
 		// maybe it depends on if the preferences have been initialized before.
 		// In any case we need the asyncExec here!!!
-		Display.getDefault().asyncExec(new Runnable() {
-			public void run() {
-				uiThreadOpenUrl(location, WebBrowserPreference.getBrowserChoice());
-			}
-		});
+		Display display = PlatformUI.getWorkbench().getDisplay();
+		if (display != null && !display.isDisposed()) {
+			display.asyncExec(new Runnable() {
+				public void run() {
+					uiThreadOpenUrl(location, WebBrowserPreference.getBrowserChoice());
+				}
+			});
+		}
 	}
 
 	/**
