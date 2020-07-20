@@ -46,7 +46,13 @@ import org.springsource.ide.eclipse.commons.livexp.util.Filters;
  */
 public class SwtConnect {
 	
-	public static void connect(Text text, LiveVariable<String> model) {
+	/**
+	 * 
+	 * @param text
+	 * @param model
+	 * @param cursorAtEnd true if cursor has to be placed at the end of text when its set in the control
+	 */
+	public static void connect(Text text, LiveVariable<String> model, boolean cursorAtEnd) {
 		if (!text.isDisposed()) {
 			text.addDisposeListener(de -> model.dispose());
 			ModifyListener widgetListener = (me) -> {
@@ -63,12 +69,21 @@ public class SwtConnect {
 				}
 				if (!oldText.equals(newText)) {
 					text.setText(newText);
+					if (cursorAtEnd) {
+						text.setSelection(text.getText().length());
+						text.setFocus();
+					}
 				}
 			}));
 			text.addDisposeListener(de -> disconnect.dispose());
 			model.onDispose(de -> text.removeModifyListener(widgetListener));
 		}
 	}
+	
+	public static void connect(Text text, LiveVariable<String> model) {
+		connect(text, model, false);
+	}
+	
 	
 	/**
 	 * Connect a filterbox model to a treeviewer. This assumes that the filter is text-based. The filter is applied to the labels of the elements in the tree.
