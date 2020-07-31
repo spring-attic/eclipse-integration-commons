@@ -11,7 +11,10 @@
 package org.springsource.ide.eclipse.commons.frameworks.core.util;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeoutException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -24,6 +27,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.progress.UIJob;
 import org.springsource.ide.eclipse.commons.frameworks.core.FrameworkCoreActivator;
+import org.springsource.ide.eclipse.commons.livexp.util.Log;
 
 public class JobUtil {
 	
@@ -31,6 +35,27 @@ public class JobUtil {
 		void run(IProgressMonitor mon) throws Exception;
 	}
 
+	public static <T> T interruptAfter(Duration waitFor, Callable<T> body) throws Exception {
+		Thread self = Thread.currentThread();
+		Job job = new Job("Interupter") {
+			@Override
+			protected IStatus run(IProgressMonitor arg0) {
+				self.interrupt();
+				return Status.OK_STATUS;
+			}
+		};
+		job.setSystem(true);
+		job.schedule(waitFor.toMillis());
+		try {
+			return body.call();
+		} catch (InterruptedException e) {
+			Log.log(e);
+			throw new TimeoutException();
+		} finally {
+			job.cancel();
+		}
+	}
+	
 	/**
 	 * Should ideally not be used except for testing. Eclipse UI should provide a runnable context like
 	 * a progress service via the workbench.
