@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.springsource.ide.eclipse.commons</groupId>
     <artifactId>org.springsource.ide.eclipse.commons.parent</artifactId>
-    <version>3.9.14-SNAPSHOT</version>
+    <version>3.9.15-SNAPSHOT</version>
   </parent>
   <artifactId>org.springsource.ide.eclipse.dashboard.ui</artifactId>
   <packaging>eclipse-plugin</packaging>
