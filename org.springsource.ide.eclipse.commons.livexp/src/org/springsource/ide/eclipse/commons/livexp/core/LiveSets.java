@@ -127,4 +127,13 @@ public class LiveSets {
 		}
 		return new MapSet<>(input, asyncRefresh, asyncEvents, function);
 	}
+
+	/**
+	 * Creates a {@link ObservableSet} by applying a mapping function to another ObservableSet.
+	 * <p>
+	 * The resulting set is synchronously updated when the input set changes.
+	 */
+	public static <A,R> ObservableSet<R> mapSync(ObservableSet<A> input, Function<A, R> function) {
+		return map(input, AsyncMode.SYNC, AsyncMode.SYNC, function);
+	}
 }
