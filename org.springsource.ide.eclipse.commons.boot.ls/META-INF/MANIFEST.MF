@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Spring Tool Suite Common UI Components
+Bundle-SymbolicName: org.springsource.ide.eclipse.commons.boot.ls;singleton:=true
+Bundle-Version: 3.9.14.qualifier
+Bundle-Vendor: Pivotal Software, Inc.
+Require-Bundle: org.eclipse.core.resources
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: org.springsource.ide.eclipse.commons.boot.ls

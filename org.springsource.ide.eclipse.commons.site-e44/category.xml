@@ -28,6 +28,7 @@
 		id="org.springsource.ide.eclipse.commons.test" version="3.9.15.qualifier">
 	</feature>
 	
+	<bundle id="org.springsource.ide.eclipse.commons.ui" version="0.0.0"/>
 	<bundle id="org.springsource.ide.eclipse.commons.content.core" version="0.0.0"/>
 	<bundle id="org.springsource.ide.eclipse.commons.core" version="0.0.0"/>
 	<bundle id="org.springsource.ide.eclipse.commons.frameworks.core" version="0.0.0"/>
