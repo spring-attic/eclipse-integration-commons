@@ -8,7 +8,7 @@
  * Contributors:
  *     Pivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springframework.ide.eclipse.boot.pstore;
+package org.springsource.ide.eclipse.commons.core.pstore;
 
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 

@@ -8,7 +8,7 @@
  * Contributors:
  *     Pivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springframework.ide.eclipse.boot.pstore;
+package org.springsource.ide.eclipse.commons.core.pstore;
 
 import java.io.File;
 import java.io.FileInputStream;

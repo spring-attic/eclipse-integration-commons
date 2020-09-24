@@ -8,7 +8,7 @@
  * Contributors:
  *    Pivotal Software, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springframework.ide.eclipse.boot.pstore;
+package org.springsource.ide.eclipse.commons.core.pstore;
 
 import org.springsource.ide.eclipse.commons.core.util.StringUtil;
 import org.springsource.ide.eclipse.commons.frameworks.core.util.ArrayEncoder;

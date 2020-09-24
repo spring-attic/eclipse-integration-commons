@@ -8,22 +8,15 @@
  * Contributors:
  *     Pivotal, Inc. - initial API and implementation
  *******************************************************************************/
-package org.springframework.ide.eclipse.boot.pstore;
+package org.springsource.ide.eclipse.commons.core.pstore;
 
 /**
  * An instance of this provides a way to store and retrieve
- * properties. The properties are persisted somehow.
+ * properties associated with some 'scope' object of type T.
  * <p>
- * This interface is deliberately kept very sparse so as to be
- * 'easy' to implement. Its an interface meant for implementors.
- * <p>
- * If you are a client you can an wrap instance of this interface
- * into a {@link PropertyStoreApi} for a more convenient api
- * with more operations.
- *
- * @author Kris De Volder
+ * The properties are persisted somehow.
  */
-public interface IPropertyStore {
-	String get(String key);
-	void put(String key, String value) throws Exception;
+public interface IScopedPropertyStore<T> {
+	String get(T scope, String key);
+	void put(T scope, String key, String value) throws Exception;
 }
