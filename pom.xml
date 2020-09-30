@@ -28,6 +28,9 @@
 		<module>org.springsource.ide.eclipse.commons.content.core</module>
 		<module>org.springsource.ide.eclipse.commons.tests</module>
 		
+		<module>org.springsource.ide.eclipse.dashboard-feature-e44</module>
+		<module>org.springsource.ide.eclipse.commons.site-e44</module>
+
 	</modules>
 
 	<!-- Common Configuration -->
@@ -111,43 +114,6 @@
 	<profiles>
 
 		<profile>
-			<id>e415</id>
-			<properties>
-				<dist.target>e4.15</dist.target>
-				<dist.platform.name>2020-03</dist.platform.name>
-				<dist.platform.id>2020-03</dist.platform.id>
-				<dist.platform.version>4.15</dist.platform.version>
-				<package.qualifierPrefix>e415</package.qualifierPrefix>
-			</properties>
-			<repositories>
-				<repository>
-					<id>platform</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/eclipse/updates/4.15/</url>
-				</repository>
-				<repository>
-					<id>2019-03</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/releases/2020-03/</url>
-				</repository>
-				<repository>
-					<id>orbit</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20191126223242/repository</url>
-				</repository>
-				<repository>
-					<id>swtbot</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
-				</repository>
-			</repositories>
-			<modules>
-				<module>org.springsource.ide.eclipse.dashboard-feature-e44</module>
-				<module>org.springsource.ide.eclipse.commons.site-e44</module>
-			</modules>
-		</profile>
-
-		<profile>
 			<id>e416</id>
 			<properties>
 				<dist.target>e4.16</dist.target>
@@ -162,11 +128,6 @@
 					<layout>p2</layout>
 					<url>https://download.eclipse.org/eclipse/updates/4.16/</url>
 				</repository>
-<!--				<repository>
-					<id>2020-06-staging</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/staging/2020-06/</url>
-				</repository> -->
 				<repository>
 					<id>2020-06</id>
 					<layout>p2</layout>
@@ -183,10 +144,6 @@
 					<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
 				</repository>
 			</repositories>
-			<modules>
-				<module>org.springsource.ide.eclipse.dashboard-feature-e44</module>
-				<module>org.springsource.ide.eclipse.commons.site-e44</module>
-			</modules>
 		</profile>
 
 		<profile>
@@ -205,11 +162,6 @@
 					<url>https://download.eclipse.org/eclipse/updates/4.17/</url>
 				</repository>
 				<repository>
-					<id>2020-09-staging</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/staging/2020-09/</url>
-				</repository>
-				<repository>
 					<id>2020-09</id>
 					<layout>p2</layout>
 					<url>https://download.eclipse.org/releases/2020-09/</url>
@@ -225,9 +177,45 @@
 					<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
 				</repository>
 			</repositories>
+		</profile>
+
+		<profile>
+			<id>e418</id>
+			<properties>
+				<dist.target>e4.18</dist.target>
+				<dist.platform.name>2020-12</dist.platform.name>
+				<dist.platform.id>2020-12</dist.platform.id>
+				<dist.platform.version>4.18</dist.platform.version>
+				<package.qualifierPrefix>e418</package.qualifierPrefix>
+			</properties>
+			<repositories>
+				<repository>
+					<id>platform</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/eclipse/updates/4.18/</url>
+				</repository>
+				<repository>
+					<id>2020-12-staging</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/staging/2020-12/</url>
+				</repository>
+				<repository>
+					<id>2020-12</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/releases/2020-12/</url>
+				</repository>
+				<repository>
+					<id>orbit</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/tools/orbit/downloads/drops/S20200826182026/repository</url>
+				</repository>
+				<repository>
+					<id>swtbot</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
+				</repository>
+			</repositories>
 			<modules>
-				<module>org.springsource.ide.eclipse.dashboard-feature-e44</module>
-				<module>org.springsource.ide.eclipse.commons.site-e44</module>
 			</modules>
 		</profile>
 
