@@ -16,7 +16,6 @@
 	</scm>
 
 	<modules>
-        <module>org.springsource.ide.eclipse.commons.boot.ls</module>
 		<module>org.springsource.ide.eclipse.commons.test-feature</module>
 
 		<!-- dashboard -->
@@ -26,16 +25,8 @@
 		<module>org.springsource.ide.eclipse.commons.browser</module>
 		<module>org.springsource.ide.eclipse.commons.gettingstarted</module>
 		
-		<module>org.springsource.ide.eclipse.commons.jdk_tools</module>
 		<module>org.springsource.ide.eclipse.commons.content.core</module>
-		<module>org.springsource.ide.eclipse.commons.core</module>
-		<module>org.springsource.ide.eclipse.commons.frameworks.core</module>
-		<module>org.springsource.ide.eclipse.commons.frameworks.test.util</module>
-		<module>org.springsource.ide.eclipse.commons.frameworks.ui</module>
 		<module>org.springsource.ide.eclipse.commons.tests</module>
-		<module>org.springsource.ide.eclipse.commons.tests.util</module>
-		<module>org.springsource.ide.eclipse.commons.ui</module>
-		<module>org.springsource.ide.eclipse.commons.livexp</module>
 		
 	</modules>
 
@@ -291,6 +282,12 @@
  			<layout>p2</layout>
  			<url>https://dist.springsource.com/release/TOOLS/third-party/misc-p2-repo/${misc.p2.repo.version}</url>
  		</repository>
+
+ 		<repository>
+			<id>sts4-commons</id>
+			<layout>p2</layout>
+			<url>https://dist.springsource.com/snapshot/TOOLS/sts4-language-server-integrations/nightly</url>
+		</repository>
 
 	</repositories>
 
