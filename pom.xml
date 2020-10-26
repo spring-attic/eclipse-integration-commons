@@ -70,7 +70,10 @@
 	    <!-- <misc.p2.repo.version>3.9.4.201805082144</misc.p2.repo.version> -->
 	    <!-- <misc.p2.repo.version>3.9.4.201804101345</misc.p2.repo.version> -->
 	    <!-- <misc.p2.repo.version>3.8.4.201703211214</misc.p2.repo.version> -->
-	    
+
+		<!-- STS4 language server release -->
+		<sts4-language-server-version>20201023</sts4-language-server-version>
+		
 		<p2.qualifier>SNAPSHOT</p2.qualifier>
 		<p2.sign>false</p2.sign>
 		<p2.repository.name>Eclipse Integration Commons</p2.repository.name>
@@ -274,7 +277,7 @@
  		<repository>
 			<id>sts4-commons</id>
 			<layout>p2</layout>
-			<url>https://dist.springsource.com/snapshot/TOOLS/sts4-language-server-integrations/nightly</url>
+			<url>https://dist.springsource.com/release/TOOLS/sts4-language-server-integrations/${sts4-language-server-version}</url>
 		</repository>
 
 	</repositories>
