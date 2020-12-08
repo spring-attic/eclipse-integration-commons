@@ -274,10 +274,15 @@
  			<url>https://dist.springsource.com/release/TOOLS/third-party/misc-p2-repo/${misc.p2.repo.version}</url>
  		</repository>
 
- 		<repository>
+<!-- 		<repository>
 			<id>sts4-commons</id>
 			<layout>p2</layout>
 			<url>https://dist.springsource.com/release/TOOLS/sts4-language-server-integrations/${sts4-language-server-version}</url>
+		</repository> -->
+		<repository>
+			<id>sts4-commons</id>
+			<layout>p2</layout>
+			<url>https://dist.springsource.com/snapshot/TOOLS/sts4-language-server-integrations/nightly</url>
 		</repository>
 
 	</repositories>
