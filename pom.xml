@@ -210,7 +210,7 @@
 				<repository>
 					<id>orbit</id>
 					<layout>p2</layout>
-					<url>https://download.eclipse.org/tools/orbit/downloads/drops/S20200826182026/repository</url>
+					<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20201130205003/repository</url>
 				</repository>
 				<repository>
 					<id>swtbot</id>
