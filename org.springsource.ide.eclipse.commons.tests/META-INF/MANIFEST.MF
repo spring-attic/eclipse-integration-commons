@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SpringSource Tool Suite IDE Tests
 Bundle-SymbolicName: org.springsource.ide.eclipse.commons.tests;singleton:=true
-Bundle-Version: 3.9.15.qualifier
+Bundle-Version: 3.9.16.qualifier
 Bundle-Vendor: Pivotal Software, Inc.
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
