@@ -71,8 +71,11 @@
 	<bundle id="javax.annotation" version="0.0.0"/>
 	<bundle id="javax.annotation.source" version="0.0.0"/>
 	<bundle id="javax.mail" version="0.0.0"/>
+	<bundle id="javax.validation" version="0.0.0"/>
 	<bundle id="javax.xml.stream" version="0.0.0"/>
 	<bundle id="javax.xml.ws" version="0.0.0"/>
+
+	<bundle id="com.sun.syndication" version="0.0.0"/>
 
 	<bundle id="org.aopalliance" version="0.0.0"/>
 
