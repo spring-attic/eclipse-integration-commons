@@ -383,6 +383,16 @@
 			                <id>org.apache.felix.scr</id>
 			                <versionRange>0.0.0</versionRange>
 			             </requirement>
+			             <requirement>
+			                <type>eclipse-plugin</type>
+			                <id>com.sun.xml.bind</id>
+			                <versionRange>[2.2.0, 2.3.0)</versionRange>
+			             </requirement>
+			             <requirement>
+			                <type>eclipse-plugin</type>
+			                <id>com.sun.xml.bind</id>
+			                <versionRange>[2.3.0, 2.4.0)</versionRange>
+			             </requirement>
 			          </extraRequirements>
 			       </dependency-resolution>
 			    </configuration>
