@@ -179,7 +179,47 @@
 				<repository>
 					<id>orbit</id>
 					<layout>p2</layout>
-					<url>https://download.eclipse.org/tools/orbit/downloads/drops/S20210216215844/repository</url>
+					<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20210223232630/repository</url>
+				</repository>
+				<repository>
+					<id>swtbot</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
+				</repository>
+			</repositories>
+			<modules>
+			</modules>
+		</profile>
+
+		<profile>
+			<id>e420</id>
+			<properties>
+				<dist.target>e4.20</dist.target>
+				<dist.platform.name>2021-06</dist.platform.name>
+				<dist.platform.id>2021-06</dist.platform.id>
+				<dist.platform.version>4.20</dist.platform.version>
+				<package.qualifierPrefix>e420</package.qualifierPrefix>
+			</properties>
+			<repositories>
+				<repository>
+					<id>platform</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/eclipse/updates/4.20/</url>
+				</repository>
+				<repository>
+					<id>2021-06-staging</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/staging/2021-06/</url>
+				</repository>
+				<repository>
+					<id>2021-06</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/releases/2021-06/</url>
+				</repository>
+				<repository>
+					<id>orbit</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/tools/orbit/downloads/drops/S20210427185022/repository</url>
 				</repository>
 				<repository>
 					<id>swtbot</id>
