@@ -80,8 +80,7 @@
 
 		<!-- Signing -->
 		<signing.skip>true</signing.skip>
-		<signing.alias>pivotal</signing.alias>
-		<signing.keystore>~/.keytool/pivotal.jks</signing.keystore>
+		<signing.alias>vmware</signing.alias>
 
 		<!-- Common Properties -->
 		<dist.name>Eclipse Integration Commons</dist.name>
