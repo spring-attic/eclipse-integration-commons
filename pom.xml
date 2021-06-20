@@ -72,7 +72,7 @@
 	    <!-- <misc.p2.repo.version>3.8.4.201703211214</misc.p2.repo.version> -->
 
 		<!-- STS4 language server release -->
-		<sts4-language-server-version>20210311</sts4-language-server-version>
+		<sts4-language-server-version>20210615</sts4-language-server-version>
 		
 		<p2.qualifier>SNAPSHOT</p2.qualifier>
 		<p2.sign>false</p2.sign>
@@ -206,15 +206,10 @@
 					<url>https://download.eclipse.org/eclipse/updates/4.20/</url>
 				</repository> -->
 				<repository>
-					<id>2021-06-staging</id>
-					<layout>p2</layout>
-					<url>https://download.eclipse.org/staging/2021-06/</url>
-				</repository>
-<!--				<repository>
 					<id>2021-06</id>
 					<layout>p2</layout>
 					<url>https://download.eclipse.org/releases/2021-06/</url>
-				</repository> -->
+				</repository>
 				<repository>
 					<id>orbit</id>
 					<layout>p2</layout>
@@ -282,16 +277,16 @@
  			<url>https://dist.springsource.com/release/TOOLS/third-party/misc-p2-repo/${misc.p2.repo.version}</url>
  		</repository>
 
-<!-- 		<repository>
+ 		<repository>
 			<id>sts4-commons</id>
 			<layout>p2</layout>
 			<url>https://dist.springsource.com/release/TOOLS/sts4-language-server-integrations/${sts4-language-server-version}</url>
-		</repository> -->
-		<repository>
+		</repository>
+<!--		<repository>
 			<id>sts4-commons</id>
 			<layout>p2</layout>
 			<url>https://dist.springsource.com/snapshot/TOOLS/sts4-language-server-integrations/nightly</url>
-		</repository>
+		</repository> -->
 
 	</repositories>
 
