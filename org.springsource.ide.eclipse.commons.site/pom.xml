@@ -1,43 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.springsource.ide.eclipse.commons</groupId>
-    <artifactId>org.springsource.ide.eclipse.commons.parent</artifactId>
-    <version>3.9.19-SNAPSHOT</version>
-  </parent>
-  <artifactId>org.springsource.ide.eclipse.commons.site</artifactId>
-  <packaging>eclipse-repository</packaging>
-  <name>Eclipse Integration Commons</name>
-
-  <properties>
-	<dist.accessKey>${accessKey}</dist.accessKey>
-	<dist.secretKey>${secretKey}</dist.secretKey>
-  </properties>  
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springsource.ide.eclipse.commons</groupId>
+		<artifactId>org.springsource.ide.eclipse.commons.parent</artifactId>
+		<version>3.9.19-SNAPSHOT</version>
+	</parent>
+	<artifactId>org.springsource.ide.eclipse.commons.site</artifactId>
+	<packaging>eclipse-repository</packaging>
+	<name>Eclipse Integration Commons</name>
 
 	<build>
 		<plugins>
-		  <plugin>
-			<groupId>org.codehaus.mojo</groupId>
-			<artifactId>properties-maven-plugin</artifactId>
-			<version>1.0-alpha-2</version>
-			<executions>
-			  <execution>
-				<phase>initialize</phase>
-				<goals>
-				  <goal>read-project-properties</goal>
-				</goals>
-				<configuration>
-				  <quiet>true</quiet>
-				  <files>
-					<file>${dist.properties}</file>
-				  </files>
-				</configuration>
-			  </execution>
-			</executions>
-		  </plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -89,8 +63,7 @@
 										</fileset>
 									</upload>
 
-									<upload bucketName="${dist.bucket}" file="${dist.full.path}" toFile="${dist.path}/${dist.file.name}"
-										publicRead="true">
+									<upload bucketName="${dist.bucket}" file="${dist.full.path}" toFile="${dist.path}/${dist.file.name}" publicRead="true">
 										<metadata name="project.name" value="${dist.name}" />
 										<metadata name="release.type" value="${dist.type}" />
 										<metadata name="bundle.version" value="${dist.full.version}" />

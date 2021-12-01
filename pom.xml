@@ -94,7 +94,9 @@
 		<dist.platform.version></dist.platform.version>
 		<dist.platform.id></dist.platform.id>
 		<dist.target></dist.target>
-		<dist.properties>dist.properties</dist.properties>
+
+		<dist.accessKey>${env.bamboo_tools_s3_accesskey_password}</dist.accessKey>
+		<dist.secretKey>${env.bamboo_tools_s3_secretkey_password}</dist.secretKey>
 
 		<dist.pathpostfix>nightly</dist.pathpostfix>
 		<dist.path>${dist.type}/${dist.key}/${dist.project}/${dist.pathpostfix}</dist.path>
