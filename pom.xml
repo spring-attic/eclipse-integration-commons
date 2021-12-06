@@ -72,7 +72,7 @@
 	    <!-- <misc.p2.repo.version>3.8.4.201703211214</misc.p2.repo.version> -->
 
 		<!-- STS4 language server release -->
-		<sts4-language-server-version>20211025</sts4-language-server-version>
+		<sts4-language-server-version>20211203</sts4-language-server-version>
 		
 		<p2.qualifier>SNAPSHOT</p2.qualifier>
 		<p2.sign>false</p2.sign>
@@ -275,7 +275,7 @@
 				<repository>
 					<id>orbit</id>
 					<layout>p2</layout>
-					<url>https://download.eclipse.org/tools/orbit/downloads/drops/S20211020204107/repository</url>
+					<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20211122181901/repository</url>
 				</repository>
 				<repository>
 					<id>swtbot</id>
