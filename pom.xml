@@ -72,7 +72,7 @@
 	    <!-- <misc.p2.repo.version>3.8.4.201703211214</misc.p2.repo.version> -->
 
 		<!-- STS4 language server release -->
-		<sts4-language-server-version>20211203</sts4-language-server-version>
+		<sts4-language-server-version>20220131</sts4-language-server-version>
 		
 		<p2.qualifier>SNAPSHOT</p2.qualifier>
 		<p2.sign>false</p2.sign>
