@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.springsource.ide.eclipse.commons</groupId>
 		<artifactId>org.springsource.ide.eclipse.commons.parent</artifactId>
-		<version>3.9.21-SNAPSHOT</version>
+		<version>3.9.22-SNAPSHOT</version>
 	</parent>
 	<artifactId>org.springsource.ide.eclipse.commons.site</artifactId>
 	<packaging>eclipse-repository</packaging>
