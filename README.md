@@ -1,5 +1,9 @@
 # Eclipse Integration Common Components
+
+**This project has reached its EOL and is not maintained anymore. See the announcement on the blog for details: https://spring.io/blog/2022/06/14/goodbye-spring-ide-welcome-spring-tools-4**
       
+## Overview
+
   The Eclipse Integration Common Components are a set of plugins and features that are used and
   consumed by other Eclipse tooling projects at SpringSource. It contains the commonly used parts
   and provides two individually installable features:
